@@ -1,0 +1,33 @@
+int Comuns(const int *vA, int tamA, const int *vB, int tamB)
+{
+    int num=0;
+    int i, j;
+    
+    for(i=0;i<tamA;i++)
+    {
+        for(j=0;j<tamB;j++)
+        {
+            if(vA[i] == vB [j])
+            {
+                num++;
+                break;
+            }
+        }
+    }
+    
+    //Useless Code for the challenge, but good to keep around.
+    
+    /*for(i=0; i<tamA; i++)
+    {
+        for(j=i+1; j<tamA; j++)
+        {
+            if(vA[i] == vA[j])
+            {
+                num--;
+                break;
+            }
+        }
+    }*/
+    
+    return num;
+}
