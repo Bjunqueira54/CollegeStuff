@@ -31,3 +31,4 @@ int Comuns(const int *vA, int tamA, const int *vB, int tamB)
     
     return num;
 }
+//
