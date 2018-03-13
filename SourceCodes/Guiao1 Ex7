@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TAM 10
+
+void procura_dupla(int a[], int tam, int *prim, int *seg)
+{
+    int i;
+    
+    for(i=0; i<tam; i++)
+    {
+        if(a[i]>(*prim))
+        {
+            *seg = *prim;
+            *prim = a[i];
+        }
+        else if(a[i]< (*prim) && a[i] > (*seg))
+        {
+            *seg = a[i];
+        }
+    }
+}
+
+int main(int argc, char** argv)
+{
+    int tab[TAM] = {1, 3, 7, 5, 2, 10, 9, 7, 7, 1};
+    int prim=0, seg=0;
+    
+    procura_dupla(tab, TAM, &prim, &seg);
+    
+    printf("Maior Numero: %d\n", prim);
+    printf("Segundo Maior Numero: %d\n", seg);
+    
+    return (EXIT_SUCCESS);
+}
