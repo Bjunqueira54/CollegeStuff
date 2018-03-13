@@ -1,0 +1,18 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+    int a, b, total, *p = &a, *q = &b, *r = &total;
+    
+    printf("Qual o valor de A: ");
+    scanf("%d", p);
+    
+    printf("\nQual o valor de B: ");
+    scanf("%d", q);
+    
+    *r=*p+*q;
+    
+    printf("a= %d \t b= %d \t total= %d\n", a, b, total );
+    return (EXIT_SUCCESS);
+}
