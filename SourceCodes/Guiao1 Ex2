@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TAM 10
+
+void mostra(int tab[], int tam)
+{
+    int i;
+    
+    for(i=0; i<tam; i++)
+    {
+        printf("%d\n", tab[i]);
+    }
+}
+
+float media(int tab[], int tam)
+{
+    int i;
+    float media=0;
+    
+    for(i=0;i<tam;i++)
+    {
+        media+=tab[i];
+    }
+    
+    media/=i;
+    
+    return media;
+}
+
+void AlteraTabela(int *t, int tam, float media)
+{
+    int i;
+    
+    for(i=0; i<tam; i++)
+    {
+        if(t[i] < media)
+        {
+            t[i] = 0;
+        }
+    }
+}
+
+int main(int argc, char** argv)
+{
+    int tabela[TAM] = {1, 10, 2, 9, 3, 8, 4, 7, 5, 6};
+    
+    printf("Tabela original: \n");
+    mostra(tabela,TAM);
+    
+    float med = media(tabela, TAM);
+    
+    AlteraTabela(tabela, TAM, med);
+    printf("\n \n");
+    
+    mostra(tabela, TAM);
+    
+    return (EXIT_SUCCESS);
+}
