@@ -8,7 +8,7 @@ void shiftVertical(int desl, int nLin, int nCol, int mat[][nCol])
 {
     int aux, i, j, d;
     
-    if(desl == 0 || desl >= nLin)
+    if(desl == 0 || desl >= nCol)
     {
         return;
     }
