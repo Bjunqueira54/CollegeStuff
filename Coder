@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdbool.h>
+#include <math.h>
+#define SEPARATOR "#<ab@17943918#@>#"
+
+//A MINHA FUNÇÃO
+
+void shiftVertical(int desl, int nLin, int nCol, int mat[][nCol])
+{
+    int i, j, d;
+    
+    int aux[nCol];
+    
+    //Se o deslocamento por 0 ou maior que o n de linhas, n faz nada
+    if(desl == 0 || desl >= nLin)
+    {
+        return;
+    }
+    
+    for(d=0;d<desl;d++)
+    {
+        //Guarda as colunas da ultima linha para depois
+        for(j=0;j<nCol;j++)
+        {
+            aux[j]=mat[nLin-1][j];
+        }
+        /*Quero deslocar uma de cada vez uma posiçao para baixo
+        Consigo isto atraves do seguinte metodo:
+            1- escolho a ultima linha
+            2- vou rodando atraves de cada coluna
+            3- enquanto faço isso, estou a igualar essa coluna ao valor da coluna 
+         na mesma posiçao mas na linha anterior
+            4- repito o processo para cada linha ate 0
+            5- chegando a 0, igualo a linha 0 ao aux que ja tinha guardado*/
+        
+        for(i=(nLin-1); i>0; i--)
+        {
+            for(j=0; j<nCol; j++)
+            {
+                mat[i][j]=mat[i-1][j];
+            }
+        }
+        
+        //Quando i=0, dou-lhe o aux
+        for(j=0;j<nCol;j++)
+        {
+            mat[0][j] = aux[j];
+        }
+    }
+    
+    
+}
+
+//AS FUNÇÕES DO EXERCICIO
+
+void printMat(int nLin, int nCol, int mat[][nCol]){
+    int i, j;
+    for(i=0; i<nLin; i++){
+        for(j=0; j<nCol; j++)
+            printf("%d ", mat[i][j]);
+        putchar('\n');
+    }
+}
+
+int main() {
+   {
+    int m[3][3] = {{1,1,1},{2,2,2},{3,3,3}};
+shiftVertical(1,3,3,m);
+printMat(3,3,m);
+
+;
+   }
+    printf("%s\n", SEPARATOR);   {
+    int m[4][4] = {{1,1,1,1},{2,2,2,2},{3,3,3,3},{4,4,4,4}};
+shiftVertical(2,4,4,m);
+printMat(4,4,m);;
+   }
+    printf("%s\n", SEPARATOR);   {
+    int m[3][5] = {{1,2,3,4,5},{50, 60,70,80,90},{10,12,14,16,20}};
+shiftVertical(2,3,5,m);
+printMat(3,5,m);
+;
+   }
+    printf("%s\n", SEPARATOR);   {
+    int m[3][3] = {{1,1,1},{2,2,2},{3,3,3}};
+shiftVertical(4,3,3,m);
+printMat(3,3,m);
+;
+   }
+    printf("%s\n", SEPARATOR);   {
+    int m[5][2] = {{1,2},{4,3},{5,6},{70,80},{25,14}};
+shiftVertical(3,5,2,m);
+printMat(5,2,m);;
+   }
+        return 0;
+}
