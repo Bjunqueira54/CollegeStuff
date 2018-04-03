@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+/*
+ * 
+ */
+
+char *traduz (char *mes) {
+    static char *meses[12][2] = { 
+        {"janeiro",   "january"},
+        {"fevereiro", "february"},
+        {"março",     "march"},
+        {"abril",     "april"},
+        {"maio",      "may"},
+        {"junho",     "june"},
+        {"julho",     "july"},
+        {"agosto",    "august"},
+        {"setembro",  "september"},
+        {"outubro",   "october"},
+        {"novembro",  "november"},
+        {"dezembro",  "december"} 
+    };
+    int i;
+    
+    for (i=0;i<12;i++) 
+        if (strcmp(mes,meses[i][0])==0) // serem iguais
+            return meses[i][1];
+    return NULL; // ((void *) 0)
+}
+
+int main(int argc, char** argv) {
+    char mes[21], *month;
+    int continua;
+    
+    do {
+        printf("Indique o mes em PT (\"fim\" para terminar): ");
+        scanf(" %20s", mes);
+        // "%s" só lê uma palavra
+        // "mes" já aponta para o primeiro elemento da string
+        continua = strcmp(mes,"fim"); // strcmp diz se é maior, menor ou iguais as strings 
+        
+        if (continua) {
+            month = traduz(mes);        
+            if (month)
+                printf("%s em Ingles: %s\n", mes, month);
+            else 
+                printf("Mes Desconhecido (%s)\n", mes);
+        }
+        
+    } while(continua); 
+    return (EXIT_SUCCESS);
+}
