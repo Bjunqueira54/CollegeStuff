@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define TAM 10
+
+int SegundoMaior(int vec[], int tam)
+{
+    int maior=0, seg;
+    
+    for(int i=0; i<tam; i++)
+    {
+        if(vec[i]>maior)
+        {
+            seg = maior;
+            maior = vec[i];
+        }
+    }
+    
+    return seg;
+}
+
+void main()
+{
+    int vetor[TAM] = {25, 13, 1, 360, 5, 69, -34, 90, 420, 1337};
+    
+    for(int i=0; i<TAM; i++)
+    {
+        printf("%i ", vetor[i]);
+    }
+    
+    printf("\n");
+    
+    printf("O segundo maior numero e %i \n", SegundoMaior(vetor, TAM));
+}
