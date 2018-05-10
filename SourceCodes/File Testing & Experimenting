@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+    FILE *f;    //Cria ponteiro f do tipo FILE para servir de ponteiro para um ficheiro
+    
+    char frase[15];
+    
+    printf("Escreve algo: ");
+    scanf("%s", &frase);
+    printf("%s", frase);
+    
+    printf("\n \n");
+    
+    f = fopen("test.txt", "wt");    //Abre (ou cria se não existir) um ficheiro test.txt no mode de escrita 'w' e text 't' no qual f aponta
+    
+    fputs(frase, f);    //File Put String, introduz a string "frase" no ficheiro apontado por f
+    fputc('\n', f);     //File Put Char, introduz o character \n no ficheiro apontado por f
+    
+    int total, num1, num2;
+    
+    printf("Introduza num1: ");
+    scanf("%i", &num1);
+    printf("\n");
+    
+    printf("Introduza num2: ");
+    scanf("%i", &num2);
+    printf("\n");
+    
+    total = num1 * num2;
+    
+    fprintf(f, "%i", total);    //File printf, função printf normal mas com o ponteiro f no inicio.
+    
+    fclose(f);  //Fecha o ficheiro para não haver erros
+    
+    return (EXIT_SUCCESS);
+}
