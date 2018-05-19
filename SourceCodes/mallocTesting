@@ -1,0 +1,92 @@
+/* ESTE CÓDIGO É MUITO BÁSICO E FUNCIONA!
+ * SERVE SÓ PARA MOSTRAR FUNCIONALIDADE BÁSICA DE
+ * malloc() PARA CRIAÇÃO DE UM VETOR!
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char** argv)
+{
+    int *vec;
+    int tam, i;
+    
+    printf("Tamanho do vetor inicial: ");
+    fscanf(stdin, "%i", &tam);
+    
+    vec = malloc(tam);
+    
+    for(i=0; i<tam; i++)
+    {
+        printf("Pos. %i: ", i+1);
+        fscanf(stdin, "%i", vec+i);
+    }
+    
+    for(i=0; i<tam; i++)
+    {
+        printf("%i\n", vec[i]);
+    }
+    
+    return (EXIT_SUCCESS);
+}*/ //TERMINA AQUI!
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int CriaVec(int *tam)
+{
+    int *vec;
+
+    vec = malloc(*tam);
+    
+    for(int i=0; i<(*tam); i++)
+    {
+        printf("Pos. %i: ", i+1);
+        fscanf(stdin, "%i", vec+i);
+    }
+    
+    return vec;
+}
+
+int AumentaVec(int *vec, int *tam)
+{
+    int extra;
+    
+    printf("Novo tam: ");
+    fscanf(stdin, "%i", &extra);
+    
+    vec = realloc(vec, extra);
+    
+    for(int i=(*tam); i<extra; i++)
+    {
+        printf("Pos. %i: ", i+1);
+        fscanf(stdin, "%i", vec+i);
+    }
+    
+    (*tam) = extra;
+    
+    return vec;
+}
+
+int main(int argc, char** argv)
+{
+    int *vec;
+    int tam, i;
+    
+    printf("Tamanho do vetor inicial: ");
+    fscanf(stdin, "%i", &tam);
+    
+    vec = CriaVec(&tam);
+    
+    for(i=0; i<tam; i++)
+    {
+        printf("%i\n", vec[i]);
+    }
+    
+    vec = AumentaVec(vec, &tam);
+    
+    for(i=0; i<tam; i++)
+    {
+        printf("%i\n", vec[i]);
+    }
+    
+    return (EXIT_SUCCESS);
+}
