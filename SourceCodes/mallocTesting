@@ -1,6 +1,7 @@
 /* ESTE CÓDIGO É MUITO BÁSICO E FUNCIONA!
  * SERVE SÓ PARA MOSTRAR FUNCIONALIDADE BÁSICA DE
  * malloc() PARA CRIAÇÃO DE UM VETOR!
+ * O CÓDIGO MAIS COMPLEXO ENCONTRA-SE MAIS EM BAIXO!
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -27,53 +28,58 @@ int main(int argc, char** argv)
     
     return (EXIT_SUCCESS);
 }*/
+// TERMINA AQUI O CÓDIGO BÁSICO!
 
 #include <stdio.h>
 #include <stdlib.h>
 
-int* CriaVec(int *tam)
+int* CriaVec(int *tam) //função ponteiro, necessário para fazer return de um ponteiro a igualar na main()
 {
-    int *vec;
+    int *vec; //Inicia um ponteiro a um vetor local da função; Escolhendo a opção desta função novamente irá apagar o vetor e recomeçar
     
     printf("Tamanho do vetor inicial: ");
-    fscanf(stdin, "%i", tam);
+    fscanf(stdin, "%i", tam); //Escolhendo o tamanho inicial do vetor; Notem a falta de &, pois tam já é um ponteiro localizado em main()
+                              // e nós queremos estar sempre a trabalhar com a mesma variável
 
-    vec = malloc(*tam * sizeof(int));
+    vec = malloc(*tam * sizeof(int)); //Inicia-se um espaço de memória do tamanho (*tam) vezes o tamanho de um (int) e o ponteiro devolvido
+                                      // é igual ao ponteiro vec.
     
     for(int i=0; i<(*tam); i++)
     {
         printf("Pos. %i: ", i+1);
-        fscanf(stdin, "%i", vec+i);
+        fscanf(stdin, "%i", vec+i); //Usamos o ciclo for para dar-mos um valor a cada espaço do vetor vec
     }
     
-    getchar();
-    
-    return vec;
+    return vec; //devolvemos vec, que como a função é um ponteiro em si, irá igualar ao ponteiro vec em main() e será o vetor a ser
+                //constantemente trabalhado durante todo o tempo que este programa esteja a correr
 }
 
-int* AumentaVec(int *vec, int *tam)
+int* AumentaVec(int *vec, int *tam) //Outra Função ponteiro
 {
     int newTam, i;
     
     printf("Novo tamanho?(Atual %i): ", (*tam));
-    fscanf(stdin, "%i", &newTam);
+    fscanf(stdin, "%i", &newTam); //Escolhe-se o novo tamanho do vetor.
     
-    vec  = realloc(vec, newTam * sizeof(int));
+    //ATENÇÃO: Eu só testei e escrevi este programa a testar aumentos de tamanho de vetores.
+    //Não sei como a função se comportará com valores menores que o tamanho atual!
+    
+    vec  = realloc(vec, newTam * sizeof(int)); //Aumenta o vetor vec com o tamanho (newTam) vezes o tamanho de um (int) e iguala-o a vec
     
     for(i=(*tam); i<newTam; i++)
     {
         printf("Pos. %i: ", i+1);
-        fscanf(stdin, "%i", &vec[i]);
+        fscanf(stdin, "%i", &vec[i]); //Ciclo para escrever os novos espaços realocados no vetor vec
     }
 
-    (*tam) = newTam;
+    (*tam) = newTam; //Atualizamos o tamanho de vec graças ao ponteiro que iniciamos em main()
     
     return vec;
 }
 
 void ListaVec(int *vec, int tam)
 {
-    for(int i=0; i<(tam); i++)
+    for(int i=0; i<tam; i++)
     {
         printf("%i\n", vec[i]);
     }
@@ -81,10 +87,10 @@ void ListaVec(int *vec, int tam)
 
 int main(int argc, char** argv)
 {
-    int *vec;
+    int *vec;   //Este é o ponteiro para o vetor que será unicamente trabalho ao longo da execução deste programa e não será mudado
     int tam, escolha = -1;
     
-    while(escolha != 0)
+    while(escolha != 0) //O programa manterá a execução enquanto a escolha não for "0- Sair do Programa"
     {
         printf("Teste de mAlloc()\n");
         printf("\t1- Criar o vetor\n");
@@ -99,15 +105,15 @@ int main(int argc, char** argv)
         switch(escolha)
         {
             case 1:
-                vec = CriaVec(&tam);
+                vec = CriaVec(&tam); //Temos o nosso ponteiro igual ao return da função ponteiro CriaVec()
                 break;
             case 2:
-                vec = AumentaVec(vec, &tam);
+                vec = AumentaVec(vec, &tam); // "^"
                 break;
-            case 3:
+            case 3: //Eram 4 da manha, quero descanço....
                 break;
             case 4:
-                ListaVec(vec, tam);
+                ListaVec(vec, tam); //Listagem básica de um vetor só para ver se está tudo a funcionar certinho
                 break;
             case 0: 
                 break;
