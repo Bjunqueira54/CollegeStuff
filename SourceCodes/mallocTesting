@@ -26,16 +26,19 @@ int main(int argc, char** argv)
     }
     
     return (EXIT_SUCCESS);
-}*/ //TERMINA AQUI!
+}*/
 
 #include <stdio.h>
 #include <stdlib.h>
 
-int CriaVec(int *tam)
+int* CriaVec(int *tam)
 {
     int *vec;
+    
+    printf("Tamanho do vetor inicial: ");
+    fscanf(stdin, "%i", tam);
 
-    vec = malloc(*tam);
+    vec = malloc(*tam * sizeof(int));
     
     for(int i=0; i<(*tam); i++)
     {
@@ -43,49 +46,76 @@ int CriaVec(int *tam)
         fscanf(stdin, "%i", vec+i);
     }
     
+    getchar();
+    
     return vec;
 }
 
-int AumentaVec(int *vec, int *tam)
+int* AumentaVec(int *vec, int *tam)
 {
-    int extra;
+    int newTam, i;
     
-    printf("Novo tam: ");
-    fscanf(stdin, "%i", &extra);
+    printf("Novo tamanho?(Atual %i): ", (*tam));
+    fscanf(stdin, "%i", &newTam);
     
-    vec = realloc(vec, extra);
+    vec  = realloc(vec, newTam * sizeof(int));
     
-    for(int i=(*tam); i<extra; i++)
+    for(i=(*tam); i<newTam; i++)
     {
         printf("Pos. %i: ", i+1);
-        fscanf(stdin, "%i", vec+i);
+        fscanf(stdin, "%i", &vec[i]);
     }
-    
-    (*tam) = extra;
+
+    (*tam) = newTam;
     
     return vec;
+}
+
+void ListaVec(int *vec, int tam)
+{
+    for(int i=0; i<(tam); i++)
+    {
+        printf("%i\n", vec[i]);
+    }
 }
 
 int main(int argc, char** argv)
 {
     int *vec;
-    int tam, i;
+    int tam, escolha = -1;
     
-    printf("Tamanho do vetor inicial: ");
-    fscanf(stdin, "%i", &tam);
-    
-    vec = CriaVec(&tam);
-    
-    for(i=0; i<tam; i++)
+    while(escolha != 0)
     {
-        printf("%i\n", vec[i]);
-    }
-    
-    vec = AumentaVec(vec, &tam);
-    
-    for(i=0; i<tam; i++)
-    {
-        printf("%i\n", vec[i]);
+        printf("Teste de mAlloc()\n");
+        printf("\t1- Criar o vetor\n");
+        printf("\t2- Aumentar o vetor\n");
+        printf("\t3- Diminuir o vetor\n");
+        printf("\t4- Lista o vetor\n");
+        printf("\t0- Sair do Programa\n\n");
+        
+        printf("Escolha: ");
+        fscanf(stdin, "%i", &escolha);
+        
+        switch(escolha)
+        {
+            case 1:
+                vec = CriaVec(&tam);
+                break;
+            case 2:
+                vec = AumentaVec(vec, &tam);
+                break;
+            case 3:
+                break;
+            case 4:
+                ListaVec(vec, tam);
+                break;
+            case 0: 
+                break;
+            default:
+                printf("Escolha Invalida!");
+                escolha = -1;
+                break;
+        }
     }
     
     return (EXIT_SUCCESS);
