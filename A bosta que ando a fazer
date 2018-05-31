@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define TAM 50
+
+int n; // variavel global para forçar o primeiro elemento da lista
+
+typedef struct clientes Clt, *pc;
+
+struct clientes {
+    char nome[TAM];
+    int NIF;
+    pc prox;
+};
+
+int menu() {
+    int op;
+
+    printf("\n1 - Novo cliente");
+    printf("\n2 - Visualizar");
+    printf("\n3 - Remover");
+    printf("\n4 - Terminar");
+    do {
+        printf("\nEscolha uma opcao: ");
+        scanf("%d", &op);
+    } while (op < 1 || op > 4);
+    return op;
+}
+
+void mostrar(pc lista) {
+    if (!lista) {
+        puts("Nao existem clientes");
+    } 
+    else {
+        puts("Lista de clientes");
+
+        while (lista) {
+            printf(" %s\n", lista->nome);
+            lista = lista->prox;
+        }
+    }
+}
+
+pc adicionar(pc lista) {
+    pc novo, aux;
+    if (n == 1) lista = NULL;
+
+    novo = (pc) malloc(sizeof (Clt)); // malloc um ponteiro para alguma coisa
+    if (novo == NULL) {
+        printf("Erro a reservar memoria");
+        return lista;
+    }
+
+    printf("Indique o nome: ");
+    scanf(" %49[^\n]", &novo->nome);
+    novo->prox = NULL;
+
+    if (lista == NULL) {
+        lista = novo;
+        printf("primeiro elemento da lista");
+    }
+    else {
+        aux = lista;
+        while (aux->prox != NULL)
+            aux = aux->prox;
+        aux->prox = novo;
+    }
+
+    n++;
+    return lista;
+}
+
+pc remover(pc lista) {
+
+}
+
+int main(int argc, char** argv) {
+    int i;
+
+    pc lista = NULL; // pc *lista = NULL;
+
+    do {
+        i = menu();
+        switch (i) {
+            case 1: lista = adicionar(&lista);
+                break;
+            case 2: mostrar(lista);
+                break;
+            case 3: lista = remover(lista);
+                break;
+        }
+    } while (i != 4);
+
+    return 0;
+
+    return (EXIT_SUCCESS);
+}
