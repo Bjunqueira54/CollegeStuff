@@ -2,17 +2,19 @@
 #include <stdlib.h>
 #define TAM 50
 
-int n; // variavel global para forçar o primeiro elemento da lista
+//int n; // variavel global para forçar o primeiro elemento da lista
 
 typedef struct clientes Clt, *pc;
 
-struct clientes {
+struct clientes
+{
     char nome[TAM];
     int NIF;
     pc prox;
 };
 
-int menu() {
+int menu()
+{
     int op;
 
     printf("\n1 - Novo cliente");
@@ -26,66 +28,77 @@ int menu() {
     return op;
 }
 
-void mostrar(pc lista) {
-    if (!lista) {
+void mostrar(pc lista)
+{
+    if(!lista)
+    {
         puts("Nao existem clientes");
     } 
-    else {
+    else
+    {
         puts("Lista de clientes");
 
-        while (lista) {
+        while (lista)
+        {
             printf(" %s\n", lista->nome);
             lista = lista->prox;
         }
     }
 }
 
-pc adicionar(pc lista) {
+pc adicionar(pc lista)
+{
     pc novo, aux;
-    if (n == 1) lista = NULL;
 
     novo = (pc) malloc(sizeof (Clt)); // malloc um ponteiro para alguma coisa
-    if (novo == NULL) {
+    
+    if (novo == NULL)
+    {
         printf("Erro a reservar memoria");
         return lista;
     }
 
     printf("Indique o nome: ");
-    scanf(" %49[^\n]", &novo->nome);
+    scanf(" %49[^\n]", novo->nome);
     novo->prox = NULL;
 
-    if (lista == NULL) {
+    if (lista == NULL)
+    {
         lista = novo;
         printf("primeiro elemento da lista");
     }
-    else {
+    else
+    {
         aux = lista;
         while (aux->prox != NULL)
             aux = aux->prox;
         aux->prox = novo;
     }
-
-    n++;
+    
     return lista;
 }
 
-pc remover(pc lista) {
+/*pc remover(pc lista)
+{
 
-}
+}*/
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
     int i;
 
     pc lista = NULL; // pc *lista = NULL;
 
-    do {
+    do
+    {
         i = menu();
-        switch (i) {
-            case 1: lista = adicionar(&lista);
+        switch (i)
+        {
+            case 1: lista = adicionar(lista);
                 break;
             case 2: mostrar(lista);
                 break;
-            case 3: lista = remover(lista);
+            case 3: //lista = remover(lista);
                 break;
         }
     } while (i != 4);
