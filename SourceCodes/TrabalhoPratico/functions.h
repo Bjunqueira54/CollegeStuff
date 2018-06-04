@@ -4,124 +4,69 @@
  Turma Prática: P3
  */
 
-/*
- * Este ficheiro header existe para as funçoes da interface do menu
- * do programa.
- */
-
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
+
+#define NAME 101
+#define ALUGMAX 5
 
 #ifdef __cplusplus
 extern "C" {
 #endif
     
-    void MenuGuitarra()
-    {
-        int escolha = 1;
+    typedef struct clientes_estrutura Clientes, *pClientes;
+    typedef struct guitarras_estrutura Guitarras;
+    typedef struct aluguer_estrutura Aluguer, *pAluguer;
     
-        while(escolha != 0)
-        {
-            printf("Menu de Guitarras\n");
-            printf("\t1- Adicionar guitarra ao stock\n");
-            printf("\t2- Mostrar historico de alugueres\n");
-            printf("\t3- Listar todas as guitarras\n");
-            printf("\t4- Listar guitarras alugadas\n");
-            printf("\t0- Menu anterior...\n\n");
-            
-            printf("Escolha: ");
-            fscanf(stdin, "%i", &escolha);
+    struct clientes_estrutura
+    {
+        char c_nome[NAME];
+        int nif;
+        int nalugueres;
+        pClientes prox;
+        pClientes ant;
         
-            switch(escolha)
-            {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 0:
-                    break;
-                default:
-                    printf("Escolha Invalida!\n");
-                    break;
-            }
-        }
-    }
-
-    void MenuClientes()
+        pAluguer aprox;
+    };
+    
+    struct aluguer_estrutura
     {
-        int escolha = 1;
-    
-        while(escolha != 0)
-        {
-            printf("Menu de Clientes\n");
-            printf("\t1- Novo Cliente\n");
-            printf("\t2- Remover Cliente\n");
-            printf("\t3- Mostrar Cliente\n");
-            printf("\t4- Listar todos os clientes ativos\n");
-            printf("\t5- Listar todos os clientes banidos\n");
-            printf("\t0- Menu anterior...\n");
-            printf("\tBanir Clientes (Passivamente)\n\n");
-
-            printf("Escolha: ");
-            fscanf(stdin, "%i", &escolha);
-    
-            switch(escolha)
-            {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 0:
-                    break;
-                default:
-                    printf("Escolha Invalida!\n");
-                    break;
-            }
-        }
-    }
-
-    void MenuAluguer()
-    {
-        int escolha = 1;
-    
-        while(escolha != 0)
-        {
-            printf("Menu de Aluguer\n");
-            printf("\t1- Novo Aluguer\n");
-            printf("\t2- Concluir Aluguer\n");
-            printf("\t3- Listar Alugueres\n");
-            printf("\t0- Menu anterior...\n\n");
-    
-            printf("Escolha: ");
-            fscanf(stdin, "%i", &escolha);
+        int id;
+        int diai, mesi, anoi;
+        int diaf, mesf, anof;
+        int estado_aluguer;
         
-            switch(escolha)
-            {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                default:
-                    printf("Escolha Invalida!\n");
-                    break;
-            }
-        }
-    }
+        pAluguer prox;
+    };
 
+    struct guitarras_estrutura
+    {
+        int id;
+        float ppd;
+        float valor;
+        int estado;
+        char g_nome[NAME];
+    };
+    
+    //Protótipos de Guitarras
+    
+    Guitarras* LeFicheiroGuitarras(char *fg, int *g_tam); //Funciona!
+    Guitarras* AdicionarGuitarras(Guitarras *g_vec, int *g_tam); //Funciona!
+    void ListaGuitarras(Guitarras *g_vec, int g_tam); //Funciona!
+    void GuardaDadosGuitarras(char *fg, Guitarras *g_vec, int g_tam); //Funciona!
+    
+    //Protótipos de Clientes
+    
+    pClientes LeFicheiroClientes(char *fc); //Funciona! //Não está a funcionar com as novas linhas de aluguer
+    pClientes AdicionarCliente(pClientes c); //Funciona!
+    pClientes RemoverCliente(pClientes c); //Funciona!
+    void ListaClientesAtivos(pClientes c); //Funciona!
+    void GuardaDadosClientes(char *fc, pClientes c); //Funciona!
+    
+    //Protótipos de Alugueres
+    
+    pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam);    //Funciona!
+    void ListarAlugueres(pClientes c);
 
 #ifdef __cplusplus
 }
