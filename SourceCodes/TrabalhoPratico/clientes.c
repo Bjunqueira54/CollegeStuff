@@ -263,9 +263,9 @@ void ListaClientesAtivos(pClientes c)
     
     while(1)    //Ciclo infinito até a condição de saída ser atingida.
     {
-        fprintf(stdout, "%i\n", aux->nif);
-        fprintf(stdout, "%i\n", aux->nalugueres);
-        fprintf(stdout, "%s\n\n", aux->c_nome);
+        fprintf(stdout, "Nome do Cliente: %s\n", aux->c_nome);
+        fprintf(stdout, "NIF do Cliente: %i\n", aux->nif);
+        fprintf(stdout, "Numero de Alugueres: %i\n\n", aux->nalugueres);
         
         if(aux->prox == NULL)   //Condição de saída: se não existir mais nenhum elemento a seguir na lista, termina o ciclo
         {

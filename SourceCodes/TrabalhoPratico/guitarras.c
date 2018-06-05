@@ -79,8 +79,8 @@ void ListaGuitarras(Guitarras *g_vec, int g_tam)
     
     for(int i=0; i<g_tam; i++)  //Ciclo que corre o vetor inteiro até ao ultimo elemento
     {
-        fprintf(stdout, "ID: %i\n", g_vec[i].id);                   //Escrita
-        fprintf(stdout, "Nome: %s\n", g_vec[i].g_nome);             //dos dados
+        fprintf(stdout, "Nome: %s\n", g_vec[i].g_nome);             //Escrita
+        fprintf(stdout, "ID: %i\n", g_vec[i].id);                   //dos dados
         fprintf(stdout, "Preco por Dia: %.2f\n", g_vec[i].ppd);     //para o
         fprintf(stdout, "Valor: %.2f\n", g_vec[i].valor);           //Standard Output
         fprintf(stdout, "Estado: ");

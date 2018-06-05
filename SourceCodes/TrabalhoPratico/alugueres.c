@@ -300,7 +300,16 @@ pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int 
                 fprintf(stderr, "Essa guitarra nao esta a ser alugada!\n");
                 return c;
             }
+            else
+            {
+                break;
+            }
         }
+    }
+    if(g_vec[i].id != id) //se chegou ao fim do vetor e não um ID igual ao introduzido...
+    {
+        fprintf(stderr, "Essa guitarra nao existe!\n"); //... mostra uma mensagem de erro...
+        return c;   //... e devolve o ponteiro para o inicio da lista sem haver modificações.
     }
     
     aux = c;
@@ -318,7 +327,7 @@ pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int 
                 lista->anof = ano;
                 
                 fprintf(stdout, "A Guitarra esta danificada?(S ou s para Sim): ");
-                op = fgetc(stdin);
+                fscanf(stdin, " %c", &op);
                 
                 if(op == 'S' || op == 's')
                 {
@@ -330,6 +339,20 @@ pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int 
                         if(g_vec[i].id == id)
                         {
                             g_vec[i].estado = 2;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    lista->estado_aluguer = 1;
+                    
+                    for(i=0 ;i<g_tam ;i++)
+                    {
+                        if(g_vec[i].id == id)
+                        {
+                            g_vec[i].estado = 0;
+                            break;
                         }
                     }
                 }

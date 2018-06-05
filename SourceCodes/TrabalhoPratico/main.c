@@ -123,6 +123,7 @@ void MenuAluguer()
                 c = NovoAluguer(c, g_vec, g_tam, dia, mes, ano, diames);
                 break;
             case 2:
+                c = TerminaAluguer(c, g_vec, g_tam, dia, mes, ano, diames);
                 break;
             case 3:
                 ListarAlugueres(c, g_vec, g_tam, dia, mes, ano, diames);

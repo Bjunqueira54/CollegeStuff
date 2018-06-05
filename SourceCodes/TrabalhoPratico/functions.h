@@ -73,7 +73,7 @@ extern "C" {
     void ListarAlugueres(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames);     //Funciona!
     int* DataEntregaPrevista(int dia, int mes, int ano, int *diames); //Funciona!
     int DiasAtraso(int dia, int mes, int ano, int *diames, int *data); //Funciona!
-    pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames); //Falta Acabar!
+    pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames); //Acho que funciona! Comenta o código
 
 #ifdef __cplusplus
 }
