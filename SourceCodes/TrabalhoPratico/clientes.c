@@ -13,7 +13,7 @@
 
 #include "functions.h"
 
-pClientes LeFicheiroClientes(char *fc)
+pClientes LeFicheiroClientes(char *fc, int *diames)
 {
     FILE *f = fopen(fc, "r");
     pClientes c, novo, aux;
@@ -33,6 +33,8 @@ pClientes LeFicheiroClientes(char *fc)
         novo = malloc(sizeof(Clientes));    //de cada vez que o ciclo corre, um novo bloco de memória é alocado.
         novo->prox = novo->ant = NULL;      //ambos os ponteiro prox e ant são deixados a NULL.
         novo->aprox = NULL;                 //o mesmo de passa com o ponteiro para aprox.
+        novo->atraso = 0;
+        novo->danificadas = 0;
         
         if(fscanf(f, " %i", &novo->nif) == EOF) //A não ser que o fscanf chegue ao fim do ficheiro e devolva EOF, o ciclo mantem-se infinito
         {
@@ -44,54 +46,7 @@ pClientes LeFicheiroClientes(char *fc)
         
         fscanf(f, " %i", &novo->nalugueres);    //se a condição acima falhar, le-se as 2 seguintes variaveis do ficheiro
         fscanf(f, " %100[^\n]s", novo->c_nome); //formatação do input do fscanf para saltar eventuais espaços e ignorar o caracter de nova linha
-        
-        if(novo->nalugueres > 0)
-        {
-            pAluguer alug, aux_alug;
-            alug = novo->aprox;
-            
-            for(int i=0; i<novo->nalugueres; i++)
-            {
-                pAluguer alug_novo;
-                alug_novo = malloc(sizeof(Aluguer));
-                
-                fscanf(f, " %i", &alug_novo->id);
-                fscanf(f, " %i", &alug_novo->estado_aluguer);
-                fscanf(f, " %i", &alug_novo->diai);
-                fscanf(f, " %i", &alug_novo->mesi);
-                
-                if(alug_novo->estado_aluguer != 0)
-                {
-                    fscanf(f, " %i", &alug_novo->anoi);
-                    fscanf(f, " %i", &alug_novo->diaf);
-                    fscanf(f, " %i", &alug_novo->mesf);
-                    fscanf(f, " %[^\n]i", &alug_novo->anof);
-                }
-                else
-                {
-                    fscanf(f, " %[^\n]i", &alug_novo->anoi);
-                    alug_novo->diaf = 0;
-                    alug_novo->mesf = 0;
-                    alug_novo->anof = 0;
-                }
-                
-                if(alug == NULL)
-                {
-                    alug = alug_novo;
-                }
-                else
-                {
-                    aux_alug = alug;
-                    
-                    while(aux_alug->prox)
-                    {
-                        aux_alug = aux_alug->prox;
-                    }
-                    aux_alug->prox = alug_novo;
-                }
-            }
-        }
-        
+
         if(!c) //Se o ponteiro do inicio da lista estiver vazio...
         {
             c = novo;   //... a nova lista criada fica como primeiro elemento da lista. E novo->ant = NULL prova que é o primeiro elemento da lista.
@@ -107,6 +62,66 @@ pClientes LeFicheiroClientes(char *fc)
             novo->ant = aux;    //... atualização do ponteiro anterior da nova estrutura para o ultimo elemento da lista...
             aux->prox = novo;   //... e atualização do ponteiro do ultimo elemento da lista para que o proximo seja o novo.
         }
+        
+        if(novo->nalugueres > 0)    //Antes de passar para o próximo elemento da lista, verifica se o cliente tem alugueres...
+        {
+            for(int i=0; i < novo->nalugueres; i++) //... se sim, inicia um ciclo que corre um nº de vezes igual ao nº de alugueres.
+            {
+                pAluguer alug_novo, aux_alug;   //2 novos ponteiros de memória do tipo "Estrutura de Aluguer"
+                alug_novo = malloc(sizeof(Aluguer));    //Alocação de um unico bloco de memória para uma nova estrutura
+                
+                int dias_atraso;
+                int *data;
+                
+                fscanf(f, " %i", &alug_novo->id);               //Leitura
+                fscanf(f, " %i", &alug_novo->estado_aluguer);   //de dados
+                fscanf(f, " %i", &alug_novo->diai);             //do ficheiro
+                fscanf(f, " %i", &alug_novo->mesi);             //para as
+                fscanf(f, " %i", &alug_novo->anoi);             //variáveis da estrutura
+                
+                if(alug_novo->estado_aluguer != 0)  //Se a aluguer tiver já não estiver a decorrer
+                {
+                    fscanf(f, " %i", &alug_novo->diaf); //Leitura da
+                    fscanf(f, " %i", &alug_novo->mesf); //data do final
+                    fscanf(f, " %i", &alug_novo->anof); //do aluguer
+                    
+                    data = DataEntregaPrevista(alug_novo->diai, alug_novo->mesi, alug_novo->anoi, diames);  //Função para calcular a data limite para a entrega
+                    dias_atraso = DiasAtraso(alug_novo->diaf, alug_novo->mesf, alug_novo->anof, diames, data);  //Função para calcular os dias de atraso
+                    
+                    if(dias_atraso > 0) //Se o cliente se atrasou a entregar a guitarra...
+                    {
+                        novo->atraso += dias_atraso;    //... acrescenta os dias a sua variável de contagem dos dias de atraso
+                    }
+                    
+                    if(alug_novo->estado_aluguer == 2) //Se algum aluguer tiver terminado com a entrega da guitarra danificada
+                    {
+                        novo->danificadas += 1; //Incrementa a contagem de guitarras danificadas
+                    }
+                }
+                else    //Caso contrário
+                {
+                    alug_novo->diaf = 0;    //Deixar as
+                    alug_novo->mesf = 0;    //variáveis a
+                    alug_novo->anof = 0;    // 0 para fins de organização
+                }
+                alug_novo->prox = NULL;
+                
+                if(novo->aprox == NULL)     //Se for o primeiro aluguer a ser lido do ficheiro
+                {
+                    novo->aprox = alug_novo;    //A nova estrutura passa a ser o 1º elemento da sub-lista de alugueres
+                }
+                else    //Caso contrário
+                {
+                    aux_alug = novo->aprox; //O ponteiro auxiliar que foi criado toma o endereço de memória do 1º elemento
+                    
+                    while(aux_alug)   //Ciclo que avança o ponteiro auxiliar na lista até ao fim
+                    {
+                        aux_alug = aux_alug->prox;
+                    }
+                    aux_alug = alug_novo; //A nova estrutura criada e preenchida fica como ultimo elemento da sub-lista de aluguer para o cliente
+                }
+            }
+        }
     }
 }
 
@@ -120,37 +135,43 @@ pClientes AdicionarCliente(pClientes c)
     fscanf(stdin, " %i", &novo->nif);   //NIF do novo cliente...
     
     aux = c;
-    while(1)    //... ciclo infinito...
+    if(aux)
     {
-        if(aux->nif == novo->nif)   //... que procura um NIF igual ao introduzido...
+        while(1)    //... ciclo infinito...
         {
-            fprintf(stderr, "Ja existe um cliente com esse NIF registado!\n");
-            free(novo);             //... e se o encontra, mostra uma mensagem de erro, liberta o bloco de memória alocado...
-            
-            return c;       //... e devolve o ponteiro sem qualquer modificação.
+            if(aux->nif == novo->nif)   //... que procura um NIF igual ao introduzido...
+            {
+                fprintf(stderr, "Ja existe um cliente com esse NIF registado!\n");
+                free(novo);             //... e se o encontra, mostra uma mensagem de erro, liberta o bloco de memória alocado...
+
+                return c;       //... e devolve o ponteiro sem qualquer modificação.
+            }
+
+            if(aux->prox == NULL)   //Condição de saída do ciclo
+                break;
+
+            aux = aux->prox;
         }
-        
-        if(aux->prox == NULL)   //Condição de saída do ciclo
-            break;
-        
-        aux = aux->prox;
     }
     
     fprintf(stdout, "Nome do Cliente: ");
     fscanf(stdin, " %100[^\n]s", novo->c_nome); //Nome do novo cliente...
     
     aux = c;
-    while(aux->prox)    //... e um ciclo semelhante ao anterior com o mesmo objetivo.
+    if(aux)
     {
-        if(strcmp(aux->c_nome, novo->c_nome) == 0)
+        while(aux->prox)    //... e um ciclo semelhante ao anterior com o mesmo objetivo.
         {
-            fprintf(stderr, "Ja existe um cliente com esse nome registado!\n");
-            free(novo);
-            
-            return c;   //O ponteiro inicial da lista é devolvido sem modificações.
+            if(strcmp(aux->c_nome, novo->c_nome) == 0)
+            {
+                fprintf(stderr, "Ja existe um cliente com esse nome registado!\n");
+                free(novo);
+
+                return c;   //O ponteiro inicial da lista é devolvido sem modificações.
+            }
+
+            aux = aux->prox;
         }
-        
-        aux = aux->prox;
     }
     
     novo->nalugueres = 0;   //Nenhum cliente é criado com guitarras já alugadas.
@@ -195,7 +216,7 @@ pClientes RemoverCliente(pClientes c)
     pClientes aux, aux2;
     aux = c;
     
-    while(aux->prox != NULL && aux->nif != nif) //Ciclo que termina quando chegar ao final da lista ou encontre um cliente com o NIF introduzido
+    while(aux->prox && aux->nif != nif) //Ciclo que termina quando chegar ao final da lista ou encontre um cliente com o NIF introduzido
     {
         aux2 = aux;         //aux2 neste caso servirá como ponteiro para o bloco anterior a aux
         aux = aux->prox;
@@ -207,12 +228,12 @@ pClientes RemoverCliente(pClientes c)
         return c;       //do endereço inicial da lista.
     }
     
-    if(aux->ant == NULL)    //Caso a condiçao anterior não se tenha concretizado, é porque o ciclo parou ao encontrar um NIF de um cliente igual ao introduzido
+    if(!aux->ant)    //Caso a condiçao anterior não se tenha concretizado, é porque o ciclo parou ao encontrar um NIF de um cliente igual ao introduzido
     {                       //Esta condição testa se o ponteiro auxiliar está a apontar para o primeiro elemento da lista com a ajuda do ponteiro ant
         c = aux->prox;      //Atualiza o ponteiro da lista 'c' para apontar para o segundo elemento da lista...
         free(aux);          //... liberta o bloco de memória associado ao cliente escolhido para eliminação...
     }
-    else if(aux->prox == NULL)  //Caso a condição acima não seja executada, a seguir testa se a estrutura encontrar se encontra no final da lista...
+    else if(!aux->prox)  //Caso a condição acima não seja executada, a seguir testa se a estrutura encontrar se encontra no final da lista...
     {
         aux2->prox = NULL;      //... e nesse caso aux2, o elemento anterior a aux, modificará o seu ponteiro prox para NULL, fazendo assim com que seja o ultimo elemento...
         free(aux);              //... liberta-se o espaço de memória o ex-ultimo elemento da lista e estrutura do cliente e eliminar...
@@ -230,7 +251,7 @@ pClientes RemoverCliente(pClientes c)
 
 void ListaClientesAtivos(pClientes c)
 {
-    if(c == NULL)   //Começo logo por testar a condição de que se c estiver apontar para nada...
+    if(!c)   //Começo logo por testar a condição de que se c estiver apontar para nada...
     {
         fprintf(stderr, "Nao exitem clientes!\n");
         return; //... termina imediatamente a execução da função.
@@ -258,7 +279,8 @@ void GuardaDadosClientes(char *fc, pClientes c)
 {
     FILE *f = fopen(fc, "w");
     
-    pAluguer aux;
+    pClientes aux_free;
+    pAluguer aux, lista;
     
     if(!f)  //Teste para determinar se o ficheiro foi aberto com sucesso ou não
     {
@@ -266,7 +288,7 @@ void GuardaDadosClientes(char *fc, pClientes c)
         return; //Caso não tenha aberto com sucesso, termina de imediato a função
     }
     
-    while(1)    //Ciclo infinito até atingir a condição de saída
+    while(c)    //Ciclo infinito até atingir a condição de saída
     {
         fprintf(f, "%i ", c->nif);          //Escreve os
         fprintf(f, "%i ", c->nalugueres);   //dados para
@@ -274,34 +296,30 @@ void GuardaDadosClientes(char *fc, pClientes c)
         
         if(c->nalugueres > 0)   //Se o cliente já tiver alugado alguma guitarra
         {
-            while(1)    //Ciclo para escrever os dados de todas as guitarras alugadas pelo cliente
+            lista = c->aprox;
+            while(lista)    //Ciclo para escrever os dados de todas as guitarras alugadas pelo cliente
             {
-                fprintf(f, "%i ", c->aprox->id);
-                fprintf(f, "%i ", c->aprox->estado_aluguer);
-                fprintf(f, "%i ", c->aprox->diai);
-                fprintf(f, "%i ", c->aprox->mesi);
-                fprintf(f, "%i ", c->aprox->anoi);
-                if(c->aprox->estado_aluguer != 0)   //Condição para verificar se uma dada guitarra já foi entregue ou não
+                fprintf(f, "%i ", lista->id);
+                fprintf(f, "%i ", lista->estado_aluguer);
+                fprintf(f, "%i ", lista->diai);
+                fprintf(f, "%i ", lista->mesi);
+                fprintf(f, "%i ", lista->anoi);
+                if(lista->estado_aluguer != 0)   //Condição para verificar se uma dada guitarra já foi entregue ou não
                 {
-                    fprintf(f, "%i ", c->aprox->diaf);
-                    fprintf(f, "%i ", c->aprox->mesf);
-                    fprintf(f, "%i ", c->aprox->anof);
+                    fprintf(f, "%i ", lista->diaf);
+                    fprintf(f, "%i ", lista->mesf);
+                    fprintf(f, "%i ", lista->anof);
                 }
                 fprintf(f, "\n");
                 
-                if(c->aprox->prox == NULL)  //Se não existirem mais alugueres para processar
-                {
-                    break;  //Termina o ciclo
-                }
-                
-                c->aprox = c->aprox->prox;  //Avança a lista de alugueres
+                aux = lista;    //O ponteiro auxiliar toma o endereço de memória da estrutura escrita
+                lista = lista->prox;  //Avança a lista de alugueres
+                free(aux);  //Liberta o bloco de memória alocado
             }
         }
         
-        if(c->prox == NULL) //Condição de saída: se não existir um elemento seguinte...
-        {
-            break;  //... termina o ciclo.
-        }
-        c = c->prox;
+        aux_free = c;   //O ponteiro auxiliar toma o endereço de memória da estrutura escrita
+        c = c->prox;    //Avança a lista de clientes
+        free(aux_free); //Liberta o bloco de memória alocado
     }
 }

@@ -13,14 +13,109 @@
 
 #include "functions.h"
 
-pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam)
+int* DataEntregaPrevista(int dia, int mes, int ano, int *diames)
 {
-    if(!c)
+    int *data;
+    
+    data = malloc(sizeof(int) * 3);
+    
+    data[0] = dia;
+    data[1] = mes;
+    data[2] = ano;
+    
+    if(data[0] + 7 > diames[data[1] - 1]) //Se o dia mais os 7 dias do alguer ultrapassar o nº de dias máximo do mês atual em diasmes
+    {
+        data[0] += 7;   //soma os 7 dias de aluguer ao dia
+        data[0] -= diames[data[1] - 1]; //subtrai os dias do mês atual
+        data[1]++;  //Incrementa o mês por 1
+    }
+    else
+    {
+        data[0] += 7;
+    }
+    if(data[1] > 12)    //Se o mês por alguma razão for maior que 13...
+    {
+        data[1] -= 12;  //... subtrai 12 meses de volta a 1...
+        data[2]++;  //... e incrementa o ano.
+    }
+    
+    return data;
+}
+
+int DiasAtraso(int dia, int mes, int ano, int *diames, int *data)
+{
+    int dias_atraso, atraso = 0; //Variável a devolver com dias de atraso e variável de controlo
+    
+    if(ano - data[2] > 0) //Se o ano da data atual for superior ao ano da data prevista...
+    {
+        atraso = 3; //... a variável de controlo é atualizada para o caso 3 - Ano aumentou
+    }
+    else if(mes - data[1] > 0)  //Se o mes da data atual for superior ao mes da data prevista...
+    {
+        atraso = 2; //... a variável de controlo é atualizada para o caso 2 - Mês Aumentou
+    }
+    else if(dia - data[0] > 0)  //Se o dia da data atual é maior que o dia previsto para a entrega...
+    {
+        atraso = 1; //... a variável de controlo é atualizada para o caso 2 - Dia Aumentou
+    }
+    
+    if(atraso == 0)  //Se a variável de controlo se mantiver a 0...
+    {
+        dias_atraso = 0;    //... é porque a data prevista para a entrega do aluguer ainda não foi ultrapassada
+    }
+    else if(atraso == 1) //Caso 1...
+    {
+        dias_atraso = dia - data[0];    //... basta subtrair os dias da data atual pelos dias da data prevista para obter os dias de atraso
+    }
+    else if(atraso == 2) //Caso 2...
+    {
+        dias_atraso = diames[data[1]-1] - data[0];  //.. adicionamos os restantes dias do mês previsto aos dias de atraso...
+        
+        if(mes - data[1] > 1)
+        {
+            for(int i=data[1]; i<mes; i++)  //... usamos um ciclo...
+            {
+                dias_atraso += diames[i-1]; //... para adicionar todos os dias por cada mês de atraso...
+            }
+        }
+        dias_atraso += dia;  //... e terminamos por acrescentar os dias do mês atual que já passaram aos dias de atraso
+    }
+    else if(atraso == 3) //Caso 3...
+    {
+        dias_atraso = diames[data[1]-1] - data[0];    //... adicionamos os dias restantes do mês previsto...
+        
+        for(int i=(data[1]); i<12; i++)   //... adicionamos todos os dias de cada mês até ao final do ano...
+        {
+            dias_atraso += diames[i];
+        }
+        
+        if(ano - data[2] > 1)   //... testamos se existem anos inteiros que passaram após a data prevista...
+        {
+            for(int i=(data[2]+1); i<ano; i++)  //... e se sim, adicionamos 365 dias por cada ano inteiro que passou...
+            {
+                dias_atraso += 365;
+            }
+        }
+        
+        for(int i=1; i<mes; i++)    //... de seguida adiciona-se cada mês por inteiro que passou desde o inicio do novo ano...
+        {
+            dias_atraso += diames[i-1]; //... mas não o mês atual...
+        }
+        
+        dias_atraso += dia; //... e finalmente adiciona-se todos os dias do mês atual que já passaram, incluindo o atual.
+    }
+    
+    return dias_atraso; //devolve o nº de dias de atraso
+}
+
+pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames)
+{
+    if(!c)  //Se não existirem clientes na loja...
     {
         fprintf(stderr, "Nao existem clientes registados para alugar guitarras!\n");
-        return c;
+        return c;   //... a função termina imediatamente
     }
-    if(!g_vec)
+    if(!g_vec)  //Igualmente para as guitarras
     {
         fprintf(stderr, "Nao existem guitarras para serem alugadas!\n");
         return c;
@@ -28,10 +123,9 @@ pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam)
     
     pAluguer novo = malloc(sizeof(Aluguer));    //Novo bloco de memóra para um novo aluguer
     
-    pClientes aux, alugada;
+    pClientes aux;
     
     int id, i, nif;
-    int diames[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};  //Vetor com o número de dia por mes
     
     fprintf(stdout, "Introduza o NIF do cliente: ");
     fscanf(stdin, " %i", &nif); //NIF do cliente a alugar a guitarra
@@ -97,60 +191,164 @@ pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam)
         free(novo); //... liberta o bloco de memória criado para o novo aluguer...
         return c;   //... e devolve o ponteiro para o inicio da lista sem haver modificações.
     }
-    
-    fprintf(stdout, "Introduza a data de Inicio do aluguer\n");
-    fprintf(stdout, "\tMes: ");
-    fscanf(stdin, " %i", &novo->mesi);  //Mês do inicio do aluguer da guitarra
-    if(novo->mesi < 1 || novo->mesi > 12)   //Se o mês introduzido não for de Janeiro a Dezembro
-    {
-        fprintf(stderr, "Mes invalido!\n"); //... mostra uma mensagem de erro...
-        free(novo); //... liberta o bloco de memória criado para o novo aluguer...
-        return c;   //... e devolve o ponteiro para o inicio da lista sem haver modificações.
-    }
-    
-    fprintf(stdout, "\tDia: ");
-    fscanf(stdin, " %i", &novo->diai);  //Dia do inicio do aluguer da guitarra
-    if(novo->diai < 1 || novo->diai > diames[novo->mesi - 1])   //Se o mês introduzido não for de 1 ao dia introduzido no vetor diames[]...
-    {
-        fprintf(stderr, "Dia invalido para o mes introduzido!\n");  //... mostra uma mensagem de erro...
-        free(novo); //... liberta o bloco de memória criado para o novo aluguer...
-        return c;   //... e devolve o ponteiro para o inicio da lista sem haver modificações.
-    }
-    
-    fprintf(stdout, "\tAno: ");
-    fscanf(stdin, " %i", &novo->anoi);  //Ano do inicio do aluguer da guitarra
+
+    novo->diai = dia;
+    novo->mesi = mes;
+    novo->anoi = ano;
     
     novo->anof = novo->mesf = novo->diaf = 0;   //Dia\Mês\Ano do fim do aluguer ficam a 0 para organização de informação
     novo->prox = NULL;
     novo->id = g_vec[i].id;                     //A estrutura de aluguer tẽm um campo para o ID da guitarra alugada
     novo->estado_aluguer = 0;
     
-    int dia, mes, ano;  //Variáveis para mostrar a data do fim de aluguer
+    int *data = DataEntregaPrevista(dia, mes, ano, diames);
     
-    dia = novo->diai;
-    mes = novo->mesi;
-    ano = novo->anoi;
+    fprintf(stdout, "Data de Entrega: %i/%i/%i\n", data[0], data[1], data[2]);  //Mostra a data limite do aluguer.
     
-    if(dia + 7 > diames[mes-1]) //Se o dia mais os 7 dias do alguer ultrapassar o nº de dias máximo do mês atual em diasmes
+    if(aux->aprox == NULL)  //Se o cliente não tiver nenhum aluguer associado a sua conta...
     {
-        dia += 7;   //soma os 7 dias de aluguer ao dia
-        dia -= diames[mes - 1]; //subtrai os dias do mês atual
-        mes++;  //Incrementa o mês por 1
+        aux->aprox = novo;  //... o novo aluguer fica como 1º elemento da sua sub-lista de aluguer
     }
-    else
+    else    //Caso contrário...
     {
-        dia += 7;
-    }
-    if(mes > 12)    //Se o mês por alguma razão for maior que 13...
-    {
-        mes -= 12;  //... subtrai 12 meses de volta a 1...
-        ano++;  //... e incrementa o ano.
+        pAluguer alug_aux;  //...novo ponteiro auxiliar...
+        
+        alug_aux = aux->aprox;  //... que ficará com o endereço de memória do 1º elemento da sub-lista
+        while(alug_aux->prox)   //... e entra num ciclo que avança o ponteiro até ao final da lista...
+        {
+            alug_aux = alug_aux->prox;
+        }
+        alug_aux->prox = novo;  //... onde o novo aluguer criado ficará como ultimo elemento
     }
     
-    fprintf(stdout, "Data de Entrega: %i/%i/%i\n", dia, mes, ano);  //Mostra a data limite do aluguer.
+    aux->nalugueres += 1;    //Incrementa o nº de alugueres que do cliente
     
-    aux->aprox = novo;  //Atualiza o ponteiro da lista de alugueres do cliente
-    aux->nalugueres += 1;    //Incrementa o nº de alugueres que o cliente têm
+    return c;   //devolve o endereço do inicio da lista de clientes atualizada
+}
+
+void ListarAlugueres(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames)
+{
+    if(!c)  //Se não existirem clientes...
+    {
+        fprintf(stderr, "Nao existem clientes na loja!\n");
+        return; //Termina de imediato a função
+    }
     
-    return c;
+    int i, dias_atraso;
+    int *data;
+    
+    pAluguer lista; //Cria dois ponteiros para auxiliar nas listas
+    pClientes aux;
+    
+    aux = c; //Aux fica com o endereço do c, logo, o endereço do 1º elemento
+    
+    while(aux)
+    {
+        lista = aux->aprox;
+        
+        if(lista)
+        {
+            while(lista)
+            {
+                if(lista->estado_aluguer == 0)
+                {
+                    fprintf(stdout, "Nome do Cliente: %s\n", aux->c_nome);
+                    fprintf(stdout, "NIF do Cliente: %i\n", aux->nif);
+                    fprintf(stdout, "ID da Guitarra: %i\n", lista->id);
+                    fprintf(stdout, "Data de Inicio: %i/%i/%i\n", lista->diai, lista->mesi, lista->anoi);
+                    data = DataEntregaPrevista(lista->diai, lista->mesi, lista->anoi, diames);
+                    fprintf(stdout, "Data Prevista para a Entrega: %i/%i/%i\n", data[0], data[1], data[2]);
+                    
+                    dias_atraso = DiasAtraso(dia, mes, ano, diames, data);
+                    
+                    if(dias_atraso != 0)
+                    {
+                        fprintf(stdout, "Dias de Atraso: %i\n\n", dias_atraso);
+                    }
+                    else
+                    {
+                        printf("\n\n");
+                    }
+                }
+                lista = lista->prox;
+            }
+        }
+        aux = aux->prox;
+    }
+}
+
+pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames)
+{
+    int id, i, dias_atraso;
+    int *data = DataEntregaPrevista(dia, mes, ano, diames);
+    char op;
+    
+    dias_atraso = DiasAtraso(dia, mes, ano, diames, data);
+    
+    pClientes aux;
+    pAluguer lista;
+    
+    fprintf(stdout, "Introduza o ID da Guitarra: ");
+    fscanf(stdin, " %i", &id);
+    
+    for(i=0; i<g_tam; i++)
+    {
+        if(g_vec[i].id == id)
+        {
+            if(g_vec[i].estado != 1)
+            {
+                fprintf(stderr, "Essa guitarra nao esta a ser alugada!\n");
+                return c;
+            }
+        }
+    }
+    
+    aux = c;
+    
+    while(aux)
+    {
+        lista = aux->aprox;
+        
+        while(lista)
+        {
+            if(lista->id == id);
+            {
+                lista->diaf = dia;
+                lista->mesf = mes;
+                lista->anof = ano;
+                
+                fprintf(stdout, "A Guitarra esta danificada?(S ou s para Sim): ");
+                op = fgetc(stdin);
+                
+                if(op == 'S' || op == 's')
+                {
+                    lista->estado_aluguer = 2;
+                    aux->danificadas += 1;
+                    
+                    for(i=0 ;i<g_tam ;i++)
+                    {
+                        if(g_vec[i].id == id)
+                        {
+                            g_vec[i].estado = 2;
+                        }
+                    }
+                }
+                
+                if(dias_atraso > 0)
+                {
+                    aux->atraso = dias_atraso;
+                }
+                
+                return c;
+            }
+            lista = lista->prox;
+        }
+        aux = aux->prox;
+    }
+
+    if(!aux)
+    {
+        fprintf(stderr, "Erro ao encontrar um cliente a alugar essa guitarra!\n");
+        return c;
+    }
 }

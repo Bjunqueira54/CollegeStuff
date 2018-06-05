@@ -20,10 +20,12 @@ pClientes c = NULL;
 Guitarras *g_vec = NULL;
 
 int g_tam = 0;
+int dia, mes, ano;
+int diames[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};  //Vetor com o número de dia por mes
 
 void MenuGuitarra()
 {
-    int escolha/* = 1*/;
+    int escolha = -1;
     
     while(escolha != 0)
     {
@@ -60,7 +62,7 @@ void MenuGuitarra()
 
 void MenuClientes()
 {
-    int escolha/* = 1*/;
+    int escolha = -1;
 
     while(escolha != 0)
     {
@@ -102,7 +104,7 @@ void MenuClientes()
 
 void MenuAluguer()
 {
-    int escolha/* = 1*/;
+    int escolha = -1;
     
     while(escolha != 0)
     {
@@ -118,11 +120,12 @@ void MenuAluguer()
         switch(escolha)
         {
             case 1:
-                c = NovoAluguer(c, g_vec, g_tam);
+                c = NovoAluguer(c, g_vec, g_tam, dia, mes, ano, diames);
                 break;
             case 2:
                 break;
             case 3:
+                ListarAlugueres(c, g_vec, g_tam, dia, mes, ano, diames);
                 break;
             case 0:
                 break;
@@ -136,10 +139,40 @@ void MenuAluguer()
 int main(int argc, char** argv)
 {
     int escolha;
+    int data_error;
     
     g_vec = LeFicheiroGuitarras(GTRTXT, &g_tam);    //Chama a função de leitura do ficheiro das Guitarras e escreve para o vetor
-    c = LeFicheiroClientes(CLTTXT);                 //Chama a função de leitura do ficheiro de Clientes e escreve para a lista ligada
-    //h = LeFicheiroHistorico(CLTTXT);
+    c = LeFicheiroClientes(CLTTXT, diames);                 //Chama a função de leitura do ficheiro de Clientes e escreve para a lista ligada
+    
+    do  //Ciclo que continuará a ser executado até o utilizador introduzir uma data correta
+    {
+        fprintf(stdout, "Introduza a data de hoje!\n");
+        fprintf(stdout, "\tMes: ");
+        fscanf(stdin, " %i", &mes);
+        if(mes < 1 || mes > 12)   //Se o mês introduzido não for de Janeiro a Dezembro
+        {
+            fprintf(stderr, "Mes invalido!\n"); //... mostra uma mensagem de erro...
+            data_error = 1; //Varável que controla o ciclo
+        }
+        else
+        {
+            fprintf(stdout, "\tDia: ");
+            fscanf(stdin, " %i", &dia);
+            if(dia < 1 || dia > diames[mes - 1])   //Se o mês introduzido não for de 1 ao dia introduzido no vetor diames[]...
+            {
+                fprintf(stderr, "Dia invalido para o mes introduzido!\n");  //... mostra uma mensagem de erro...
+                data_error = 1;
+            }
+            else
+            {
+                fprintf(stdout, "\tAno: ");
+                fscanf(stdin, " %i", &ano);
+                data_error = 0;
+            }
+        }
+    }
+    while(data_error == 1);
+    
     while(escolha != 0) //Enquanto a escolha nao for 0, o ciclo repete-se
     {
         printf("Bem-vindo a Guitarras p'Aluguer\n");

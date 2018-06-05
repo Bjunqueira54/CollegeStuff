@@ -142,4 +142,6 @@ void GuardaDadosGuitarras(char *fg, Guitarras *g_vec, int g_tam)
         fprintf(f, "%i ", g_vec[i].estado);     //aberto
         fprintf(f, "%s\n", g_vec[i].g_nome);    //o nome da guitarra em ultimo com o caracter de nova linha
     }
+    
+    free(g_vec);
 }
