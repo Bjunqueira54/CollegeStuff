@@ -9,8 +9,11 @@ dseg    ends
 cseg	segment para public 'code'
 	assume  cs:cseg, ds:dseg
 main	proc
+	;PREPARAÇÃO DO PROGRAMA
 	mov     ax, dseg
 	mov     ds, ax
+	
+	
 	; Código
 	
 main	endp
