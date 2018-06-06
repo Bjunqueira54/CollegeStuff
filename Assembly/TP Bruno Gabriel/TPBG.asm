@@ -81,12 +81,8 @@ novacor:
 		jne	ciclo2		; se ainda há linhas a desenhar continua 
 FIM:
 	MOV	AH,4Ch
-	INT	21h
-PRINC ENDP
-	
-	
-	; Código
-	
+	INT	21h	
+
 main	endp
 
 CalcAleat proc near
