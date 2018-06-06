@@ -20,7 +20,7 @@ cseg	segment para public 'code'
 	assume  cs:cseg, ds:dseg
 main	proc
 	;PREPARAÇÃO DO PROGRAMA
-	MOV	AX, DADOS
+	MOV	AX, dseg
 	MOV	DS, AX
 
 	mov	cx,10		; Faz o ciclo 10 vezes
