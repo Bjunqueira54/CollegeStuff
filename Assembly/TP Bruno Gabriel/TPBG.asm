@@ -23,27 +23,27 @@ pilha	ENDS
 
 dseg    segment para public 'data'
 	;VARIAVEIS DO TABULEIRO DE JOGO
-	tabultimo_num_aleat dw 0
+	tabultimo_num_aleat	dw	0
 
-	tabstr_num db 5 dup(?),'$'
+	tabstr_num	db	5	dup(?),'$'
 	
-	tablinha db 0	; Define o número da linha que está a ser desenhada
-	tabnlinhas	db 0
-	tabcor	db  0
-	tabcar	db ' '	
+	tablinha	db	0	; Define o número da linha que está a ser desenhada
+	tabnlinhas	db	0
+	tabcor	db	0
+	tabcar	db	' '	
 		
 	;VARIAVEIS DO TEMPORIZADOR
-	tempSTR12	db 		"            "	; String para 12 digitos	
-	tempNUMERO	db		"                    $", 	; String destinada a guardar o número lido
+	tempSTR12	db	"            "	; String para 12 digitos	
+	tempNUMERO	db	"                    $", 	; String destinada a guardar o número lido
 	
 
-	tempNUM_SP	db		"                    $" 	; PAra apagar zona de ecran
-	tempDDMMAAAA db		"                     "
+	tempNUM_SP	db	"                    $" 	; PAra apagar zona de ecran
+	tempDDMMAAAA	db	"                     "
 
-	tempHoras	dw		0				; Vai guardar a HORA actual
-	tempMinutos		dw		0				; Vai guardar os minutos actuais
-	tempSegundos	dw		0				; Vai guardar os segundos actuais
-	tempOld_seg		dw		0				; Guarda os últimos segundos que foram lidos
+	tempHoras	dw	0				; Vai guardar a HORA actual
+	tempMinutos	dw	0				; Vai guardar os minutos actuais
+	tempSegundos	dw	0				; Vai guardar os segundos actuais
+	tempOld_seg	dw	0				; Guarda os últimos segundos que foram lidos
 			
 
 	tempPOSy	db	10	; a linha pode ir de [1 .. 25]
@@ -59,22 +59,44 @@ dseg    segment para public 'data'
 	curCor2		db	7	; Guarda os atributos de cor do caracter
 	curPOSy		db	5	; a linha pode ir de [1 .. 25]
 	curPOSx		db	10	; POSx pode ir [1..80]	
-	curPOSya		db	5	; Posição anterior de y
-	curPOSxa		db	10	; Posição anterior de x
+	curPOSya	db	5	; Posição anterior de y
+	curPOSxa	db	10	; Posição anterior de x
+	
+	;VARIAVEIS DO FICHEIRO PARTE 1
+	fname	db	'score.txt',0
+	fhandle dw	0
+	buffer	db	'1 5 6 7 8 9 1 5 7 8 9 2 3 7 8 15 16 18 19 20 3',13,10
+			db	'+ - / * * + - - + * / * + - - + * / + - - + * ',13,10
+			db	'10 12 14 7 9 11 13 5 10 15 7 8 9 10 13 5 10 11',13,10 
+			db	'/ * + - - + * / + - / * * + - - + * * + - - + ',13,10
+			db	'3 45 23 11 4 7 14 18 31 27 19 9 6 47 19 9 6 51',13,10
+			db	'______________________________________________',13,10
+	msgErrorCreate	db	"Ocorreu um erro na criacao do ficheiro!$"
+	msgErrorWrite	db	"Ocorreu um erro na escrita para ficheiro!$"
+	msgErrorClose	db	"Ocorreu um erro no fecho do ficheiro!$"
+	
+	;VARIAVEIS DO FICHEIRO PARTE 2
+	
+	fichPOSy	db	4	; a linha pode ir de [ .. ]
+	fichPOSx	db	10	; POSx pode ir [ .. ]
+	msgErrorOpen	db	"Ocorreu um erro na abertura do ficheiro!$"
+	msgErrorRead	db	"Ocorreu um erro na leitura do ficheiro!$"
+	car_fich	db	?
 
-dseg    ends
+dseg	ends
 
 cseg	segment para public 'code'
-	assume  cs:cseg, ds:dseg, ss:pilha
+	assume	cs:cseg,	ds:dseg,	ss:pilha
 	
 	;PROGRAMA
 main	proc
 
-	mov AX, dseg
-	mov DS, AX
+	mov ax, dseg
+	mov ds, ax
 	
 	mov ah, 4Ch
 	int 21h
+	
 main endp
 ;/////////
 ;//PROCS//
@@ -600,7 +622,7 @@ fim:	ret
 
 teclanum endp
 
-Cursos proc
+Cursor proc
 
 	mov	ax, dseg
 	mov	ds,ax
@@ -722,6 +744,93 @@ direita:
 	jmp	ciclo
 
 Cursor endp
+
+CriaFich proc
+	mov	ah, 3ch				; Abrir o ficheiro para escrita
+	mov	cx, 00H				; Define o tipo de ficheiro ??
+	lea	dx, fname			; DX aponta para o nome do ficheiro 
+	int	21h					; Abre efectivamente o ficheiro (AX fica com o Handle do ficheiro)
+	jnc	escreve				; Se não existir erro escreve no ficheiro
+
+	mov	ah, 09h
+	lea	dx, msgErrorCreate
+	int	21h
+
+	jmp	fim
+
+escreve:
+	mov	bx, ax				; Coloca em BX o Handle
+	mov	ah, 40h				; indica que é para escrever
+	
+	lea	dx, buffer			; DX aponta para a infromação a escrever
+	mov	cx, 240				; CX fica com o numero de bytes a escrever
+	int	21h					; Chama a rotina de escrita
+	jnc	close				; Se não existir erro na escrita fecha o ficheiro
+
+	mov	ah, 09h
+	lea	dx, msgErrorWrite
+	int	21h
+close:
+	mov	ah, 3eh				; fecha o ficheiro
+	int	21h
+	jnc	fim
+
+	mov	ah, 09h
+	lea	dx, msgErrorClose
+	int	21h
+	
+CriaFich endp
+
+Imp_Fich	proc
+
+;abre ficheiro
+
+	mov	ah,3dh			; vamos abrir ficheiro para leitura 
+	mov	al,0			; tipo de ficheiro	
+	lea	dx, fname			; nome do ficheiro
+	int	21h			; abre para leitura 
+	jc	erro_abrir		; pode aconter erro a abrir o ficheiro 
+	mov	fhandle, ax		; ax devolve o Handle para o ficheiro 
+	jmp	ler_ciclo		; depois de abero vamos ler o ficheiro 
+
+erro_abrir:
+	mov	ah, 09h
+	lea	dx, msgErrorOpen
+	int	21h
+	jmp	sai
+
+ler_ciclo:
+	mov	ah, 3fh			; indica que vai ser lido um ficheiro 
+	mov	bx, fhandle		; bx deve conter o Handle do ficheiro previamente aberto 
+	mov	cx, 1			; numero de bytes a ler 
+	lea	dx, car_fich	; vai ler para o local de memoria apontado por dx (car_fich)
+	int	21h				; faz efectivamente a leitura
+	jc	erro_ler		; se carry é porque aconteceu um erro
+	cmp	ax, 0			;EOF?	verifica se já estamos no fim do ficheiro 
+	je	fecha_ficheiro	; se EOF fecha o ficheiro 
+	mov	ah, 02h			; coloca o caracter no ecran
+	mov	dl, car_fich	; este é o caracter a enviar para o ecran
+	int	21h				; imprime no ecran
+	jmp	ler_ciclo		; continua a ler o ficheiro
+
+erro_ler:
+	mov	ah, 09h
+	lea	dx, msgErrorRead
+	int	21h
+
+fecha_ficheiro:					; vamos fechar o ficheiro 
+	mov	ah, 3eh
+	mov	bx, fhandle
+	int	21h
+	jnc	sai
+
+	mov	ah, 09h			; o ficheiro pode não fechar correctamente
+	lea	dx, msgErrorClose
+	int	21h
+	
+sai: RET
+
+Imp_Fich	endp
 
 cseg    ends
 end     main
