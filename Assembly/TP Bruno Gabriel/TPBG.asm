@@ -94,10 +94,16 @@ main	proc
 	mov ax, dseg
 	mov ds, ax
 	
+	call apaga_ecran
+	call tabela
+	
+	call Cursor
+	
 	mov ah, 4Ch
 	int 21h
 	
-main endp
+main	endp
+
 ;/////////
 ;//PROCS//
 ;/////////
