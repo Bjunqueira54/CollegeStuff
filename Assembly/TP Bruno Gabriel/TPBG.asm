@@ -33,23 +33,23 @@ dseg    segment para public 'data'
 	tabcar	db ' '	
 		
 	;VARIAVEIS DO TEMPORIZADOR
-	STR12	db 		"            "	; String para 12 digitos	
-	NUMERO	db		"                    $", 	; String destinada a guardar o número lido
+	tempSTR12	db 		"            "	; String para 12 digitos	
+	tempNUMERO	db		"                    $", 	; String destinada a guardar o número lido
 	
 
-	NUM_SP	db		"                    $" 	; PAra apagar zona de ecran
-	DDMMAAAA db		"                     "
+	tempNUM_SP	db		"                    $" 	; PAra apagar zona de ecran
+	tempDDMMAAAA db		"                     "
 
-	Horas	dw		0				; Vai guardar a HORA actual
-	Minutos		dw		0				; Vai guardar os minutos actuais
-	Segundos	dw		0				; Vai guardar os segundos actuais
-	Old_seg		dw		0				; Guarda os últimos segundos que foram lidos
+	tempHoras	dw		0				; Vai guardar a HORA actual
+	tempMinutos		dw		0				; Vai guardar os minutos actuais
+	tempSegundos	dw		0				; Vai guardar os segundos actuais
+	tempOld_seg		dw		0				; Guarda os últimos segundos que foram lidos
 			
 
-	POSy	db	10	; a linha pode ir de [1 .. 25]
-	POSx	db	40	; POSx pode ir [1..80]	
-	NUMDIG	db	0	; controla o numero de digitos do numero lido
-	MAXDIG	db	4	; Constante que define o numero MAXIMO de digitos a ser aceite
+	tempPOSy	db	10	; a linha pode ir de [1 .. 25]
+	tempPOSx	db	40	; POSx pode ir [1..80]	
+	tempNUMDIG	db	0	; controla o numero de digitos do numero lido
+	tempMAXDIG	db	4	; Constante que define o numero MAXIMO de digitos a ser aceite
 
 
 dseg    ends
@@ -273,15 +273,15 @@ ler_tempo proc
 	
 	xor ax,ax
 	mov al, dh              ; segundos para al
-	mov Segundos, ax		; guarda segundos na variavel correspondente
+	mov tempSegundos, ax		; guarda segundos na variavel correspondente
 	
 	xor ax,ax
 	mov al, cl              ; minutos para al
-	mov Minutos, ax         ; guarda minutos na variavel correspondente
+	mov tempMinutos, ax         ; guarda minutos na variavel correspondente
 	
 	xor ax,ax
 	mov al, ch              ; horas para al
-	mov Horas,ax			; guarda horas na variavel correspondente
+	mov tempHoras,ax			; guarda horas na variavel correspondente
 
 	popf
 	pop dx
@@ -290,6 +290,297 @@ ler_tempo proc
 	pop ax
 	ret 
 ler_tempo   endp
+
+hoje proc	
+
+		push ax
+		push bx
+		push cx
+		push dx
+		push si
+		pushf
+		
+		mov ah, 2ah             ; buscar a data
+		int 21h                 
+		push cx                 ; ano-> pilha
+		xor cx,cx              	; limpa cx
+		mov cl, dh              ; mes para cl
+		push cx                 ; mes-> pilha
+		mov cl, dl				; dia para cl
+		push cx                 ; dia -> pilha
+		xor dh,dh                    
+		xor	si,si
+		
+; dia ------------------ 
+; dx=dx/ax --- resto dx   
+
+		xor dx,dx               ; limpa dx
+		pop ax                  ; tira dia da pilha
+		mov cx, 0               ; cx = 0 
+		mov bx, 10              ; divisor
+		mov	cx,2
+dd_div:                         
+		div bx                  ; divide por 10
+		push dx                 ; resto para pilha
+		mov dx, 0               ; limpa resto
+		loop dd_div
+		mov	cx,2
+dd_resto:
+		pop dx                  ; resto da divisao
+		add dl, 30h             ; add 30h (2) to dl
+		mov tempDDMMAA[si],dl
+		inc	si
+		loop dd_resto            
+		mov dl, '/'             ; separador
+		mov tempDDMMAA[si],dl
+		inc si
+; mes -------------------
+; dx=dx/ax --- resto dx
+
+		mov dx, 0               ; limpar dx
+		pop ax                  ; tira mes da pilha
+		xor cx,cx               
+		mov bx, 10				; divisor
+		mov cx,2
+mm_div:                         
+		div bx                  ; divisao or 10
+		push dx                 ; resto para pilha
+		mov dx, 0               ; limpa resto
+		loop mm_div
+		mov cx,2 
+mm_resto:
+		pop dx                  ; resto
+		add dl, 30h             ; soma 30h
+		mov tempDDMMAA[si],dl
+		inc si		
+		loop mm_resto
+		
+		mov dl, '/'             ; character to display goes in dl
+		mov tempDDMMAA[si],dl
+		inc si
+ 
+;  ano ----------------------
+
+		mov dx, 0               
+		pop ax                  ; mes para ax
+		mov cx, 0               ; 
+		mov bx, 10              ; 
+ aa_div:                         
+		div bx                   
+		push dx                 ; guarda resto
+		add cx, 1               ; soma 1 contador
+		mov dx, 0               ; limpa resto
+		cmp ax, 0               ; compara quotient com zero
+		jne aa_div              ; se nao zero
+aa_resto:
+		pop dx                  
+		add dl, 30h             ; add 30h (2) to dl
+		mov tempDDMMAA[si],dl
+		inc si
+		loop aa_resto
+		popf
+		pop si
+		pop dx
+		pop cx
+		pop bx
+		pop ax
+ 		ret
+		
+hoje   endp 
+
+le_tecla	proc
+
+sem_tecla:
+	call Trata_Horas
+	mov	ah, 0bh
+	int 21h
+	cmp AL, 0
+	je	sem_tecla
+		
+	goto_xy	tempPOSx, tempPOSy
+		
+	mov	ah, 08h
+	int	21h
+	mov	ah,0
+	cmp	al,0
+	jne	sai_tecla
+	mov	ah, 08h
+	int	21h
+	mov	ah, 1
+sai_tecla:	
+		ret
+le_tecla	endp
+
+Trata_Horas PROC
+
+	pushf
+	push ax
+	push bx
+	push cx
+	push dx		
+
+	call 	ler_tempo				; Horas MINUTOS e segundos do Sistema
+	
+	mov		ax, tempSegundos
+	cmp		ax, tempOld_seg			; VErifica se os segundos mudaram desde a ultima leitura
+	je		fim_horas			; Se a hora não mudou desde a última leitura sai.
+	mov		tempOld_seg, ax			; Se segundos são diferentes actualiza informação do tempo 
+	
+	mov 	ax, tempHoras
+	mov		bl, 10     
+	div 	bl
+	add 	al, 30h				; Caracter Correspondente às dezenas
+	add		ah,	30h				; Caracter Correspondente às unidades
+	mov 	tempSTR12[0],al			; 
+	mov 	tempSTR12[1],ah
+	mov 	tempSTR12[2],'h'		
+	mov 	tempSTR12[3],'$'
+	goto_xy 2,1
+	mostra tempSTR12 		
+	
+	mov 	ax, tempMinutos
+	mov 	bl, 10     
+	div 	bl
+	add 	al, 30h				; Caracter Correspondente às dezenas
+	add		ah,	30h				; Caracter Correspondente às unidades
+	mov 	tempSTR12[0],al			; 
+	mov 	tempSTR12[1],ah
+	mov 	tempSTR12[2],'m'		
+	mov 	tempSTR12[3],'$'
+	goto_xy	6,1
+	mostra	tempSTR12 		
+		
+	mov 	ax, tempSegundos
+	mov 	bl, 10     
+	div 	bl
+	add 	al, 30h				; Caracter Correspondente às dezenas
+	add		ah,	30h				; Caracter Correspondente às unidades
+	mov 	tempSTR12[0],al			; 
+	mov 	tempSTR12[1],ah
+	mov 	tempSTR12[2],'s'		
+	mov 	tempSTR12[3],'$'
+	goto_xy	10,1
+	mostra	tempSTR12 		
+        
+	call 	hoje				; Data de HOJE
+	mov 	al, tempDDMMAAAA[0]	
+	mov 	tempSTR12[0], al	
+	mov 	al, tempDDMMAAAA[1]	
+	mov 	tempSTR12[1], al	
+	mov 	al, tempDDMMAAAA[2]	
+	mov 	tempSTR12[2], al	
+	mov 	al, tempDDMMAAAA[3]	
+	mov 	tempSTR12[3], al	
+	mov 	al, tempDDMMAAAA[4]	
+	mov 	tempSTR12[4], al	
+	mov 	al, tempDDMMAAAA[5]	
+	mov 	tempSTR12[5], al	
+	mov 	al, tempDDMMAAAA[6]	
+	mov 	tempSTR12[6], al	
+	mov 	al, tempDDMMAAAA[7]	
+	mov 	tempSTR12[7], al	
+	mov 	al, tempDDMMAAAA[8]	
+	mov 	tempSTR12[8], al
+	mov 	al, tempDDMMAAAA[9]	
+	mov 	tempSTR12[9], al		
+	mov 	tempSTR12[10], '$'
+	goto_xy	68,1
+	mostra	tempSTR12 	
+
+fim_horas:		
+	goto_xy	tempPOSx, tempPOSy			; Volta a colocar o cursor onde estava antes de actualizar as horas
+	
+	popf
+	pop dx		
+	pop cx
+	pop bx
+	pop ax
+	ret
+Trata_Horas endp
+
+teclanum  proc
+	mov	ax, dseg
+	mov	ds,ax
+	mov	ax, 0b800h
+	mov	es, ax		; es é ponteiro para mem video
+
+novon:	
+	mov		tempNUMDIG, 0			; inícia leitura de novo número
+	mov		cx, 20
+	xor		bx, bx
+limpa_n: 	
+	mov		tempNUMERO[bx], ' '	
+	inc		bx
+	loop 	limpa_n
+	
+	mov		al, 20
+	mov		tempposx, al
+	mov		al, 10
+	mov		tempposy, al				; (posx,posy) é posição do cursor
+	goto_xy	tempposx, tempposy
+	mostra	num_sp
+
+ciclo:	
+	goto_xy	tempposx, tempposy
+	call 	le_tecla		; lê uma nova tecla
+	cmp		ah, 1			; verifica se é tecla extendida
+	je		estend
+	cmp 	al, 27			; caso seja tecla escape sai do programa
+	je		fim
+	cmp 	al, 13			; pressionando enter vai para oknum
+	je		oknum		
+	cmp 	al, 8			; teste back space <- (apagar digito)
+	jne		noback
+	mov		bl, tempNUMDIG		; se pressionou back space 
+	cmp		bl, 0			; verifica se não tem digitos no numero
+	je		noback			; se não tem digitos continua então não apaga e salta para noback
+
+	dec		tempNUMDIG			; retira um digito (back space)
+	dec		tempposx			; retira um digito	
+
+	xor		bx,bx
+	mov		bl, tempNUMDIG
+	mov		tempNUMERO[bx],' '	; retira um digito		
+	goto_xy	tempposx, tempposy
+	mov		ah, 02h			; imprime space na possicão do cursor
+	mov		dl, 32			; que equivale a colocar space 
+	int		21h
+
+noback:	
+	cmp		al, 30h			; se for menor que tecla do zero
+	jb		ciclo
+	cmp		al, 39h			; ou se for maior que tecla do nove 
+	ja		ciclo			; é rejeitado e vai buscar nova tecla 
+	
+	mov		bl, tempMAXDIG		; se atigido numero máximo de digitos ?	
+	cmp		bl, tempNUMDIG	
+	jbe		ciclo			; não aceita mais digitos
+	xor		bx, bx			; caso contrario coloca digito na matriz numero
+	mov		bl, tempNUMDIG
+	mov		tempNUMERO[bx], al		
+	mov		ah, 02h			; imprime digito 
+	mov		dl, al			; na possicão do cursor
+	int		21h
+
+	inc		tempposx			; avança o cursor e
+	inc		tempNUMDIG			; incrementa o numero de digitos
+
+estend:	jmp	ciclo			; tecla extendida não é tratada neste programa 
+
+oknum:	
+	goto_xy	20, 16
+	mostra	num_sp			
+	goto_xy	20, 16		
+	xor		bx, bx
+	mov		bl, tempNUMDIG
+	inc 	bl
+	mov		tempNUMERO[bx], '$'			
+	mostra	tempNUMERO 
+	jmp		novon		; vai ler novo numero
+
+fim:	ret
+
+teclanum endp
 
 cseg    ends
 end     main
