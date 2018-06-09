@@ -38,7 +38,7 @@ dseg    segment para public 'data'
 	
 
 	tempNUM_SP	db	"                    $" 	; PAra apagar zona de ecran
-	tempDDMMAAAA	db	"                     "
+	tempDDMMAA	db	"                     "
 
 	tempHoras	dw	0				; Vai guardar a HORA actual
 	tempMinutos	dw	0				; Vai guardar os minutos actuais
@@ -558,7 +558,7 @@ limpa_n:
 	mov		al, 10
 	mov		tempposy, al				; (posx,posy) é posição do cursor
 	goto_xy	tempposx, tempposy
-	mostra	num_sp
+	mostra	tempNUM_SP
 
 ciclo:	
 	goto_xy	tempposx, tempposy
@@ -609,7 +609,7 @@ estend:	jmp	ciclo			; tecla extendida não é tratada neste programa
 
 oknum:	
 	goto_xy	20, 16
-	mostra	num_sp			
+	mostra	tempNUM_SP			
 	goto_xy	20, 16		
 	xor		bx, bx
 	mov		bl, tempNUMDIG
@@ -663,27 +663,27 @@ ciclo:
 	mov ah, 08h
 	mov	bh, 0		; numero da página
 	int	10h		
-	mov	Car, al	; Guarda o Caracter que está na posição do Cursor
-	mov	Cor, ah	; Guarda a cor que está na posição do Cursor
+	mov	curCar, al	; Guarda o Caracter que está na posição do Cursor
+	mov	curCor, ah	; Guarda a cor que está na posição do Cursor
 	
 	inc	curPOSx
 	goto_xy	curPOSx, curPOSy	; Vai para nova possição
 	mov ah, 08h
 	mov	bh, 0		; numero da página
 	int	10h		
-	mov	Car2, al	; Guarda o Caracter2 que está na posição do Cursor2
-	mov	Cor2, ah	; Guarda a cor que está na posição do Cursor2
+	mov	curCar2, al	; Guarda o Caracter2 que está na posição do Cursor2
+	mov	curCor2, ah	; Guarda a cor que está na posição do Cursor2
 	dec	curPOSx
 	
 	
 	goto_xy	77, 0		; Mostra o caractr que estava na posição do AVATAR
 	mov	ah, 02h		; IMPRIME caracter da posição no canto
-	mov	dl, Car	
+	mov	dl, curCar	
 	int	21H			
 	
 	goto_xy	78,0		; Mostra o caractr2 que estava na posição do AVATAR
 	mov	ah, 02h		; IMPRIME caracter2 da posição no canto
-	mov	dl, Car2	
+	mov	dl, curCar2	
 	int	21H			
 
 	goto_xy	curPOSx, curPOSy	; Vai para posição do cursor
@@ -703,9 +703,9 @@ imprime:
 	goto_xy	curPOSx,curPOSy	; Vai para posição do cursor
 	
 	mov	al, curPOSx	; Guarda a posição do cursor
-	mov	POSxa, al
+	mov	curPOSxa, al
 	mov	al, curPOSy	; Guarda a posição do cursor
-	mov POSya, al
+	mov curPOSya, al
 		
 ler_seta:	
 	call le_tecla
