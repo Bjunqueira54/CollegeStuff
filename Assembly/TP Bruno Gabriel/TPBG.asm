@@ -50,7 +50,17 @@ dseg    segment para public 'data'
 	tempPOSx	db	40	; POSx pode ir [1..80]	
 	tempNUMDIG	db	0	; controla o numero de digitos do numero lido
 	tempMAXDIG	db	4	; Constante que define o numero MAXIMO de digitos a ser aceite
-
+	
+	;VARIAVEIS DO CURSOR
+	curstring	db	"Teste prático de T.I",0
+	curCar		db	32	; Guarda um caracter do Ecran 
+	curCor		db	7	; Guarda os atributos de cor do caracter
+	curCar2		db	32	; Guarda um caracter do Ecran 
+	curCor2		db	7	; Guarda os atributos de cor do caracter
+	curPOSy		db	5	; a linha pode ir de [1 .. 25]
+	curPOSx		db	10	; POSx pode ir [1..80]	
+	curPOSya		db	5	; Posição anterior de y
+	curPOSxa		db	10	; Posição anterior de x
 
 dseg    ends
 
@@ -83,7 +93,22 @@ apaga:
 	ret
 apaga_ecran	endp
 
+le_tecla	proc
+
+		mov		ah,08h
+		int		21h
+		mov		ah,0
+		cmp		al,0
+		jne		sai_tecla
+		mov		ah, 08h
+		int		21h
+		mov		ah,1
+sai_tecla:	ret
+
+le_tecla	endp
+
 tabela proc
+
 	mov	cx, 10		; Faz o ciclo 10 vezes
 ciclo4:
 	call CalcAleat
@@ -142,6 +167,7 @@ novacor:
 	mov	al, tabnlinhas
 	cmp	al, 0		; verifica se já desenhou todas as linhas 
 	jne	ciclo2		; se ainda há linhas a desenhar continua 
+	
 tabela endp
 
 CalcAleat proc
@@ -388,7 +414,7 @@ aa_resto:
 		
 hoje   endp 
 
-le_tecla	proc
+tempLe_tecla	proc
 
 sem_tecla:
 	call Trata_Horas
@@ -398,18 +424,10 @@ sem_tecla:
 	je	sem_tecla
 		
 	goto_xy	tempPOSx, tempPOSy
-		
-	mov	ah, 08h
-	int	21h
-	mov	ah,0
-	cmp	al,0
-	jne	sai_tecla
-	mov	ah, 08h
-	int	21h
-	mov	ah, 1
-sai_tecla:	
-		ret
-le_tecla	endp
+	
+	call le_tecla
+	
+tempLe_tecla	endp
 
 Trata_Horas PROC
 
@@ -522,7 +540,7 @@ limpa_n:
 
 ciclo:	
 	goto_xy	tempposx, tempposy
-	call 	le_tecla		; lê uma nova tecla
+	call 	tempLe_tecla		; lê uma nova tecla
 	cmp		ah, 1			; verifica se é tecla extendida
 	je		estend
 	cmp 	al, 27			; caso seja tecla escape sai do programa
@@ -581,6 +599,129 @@ oknum:
 fim:	ret
 
 teclanum endp
+
+Cursos proc
+
+	mov	ax, dseg
+	mov	ds,ax
+	mov	ax, 0B800h
+	mov	es, ax
+
+	goto_xy	curPOSx, curPOSy	; Vai para nova possição
+	mov ah, 08h	; Guarda o Caracter que está na posição do Cursor
+	mov	bh, 0		; numero da página
+	int	10h			
+	mov	curCar, al	; Guarda o Caracter que está na posição do Cursor
+	mov	curCor, ah	; Guarda a cor que está na posição do Cursor	
+	
+	inc	curPOSx
+	goto_xy	curPOSx, curPOSy	; Vai para nova possição2
+	mov 		ah, 08h		; Guarda o Caracter que está na posição do Cursor
+	mov		bh,0		; numero da página
+	int		10h			
+	mov		curCar2, al	; Guarda o Caracter que está na posição do Cursor
+	mov		curCor2, ah	; Guarda a cor que está na posição do Cursor	
+	dec		curPOSx
+
+ciclo:
+
+	goto_xy	curPOSxa, curPOSya	; Vai para a posição anterior do cursor
+	mov	ah, 02h
+	mov	dl, curCar	; Repoe Caracter guardado 
+	int	21H	
+
+	inc	curPOSxa
+	goto_xy	curPOSxa, curPOSya	
+	mov	ah, 02h
+	mov	dl, curCar2	; Repoe Caracter2 guardado 
+	int	21H	
+	dec curPOSxa
+	
+	goto_xy	curPOSx,curPOSy	; Vai para nova possição
+	mov ah, 08h
+	mov	bh, 0		; numero da página
+	int	10h		
+	mov	Car, al	; Guarda o Caracter que está na posição do Cursor
+	mov	Cor, ah	; Guarda a cor que está na posição do Cursor
+	
+	inc	curPOSx
+	goto_xy	curPOSx, curPOSy	; Vai para nova possição
+	mov ah, 08h
+	mov	bh, 0		; numero da página
+	int	10h		
+	mov	Car2, al	; Guarda o Caracter2 que está na posição do Cursor2
+	mov	Cor2, ah	; Guarda a cor que está na posição do Cursor2
+	dec	curPOSx
+	
+	
+	goto_xy	77, 0		; Mostra o caractr que estava na posição do AVATAR
+	mov	ah, 02h		; IMPRIME caracter da posição no canto
+	mov	dl, Car	
+	int	21H			
+	
+	goto_xy	78,0		; Mostra o caractr2 que estava na posição do AVATAR
+	mov	ah, 02h		; IMPRIME caracter2 da posição no canto
+	mov	dl, Car2	
+	int	21H			
+
+	goto_xy	curPOSx, curPOSy	; Vai para posição do cursor
+	
+imprime:	
+	mov	ah, 02h
+	mov	dl, '('	; Coloca AVATAR1
+	int	21H
+	
+	inc	curPOSx
+	goto_xy	curPOSx,curPOSy		
+	mov	ah, 02h
+	mov	dl, ')'	; Coloca AVATAR2
+	int	21H	
+	dec	curPOSx
+	
+	goto_xy	curPOSx,curPOSy	; Vai para posição do cursor
+	
+	mov	al, curPOSx	; Guarda a posição do cursor
+	mov	POSxa, al
+	mov	al, curPOSy	; Guarda a posição do cursor
+	mov POSya, al
+		
+ler_seta:	
+	call le_tecla
+	cmp	ah, 1
+	je	estend
+	cmp AL, 27	; ESCAPE
+	je	fim
+	jmp	ler_seta
+
+estend:
+	cmp al, 48h
+	jne	baixo
+	dec	curPOSy		;cima
+	jmp	ciclo
+
+baixo:
+	cmp	al, 50h
+	jne	esquerda
+	inc curPOSy		;Baixo
+	jmp	ciclo
+
+esquerda:
+	cmp	al, 4Bh
+	jne	direita
+	dec	curPOSx		;Esquerda
+	dec	curPOSx		;Esquerda
+
+	jmp	ciclo
+
+direita:
+	cmp	al, 4Dh
+	jne	ler_seta 
+	inc	curPOSx		;Direita
+	inc	curPOSx		;Direita
+	
+	jmp	ciclo
+
+Cursor endp
 
 cseg    ends
 end     main
