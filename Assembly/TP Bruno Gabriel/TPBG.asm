@@ -1,6 +1,6 @@
 ;MACROS
 goto_xy	macro POSx,POSy
-	mov	ah, 02h
+	mov	ah,	02h
 	mov	bh, 0		; numero da página
 	mov	dl, POSx
 	mov	dh, POSy
@@ -742,6 +742,10 @@ direita:
 	inc	curPOSx		;Direita
 	
 	jmp	ciclo
+	
+fim:	
+	mov	ah,4ch
+	int	21h
 
 Cursor endp
 
@@ -777,6 +781,10 @@ close:
 
 	mov	ah, 09h
 	lea	dx, msgErrorClose
+	int	21h
+	
+fim:
+	mov	ah, 4ch
 	int	21h
 	
 CriaFich endp
