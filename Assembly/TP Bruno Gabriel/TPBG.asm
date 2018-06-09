@@ -503,25 +503,25 @@ Trata_Horas PROC
 	mostra	tempSTR12 		
         
 	call 	hoje				; Data de HOJE
-	mov 	al, tempDDMMAAAA[0]	
+	mov 	al, tempDDMMAA[0]	
 	mov 	tempSTR12[0], al	
-	mov 	al, tempDDMMAAAA[1]	
+	mov 	al, tempDDMMAA[1]	
 	mov 	tempSTR12[1], al	
-	mov 	al, tempDDMMAAAA[2]	
+	mov 	al, tempDDMMAA[2]	
 	mov 	tempSTR12[2], al	
-	mov 	al, tempDDMMAAAA[3]	
+	mov 	al, tempDDMMAA[3]	
 	mov 	tempSTR12[3], al	
-	mov 	al, tempDDMMAAAA[4]	
+	mov 	al, tempDDMMAA[4]	
 	mov 	tempSTR12[4], al	
-	mov 	al, tempDDMMAAAA[5]	
+	mov 	al, tempDDMMAA[5]	
 	mov 	tempSTR12[5], al	
-	mov 	al, tempDDMMAAAA[6]	
+	mov 	al, tempDDMMAA[6]	
 	mov 	tempSTR12[6], al	
-	mov 	al, tempDDMMAAAA[7]	
+	mov 	al, tempDDMMAA[7]	
 	mov 	tempSTR12[7], al	
-	mov 	al, tempDDMMAAAA[8]	
+	mov 	al, tempDDMMAA[8]	
 	mov 	tempSTR12[8], al
-	mov 	al, tempDDMMAAAA[9]	
+	mov 	al, tempDDMMAA[9]	
 	mov 	tempSTR12[9], al		
 	mov 	tempSTR12[10], '$'
 	goto_xy	68,1
