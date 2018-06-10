@@ -109,28 +109,28 @@ main	endp
 ;/////////
 	
 apaga_ecran	proc
-	xor		bx, bx
-	mov		cx, 25*80
+	xor		bx, bx			; limpa o bx
+	mov		cx, 25*80		; 
 		
 apaga:
-	mov	byte ptr es:[bx],' '
-	mov	byte ptr es:[bx+1],7
-	inc	bx
-	inc bx
-	loop apaga
-	ret
-apaga_ecran	endp
+	mov	byte ptr es:[bx],' '; (nao sei)
+	mov	byte ptr es:[bx+1],7; 
+	inc	bx					; incrementa o bx
+	inc bx					; incrementa o bx
+	loop apaga				; faz loop
+	ret						; 
+apaga_ecran	endp 
 
 le_tecla	proc
 
-		mov		ah,08h
-		int		21h
-		mov		ah,0
-		cmp		al,0
-		jne		sai_tecla
-		mov		ah, 08h
-		int		21h
-		mov		ah,1
+		mov		ah,08h		; ler carater do standard input
+		int		21h			 
+		mov		ah,0		; mover 0 para ah
+		cmp		al,0		; comparar al com 0
+		jne		sai_tecla	; sair se nao for igual
+		mov		ah, 08h		; ler carater do standard input
+		int		21h			
+		mov		ah,1		; mover 1 para ah
 sai_tecla:	ret
 
 le_tecla	endp
@@ -140,12 +140,12 @@ tabela proc
 	mov	cx, 10		; Faz o ciclo 10 vezes
 ciclo4:
 	call CalcAleat
-	pop	ax 		; vai buscar 'a pilha o número aleatório
+	pop	ax 			; vai buscar 'a pilha o número aleatório
 
 	mov	dl, cl	
 	mov	dh, 70
-	push dx		; Passagem de parâmetros a impnum (posição do ecran)
-	push ax		; Passagem de parâmetros a impnum (número a imprimir)
+	push dx			; Passagem de parâmetros a impnum (posição do ecran)
+	push ax			; Passagem de parâmetros a impnum (número a imprimir)
 	call impnum		; imprime 10 aleatórios na parte direita do ecran
 	loop ciclo4		; Ciclo de impressão dos números aleatórios
 		
@@ -199,93 +199,93 @@ novacor:
 tabela endp
 
 CalcAleat proc
-	sub	sp, 2
-	push bp
-	mov	bp, sp
-	push ax
-	push cx
-	push dx	
-	mov	ax, [bp+4]
-	mov	[bp+2], ax
+	sub	sp, 2			; subtrai 2 ao ponteiro?
+	push bp				; coloca o valor de bp na pilha
+	mov	bp, sp			; mover o valor do ponteiro para bp
+	push ax				; coloca o valor de ax na pilha 
+	push cx				; coloca o valor de cx na pilha 
+	push dx				; coloca o valor de dx na pilha 
+	mov	ax, [bp+4]		; mover para ax o valor que esta na memoria bp+4
+	mov	[bp+2], ax		; mover o endereço de memória bp+2 o valor de ax*cx
 
-	mov	ah, 00h
-	int	1ah
+	mov	ah, 00h			; le o tempo do pc
+	int	1ah				; interrupção
 
 	add	dx, tabultimo_num_aleat	; vai buscar o aleatório anterior
-	add	cx, dx	
-	mov	ax, 65521
-	push dx
-	mul	cx			
-	pop	dx			 
-	xchg dl, dh
-	add	dx, 32749
-	add	dx, ax
+	add	cx, dx			; adiciona dx a cx
+	mov	ax, 65521		; 
+	push dx				; guarda valor na pilha
+	mul	cx			 	; multiplica ax*cx
+	pop	dx			 	; vai buscar o valor à pilha
+	xchg dl, dh			; 
+	add	dx, 32749		; 
+	add	dx, ax			; adiciona ax a dx
 
 	mov	tabultimo_num_aleat, dx	; guarda o novo numero aleatório  
 
 	mov	[bp+4], dx		; o aleatório é passado por pilha
 
-	pop	dx
-	pop	cx
-	pop	ax
-	pop	bp
-	ret
+	pop	dx				; vai buscar o valor à pilha
+	pop	cx				; vai buscar o valor à pilha
+	pop	ax				; vai buscar o valor à pilha
+	pop	bp				; vai buscar o valor à pilha
+	ret					; (nao sei)
 CalcAleat endp
 
 impnum proc
 
-	push bp
-	mov	bp, sp
-	push ax
-	push bx
-	push cx
-	push dx
-	push di
-	mov	ax, [bp+4] ;param3
-	lea	di, [tabstr_num+5]
-	mov	cx, 5
+	push bp				; guarda o valor de bp na pilha
+	mov	bp, sp			; move o valor de sp para bp
+	push ax				; guarda o valor de ax na pilha
+	push bx				; guarda o valor de bx na pilha
+	push cx				; guarda o valor de cx na pilha
+	push dx				; guarda o valor de dx na pilha
+	push di				; guarda o endereço de destino na pilha
+	mov	ax, [bp+4] 		; param3
+	lea	di, [tabstr_num+5]; (nao sei)
+	mov	cx, 5			; mover 5 para o cx
 	
 prox_dig:
-	xor	dx, dx
-	mov	bx, 10
-	div	bx
-	add	dl, '0' ; dh e' sempre 0
-	dec	di
-	mov	[di], dl
-	loop prox_dig
+	xor	dx, dx			; 
+	mov	bx, 10			; 
+	div	bx				; ax/bx
+	add	dl, '0' 		; dh e' sempre 0
+	dec	di				; decrementa o endereço de destino
+	mov	[di], dl		; mover o dl para o destination index?
+	loop prox_dig		; faz loop do ciclo
 
-	mov	ah, 02h
-	mov	bh, 00h
-	mov	dl, [bp+7] ;param1
-	mov	dh, [bp+6] ;param2
-	int	10h
-	mov	dx, di
-	mov	ah, 09h
-	int	21h
-	pop	di
-	pop	dx
-	pop	cx
-	pop	bx
-	pop	ax
-	pop	bp
-	ret	4 ;limpa parametros (4 bytes) colocados na pilha
+	mov	ah, 02h			; move 02(hexadecimal) para ah
+	mov	bh, 00h			; move 0 para bh
+	mov	dl, [bp+7] 		; param1
+	mov	dh, [bp+6] 		; param2
+	int	10h				
+	mov	dx, di			; move di para dx
+	mov	ah, 09h			; escreve string no ecra
+	int	21h				; 
+	pop	di				; vai buscar o valor à pilha				
+	pop	dx				; vai buscar o valor à pilha
+	pop	cx				; vai buscar o valor à pilha
+	pop	bx				; vai buscar o valor à pilha
+	pop	ax				; vai buscar o valor à pilha
+	pop	bp				; vai buscar o valor à pilha
+	ret	4 				; limpa parametros (4 bytes) colocados na pilha
 	
 impnum endp
 
 delay proc
 	pushf
-	push ax
-	push cx
-	push dx
-	push si
+	push ax				; guarda o valor de ax na pilha
+	push cx				; guarda o valor de cx na pilha
+	push dx				; guarda o valor de dx na pilha
+	push si				; guarda o valor de si na pilha
 	
-	mov	ah, 2Ch
+	mov	ah, 2Ch			; vai buscar o tempo do sistema
 	int	21h
-	mov	al, 100
-	mul	dh
-	xor	dh, dh
-	add	ax, dx
-	mov	si, ax
+	mov	al, 100			; mover 100 para al
+	mul	dh				; multiplicar ah*dh
+	xor	dh, dh			; limpar dh
+	add	ax, dx			; 
+	mov	si, ax			; 
 
 
 ciclo:
@@ -848,3 +848,4 @@ Imp_Fich	endp
 
 cseg    ends
 end     main
+
