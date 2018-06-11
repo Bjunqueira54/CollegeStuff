@@ -51,6 +51,10 @@ sseg    ends
 
 cseg	segment para public 'code'
 	assume  cs:cseg, ds:dseg, ss:sseg
+	
+;//////////////////////
+;///MAIN DO PROGRAMA///
+;//////////////////////
 
 main	proc
 	mov     ax, dseg
@@ -71,12 +75,28 @@ apaga_ecra:
     loop apaga_ecra             ;corre o ciclo novamente
     
     call GameMenu
-    ;call LeTecla
-    ;call Tabela
+menu_input:
+	call LeTecla
+	cmp ah, 1
+	je menu_input
+	cmp al, 27
+	je fim_main
+	cmp al, 49
+	je game_start
+	cmp al, 50
+	je apaga_ecra
+	;je show_scores
+	cmp al, 51
+	je fim_main
+
+game_start:
+	call apaga_ecra
+	call Tabela
 
 ;/////////////////////
 ;///FIM DO PROGRAMA///
 ;/////////////////////
+fim_main:
 	mov ah, 4Ch
 	int 21h
 	
@@ -99,14 +119,7 @@ GameMenu endp
 LeTecla proc
     mov ah, 00h
     int 16h
-    cmp ah, 01h
-    je escape
-    cmp 
-fim:
     ret
-escape:
-    mov ah, 4ch
-    int 21h
 LeTecla endp
 
 tabela proc near
@@ -284,10 +297,6 @@ naoajusta:
 	popf
 	ret
 delay endp
-
-;//////////////////////
-;///MAIN DO PROGRAMA///
-;//////////////////////
 
 cseg    ends
 end     main
