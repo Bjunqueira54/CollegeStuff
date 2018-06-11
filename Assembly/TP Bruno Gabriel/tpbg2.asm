@@ -85,10 +85,10 @@ menu_input:
 	je fim_main
 	cmp al, '1'
 	je game_start
-	cmp al, 50
+	cmp al, '2'
 	je apaga_ecra
 	;je show_scores
-	cmp al, 51
+	cmp al, '3'
 	je fim_main
 
 game_start:
@@ -122,7 +122,7 @@ apaga_ecra proc
     
 ciclo_ae:
     mov byte ptr es:[bx], 20h   ;move o caracter espaço para a primeira posiçao de es
-    mov byte ptr es:[bx+1], 0Fh ;move o valor 00H (static, background preto, foreground branco) para a segunda posiçao de es
+    mov byte ptr es:[bx+1], 70h ;move o valor 00H (static, background preto, foreground branco) para a segunda posiçao de es
     add bx, 2                   ;adiciona 2 a bx para o proximo ciclo
     loop ciclo_ae             ;corre o ciclo novamente
 	ret
