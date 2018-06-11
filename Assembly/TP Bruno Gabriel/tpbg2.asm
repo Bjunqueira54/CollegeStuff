@@ -76,6 +76,7 @@ main	proc
 	
     call apaga_ecra
     call GameMenu
+	
 menu_input:
 	call LeTecla
 	cmp ah, 1
@@ -96,8 +97,12 @@ game_start:
 	
 	goto_xy 60,5
 	mostra str_time
-
+	
+game_cycle:
 	call Temporizador
+	jmp game_cycle
+	
+	
 ;/////////////////////
 ;///FIM DO PROGRAMA///
 ;/////////////////////
@@ -318,11 +323,14 @@ delay endp
 Temporizador proc near
 	goto_xy 70, 2
 	call GetTime
-	mov ax, time
+	mov al, time
+	mov ah, 0
 	mov bl, 10
+	mul bl
+	mov show_time[0], ah
+	mov ah, 0
 	div bl
-	mov show_time[0], al
-	mov show_time[1], ah
+	mov show_time[1], al
 	mov show_time[3], 's'
 	mov show_time[4], '$'
 	mostra show_time
