@@ -49,7 +49,7 @@ dseg    segment para public 'data'
 
 	time db 60
 	str_time db "Tempo Restante", '$'
-	show_time db "    "
+	show_time db "         "
 	oldSeg db ?
 
 dseg    ends
@@ -80,16 +80,17 @@ main	proc
 menu_input:
 	call LeTecla
 	cmp ah, 1
-	je menu_input
-	cmp al, 27
-	je fim_main
+	jne tecla_normal
+	jmp menu_input
+tecla_normal:
 	cmp al, '1'
 	je game_start
-	cmp al, '2'
-	je apaga_ecra
-	;je show_scores
 	cmp al, '3'
 	je fim_main
+	
+	cmp al, 27
+	je fim_main
+	jmp menu_input
 
 game_start:
 	call apaga_ecra
@@ -122,7 +123,7 @@ apaga_ecra proc
     
 ciclo_ae:
     mov byte ptr es:[bx], 20h   ;move o caracter espaço para a primeira posiçao de es
-    mov byte ptr es:[bx+1], 70h ;move o valor 00H (static, background preto, foreground branco) para a segunda posiçao de es
+    mov byte ptr es:[bx+1], 0Fh ;move o valor 00H (static, background preto, foreground branco) para a segunda posiçao de es
     add bx, 2                   ;adiciona 2 a bx para o proximo ciclo
     loop ciclo_ae             ;corre o ciclo novamente
 	ret
@@ -141,6 +142,12 @@ GameMenu endp
 LeTecla proc
     mov ah, 00h
     int 16h
+	mov ah, 00h
+	cmp al, 0
+	jne fim_letecla
+	int 16h
+	mov ah, 1
+fim_letecla:
     ret
 LeTecla endp
 
@@ -323,8 +330,8 @@ delay endp
 Temporizador proc near
 	goto_xy 70, 2
 	call GetTime
+	xor ax, ax
 	mov al, time
-	mov ah, 0
 	mov bl, 10
 	mul bl
 	mov show_time[0], ah
