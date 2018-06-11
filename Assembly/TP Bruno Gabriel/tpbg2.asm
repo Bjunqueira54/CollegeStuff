@@ -87,6 +87,8 @@ tecla_normal:
 	je game_start
 	cmp al, '3'
 	je fim_main
+	cmp al, 27
+	je fim_main
 	
 	cmp al, 27
 	je fim_main
@@ -99,9 +101,9 @@ game_start:
 	goto_xy 60,5
 	mostra str_time
 	
-game_cycle:
-	call Temporizador
-	jmp game_cycle
+;game_cycle:
+;	call Temporizador
+;	jmp game_cycle
 	
 	
 ;/////////////////////
