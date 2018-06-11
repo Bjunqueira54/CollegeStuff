@@ -64,16 +64,8 @@ main	proc
 
     mov ax, 0b800h
     mov es, ax
-
-    xor bx, bx      ;faz set de BX a 0 para servir de indice no proximo ciclo
-    mov cx, 25*80   ;tamanho do ecra a limpar
-    
-apaga_ecra:
-    mov byte ptr es:[bx], 20h   ;move o caracter espaço para a primeira posiçao de es
-    mov byte ptr es:[bx+1], 0Fh ;move o valor 00H (static, background preto, foreground branco) para a segunda posiçao de es
-    add bx, 2                   ;adiciona 2 a bx para o proximo ciclo
-    loop apaga_ecra             ;corre o ciclo novamente
-    
+	
+    call apaga_ecra
     call GameMenu
 menu_input:
 	call LeTecla
@@ -81,7 +73,7 @@ menu_input:
 	je menu_input
 	cmp al, 27
 	je fim_main
-	cmp al, 49
+	cmp al, '1'
 	je game_start
 	cmp al, 50
 	je apaga_ecra
@@ -105,6 +97,18 @@ main	endp
 ;//////////////////////
 ;///PROCS UTILIZADOS///
 ;//////////////////////
+
+apaga_ecra proc
+	xor bx, bx      ;faz set de BX a 0 para servir de indice no proximo ciclo
+    mov cx, 25*80   ;tamanho do ecra a limpar
+    
+ciclo_ae:
+    mov byte ptr es:[bx], 20h   ;move o caracter espaço para a primeira posiçao de es
+    mov byte ptr es:[bx+1], 0Fh ;move o valor 00H (static, background preto, foreground branco) para a segunda posiçao de es
+    add bx, 2                   ;adiciona 2 a bx para o proximo ciclo
+    loop ciclo_ae             ;corre o ciclo novamente
+	ret
+apaga_ecra endp
 
 GameMenu proc near
     goto_xy 2, 10
@@ -257,7 +261,7 @@ prox_dig:
 	
 impnum endp
 
-delay proc
+delay proc near
 	pushf
 	push ax				; guarda o valor de ax na pilha
 	push cx				; guarda o valor de cx na pilha
