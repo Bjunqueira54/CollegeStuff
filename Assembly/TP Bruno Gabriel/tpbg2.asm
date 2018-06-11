@@ -42,11 +42,20 @@ dseg    segment para public 'data'
     option1 db  "1- Iniciar jogo!",'$'
     option2 db  "2- Ver Pontuacoes!", '$'
     option3 db  "3- Sair...", '$'
+	
+;///////////////////////////////////
+;///VARIAVEIS PARA O TEMPORIZADOR///
+;///////////////////////////////////
+
+	time db 60
+	str_time db "Tempo Restante", '$'
+	show_time db "    "
+	oldSeg db ?
 
 dseg    ends
 
 sseg	segment para public 'stack'
-		db 2048 dup(?)
+	db 2048 dup(?)
 sseg    ends
 
 cseg	segment para public 'code'
@@ -84,7 +93,11 @@ menu_input:
 game_start:
 	call apaga_ecra
 	call Tabela
+	
+	goto_xy 60,5
+	mostra str_time
 
+	call Temporizador
 ;/////////////////////
 ;///FIM DO PROGRAMA///
 ;/////////////////////
@@ -138,12 +151,12 @@ ciclo4:
 	mov	dh, 70
 	push dx			; Passagem de parâmetros a impnum (posição do ecran)
 	push ax			; Passagem de parâmetros a impnum (número a imprimir)
-	call impnum		; imprime 10 aleatórios na parte direita do ecran
+	;call impnum		; imprime 10 aleatórios na parte direita do ecran
 	loop ciclo4		; Ciclo de impressão dos números aleatórios
 
 	mov	tablinha, 8	; O Tabuleiro vai começar a ser desenhado na linha 8 
 	mov	tabnlinhas, 6	; O Tabuleiro vai ter 6 linhas
-		
+	
 ciclo2:	
 	mov	al, 160		
 	mov	ah, tablinha
@@ -159,7 +172,7 @@ ciclo:
 	
 novacor:	
 	call CalcAleat	; Calcula próximo aleatório que é colocado na pinha 
-	pop	ax ; 		; Vai buscar 'a pilha o número aleatório
+	pop	ax			; Vai buscar 'a pilha o número aleatório
 	and al, 01110000b	; posição do ecran com cor de fundo aleatório e caracter a preto
 	cmp	al, 0		; Se o fundo de ecran é preto
 	je	novacor		; vai buscar outra cor 
@@ -301,6 +314,34 @@ naoajusta:
 	popf
 	ret
 delay endp
+
+Temporizador proc near
+	goto_xy 70, 2
+	call GetTime
+	mov ax, time
+	mov bl, 10
+	div bl
+	mov show_time[0], al
+	mov show_time[1], ah
+	mov show_time[3], 's'
+	mov show_time[4], '$'
+	mostra show_time
+	ret
+Temporizador endp
+
+GetTime proc near
+	mov ah, 2Ch	;Vai buscar a hora ao sistema
+	int 21h		;ch=Horas  cl=Minutos  dh=Segundos  dl=centesima de segundo
+	mov cl, oldSeg	;não me interessam os minutos, portanto posso fazer override
+	cmp dh, cl
+	je fim_tempo
+	mov ch, time	;Não me interessam as horas, portanto posso fazer override
+	dec ch			;Decremento o tempo de jogo
+	mov time, ch	;Atualizo a variavel do tempo de jogo
+	mov oldSeg, dh	;Atualizo a variavel do segundo antigo
+fim_tempo:
+	ret
+GetTime endp
 
 cseg    ends
 end     main
