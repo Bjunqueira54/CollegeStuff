@@ -47,10 +47,24 @@ dseg    segment para public 'data'
 ;///VARIAVEIS PARA O TEMPORIZADOR///
 ;///////////////////////////////////
 
-	time db 60
+	unidades db 30h
+    decimas db 36h
 	str_time db "Tempo Restante", '$'
 	show_time db "         "
 	oldSeg db ?
+
+;/////////////////////////////
+;///VARIAVEIS PARA O CURSOR///
+;/////////////////////////////
+    Car		db	32	; Guarda um caracter do Ecran 
+	Cor		db	7	; Guarda os atributos de cor do caracter
+	Car2		db	32	; Guarda um caracter do Ecran 
+	Cor2		db	7	; Guarda os atributos de cor do caracter
+	curPOSy		db	5	; a linha pode ir de [1 .. 25]
+	curPOSx		db	10	; POSx pode ir [1..80]	
+	POSya		db	5	; Posição anterior de y
+	POSxa		db	10	; Posição anterior de x
+
 
 dseg    ends
 
@@ -89,21 +103,35 @@ tecla_normal:
 	je fim_main
 	cmp al, 27
 	je fim_main
-	
-	cmp al, 27
-	je fim_main
 	jmp menu_input
 
 game_start:
-	call apaga_ecra
-	call Tabela
+	call apaga_ecra ;Apaga o ecra do DOS
+	call Tabela     ;e cria um novo tabuleiro de jogo
 	
-	goto_xy 60,5
+	goto_xy 60,5    ;Posição do da string do temporizador
 	mostra str_time
+
 	
-;game_cycle:
-;	call Temporizador
-;	jmp game_cycle
+game_cycle:
+	call Temporizador   ;Chama o proc do temporizador para verificar o tempo restante
+    mov bl, decimas     ;Verifica as décimas do tempo,
+    cmp bl, 30h         ;se não estiverem a 0 ASCII, o jogo não está perto de acabar
+    jne cycle_continue1 ;e salta para a continuação do ciclo de jogo
+
+    mov bl, unidades
+    cmp bl, 30h
+    je fim_main
+
+cycle_continue1:
+    mov ah, 01h ;Verifica se existe algum input á espera em STDIN
+    int 16h
+    jz cycle_continue2  ;Se a flag de zero estiver ativa, é porque não estive input á espera de ser processado e podemos saltar a frente
+    call Cursor
+    je fim_main
+
+cycle_continue2:
+	jmp game_cycle
 	
 	
 ;/////////////////////
@@ -119,6 +147,11 @@ main	endp
 ;///PROCS UTILIZADOS///
 ;//////////////////////
 
+
+;////////////////
+;///APAGA ECRA///
+;////////////////
+
 apaga_ecra proc
 	xor bx, bx      ;faz set de BX a 0 para servir de indice no proximo ciclo
     mov cx, 25*80   ;tamanho do ecra a limpar
@@ -131,15 +164,23 @@ ciclo_ae:
 	ret
 apaga_ecra endp
 
+;//////////////////
+;///MENU DO JOGO///
+;//////////////////
+
 GameMenu proc near
-    goto_xy 2, 10
+    goto_xy 2, 4
     mostra option1
-    goto_xy 2, 15
+    goto_xy 2, 12
     mostra option2
     goto_xy 2, 20
     mostra option3
     ret
 GameMenu endp
+
+;//////////////////////
+;///LEITURA DE TECLA///
+;//////////////////////
 
 LeTecla proc
     mov ah, 00h
@@ -153,20 +194,26 @@ fim_letecla:
     ret
 LeTecla endp
 
+;////////////
+;///CURSOR///
+;////////////
+
+Cursor proc near
+    call LeTecla
+    
+    
+fim_cursor:    
+    ret
+
+Cursor endp
+
+;///////////////////////
+;///TABULEIRO DO JOGO///
+;///////////////////////
+
 tabela proc near
 
 	mov	cx, 10		; Faz o ciclo 10 vezes
-
-ciclo4:
-	call CalcAleat
-	pop	ax 			; vai buscar 'a pilha o número aleatório
-
-	mov	dl, cl	
-	mov	dh, 70
-	push dx			; Passagem de parâmetros a impnum (posição do ecran)
-	push ax			; Passagem de parâmetros a impnum (número a imprimir)
-	;call impnum		; imprime 10 aleatórios na parte direita do ecran
-	loop ciclo4		; Ciclo de impressão dos números aleatórios
 
 	mov	tablinha, 8	; O Tabuleiro vai começar a ser desenhado na linha 8 
 	mov	tabnlinhas, 6	; O Tabuleiro vai ter 6 linhas
@@ -214,6 +261,10 @@ novacor:
 	
 tabela endp
 
+;/////////////////////////////////
+;///CALCULO DE NUMERO ALEATORIO///
+;/////////////////////////////////
+
 CalcAleat proc near
 	sub	sp, 2			; subtrai 2 ao ponteiro?
 	push bp				; coloca o valor de bp na pilha
@@ -248,45 +299,9 @@ CalcAleat proc near
 	ret					; (nao sei)
 CalcAleat endp
 
-impnum proc
-
-	push bp				; guarda o valor de bp na pilha
-	mov	bp, sp			; move o valor de sp para bp
-	push ax				; guarda o valor de ax na pilha
-	push bx				; guarda o valor de bx na pilha
-	push cx				; guarda o valor de cx na pilha
-	push dx				; guarda o valor de dx na pilha
-	push di				; guarda o endereço de destino na pilha
-	mov	ax, [bp+4] 		; param3
-	lea	di, [tabstr_num+5]; (nao sei)
-	mov	cx, 5			; mover 5 para o cx
-	
-prox_dig:
-	xor	dx, dx			; 
-	mov	bx, 10			; 
-	div	bx				; ax/bx
-	add	dl, '0' 		; dh e' sempre 0
-	dec	di				; decrementa o endereço de destino
-	mov	[di], dl		; mover o dl para o destination index?
-	loop prox_dig		; faz loop do ciclo
-
-	mov	ah, 02h			; move 02(hexadecimal) para ah
-	mov	bh, 00h			; move 0 para bh
-	mov	dl, [bp+7] 		; param1
-	mov	dh, [bp+6] 		; param2
-	int	10h				
-	mov	dx, di			; move di para dx
-	mov	ah, 09h			; escreve string no ecra
-	int	21h				; 
-	pop	di				; vai buscar o valor à pilha				
-	pop	dx				; vai buscar o valor à pilha
-	pop	cx				; vai buscar o valor à pilha
-	pop	bx				; vai buscar o valor à pilha
-	pop	ax				; vai buscar o valor à pilha
-	pop	bp				; vai buscar o valor à pilha
-	ret	4 				; limpa parametros (4 bytes) colocados na pilha
-	
-impnum endp
+;///////////////////////////////////
+;///ATRASO NA IMPRESSÃO DAS CORES///
+;///////////////////////////////////
 
 delay proc near
 	pushf
@@ -329,22 +344,27 @@ naoajusta:
 	ret
 delay endp
 
+;//////////////////////////
+;///TEMPORIZADOR DE JOGO///
+;//////////////////////////
+
 Temporizador proc near
-	goto_xy 70, 2
 	call GetTime
-	xor ax, ax
-	mov al, time
-	mov bl, 10
-	mul bl
-	mov show_time[0], ah
-	mov ah, 0
-	div bl
-	mov show_time[1], al
+    xor ax, ax
+    mov ah, decimas
+    mov al, unidades
+    mov show_time[0], ah
+    mov show_time[1], al
 	mov show_time[3], 's'
 	mov show_time[4], '$'
+	goto_xy 70, 6
 	mostra show_time
 	ret
 Temporizador endp
+
+;///////////////////////////////
+;///BUSCAR O TEMPO DO SISTEMA///
+;///////////////////////////////
 
 GetTime proc near
 	mov ah, 2Ch	;Vai buscar a hora ao sistema
@@ -352,9 +372,16 @@ GetTime proc near
 	mov cl, oldSeg	;não me interessam os minutos, portanto posso fazer override
 	cmp dh, cl
 	je fim_tempo
-	mov ch, time	;Não me interessam as horas, portanto posso fazer override
+	mov ch, unidades	;Não me interessam as horas, portanto posso fazer override
+    cmp ch, 30h
+    jne tag1
+    add ch, 10
+    mov dl, decimas ;Não me interessam as decimas de segundos
+    dec dl
+    mov decimas, dl
+tag1:
 	dec ch			;Decremento o tempo de jogo
-	mov time, ch	;Atualizo a variavel do tempo de jogo
+	mov unidades, ch	;Atualizo a variavel do tempo de jogo
 	mov oldSeg, dh	;Atualizo a variavel do segundo antigo
 fim_tempo:
 	ret
