@@ -93,17 +93,18 @@ main	proc
 	
 menu_input:
 	call LeTecla
-	cmp ah, 1
-	jne tecla_normal
-	jmp menu_input
-tecla_normal:
-	cmp al, '1'
-	je game_start
-	cmp al, '3'
-	je fim_main
-	cmp al, 27
-	je fim_main
-	jmp menu_input
+    cmp al, 0
+    jne menu_normal
+    jmp menu_input
+menu_normal:
+    cmp al, '1'
+    je game_start
+    cmp al, '2'
+    je menu_input
+    cmp al, '3'
+    je fim_main
+    cmp al, 27
+    je fim_main
 
 game_start:
 	call apaga_ecra ;Apaga o ecra do DOS
@@ -112,6 +113,34 @@ game_start:
 	goto_xy 60,5    ;Posição do da string do temporizador
 	mostra str_time
 
+    goto_xy curPOSx, curPOSy    ;posição inicial do cursor
+    mov ah, 08h ;Preparação dos registos para o int
+    mov bh, 0
+    int 10h     ;Int para guardar caracter e cor do espaço atual
+    mov Cor, ah ;Guardar o caracter e cor atual nas variaveis
+    mov Car, al
+
+    mov ah, 09h ;Preparação dos registos para escrever um caracter na posiçao
+    mov al, '('
+    mov bh, 0
+    mov bl, Cor
+    mov cx, 1
+    int 10h
+
+    inc curPOSx
+    goto_xy curPOSx, curPOSy
+    mov ah, 08h ;Preparação dos registos para o int
+    mov bh, 0
+    int 10h     ;Int para guardar caracter e cor do espaço atual
+    mov Cor2, ah
+    mov Car2, al
+    mov ah, 09h ;Preparação dos registos para escrever um caracter na posiçao
+    mov al, ')'
+    mov bh, 0
+    mov bl, Cor
+    mov cx, 1
+    int 10h
+    dec curPOSx
 	
 game_cycle:
 	call Temporizador   ;Chama o proc do temporizador para verificar o tempo restante
@@ -126,9 +155,8 @@ game_cycle:
 cycle_continue1:
     mov ah, 01h ;Verifica se existe algum input á espera em STDIN
     int 16h
-    jz cycle_continue2  ;Se a flag de zero estiver ativa, é porque não estive input á espera de ser processado e podemos saltar a frente
+    jz cycle_continue2  ;Se a flag de zero estiver ativa, é porque não há input á espera de ser processado e podemos saltar a frente
     call Cursor
-    je fim_main
 
 cycle_continue2:
 	jmp game_cycle
@@ -185,12 +213,6 @@ GameMenu endp
 LeTecla proc
     mov ah, 00h
     int 16h
-	mov ah, 00h
-	cmp al, 0
-	jne fim_letecla
-	int 16h
-	mov ah, 1
-fim_letecla:
     ret
 LeTecla endp
 
@@ -199,11 +221,110 @@ LeTecla endp
 ;////////////
 
 Cursor proc near
+    goto_xy curPOSx, curPOSy
     call LeTecla
+    cmp al, 0
+    jne nao_seta
+    mov al, curPOSx
+    mov POSxa, al
+    mov al, curPOSy
+    mov POSya, al
+
+Cima:
+    cmp ah, 48h
+    jne Baixo
+    dec curPOSy
+    goto_xy curPOSx, curPOSy
+    jmp limpa_ant
+Baixo:
+    cmp ah, 50h
+    jne Direita
+    inc curPOSy
+    goto_xy curPOSx, curPOSy
+    jmp limpa_ant
+Direita:
+    cmp ah, 4dh
+    jne Esquerda
+    inc curPOSx
+    inc curPOSx
+    goto_xy curPOSx, curPOSy
+    jmp limpa_ant
+Esquerda:
+    cmp ah, 4bh
+    jne fim_cursor
+    dec curPOSx
+    dec curPOSx
+    goto_xy curPOSx, curPOSy
+    jmp limpa_ant
+
+limpa_ant:
+    goto_xy POSxa, POSya
+    mov ah, 09h ;Preparação dos registos para escrever um caracter na posiçao
+    mov al, Car
+    mov bh, 0
+    mov bl, Cor
+    mov cx, 1
+    int 10h
+    inc POSxa
+    goto_xy POSxa, POSya
+    mov ah, 09h ;Preparação dos registos para escrever um caracter na posiçao
+    mov al, Car2
+    mov bh, 0
+    mov bl, Cor2
+    mov cx, 1
+    int 10h
+    dec POSxa
+    jmp impressao
+
+impressao:
+    goto_xy curPOSx, curPOSy
+    mov ah, 08h ;Preparação dos registos para o int
+    mov bh, 0
+    int 10h     ;Int para guardar caracter e cor do espaço atual
+    mov Cor, ah ;Guardar o caracter e cor atual nas variaveis
+    mov Car, al
+
+    inc curPOSx
+    goto_xy curPOSx, curPOSy
+    mov ah, 08h ;Preparação dos registos para o int
+    mov bh, 0
+    int 10h     ;Int para guardar caracter e cor do espaço atual
+    mov Cor2, ah
+    mov Car2, al
+
+    dec curPOSx
+    goto_xy curPOSx, curPOSy
+    mov ah, 09h ;Preparação dos registos para escrever um caracter na posiçao
+    mov al, '('
+    mov bh, 0
+    mov bl, Cor
+    mov cx, 1
+    int 10h ;Escreve o caracter na posição do cursor
+
+    inc curPOSx
+    goto_xy curPOSx, curPOSy
+    mov ah, 09h ;Preparação dos registos para escrever um caracter na posiçao
+    mov al, ')'
+    mov bh, 0
+    mov bl, Cor
+    mov cx, 1
+    int 10h ;Escreve o caracter na posição do cursor
     
+    dec curPOSx
+    goto_xy curPOSx, curPOSy
+
+    jmp fim_cursor
+
+nao_seta:
+    cmp al, 27
+    je game_over
     
 fim_cursor:    
     ret
+
+game_over:
+    mov ah, 4ch
+    int 21h
 
 Cursor endp
 
@@ -359,6 +480,7 @@ Temporizador proc near
 	mov show_time[4], '$'
 	goto_xy 70, 6
 	mostra show_time
+    goto_xy curPOSx, curPOSy
 	ret
 Temporizador endp
 
