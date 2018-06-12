@@ -16,6 +16,11 @@ mostra macro str
     int 21h
 endm
 
+getcor macro
+    mov ah, 08h
+    int 10h
+endm
+
 .8086
 .model	small
 .stack	2048
@@ -28,13 +33,12 @@ dseg    segment para public 'data'
 ;////////////////////////////////////
 
 	tabultimo_num_aleat	dw	0
-
 	tabstr_num	db	5	dup(?),'$'
-	
-	tablinha	db	0	; Define o número da linha que está a ser desenhada
+	tablinha    db	0	; Define o número da linha que está a ser desenhada
 	tabnlinhas	db	0
-	tabcor	db	0
-	tabcar	db	' '
+	tabcor	    db	0
+	tabcar	    db	' '
+
 ;///////////////////////////
 ;///VARIAVEIS PARA O MENU///
 ;///////////////////////////
@@ -47,24 +51,46 @@ dseg    segment para public 'data'
 ;///VARIAVEIS PARA O TEMPORIZADOR///
 ;///////////////////////////////////
 
-	unidades db 30h
-    decimas db 36h
-	str_time db "Tempo Restante", '$'
-	show_time db "         "
-	oldSeg db ?
+	unidades    db 30h
+    decimas     db 36h
+	str_time    db "Tempo Restante", '$'
+	show_time   db "         "
+	oldSeg      db ?
 
 ;/////////////////////////////
 ;///VARIAVEIS PARA O CURSOR///
 ;/////////////////////////////
+
     Car		db	32	; Guarda um caracter do Ecran 
 	Cor		db	7	; Guarda os atributos de cor do caracter
-	Car2		db	32	; Guarda um caracter do Ecran 
-	Cor2		db	7	; Guarda os atributos de cor do caracter
-	curPOSy		db	5	; a linha pode ir de [1 .. 25]
-	curPOSx		db	10	; POSx pode ir [1..80]	
-	POSya		db	5	; Posição anterior de y
-	POSxa		db	10	; Posição anterior de x
+	Car2	db	32	; Guarda um caracter do Ecran 
+	Cor2	db	7	; Guarda os atributos de cor do caracter
+	curPOSy	db	5	; a linha pode ir de [1 .. 25]
+	curPOSx	db	10	; POSx pode ir [1..80]	
+	POSya	db	5	; Posição anterior de y
+	POSxa	db	10	; Posição anterior de x
 
+;///////////////////////////////////////
+;///VARIAVEIS PARA A SELEÇÃO DE CORES///
+;///////////////////////////////////////
+
+    selCor  db  ?   ;A cor selecionada
+    selPreto    db  00h ;A cor que fica depois da explosão
+    selx1   db  0   ;Variaveis de auxilio ao algoritmo
+    sely1   db  0  ;de busca e seleção
+    selx2   db  0   ;OBS: Só aguenta 4 mudanças de direção em linha
+    sely2   db  0
+
+    selx3   db  0
+    sely3   db  0
+
+    selx4   db  0
+    sely4   db  0
+
+    selx5   db  0
+    sely5   db  0
+
+    ultima_coord db 0
 
 dseg    ends
 
@@ -251,12 +277,24 @@ Direita:
     jmp limpa_ant
 Esquerda:
     cmp ah, 4bh
-    jne fim_cursor
+    jne espaco
     dec curPOSx
     dec curPOSx
     goto_xy curPOSx, curPOSy
     jmp limpa_ant
 
+espaco:
+    cmp ah, 39h
+    jne tecla_enter
+    call explosao
+    jmp fim_cursor
+
+tecla_enter:
+    cmp ah, 1ch
+    jne fim_cursor
+    call explosao
+    jmp fim_cursor
+    
 limpa_ant:
     goto_xy POSxa, POSya
     mov ah, 09h ;Preparação dos registos para escrever um caracter na posiçao
@@ -327,6 +365,75 @@ game_over:
     int 21h
 
 Cursor endp
+
+;/////////////////////////
+;///EXPLOSÃO DAS FRAMES///
+;/////////////////////////
+
+explosao proc near
+    getcor
+    mov selCor, ah
+    mov ah, curPOSx
+    mov al, curPOSy
+    mov selx1, ah
+    mov sely1, al
+    mov ultima_coord, 1
+
+alg_busca:
+
+busca_baixo:
+    inc curPOSy
+    goto_xy curPOSx, curPOSy
+    getcor
+    cmp ah, selPreto
+    je busca_cima
+    cmp ah, selCor
+    jne busca_cima
+
+busca_cima:
+    dec curPOSy
+    dec curPOSy
+    goto_xy curPOSx, curPOSy
+    getcor
+    cmp ah, selPreto
+    je busca_esq
+    cmp ah, selCor
+    jne busca_esq
+
+busca_esq:
+    inc curPOSy
+    dec curPOSx
+    dec curPOSy
+    goto_xy curPOSx, curPOSy
+    getcor
+    cmp ah, selPreto
+    je busca_dir
+    cmp ah, selCor
+    jne busca_dir
+
+busca_dir:
+    mov ah, curPOSx
+    add ah, 4
+    mov curPOSy, ah
+    goto_xy curPOSx, curPOSy
+    getcor
+    cmp ah, selPreto
+    je busca_dir
+    cmp ah, selCor
+    jne fim_expl
+
+fim_expl:
+    ret
+explosao endp
+
+;////////////////////////
+;///GUARDA COORDENADAS///
+;////////////////////////
+
+GuardaCoord proc near
+    
+    ret
+GuardaCoord endp
 
 ;///////////////////////
 ;///TABULEIRO DO JOGO///
