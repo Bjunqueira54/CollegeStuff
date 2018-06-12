@@ -21,6 +21,19 @@ getcor macro
     int 10h
 endm
 
+explode macro
+	mov ah, 09h
+	mov al, 'x'
+	mov Car, al
+	mov Car2, al
+	mov bh, 0
+	mov bl, 0fh
+	mov Cor, bl
+	mov Cor2, bl
+	mov cx, 1
+	int 10h
+endm
+
 .8086
 .model	small
 .stack	2048
@@ -76,21 +89,11 @@ dseg    segment para public 'data'
 
     selCor  db  ?   ;A cor selecionada
     selPreto    db  00h ;A cor que fica depois da explosão
-    selx1   db  0   ;Variaveis de auxilio ao algoritmo
-    sely1   db  0  ;de busca e seleção
-    selx2   db  0   ;OBS: Só aguenta 4 mudanças de direção em linha
-    sely2   db  0
-
-    selx3   db  0
-    sely3   db  0
-
-    selx4   db  0
-    sely4   db  0
-
-    selx5   db  0
-    sely5   db  0
-
-    ultima_coord db 0
+    selx   db  0,0,0,0,0,0   ;Variaveis de auxilio ao algoritmo
+    sely   db  0,0,0,0,0,0
+	auxhorz	db	0
+	auxvert	db	0
+	conta	db	0
 
 dseg    ends
 
@@ -277,22 +280,16 @@ Direita:
     jmp limpa_ant
 Esquerda:
     cmp ah, 4bh
-    jne espaco
+    jne tecla_enter
     dec curPOSx
     dec curPOSx
     goto_xy curPOSx, curPOSy
     jmp limpa_ant
 
-espaco:
-    cmp ah, 39h
-    jne tecla_enter
-    call explosao
-    jmp fim_cursor
-
 tecla_enter:
     cmp ah, 1ch
     jne fim_cursor
-    call explosao
+    call selFrame
     jmp fim_cursor
     
 limpa_ant:
@@ -356,6 +353,8 @@ impressao:
 nao_seta:
     cmp al, 27
     je game_over
+	cmp al, 32
+	call selFrame
     
 fim_cursor:    
     ret
@@ -366,74 +365,131 @@ game_over:
 
 Cursor endp
 
-;/////////////////////////
-;///EXPLOSÃO DAS FRAMES///
-;/////////////////////////
-
-explosao proc near
-    getcor
-    mov selCor, ah
-    mov ah, curPOSx
-    mov al, curPOSy
-    mov selx1, ah
-    mov sely1, al
-    mov ultima_coord, 1
-
-alg_busca:
-
-busca_baixo:
-    inc curPOSy
-    goto_xy curPOSx, curPOSy
-    getcor
-    cmp ah, selPreto
-    je busca_cima
-    cmp ah, selCor
-    jne busca_cima
-
-busca_cima:
-    dec curPOSy
-    dec curPOSy
-    goto_xy curPOSx, curPOSy
-    getcor
-    cmp ah, selPreto
-    je busca_esq
-    cmp ah, selCor
-    jne busca_esq
-
-busca_esq:
-    inc curPOSy
-    dec curPOSx
-    dec curPOSy
-    goto_xy curPOSx, curPOSy
-    getcor
-    cmp ah, selPreto
-    je busca_dir
-    cmp ah, selCor
-    jne busca_dir
-
-busca_dir:
-    mov ah, curPOSx
-    add ah, 4
-    mov curPOSy, ah
-    goto_xy curPOSx, curPOSy
-    getcor
-    cmp ah, selPreto
-    je busca_dir
-    cmp ah, selCor
-    jne fim_expl
-
-fim_expl:
-    ret
-explosao endp
-
 ;////////////////////////
-;///GUARDA COORDENADAS///
+;///SELEÇÃO DAS FRAMES///
 ;////////////////////////
 
-GuardaCoord proc near
-    
-    ret
-GuardaCoord endp
+selFrame proc near
+	getcor
+	mov selCor, ah
+	
+passo1:					;prepara as coordenadas iniciais 0 e 1
+	mov ah, curPOSx
+	mov al, curPOSy
+	mov selx[0], ah
+	mov selx[1], ah
+	mov sely[0], al
+	mov sely[1], al
+	
+passo2:					;Anda para cima na tabela até encontrar um quadrado que não seja da cor escolhida
+	dec sely[1]
+	goto_xy selx[1], sely[1]	;auxilia-se através a var 1 das coordenadas
+	getcor
+	cmp ah, selCor
+	jne passo3
+	mov ah, selx[1]
+	mov al, sely[1]
+	mov selx[0], ah
+	mov sely[0], al
+	jmp passo2
+	
+passo3:					;Prepara as coordenadas 1 e 2 para scan horizontal
+	mov ah, selx[0]
+	mov al, sely[0]
+	mov selx[1], ah
+	mov selx[2], ah
+	mov sely[1], al
+	mov sely[2], al
+	
+passo4:					;Anda para a Esquerda na tabela até encontrar um quadrado com cor diferente a escolhida
+	sub ah, 2
+	mov selx[1], ah
+	goto_xy selx[1], sely[1]
+	getcor
+	cmp ah, selCor
+	jne passo4b
+	mov ah, selx[1]
+	jmp passo4
+	
+passo4b:
+	mov ah, selx[1]	;Reponho a coordenada que modifiquei no paço anterior
+	add ah, 2
+	mov selx[1], ah
+	
+passo5:				;Igual ao passo anterior, mas para a direita
+	mov ah, selx[2]
+	add ah, 2
+	mov selx[2], ah
+	goto_xy selx[2], sely[2]
+	getcor
+	cmp ah, selCor
+	jne passo5b
+	jmp passo5
+	
+passo5b:
+	mov ah, selx[2]	;Reponho a coordenada que modifiquei no passo anterior
+	sub ah, 2
+	mov selx[2], ah
+	
+passo6:
+	mov ah, selx[1]
+	mov al, sely[1]
+	mov selx[3], ah
+	mov selx[4], ah
+	mov sely[3], al
+	mov sely[4], al
+	
+passo7:
+	inc sely[3]
+	goto_xy selx[3], sely[3]
+	getcor
+	cmp ah, selCor
+	jne passo7b
+	jmp passo7
+	
+passo7b:
+	dec sely[3] ;Repor a coordenada anterior
+	
+passo8:
+	dec sely[4]
+	goto_xy selx[4], sely[4]
+	getcor
+	cmp ah, selCor
+	jne passo8b
+	jmp passo8
+	
+passo8b:
+	inc sely[4]	;Messy, mas não estava a pensar em mais nenhuma solução
+	
+passo9:
+	goto_xy selx[4], sely[4]
+	explode
+	inc selx[4]
+	goto_xy selx[4], sely[4]
+	explode
+	dec selx[4]
+	dec sely[4]
+	mov al, sely[4]
+	cmp al, sely[3]
+	jne passo9
+	
+	mov ah, selx[1]
+	add ah, 2
+	mov selx[1], ah
+	cmp ah, selx[2]
+	jne passo6
+	
+	inc sely[0]
+	goto_xy selx[0], sely[0]
+	getcor
+	cmp ah, selCor
+	jne fim_select
+	jmp passo3
+
+fim_select:
+	;call AjustaFrames
+	ret
+selFrame endp
 
 ;///////////////////////
 ;///TABULEIRO DO JOGO///
