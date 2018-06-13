@@ -89,10 +89,11 @@ dseg    segment para public 'data'
 
     selCor  db  ?   ;A cor selecionada
     selPreto    db  00h ;A cor que fica depois da explosão
-    selx   db  0,0,0,0,0,0   ;Variaveis de auxilio ao algoritmo
-    sely   db  0,0,0,0,0,0
+    selx    db  0,0,0,0,0,0   ;Variaveis de auxilio ao algoritmo
+    sely    db  0,0,0,0,0,0
 	xaux	db	0
 	score	db	0
+    modf     db  0
 
 dseg    ends
 
@@ -288,7 +289,7 @@ Esquerda:
 tecla_enter:
     cmp ah, 1ch
     jne fim_cursor
-    call selFrame
+    call snd
     jmp fim_cursor
     
 limpa_ant:
@@ -353,7 +354,7 @@ nao_seta:
     cmp al, 27
     je game_over
 	cmp al, 32
-	call selFrame
+	call snd
     
 fim_cursor:    
     ret
@@ -364,82 +365,152 @@ game_over:
 
 Cursor endp
 
-;////////////////////////
-;///SELEÇÃO DAS FRAMES///
-;////////////////////////
+;//////////////////////
+;///SELEÇÃO DA FRAME///
+;//////////////////////
 
 selFrame proc near
     goto_xy curPOSx, curPOSy
-	getcor
-	mov selCor, ah
-    cmp ah, 0Fh
-    je fim_select
-
-    xor si, si      ;si estará a 0
+    getcor
+    cmp ah, 0fh
+    je fim_sel
+    mov selCor, ah
     mov ah, curPOSx
     mov al, curPOSy
-    mov selx[0], ah    ;selx[0]
-    mov sely[0], al    ;selx[0]
+    mov selx[0], ah
+    mov sely[0], al
+    call CoordReset
+    call snd
+
+fim_sel:
+    ret
+selframe endp
+
+;////////////////////////
+;///SEARCH AND DESTROY///
+;////////////////////////
+
+snd proc near
 
 busca_cima:
-    dec sely[0]    ;si = 0
-    goto_xy selx[0], sely[0]
+    dec sely[1]
+    goto_xy selx[1], sely[1]
     getcor
     cmp al, 'x'
-    je busca_cima
+    je busca_cima_fim
     cmp ah, selCor
     jne busca_cima_fim
-    inc sely[0]
-    goto_xy selx[si], sely[0]
+    explode
+    inc selx[1]
+    goto_xy selx[1], sely[1]
+    explode
+    inc score
+    mov xaux, 1
+
+busca_cima_fim:
+    call CoordReset
+    
+busca_esq:
+    dec selx[1]
+    dec selx[1]
+    goto_xy selx[1], sely[1]
+    getcor
+    cmp al, 'x'
+    je busca_esq_fim
+    cmp ah, selCor
+    jne busca_esq_fim
+    explode
+    inc selx[1]
+    goto_xy selx[1], sely[1]
+    explode
+    mov xaux, 1
+    
+busca_esq_fim:
+    call CoordReset
+
+busca_baixo:
+    inc sely[1]
+    goto_xy selx[1], sely[1]
+    getcor
+    cmp al, 'x'
+    je busca_baixo_fim
+    cmp ah, selCor
+    jne busca_baixo_fim
+    explode
+    inc selx[1]
+    goto_xy selx[1], sely[1]
+    explode
+    inc score
+    mov xaux, 1
+
+busca_baixo_fim:
+    call CoordReset
+
+busca_dir:
+    inc selx[1]
+    inc selx[1]
+    goto_xy selx[1], sely[1]
+    getcor
+    cmp al, 'x'
+    je busca_fim
+    cmp ah, selCor
+    jne busca_fim
+    explode
+    inc selx[1]
+    goto_xy selx[1], sely[1]
+    explode
+    mov xaux, 1
+
+busca_fim:
+    cmp xaux, 1
+    jne fim_select
+    goto_xy selx[0], sely[0]
     explode
     inc selx[0]
     goto_xy selx[0], sely[0]
     explode
-    dec sely[si]
-    goto_xy selx[0], sely[0]
-    explode
-    dec selx[si]
-    goto_xy selx[0], sely[0]
-    explode
-    inc score
-    jmp busca_cima
-
-busca_cima_fim:
-    dec score       ;devido ao ciclo anterior, score terá sempre 1 a menos do que deveria
-    inc sely[0]    ;si = 0
-    mov ah, selx[0]
-    mov al, sely[0]
-    inc si          ;si = 1
-    mov selx[1], ah    ;si=1
-    mov sely[1], al
-    
-busca_esq:
-    mov ah, selx[si]
-    sub ah, 2
-    mov selx[si], ah
-    goto_xy selx[si], sely[si]
-    getcor
-    cmp al, 'x'
-    je busca_esq
-    cmp ah, selCor
-    jne busca_esq_fim
-    mov ah, selx[si]
-    add ah, 2
-    mov selx[si], ah
-    
-    
-busca_esq_fim:
-    mov ah, selx[si]
-    add ah, 2
-    mov selx[2], ah
-
-busca_baixo:
+    dec selx[0]
+    call HuntX
     
 fim_select:
 	ret
-selFrame endp
+snd endp
+
+;///////////////////////
+;///RESET COORDENADAS///
+;///////////////////////
+
+CoordReset proc near
+    mov ah, selx[0]
+    mov al, sely[0]
+    mov selx[1], ah
+    mov sely[1], al
+    mov selx[2], ah
+    mov sely[2], al
+    ret
+CoordReset endp
+
+;////////////////////
+;///X-FILES HUNTER///
+;////////////////////
 
 HuntX proc near
+    mov selx[0], 15
+    mov sely[0], 8
+    call CoordReset
+    mov xaux, 0
+hunt_init:
+    goto_xy selx[0], sely[0]
+    getcor
+    cmp al, 'x'
+    je x_found
+    mov ah, selx[0]
+    add ah, 2
+    cmp ah, 15
+x_found:
+    call snd
+    
+x_end:
     ret
 HuntX endp
 
@@ -466,7 +537,7 @@ ciclo2:
 ciclo:  	
 	mov dh,	tabcar	; vai imprimir o caracter "SPACE"
 	mov	es:[bx], dh
-	
+
 novacor:	
 	call CalcAleat	; Calcula próximo aleatório que é colocado na pinha 
 	pop	ax			; Vai buscar 'a pilha o número aleatório
