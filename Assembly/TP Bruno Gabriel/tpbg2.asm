@@ -21,15 +21,15 @@ getcor macro
     int 10h
 endm
 
-explode macro
+explode macro posx, posy
 	mov ah, 09h
 	mov al, 'x'
 	mov Car, al
-	mov Car2, al
+    mov Car2, al
 	mov bh, 0
 	mov bl, 0fh
 	mov Cor, bl
-	mov Cor2, bl
+    mov Cor2, bl
 	mov cx, 1
 	int 10h
 endm
@@ -370,124 +370,67 @@ Cursor endp
 ;////////////////////////
 
 selFrame proc near
+    goto_xy curPOSx, curPOSy
 	getcor
 	mov selCor, ah
-	
-passo1:					;prepara as coordenadas iniciais 0 e 1
-	mov ah, curPOSx
-	mov al, curPOSy
-	mov selx[0], ah
-	mov selx[1], ah
-	mov sely[0], al
-	mov sely[1], al
-	
-passo2:					;Anda para cima na tabela até encontrar um quadrado que não seja da cor escolhida
-	dec sely[1]
-	goto_xy selx[1], sely[1]	;auxilia-se através a var 1 das coordenadas
-	getcor
-	cmp ah, selCor
-	jne passo3
-	mov ah, selx[1]
-	mov al, sely[1]
-	mov selx[0], ah
-	mov sely[0], al
-	jmp passo2
-	
-passo3:					;Prepara as coordenadas 1 e 2 para scan horizontal
-	mov ah, selx[0]
-	mov al, sely[0]
-	mov selx[1], ah
-	mov selx[2], ah
-	mov sely[1], al
-	mov sely[2], al
-	
-passo4:					;Anda para a Esquerda na tabela até encontrar um quadrado com cor diferente a escolhida
-	sub ah, 2
-	mov selx[1], ah
-	goto_xy selx[1], sely[1]
-	getcor
-	cmp ah, selCor
-	jne passo4b
-	mov ah, selx[1]
-	jmp passo4
-	
-passo4b:
-	mov ah, selx[1]	;Reponho a coordenada que modifiquei no paço anterior
-	add ah, 2
-	mov selx[1], ah
-	
-passo5:				;Igual ao passo anterior, mas para a direita
-	mov ah, selx[2]
-	add ah, 2
-	mov selx[2], ah
-	goto_xy selx[2], sely[2]
-	getcor
-	cmp ah, selCor
-	jne passo5b
-	jmp passo5
-	
-passo5b:
-	mov ah, selx[2]	;Reponho a coordenada que modifiquei no passo anterior
-	sub ah, 2
-	mov selx[2], ah
-	
-passo6:
-	mov ah, selx[1]
-	mov al, sely[1]
-	mov selx[3], ah
-	mov selx[4], ah
-	mov sely[3], al
-	mov sely[4], al
-	
-passo7:
-	inc sely[3]
-	goto_xy selx[3], sely[3]
-	getcor
-	cmp ah, selCor
-	jne passo7b
-	jmp passo7
-	
-passo7b:
-	dec sely[3] ;Repor a coordenada anterior
-	
-passo8:
-	dec sely[4]
-	goto_xy selx[4], sely[4]
-	getcor
-	cmp ah, selCor
-	jne passo8b
-	jmp passo8
-	
-passo8b:
-	inc sely[4]	;Messy, mas não estava a pensar em mais nenhuma solução
-	
-passo9:
-	goto_xy selx[4], sely[4]
-	explode
-	inc selx[4]
-	goto_xy selx[4], sely[4]
-	explode
-	dec selx[4]
-	dec sely[4]
-	mov al, sely[4]
-	cmp al, sely[3]
-	jne passo9
-	
-	mov ah, selx[1]
-	add ah, 2
-	mov selx[1], ah
-	cmp ah, selx[2]
-	jne passo6
-	
-	inc sely[0]
-	goto_xy selx[0], sely[0]
-	getcor
-	cmp ah, selCor
-	jne fim_select
-	jmp passo3
+    cmp ah, 0Fh
+    je fim_select
 
+    xor si, si      ;si estará a 0
+    mov ah, curPOSx
+    mov al, curPOSy
+    mov selx[si], ah    ;selx[0]
+    mov sely[si], al    ;selx[0]
+
+busca_cima:
+    dec sely[si]    ;si = 0
+    goto_xy selx[si], sely[si]
+    getcor
+    cmp al, 'x'
+    je busca_cima
+    cmp ah, selCor
+    jne busca_cima_fim
+    inc sely[si]
+    goto_xy selx[si], sely[si]
+    explode
+    inc selx[si]
+    goto_xy selx[si], sely[si]
+    explode
+    dec sely[si]
+    goto_xy selx[si], sely[si]
+    explode
+    dec selx[si]
+    goto_xy selx[si], sely[si]
+    explode
+    jmp busca_cima
+
+busca_cima_fim:
+    inc sely[si]    ;si = 0
+    mov ah, selx[si]
+    mov al, sely[si]
+    inc si          ;si = 1
+    mov selx[si], ah    ;si=1
+    mov sely[si], al
+    
+busca_esq:
+    mov ah, selx[si]
+    sub ah, 2
+    mov selx[si], ah
+    goto_xy selx[si], sely[si]
+    getcor
+    cmp al, 'x'
+    je busca_esq
+    cmp ah, selCor
+    jne busca_esq_fim
+    
+busca_esq_fim:
+    mov ah, selx[si]
+    add ah, 2
+    mov selx[2], ah
+
+busca_baixo:
+    
 fim_select:
-	;call AjustaFrames
 	ret
 selFrame endp
 
