@@ -91,9 +91,8 @@ dseg    segment para public 'data'
     selPreto    db  00h ;A cor que fica depois da explosão
     selx   db  0,0,0,0,0,0   ;Variaveis de auxilio ao algoritmo
     sely   db  0,0,0,0,0,0
-	auxhorz	db	0
-	auxvert	db	0
-	conta	db	0
+	xaux	db	0
+	score	db	0
 
 dseg    ends
 
@@ -379,38 +378,40 @@ selFrame proc near
     xor si, si      ;si estará a 0
     mov ah, curPOSx
     mov al, curPOSy
-    mov selx[si], ah    ;selx[0]
-    mov sely[si], al    ;selx[0]
+    mov selx[0], ah    ;selx[0]
+    mov sely[0], al    ;selx[0]
 
 busca_cima:
-    dec sely[si]    ;si = 0
-    goto_xy selx[si], sely[si]
+    dec sely[0]    ;si = 0
+    goto_xy selx[0], sely[0]
     getcor
     cmp al, 'x'
     je busca_cima
     cmp ah, selCor
     jne busca_cima_fim
-    inc sely[si]
-    goto_xy selx[si], sely[si]
+    inc sely[0]
+    goto_xy selx[si], sely[0]
     explode
-    inc selx[si]
-    goto_xy selx[si], sely[si]
+    inc selx[0]
+    goto_xy selx[0], sely[0]
     explode
     dec sely[si]
-    goto_xy selx[si], sely[si]
+    goto_xy selx[0], sely[0]
     explode
     dec selx[si]
-    goto_xy selx[si], sely[si]
+    goto_xy selx[0], sely[0]
     explode
+    inc score
     jmp busca_cima
 
 busca_cima_fim:
-    inc sely[si]    ;si = 0
-    mov ah, selx[si]
-    mov al, sely[si]
+    dec score       ;devido ao ciclo anterior, score terá sempre 1 a menos do que deveria
+    inc sely[0]    ;si = 0
+    mov ah, selx[0]
+    mov al, sely[0]
     inc si          ;si = 1
-    mov selx[si], ah    ;si=1
-    mov sely[si], al
+    mov selx[1], ah    ;si=1
+    mov sely[1], al
     
 busca_esq:
     mov ah, selx[si]
@@ -422,6 +423,10 @@ busca_esq:
     je busca_esq
     cmp ah, selCor
     jne busca_esq_fim
+    mov ah, selx[si]
+    add ah, 2
+    mov selx[si], ah
+    
     
 busca_esq_fim:
     mov ah, selx[si]
@@ -433,6 +438,10 @@ busca_baixo:
 fim_select:
 	ret
 selFrame endp
+
+HuntX proc near
+    ret
+HuntX endp
 
 ;///////////////////////
 ;///TABULEIRO DO JOGO///
