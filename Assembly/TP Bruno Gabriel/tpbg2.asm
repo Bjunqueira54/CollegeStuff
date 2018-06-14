@@ -384,9 +384,10 @@ impressao:
     jmp fim_cursor
 
 nao_seta:
-    cmp al, 27
-    je game_over
+    	cmp al, 27
+    	je game_over
 	cmp al, 32
+	jne fim_cursor
 	call selFrame
     
 fim_cursor:    
