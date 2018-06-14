@@ -21,7 +21,7 @@ getcor macro
     int 10h
 endm
 
-explode macro posx, posy
+explode macro
 	mov ah, 09h
 	mov al, 'x'
 	mov Car, al
@@ -32,6 +32,13 @@ explode macro posx, posy
     mov Cor2, bl
 	mov cx, 1
 	int 10h
+endm
+
+setcor macro
+    mov ah, 09h
+    mov bh, 0
+    mov cx, 1
+    int 10h
 endm
 
 .8086
@@ -78,8 +85,8 @@ dseg    segment para public 'data'
 	Cor		db	7	; Guarda os atributos de cor do caracter
 	Car2	db	32	; Guarda um caracter do Ecran 
 	Cor2	db	7	; Guarda os atributos de cor do caracter
-	curPOSy	db	5	; a linha pode ir de [1 .. 25]
-	curPOSx	db	10	; POSx pode ir [1..80]	
+	curPOSy	db	12	; a linha pode ir de [1 .. 25]
+	curPOSx	db	38	; POSx pode ir [1..80]	
 	POSya	db	5	; Posição anterior de y
 	POSxa	db	10	; Posição anterior de x
 
@@ -87,13 +94,21 @@ dseg    segment para public 'data'
 ;///VARIAVEIS PARA A SELEÇÃO DE CORES///
 ;///////////////////////////////////////
 
+    debug   db "Ola debug"
     selCor  db  ?   ;A cor selecionada
     selPreto    db  00h ;A cor que fica depois da explosão
-    selx    db  0,0,0,0,0,0   ;Variaveis de auxilio ao algoritmo
-    sely    db  0,0,0,0,0,0
+    selx    db  0,0   ;Variaveis de auxilio ao algoritmo
+    sely    db  0,0
+    score   db  0
 	xaux	db	0
-	score	db	0
-    modf     db  0
+    hunt    db  0
+    modf    db  0
+
+;////////////////////////////////////
+;///VARIAVEIS PARA AJUSTE DE CORES///
+;////////////////////////////////////
+
+    antCor  db  0
 
 dseg    ends
 
@@ -289,7 +304,7 @@ Esquerda:
 tecla_enter:
     cmp ah, 1ch
     jne fim_cursor
-    call snd
+    call selFrame
     jmp fim_cursor
     
 limpa_ant:
@@ -354,7 +369,7 @@ nao_seta:
     cmp al, 27
     je game_over
 	cmp al, 32
-	call snd
+	call selFrame
     
 fim_cursor:    
     ret
@@ -381,10 +396,76 @@ selFrame proc near
     mov sely[0], al
     call CoordReset
     call snd
+    call sweep
+    call preenche
 
 fim_sel:
     ret
 selframe endp
+
+;//////////////////////////
+;///PREENCHE ESPAÇO NOVO///
+;//////////////////////////
+
+preenche proc near
+    mov selx[0], 30
+    mov sely[0], 14
+ciclo:
+    goto_xy selx[0], sely[0]
+    getcor
+    cmp al, 'x'
+    jne next_coord
+
+novacor:	
+	call CalcAleat	; Calcula próximo aleatório que é colocado na pinha 
+	pop	ax			; Vai buscar 'a pilha o número aleatório
+	and al, 01110000b	; posição do ecran com cor de fundo aleatório e caracter a preto
+	cmp	al, 0		; Se o fundo de ecran é preto
+	je	novacor		; vai buscar outra cor 
+    mov antCor, al    
+
+    goto_xy selx[0], sely[0]
+	mov al, ' '
+    mov bl, antCor
+    setcor
+
+    inc selx[0]
+    goto_xy selx[0], sely[0]
+    mov al, ' '
+    mov bl, antCor
+    setcor
+    dec selx[0]
+
+next_coord:
+    mov ah, selx[0]
+    add ah, 2
+    cmp ah, 48
+    ja oob_x
+    mov selx[0], ah
+    jmp ciclo
+
+oob_x:
+    dec sely[0]
+    cmp sely[0], 8
+    jb  fim_preenche
+    mov selx[0], 30
+	mov	di, 1 ;delay de 1 centesimo de segundo
+	call delay
+	jmp ciclo
+
+fim_preenche:
+    goto_xy curPOSx, curPOSy
+    getcor
+    mov Cor, ah
+    mov Car, al
+    inc curPOSx
+    goto_xy curPOSx, curPOSy
+    getcor
+    mov Cor2, ah
+    mov Car2, al
+    dec curPOSx
+    ret
+preenche endp
 
 ;////////////////////////
 ;///SEARCH AND DESTROY///
@@ -393,13 +474,27 @@ selframe endp
 snd proc near
 
 busca_cima:
+    call CoordReset
     dec sely[1]
     goto_xy selx[1], sely[1]
     getcor
-    cmp al, 'x'
-    je busca_cima_fim
     cmp ah, selCor
-    jne busca_cima_fim
+    jne busca_esq
+    explode
+    inc selx[1]
+    goto_xy selx[1], sely[1]
+    explode
+    inc score
+    mov xaux, 1
+    
+busca_esq:
+    call CoordReset
+    dec selx[1]
+    dec selx[1]
+    goto_xy selx[1], sely[1]
+    getcor
+    cmp ah, selCor
+    jne busca_baixo
     explode
     inc selx[1]
     goto_xy selx[1], sely[1]
@@ -407,35 +502,13 @@ busca_cima:
     inc score
     mov xaux, 1
 
-busca_cima_fim:
-    call CoordReset
-    
-busca_esq:
-    dec selx[1]
-    dec selx[1]
-    goto_xy selx[1], sely[1]
-    getcor
-    cmp al, 'x'
-    je busca_esq_fim
-    cmp ah, selCor
-    jne busca_esq_fim
-    explode
-    inc selx[1]
-    goto_xy selx[1], sely[1]
-    explode
-    mov xaux, 1
-    
-busca_esq_fim:
-    call CoordReset
-
 busca_baixo:
+    call CoordReset
     inc sely[1]
     goto_xy selx[1], sely[1]
     getcor
-    cmp al, 'x'
-    je busca_baixo_fim
     cmp ah, selCor
-    jne busca_baixo_fim
+    jne busca_dir
     explode
     inc selx[1]
     goto_xy selx[1], sely[1]
@@ -443,36 +516,36 @@ busca_baixo:
     inc score
     mov xaux, 1
 
-busca_baixo_fim:
-    call CoordReset
-
 busca_dir:
+    call CoordReset
     inc selx[1]
     inc selx[1]
     goto_xy selx[1], sely[1]
     getcor
-    cmp al, 'x'
-    je busca_fim
     cmp ah, selCor
     jne busca_fim
     explode
     inc selx[1]
     goto_xy selx[1], sely[1]
     explode
+    inc score
     mov xaux, 1
 
 busca_fim:
-    cmp xaux, 1
-    jne fim_select
+    cmp xaux, 0
+    je fim_select
     goto_xy selx[0], sely[0]
+    cmp al, 'x'
+    je fim_select
     explode
     inc selx[0]
     goto_xy selx[0], sely[0]
     explode
     dec selx[0]
-    call HuntX
+    inc score
     
 fim_select:
+    call HuntX
 	ret
 snd endp
 
@@ -485,20 +558,32 @@ CoordReset proc near
     mov al, sely[0]
     mov selx[1], ah
     mov sely[1], al
-    mov selx[2], ah
-    mov sely[2], al
     ret
 CoordReset endp
 
-;////////////////////
-;///X-FILES HUNTER///
-;////////////////////
+;/////////////////////
+;///X-FRAMES HUNTER///
+;/////////////////////
 
 HuntX proc near
-    mov selx[0], 15
-    mov sely[0], 8
-    call CoordReset
+
+check_status:
+    cmp xaux, 0
+    je x_end
+    cmp hunt, 1
+    je coord_inc
+
+coord_init:
+    mov selx[0], 30 ;TabX vai de 30 a 47
+    mov sely[0], 14 ;TabY vai de 9 a 14
     mov xaux, 0
+    jmp hunt_init
+
+coord_inc:
+    inc selx[0]
+    inc selx[0]
+    jmp hunt_init
+
 hunt_init:
     goto_xy selx[0], sely[0]
     getcor
@@ -506,13 +591,96 @@ hunt_init:
     je x_found
     mov ah, selx[0]
     add ah, 2
-    cmp ah, 15
+    cmp ah, 48
+    ja oob_x
+    mov selx[0], ah
+    jmp hunt_init
+
 x_found:
     call snd
-    
+    jmp x_end
+
+oob_x:
+    dec sely[0]
+    cmp sely[0], 8
+    jb oob_y
+    mov selx[0], 30
+    jmp hunt_init
+
+oob_y:
+    dec hunt
+    cmp hunt, 0
+    jne coord_init
+
 x_end:
+    cmp hunt, 0
+    jne coord_inc
     ret
 HuntX endp
+
+;////////////////////
+;///SWEEP THE LEG!///
+;////////////////////
+
+sweep proc near
+coord_init:
+    mov modf, 0
+    mov selx[0], 30 ;TabX vai de 30 a 47
+    mov sely[0], 14 ;TabY vai de 9 a 14
+
+sweep_init:
+    call CoordReset
+    dec sely[1]
+    goto_xy selx[0], sely[0]
+    cmp sely[1], 9
+    jb sweep_end
+    getcor
+    cmp al, 'x'
+    jne next_coord
+    goto_xy selx[1], sely[1]
+    getcor
+    cmp al, 'x'
+    je next_coord
+    mov antCor, ah
+    mov bl, 0fh
+    mov al, 'x'
+    setcor
+    goto_xy selx[0], sely[0]
+    mov bl, antCor
+    mov al, ' '
+    setcor
+    mov modf, 1
+    
+next_coord:
+    inc selx[0]
+    cmp selx[0], 48
+    ja oob_x
+    jmp sweep_init
+
+oob_x:
+    dec sely[0]
+    cmp sely[0], 8
+    jb  sweep_end
+    mov selx[0], 30
+    mov di, 1
+    call delay
+    jmp sweep_init
+
+sweep_end:
+    cmp modf, 1
+    je coord_init
+    goto_xy curPOSx, curPOSy
+    getcor
+    mov Cor, ah
+    mov Car, al
+    inc curPOSx
+    goto_xy curPOSx, curPOSy
+    getcor
+    mov Cor2, ah
+    mov Car2, al
+    dec curPOSx
+    ret
+sweep endp
 
 ;///////////////////////
 ;///TABULEIRO DO JOGO///
@@ -522,7 +690,7 @@ tabela proc near
 
 	mov	cx, 10		; Faz o ciclo 10 vezes
 
-	mov	tablinha, 8	; O Tabuleiro vai começar a ser desenhado na linha 8 
+	mov	tablinha, 14	; O Tabuleiro vai começar a ser desenhado na linha 14, de baixo para cima
 	mov	tabnlinhas, 6	; O Tabuleiro vai ter 6 linhas
 	
 ciclo2:	
@@ -533,8 +701,8 @@ ciclo2:
 	mov bx, ax		; Determina Endereço onde começa a "linha". bx = 160*linha + 60
 
 	mov	cx, 9		; São 9 colunas 
-	
-ciclo:  	
+
+ciclo:	
 	mov dh,	tabcar	; vai imprimir o caracter "SPACE"
 	mov	es:[bx], dh
 
@@ -554,12 +722,12 @@ novacor:
 	mov	es:[bx], dh
 	mov	es:[bx+1], al
 	add bx, 2
-	
+
 	mov	di, 1 ;delay de 1 centesimo de segundo
 	call delay
 	loop ciclo		; continua até fazer as 9 colunas que correspondem a uma liha completa
-	
-	inc	tablinha		; Vai desenhar a próxima linha
+decrementa:	
+	dec	tablinha		; Vai desenhar a próxima linha
 	dec	tabnlinhas		; contador de linhas
 	mov	al, tabnlinhas
 	cmp	al, 0		; verifica se já desenhou todas as linhas 
