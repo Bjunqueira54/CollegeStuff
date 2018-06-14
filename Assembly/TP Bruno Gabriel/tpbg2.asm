@@ -65,7 +65,8 @@ dseg    segment para public 'data'
 
     option1 db  "1- Iniciar jogo!",'$'
     option2 db  "2- Ver Pontuacoes!", '$'
-    option3 db  "3- Sair...", '$'
+    option3 db  "3- Configurar Tabuleiro!", '$'
+    option4 db  "4- Sair...", '$'
 	
 ;///////////////////////////////////
 ;///VARIAVEIS PARA O TEMPORIZADOR///
@@ -99,15 +100,23 @@ dseg    segment para public 'data'
     selPreto    db  00h ;A cor que fica depois da explosão
     selx    db  0,0   ;Variaveis de auxilio ao algoritmo
     sely    db  0,0
-    score   db  0
-	xaux	db	0
+
+;////////////////////////////////
+;///VARIAVEIS PARA A PONTUAÇÃO///
+;////////////////////////////////
+
+    score_str   db  "Pontos",'$'
+    show_score   db  "0000$"    ;Max points 9999
+
+;//////////////////////////////
+;///FLAGS E OUTRAS VARIAVEIS///
+;//////////////////////////////
+
+    xaux    db  0
     hunt    db  0
+    flagh   db  0
     modf    db  0
-
-;////////////////////////////////////
-;///VARIAVEIS PARA AJUSTE DE CORES///
-;////////////////////////////////////
-
+    flagv   db  0
     antCor  db  0
 
 dseg    ends
@@ -131,7 +140,8 @@ main	proc
 
     mov ax, 0b800h
     mov es, ax
-	
+
+menu_draw:	
     call apaga_ecra
     call GameMenu
 	
@@ -146,6 +156,8 @@ menu_normal:
     cmp al, '2'
     je menu_input
     cmp al, '3'
+    je menu_input
+    cmp al, '4'
     je fim_main
     cmp al, 27
     je fim_main
@@ -156,6 +168,8 @@ game_start:
 	
 	goto_xy 60,5    ;Posição do da string do temporizador
 	mostra str_time
+    goto_xy 2, 5
+    mostra score_str
 
     goto_xy curPOSx, curPOSy    ;posição inicial do cursor
     mov ah, 08h ;Preparação dos registos para o int
@@ -187,6 +201,7 @@ game_start:
     dec curPOSx
 	
 game_cycle:
+    call VerificaJogo
 	call Temporizador   ;Chama o proc do temporizador para verificar o tempo restante
     mov bl, decimas     ;Verifica as décimas do tempo,
     cmp bl, 30h         ;se não estiverem a 0 ASCII, o jogo não está perto de acabar
@@ -194,15 +209,16 @@ game_cycle:
 
     mov bl, unidades
     cmp bl, 30h
-    je fim_main
+    jne cycle_continue1
+    call GameOver
 
 cycle_continue1:
     mov ah, 01h ;Verifica se existe algum input á espera em STDIN
     int 16h
-    jz cycle_continue2  ;Se a flag de zero estiver ativa, é porque não há input á espera de ser processado e podemos saltar a frente
+    jz game_cycle  ;Se a flag de zero estiver ativa, é porque não há input á espera de ser processado e podemos saltar a frente
     call Cursor
 
-cycle_continue2:
+;cycle_continue2:
 	jmp game_cycle
 	
 	
@@ -243,10 +259,12 @@ apaga_ecra endp
 GameMenu proc near
     goto_xy 2, 4
     mostra option1
-    goto_xy 2, 12
+    goto_xy 2, 8
     mostra option2
-    goto_xy 2, 20
+    goto_xy 2, 12
     mostra option3
+    goto_xy 2, 16
+    mostra option4
     ret
 GameMenu endp
 
@@ -396,6 +414,9 @@ selFrame proc near
     mov sely[0], al
     call CoordReset
     call snd
+    mov xaux, 0
+    mov hunt, 0
+    mov flagh, 0
     call sweep
     call preenche
 
@@ -484,7 +505,11 @@ busca_cima:
     inc selx[1]
     goto_xy selx[1], sely[1]
     explode
-    inc score
+    call GetScore
+    cmp hunt, 1
+    jne exploded_cima
+    mov flagh, 1
+exploded_cima:
     mov xaux, 1
     
 busca_esq:
@@ -499,7 +524,11 @@ busca_esq:
     inc selx[1]
     goto_xy selx[1], sely[1]
     explode
-    inc score
+    call GetScore
+    cmp hunt, 1
+    jne exploded_esq
+    mov flagh, 1
+exploded_esq:
     mov xaux, 1
 
 busca_baixo:
@@ -513,7 +542,11 @@ busca_baixo:
     inc selx[1]
     goto_xy selx[1], sely[1]
     explode
-    inc score
+    call GetScore
+    cmp hunt, 1
+    jne exploded_baixo
+    mov flagh, 1
+exploded_baixo:
     mov xaux, 1
 
 busca_dir:
@@ -528,7 +561,11 @@ busca_dir:
     inc selx[1]
     goto_xy selx[1], sely[1]
     explode
-    inc score
+    call GetScore
+    cmp hunt, 1
+    jne exploded_dir
+    mov flagh, 1
+exploded_dir:
     mov xaux, 1
 
 busca_fim:
@@ -542,24 +579,12 @@ busca_fim:
     goto_xy selx[0], sely[0]
     explode
     dec selx[0]
-    inc score
+    call GetScore
     
 fim_select:
     call HuntX
 	ret
 snd endp
-
-;///////////////////////
-;///RESET COORDENADAS///
-;///////////////////////
-
-CoordReset proc near
-    mov ah, selx[0]
-    mov al, sely[0]
-    mov selx[1], ah
-    mov sely[1], al
-    ret
-CoordReset endp
 
 ;/////////////////////
 ;///X-FRAMES HUNTER///
@@ -597,6 +622,7 @@ hunt_init:
     jmp hunt_init
 
 x_found:
+    mov hunt, 1
     call snd
     jmp x_end
 
@@ -632,42 +658,42 @@ sweep_init:
     call CoordReset
     dec sely[1]
     goto_xy selx[0], sely[0]
-    cmp sely[1], 9
-    jb sweep_end
+    cmp sely[1], 9  ;verifica se está na penultima linha da tabela
+    jb sweep_end    ;se sim, salta para o fim
     getcor
     cmp al, 'x'
-    jne next_coord
+    jne next_coord  ;se na posição atual o caracter não for 'x', segue para a próxima coordenada
     goto_xy selx[1], sely[1]
-    getcor
-    cmp al, 'x'
+    getcor      ;vai buscar a cor do espaço acima do atual
+    cmp al, 'x' ;se o espaço acima também tiver um 'x', segue para a próxima coordenada
     je next_coord
-    mov antCor, ah
-    mov bl, 0fh
+    mov antCor, ah  ;move a cor do espaço acima para a var global
+    mov bl, 0fh     ;prepara os triggers do int 10h contido em setcor
     mov al, 'x'
-    setcor
+    setcor          ;int 10h/ah=09h mas com falta de parametros
     goto_xy selx[0], sely[0]
     mov bl, antCor
     mov al, ' '
     setcor
-    mov modf, 1
+    mov modf, 1 ;como fez uma modificação, faz set a modf
     
 next_coord:
     inc selx[0]
     cmp selx[0], 48
-    ja oob_x
+    ja oob_x    ;caso a posição atual exceda os limites do tabuleiro em x, salta para oob_x (Out of Bounds: x)
     jmp sweep_init
 
 oob_x:
-    dec sely[0]
-    cmp sely[0], 8
-    jb  sweep_end
-    mov selx[0], 30
-    mov di, 1
+    dec sely[0] ;Move o curso para a linha acima da atual
+    cmp sely[0], 8 ;Verifica se não excede o limite do tabuleiro em y
+    jb  sweep_end   ;se sim, salta para o fim
+    mov selx[0], 30 ;repõe o cursor no limite minimo em x do tabuleiro
+    mov di, 1   ;delay de 1 centesimo de segundo para dar aparencia da gravidade nos blocos
     call delay
     jmp sweep_init
 
 sweep_end:
-    cmp modf, 1
+    cmp modf, 1 ;caso o tabuleiro tenha sido modificado alguma vez, vai repetir o ciclo inteiro do inicio a procura de mais modificações
     je coord_init
     goto_xy curPOSx, curPOSy
     getcor
@@ -681,6 +707,18 @@ sweep_end:
     dec curPOSx
     ret
 sweep endp
+
+;///////////////////////
+;///RESET COORDENADAS///
+;///////////////////////
+
+CoordReset proc near
+    mov ah, selx[0]
+    mov al, sely[0]
+    mov selx[1], ah
+    mov sely[1], al
+    ret
+CoordReset endp
 
 ;///////////////////////
 ;///TABULEIRO DO JOGO///
@@ -824,6 +862,7 @@ delay endp
 ;//////////////////////////
 
 Temporizador proc near
+    push ax
 	call GetTime
     xor ax, ax
     mov ah, decimas
@@ -835,6 +874,7 @@ Temporizador proc near
 	goto_xy 70, 6
 	mostra show_time
     goto_xy curPOSx, curPOSy
+    pop ax
 	ret
 Temporizador endp
 
@@ -846,22 +886,149 @@ GetTime proc near
 	mov ah, 2Ch	;Vai buscar a hora ao sistema
 	int 21h		;ch=Horas  cl=Minutos  dh=Segundos  dl=centesima de segundo
 	mov cl, oldSeg	;não me interessam os minutos, portanto posso fazer override
-	cmp dh, cl
+	cmp dh, cl  ;Se os segundos antigos forem iguais aos novos segundo, termina o proc
 	je fim_tempo
 	mov ch, unidades	;Não me interessam as horas, portanto posso fazer override
-    cmp ch, 30h
+    cmp ch, 30h ;comparo os segundos ao caracter ascii do 0, se for diferente, salta para tag1
     jne tag1
-    add ch, 10
+    add ch, 10  ;adiciono 10 ao valor de ascii dos segundos, fica com o caracter ':'
     mov dl, decimas ;Não me interessam as decimas de segundos
-    dec dl
-    mov decimas, dl
+    dec dl  ;decremento as decimas dos segundos
+    mov decimas, dl ;atualizo a variavel com o novo valor
 tag1:
-	dec ch			;Decremento o tempo de jogo
+	dec ch			;Decremento o tempo de jogo. Se o caracter era ':', fica agora a '9'
 	mov unidades, ch	;Atualizo a variavel do tempo de jogo
 	mov oldSeg, dh	;Atualizo a variavel do segundo antigo
 fim_tempo:
 	ret
 GetTime endp
+
+;//////////////////////
+;///MOSTRA PONTUAÇÃO///
+;//////////////////////
+
+GetScore proc near
+    inc show_score[3]
+    cmp show_score[3], 3ah
+    jne fim_score
+    mov show_score[3], 30h
+
+    inc show_score[2]
+    cmp show_score[2], 3ah
+    jne fim_score
+    mov show_score[2], 30h
+
+    inc show_score[1]
+    cmp show_score[1], 3ah
+    jne fim_score
+    mov show_score[1], 30h
+
+    inc show_score[0]
+    cmp show_score[0], 3ah
+    jne fim_score
+    mov show_score[0], 0
+    mov show_score[1], 0
+    mov show_score[2], 0
+    mov show_score[3], 0
+
+fim_score:
+    goto_xy 3, 6
+    mostra show_score
+    ret
+GetScore endp
+
+;//////////////////////////////////////
+;///VERIFICAÇÃO DO TABULEIRO DE JOGO///
+;//////////////////////////////////////
+
+VerificaJogo proc near
+    mov selx[0], 30 ;TabX vai de 30 a 47
+    mov sely[0], 14 ;TabY vai de 9 a 14
+
+verf_init:
+    goto_xy selx[0], sely[0]
+    getcor
+    mov antCor, ah
+
+verf_baixo:
+    call CoordReset
+    inc sely[1]
+    goto_xy selx[1], sely[1]
+    getcor
+    cmp antCor, ah
+    jne verf_esq
+    mov flagv, 1
+
+verf_esq:
+    call CoordReset
+    dec selx[1]
+    dec selx[1]
+    goto_xy selx[1], sely[1]
+    getcor
+    cmp antCor, ah
+    jne verf_cima
+    mov flagv, 1
+
+verf_cima:
+    call CoordReset
+    dec sely[1]
+    goto_xy selx[1], sely[1]
+    getcor
+    cmp antCor, ah
+    jne verf_dir
+    mov flagv, 1
+
+verf_dir:
+    call CoordReset
+    inc selx[1]
+    inc selx[1]
+    goto_xy selx[1], sely[1]
+    getcor
+    cmp antCor, ah
+    jne check_flag
+    mov flagv, 1
+
+check_flag:
+    cmp flagv, 1
+    je verf_end
+    
+verf_next_coord:
+    inc selx[0]
+    cmp selx[0], 48
+    ja oob_x
+    jmp verf_init
+
+oob_x:
+    dec sely[0]
+    cmp sely[0], 8
+    jb  verf_end
+    mov selx[0], 30
+    jmp verf_init
+
+verf_end:
+    cmp flagv, 0
+    jne verf_ret
+    call Tabela
+verf_ret:
+    ret
+VerificaJogo endp
+
+;////////////////
+;///GAME OVER!///
+;////////////////
+
+GameOver proc near
+    call apaga_ecra
+    goto_xy 38, 12
+    mostra score_str
+    goto_xy 39, 13
+    mostra show_score
+    mov di, 300 ;O ecra de GameOver dura por 3 segundos
+    call delay
+    mov ah, 4ch
+    int 21h
+    ret
+GameOver endp
 
 cseg    ends
 end     main
