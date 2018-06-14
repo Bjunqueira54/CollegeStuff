@@ -202,7 +202,7 @@ game_start:
 	
 game_cycle:
     call VerificaJogo
-	call Temporizador   ;Chama o proc do temporizador para verificar o tempo restante
+	;call Temporizador   ;Chama o proc do temporizador para verificar o tempo restante
     mov bl, decimas     ;Verifica as décimas do tempo,
     cmp bl, 30h         ;se não estiverem a 0 ASCII, o jogo não está perto de acabar
     jne cycle_continue1 ;e salta para a continuação do ciclo de jogo
@@ -323,7 +323,6 @@ tecla_enter:
     cmp ah, 1ch
     jne fim_cursor
     call selFrame
-    jmp fim_cursor
     
 limpa_ant:
     goto_xy POSxa, POSya
@@ -384,11 +383,15 @@ impressao:
     jmp fim_cursor
 
 nao_seta:
-    	cmp al, 27
-    	je game_over
+    cmp al, 27
+    je game_over
 	cmp al, 32
-	jne fim_cursor
-	call selFrame
+    je enter_space
+    cmp al, 0dh
+    jne fim_cursor
+
+enter_space:
+    call selFrame
     
 fim_cursor:    
     ret
@@ -507,11 +510,10 @@ busca_cima:
     goto_xy selx[1], sely[1]
     explode
     call GetScore
-    cmp hunt, 1
-    jne exploded_cima
-    mov flagh, 1
-exploded_cima:
     mov xaux, 1
+    cmp hunt, 1
+    jne busca_esq
+    mov flagh, 1
     
 busca_esq:
     call CoordReset
@@ -526,11 +528,10 @@ busca_esq:
     goto_xy selx[1], sely[1]
     explode
     call GetScore
-    cmp hunt, 1
-    jne exploded_esq
-    mov flagh, 1
-exploded_esq:
     mov xaux, 1
+    cmp hunt, 1
+    jne busca_baixo
+    mov flagh, 1
 
 busca_baixo:
     call CoordReset
@@ -544,11 +545,10 @@ busca_baixo:
     goto_xy selx[1], sely[1]
     explode
     call GetScore
-    cmp hunt, 1
-    jne exploded_baixo
-    mov flagh, 1
-exploded_baixo:
     mov xaux, 1
+    cmp hunt, 1
+    jne busca_dir
+    mov flagh, 1
 
 busca_dir:
     call CoordReset
@@ -563,17 +563,17 @@ busca_dir:
     goto_xy selx[1], sely[1]
     explode
     call GetScore
-    cmp hunt, 1
-    jne exploded_dir
-    mov flagh, 1
-exploded_dir:
     mov xaux, 1
+    cmp hunt, 1
+    jne busca_fim
+    mov flagh, 1
 
 busca_fim:
     cmp xaux, 0
     je fim_select
     goto_xy selx[0], sely[0]
-    cmp al, 'x'
+    ;cmp al, 'x'
+    cmp ah, 0fh    
     je fim_select
     explode
     inc selx[0]
@@ -603,6 +603,7 @@ coord_init:
     mov selx[0], 30 ;TabX vai de 30 a 47
     mov sely[0], 14 ;TabY vai de 9 a 14
     mov xaux, 0
+    mov flagh, 0
     jmp hunt_init
 
 coord_inc:
@@ -635,13 +636,14 @@ oob_x:
     jmp hunt_init
 
 oob_y:
-    dec hunt
-    cmp hunt, 0
-    jne coord_init
+    mov hunt, 0
+    cmp flagh, 1
+    jne x_end
+    jmp coord_init
 
 x_end:
-    cmp hunt, 0
-    jne coord_inc
+    cmp hunt, 1
+    je coord_inc
     ret
 HuntX endp
 
@@ -995,7 +997,8 @@ check_flag:
     
 verf_next_coord:
     inc selx[0]
-    cmp selx[0], 48
+    inc selx[0]
+    cmp selx[0], 49
     ja oob_x
     jmp verf_init
 
@@ -1009,7 +1012,8 @@ oob_x:
 verf_end:
     cmp flagv, 0
     jne verf_ret
-    call Tabela
+    call apaga_ecra
+    call tabela
 verf_ret:
     ret
 VerificaJogo endp
