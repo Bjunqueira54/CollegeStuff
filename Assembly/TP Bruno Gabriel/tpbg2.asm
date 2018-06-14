@@ -202,7 +202,7 @@ game_start:
 	
 game_cycle:
     call VerificaJogo
-	;call Temporizador   ;Chama o proc do temporizador para verificar o tempo restante
+	call Temporizador   ;Chama o proc do temporizador para verificar o tempo restante
     mov bl, decimas     ;Verifica as décimas do tempo,
     cmp bl, 30h         ;se não estiverem a 0 ASCII, o jogo não está perto de acabar
     jne cycle_continue1 ;e salta para a continuação do ciclo de jogo
@@ -959,8 +959,7 @@ verf_baixo:
     goto_xy selx[1], sely[1]
     getcor
     cmp antCor, ah
-    jne verf_esq
-    mov flagv, 1
+    je verf_ret
 
 verf_esq:
     call CoordReset
@@ -969,8 +968,7 @@ verf_esq:
     goto_xy selx[1], sely[1]
     getcor
     cmp antCor, ah
-    jne verf_cima
-    mov flagv, 1
+    je verf_ret
 
 verf_cima:
     call CoordReset
@@ -978,8 +976,7 @@ verf_cima:
     goto_xy selx[1], sely[1]
     getcor
     cmp antCor, ah
-    jne verf_dir
-    mov flagv, 1
+    je verf_ret
 
 verf_dir:
     call CoordReset
@@ -988,32 +985,24 @@ verf_dir:
     goto_xy selx[1], sely[1]
     getcor
     cmp antCor, ah
-    jne check_flag
-    mov flagv, 1
+    je verf_ret
 
-check_flag:
-    cmp flagv, 1
-    je verf_end
-    
-verf_next_coord:
     inc selx[0]
     inc selx[0]
-    cmp selx[0], 49
+    cmp selx[0], 47
     ja oob_x
     jmp verf_init
 
 oob_x:
     dec sely[0]
-    cmp sely[0], 8
-    jb  verf_end
+    cmp sely[0], 9
+    jb  oob_y
     mov selx[0], 30
     jmp verf_init
 
-verf_end:
-    cmp flagv, 0
-    jne verf_ret
-    call apaga_ecra
+oob_y:
     call tabela
+
 verf_ret:
     ret
 VerificaJogo endp
