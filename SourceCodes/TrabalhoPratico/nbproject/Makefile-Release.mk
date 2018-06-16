@@ -35,7 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/aluger.o \
+	${OBJECTDIR}/alugueres.o \
+	${OBJECTDIR}/clientes.o \
+	${OBJECTDIR}/guitarras.o \
 	${OBJECTDIR}/main.o
 
 
@@ -63,10 +65,20 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trabalhopratico: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trabalhopratico ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/aluger.o: aluger.c 
+${OBJECTDIR}/alugueres.o: alugueres.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/aluger.o aluger.c
+	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/alugueres.o alugueres.c
+
+${OBJECTDIR}/clientes.o: clientes.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/clientes.o clientes.c
+
+${OBJECTDIR}/guitarras.o: guitarras.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/guitarras.o guitarras.c
 
 ${OBJECTDIR}/main.o: main.c 
 	${MKDIR} -p ${OBJECTDIR}

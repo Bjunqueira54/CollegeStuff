@@ -123,7 +123,6 @@ void MenuAluguer()
                 c = NovoAluguer(c, g_vec, g_tam, dia, mes, ano, diames);
                 break;
             case 2:
-                c = TerminaAluguer(c, g_vec, g_tam, dia, mes, ano, diames);
                 break;
             case 3:
                 ListarAlugueres(c, g_vec, g_tam, dia, mes, ano, diames);
@@ -143,7 +142,7 @@ int main(int argc, char** argv)
     int data_error;
     
     g_vec = LeFicheiroGuitarras(GTRTXT, &g_tam);    //Chama a função de leitura do ficheiro das Guitarras e escreve para o vetor
-    c = LeFicheiroClientes(CLTTXT, diames);                 //Chama a função de leitura do ficheiro de Clientes e escreve para a lista ligada
+    c = LeFicheiroClientes(CLTTXT);                 //Chama a função de leitura do ficheiro de Clientes e escreve para a lista ligada
     
     do  //Ciclo que continuará a ser executado até o utilizador introduzir uma data correta
     {

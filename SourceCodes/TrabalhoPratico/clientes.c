@@ -13,7 +13,7 @@
 
 #include "functions.h"
 
-pClientes LeFicheiroClientes(char *fc, int *diames)
+pClientes LeFicheiroClientes(char *fc)
 {
     FILE *f = fopen(fc, "r");
     pClientes c, novo, aux;
@@ -33,8 +33,6 @@ pClientes LeFicheiroClientes(char *fc, int *diames)
         novo = malloc(sizeof(Clientes));    //de cada vez que o ciclo corre, um novo bloco de memória é alocado.
         novo->prox = novo->ant = NULL;      //ambos os ponteiro prox e ant são deixados a NULL.
         novo->aprox = NULL;                 //o mesmo de passa com o ponteiro para aprox.
-        novo->atraso = 0;
-        novo->danificadas = 0;
         
         if(fscanf(f, " %i", &novo->nif) == EOF) //A não ser que o fscanf chegue ao fim do ficheiro e devolva EOF, o ciclo mantem-se infinito
         {
@@ -70,9 +68,6 @@ pClientes LeFicheiroClientes(char *fc, int *diames)
                 pAluguer alug_novo, aux_alug;   //2 novos ponteiros de memória do tipo "Estrutura de Aluguer"
                 alug_novo = malloc(sizeof(Aluguer));    //Alocação de um unico bloco de memória para uma nova estrutura
                 
-                int dias_atraso;
-                int *data;
-                
                 fscanf(f, " %i", &alug_novo->id);               //Leitura
                 fscanf(f, " %i", &alug_novo->estado_aluguer);   //de dados
                 fscanf(f, " %i", &alug_novo->diai);             //do ficheiro
@@ -84,19 +79,6 @@ pClientes LeFicheiroClientes(char *fc, int *diames)
                     fscanf(f, " %i", &alug_novo->diaf); //Leitura da
                     fscanf(f, " %i", &alug_novo->mesf); //data do final
                     fscanf(f, " %i", &alug_novo->anof); //do aluguer
-                    
-                    data = DataEntregaPrevista(alug_novo->diai, alug_novo->mesi, alug_novo->anoi, diames);  //Função para calcular a data limite para a entrega
-                    dias_atraso = DiasAtraso(alug_novo->diaf, alug_novo->mesf, alug_novo->anof, diames, data);  //Função para calcular os dias de atraso
-                    
-                    if(dias_atraso > 0) //Se o cliente se atrasou a entregar a guitarra...
-                    {
-                        novo->atraso += dias_atraso;    //... acrescenta os dias a sua variável de contagem dos dias de atraso
-                    }
-                    
-                    if(alug_novo->estado_aluguer == 2) //Se algum aluguer tiver terminado com a entrega da guitarra danificada
-                    {
-                        novo->danificadas += 1; //Incrementa a contagem de guitarras danificadas
-                    }
                 }
                 else    //Caso contrário
                 {
@@ -251,7 +233,7 @@ pClientes RemoverCliente(pClientes c)
 
 void ListaClientesAtivos(pClientes c)
 {
-    if(!c)   //Começo logo por testar a condição de que se c estiver apontar para nada...
+    if(c == NULL)   //Começo logo por testar a condição de que se c estiver apontar para nada...
     {
         fprintf(stderr, "Nao exitem clientes!\n");
         return; //... termina imediatamente a execução da função.
@@ -263,9 +245,9 @@ void ListaClientesAtivos(pClientes c)
     
     while(1)    //Ciclo infinito até a condição de saída ser atingida.
     {
-        fprintf(stdout, "Nome do Cliente: %s\n", aux->c_nome);
-        fprintf(stdout, "NIF do Cliente: %i\n", aux->nif);
-        fprintf(stdout, "Numero de Alugueres: %i\n\n", aux->nalugueres);
+        fprintf(stdout, "%i\n", aux->nif);
+        fprintf(stdout, "%i\n", aux->nalugueres);
+        fprintf(stdout, "%s\n\n", aux->c_nome);
         
         if(aux->prox == NULL)   //Condição de saída: se não existir mais nenhum elemento a seguir na lista, termina o ciclo
         {
@@ -279,8 +261,7 @@ void GuardaDadosClientes(char *fc, pClientes c)
 {
     FILE *f = fopen(fc, "w");
     
-    pClientes aux_free;
-    pAluguer aux, lista;
+    pAluguer aux;
     
     if(!f)  //Teste para determinar se o ficheiro foi aberto com sucesso ou não
     {
@@ -288,7 +269,7 @@ void GuardaDadosClientes(char *fc, pClientes c)
         return; //Caso não tenha aberto com sucesso, termina de imediato a função
     }
     
-    while(c)    //Ciclo infinito até atingir a condição de saída
+    while(1)    //Ciclo infinito até atingir a condição de saída
     {
         fprintf(f, "%i ", c->nif);          //Escreve os
         fprintf(f, "%i ", c->nalugueres);   //dados para
@@ -296,30 +277,34 @@ void GuardaDadosClientes(char *fc, pClientes c)
         
         if(c->nalugueres > 0)   //Se o cliente já tiver alugado alguma guitarra
         {
-            lista = c->aprox;
-            while(lista)    //Ciclo para escrever os dados de todas as guitarras alugadas pelo cliente
+            while(1)    //Ciclo para escrever os dados de todas as guitarras alugadas pelo cliente
             {
-                fprintf(f, "%i ", lista->id);
-                fprintf(f, "%i ", lista->estado_aluguer);
-                fprintf(f, "%i ", lista->diai);
-                fprintf(f, "%i ", lista->mesi);
-                fprintf(f, "%i ", lista->anoi);
-                if(lista->estado_aluguer != 0)   //Condição para verificar se uma dada guitarra já foi entregue ou não
+                fprintf(f, "%i ", c->aprox->id);
+                fprintf(f, "%i ", c->aprox->estado_aluguer);
+                fprintf(f, "%i ", c->aprox->diai);
+                fprintf(f, "%i ", c->aprox->mesi);
+                fprintf(f, "%i ", c->aprox->anoi);
+                if(c->aprox->estado_aluguer != 0)   //Condição para verificar se uma dada guitarra já foi entregue ou não
                 {
-                    fprintf(f, "%i ", lista->diaf);
-                    fprintf(f, "%i ", lista->mesf);
-                    fprintf(f, "%i ", lista->anof);
+                    fprintf(f, "%i ", c->aprox->diaf);
+                    fprintf(f, "%i ", c->aprox->mesf);
+                    fprintf(f, "%i ", c->aprox->anof);
                 }
                 fprintf(f, "\n");
                 
-                aux = lista;    //O ponteiro auxiliar toma o endereço de memória da estrutura escrita
-                lista = lista->prox;  //Avança a lista de alugueres
-                free(aux);  //Liberta o bloco de memória alocado
+                if(c->aprox->prox == NULL)  //Se não existirem mais alugueres para processar
+                {
+                    break;  //Termina o ciclo
+                }
+                
+                c->aprox = c->aprox->prox;  //Avança a lista de alugueres
             }
         }
         
-        aux_free = c;   //O ponteiro auxiliar toma o endereço de memória da estrutura escrita
-        c = c->prox;    //Avança a lista de clientes
-        free(aux_free); //Liberta o bloco de memória alocado
+        if(c->prox == NULL) //Condição de saída: se não existir um elemento seguinte...
+        {
+            break;  //... termina o ciclo.
+        }
+        c = c->prox;
     }
 }

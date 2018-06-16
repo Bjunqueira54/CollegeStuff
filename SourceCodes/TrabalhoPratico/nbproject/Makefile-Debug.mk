@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=GNU-Linux
-CND_DLIB_EXT=so
+CND_PLATFORM=MinGW-Windows
+CND_DLIB_EXT=dll
 CND_CONF=Debug
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -35,7 +35,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/aluger.o \
+	${OBJECTDIR}/alugueres.o \
+	${OBJECTDIR}/clientes.o \
+	${OBJECTDIR}/guitarras.o \
 	${OBJECTDIR}/main.o
 
 
@@ -57,18 +59,28 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trabalhopratico
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trabalhopratico.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trabalhopratico: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trabalhopratico.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trabalhopratico ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/aluger.o: aluger.c 
+${OBJECTDIR}/alugueres.o: alugueres.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/aluger.o aluger.c
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/alugueres.o alugueres.c
 
-${OBJECTDIR}/main.o: main.c 
+${OBJECTDIR}/clientes.o: clientes.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/clientes.o clientes.c
+
+${OBJECTDIR}/guitarras.o: guitarras.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/guitarras.o guitarras.c
+
+${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
@@ -79,7 +91,6 @@ ${OBJECTDIR}/main.o: main.c
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/trabalhopratico
 
 # Subprojects
 .clean-subprojects:

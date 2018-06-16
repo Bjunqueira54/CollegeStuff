@@ -23,10 +23,6 @@ extern "C" {
         char c_nome[NAME];
         int nif;
         int nalugueres;
-        
-        int atraso;
-        int danificadas;
-        
         pClientes prox;
         pClientes ant;
         
@@ -61,7 +57,7 @@ extern "C" {
     
     //Protótipos de Clientes
     
-    pClientes LeFicheiroClientes(char *fc, int *diames); //Funciona!
+    pClientes LeFicheiroClientes(char *fc); //Funciona!
     pClientes AdicionarCliente(pClientes c); //Funciona!
     pClientes RemoverCliente(pClientes c); //Funciona!
     void ListaClientesAtivos(pClientes c); //Funciona!
@@ -71,9 +67,7 @@ extern "C" {
     
     pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames);    //Funciona!
     void ListarAlugueres(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames);     //Funciona!
-    int* DataEntregaPrevista(int dia, int mes, int ano, int *diames); //Funciona!
-    int DiasAtraso(int dia, int mes, int ano, int *diames, int *data); //Funciona!
-    pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames); //Acho que funciona! Comenta o código
+    pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames); //Falta terminar
 
 #ifdef __cplusplus
 }

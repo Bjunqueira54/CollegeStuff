@@ -42,9 +42,10 @@ int* DataEntregaPrevista(int dia, int mes, int ano, int *diames)
     return data;
 }
 
-int DiasAtraso(int dia, int mes, int ano, int *diames, int *data)
+int DiasAtraso(int dia, int mes, int ano, int *data, int *diames)
 {
     int dias_atraso, atraso = 0; //Variável a devolver com dias de atraso e variável de controlo
+    //int *data = DataEntregaPrevista(dia, mes, ano, diames); //Novo ponteiro igualado ao return da função de cálculo da data prevista para entrega
     
     if(ano - data[2] > 0) //Se o ano da data atual for superior ao ano da data prevista...
     {
@@ -69,40 +70,37 @@ int DiasAtraso(int dia, int mes, int ano, int *diames, int *data)
     }
     else if(atraso == 2) //Caso 2...
     {
-        dias_atraso = diames[data[1]-1] - data[0];  //.. adicionamos os restantes dias do mês previsto aos dias de atraso...
+        dias_atraso = diames[mes-1] - data[0];  //.. adicionamos os restantes dias do mês aos dias de atraso...
         
-        if(mes - data[1] > 1)
+        for(int i=data[1]; i<mes; i++)  //... usamos um ciclo...
         {
-            for(int i=data[1]; i<mes; i++)  //... usamos um ciclo...
-            {
-                dias_atraso += diames[i-1]; //... para adicionar todos os dias por cada mês de atraso...
-            }
+            dias_atraso += diames[i-1]; //... para adicionar todos os dias por cada mês de atraso...
         }
+        
         dias_atraso += dia;  //... e terminamos por acrescentar os dias do mês atual que já passaram aos dias de atraso
     }
     else if(atraso == 3) //Caso 3...
     {
-        dias_atraso = diames[data[1]-1] - data[0];    //... adicionamos os dias restantes do mês previsto...
+        if(ano - data[2] > 1)   //... se o nº de anos entre a data prevista e a data de entrega exceder 1...
+        {
+            int excesso_anos = ano - data[2] - 1;   //... calcula-se o nº de anos acima de 1...
+            
+            dias_atraso = excesso_anos * 365;   //... e multiplica-se por 365 dias o nº de anos inteiros excedidos
+        }
         
-        for(int i=(data[1]); i<12; i++)   //... adicionamos todos os dias de cada mês até ao final do ano...
+        dias_atraso += (diames[mes-1] - data[0]);  //.. adicionamos os restantes dias do mês aos dias de atraso...
+        
+        for(int i=data[1]; i<12; i++)   //... corremos um ciclo que adiciona todos os dias de cada mes até ao final do ano...
         {
             dias_atraso += diames[i];
         }
         
-        if(ano - data[2] > 1)   //... testamos se existem anos inteiros que passaram após a data prevista...
+        for(int i=1; i<mes; i++)    //... e outro ciclo que adiciona todos os dias de cada mês até ao mês atual...
         {
-            for(int i=(data[2]+1); i<ano; i++)  //... e se sim, adicionamos 365 dias por cada ano inteiro que passou...
-            {
-                dias_atraso += 365;
-            }
+            dias_atraso += diames[i-1];
         }
         
-        for(int i=1; i<mes; i++)    //... de seguida adiciona-se cada mês por inteiro que passou desde o inicio do novo ano...
-        {
-            dias_atraso += diames[i-1]; //... mas não o mês atual...
-        }
-        
-        dias_atraso += dia; //... e finalmente adiciona-se todos os dias do mês atual que já passaram, incluindo o atual.
+        dias_atraso += dia; //... e termina-se a adicionar o nº de dias que já passaram do mês atual
     }
     
     return dias_atraso; //devolve o nº de dias de atraso
@@ -259,16 +257,12 @@ void ListarAlugueres(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes,
                     data = DataEntregaPrevista(lista->diai, lista->mesi, lista->anoi, diames);
                     fprintf(stdout, "Data Prevista para a Entrega: %i/%i/%i\n", data[0], data[1], data[2]);
                     
-                    dias_atraso = DiasAtraso(dia, mes, ano, diames, data);
-                    
+                    dias_atraso = DiasAtraso(dia, mes, ano, data, diames);
                     if(dias_atraso != 0)
                     {
-                        fprintf(stdout, "Dias de Atraso: %i\n\n", dias_atraso);
+                        fprintf(stdout, "Dias de Atraso: %i\n", dias_atraso);
                     }
-                    else
-                    {
-                        printf("\n\n");
-                    }
+                    fprintf(stdout, "\n");
                 }
                 lista = lista->prox;
             }
@@ -279,99 +273,68 @@ void ListarAlugueres(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes,
 
 pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames)
 {
-    int id, i, dias_atraso;
-    int *data = DataEntregaPrevista(dia, mes, ano, diames);
-    char op;
+    if(!c)  //Verifica se a lista está vazia...
+    {
+        fprintf(stderr, "Nao existem clientes na loja!\n");
+        return c;   //... e se estiver, termina de imediato a função.
+    }
+    else if(!g_vec) //Igualmente, verfica se existem guitarras em stock...
+    {
+        fprintf(stderr, "Nao existem guitarras em stock!\n");
+        return c;   //... e se não, termina de imediato a função.
+    }
     
-    dias_atraso = DiasAtraso(dia, mes, ano, diames, data);
-    
+    int nif, id, conf, dias_atraso, valor, multa;
+    int *data;
     pClientes aux;
-    pAluguer lista;
+    pAluguer aaux;
     
-    fprintf(stdout, "Introduza o ID da Guitarra: ");
-    fscanf(stdin, " %i", &id);
+    fprintf(stdout, "Introduza o NIF do Cliente: ");    //Pede o nif do cliente a terminar um aluguer.
+    fscanf(stdin, " %i", &nif);
     
-    for(i=0; i<g_tam; i++)
+    aux = c; //Aux fica a apontar para o inicio da lista
+    
+    while(aux)  //Enquanto aux existir...
     {
-        if(g_vec[i].id == id)
+        if(aux->nif == nif) //... vai verificar em todos os elementos da lista se tem o nif inserido...
         {
-            if(g_vec[i].estado != 1)
-            {
-                fprintf(stderr, "Essa guitarra nao esta a ser alugada!\n");
-                return c;
-            }
-            else
-            {
-                break;
-            }
+            aaux = aux->aprox;  //... se o encontra, aaux fica a apontar para o inicio da sub-lista de alugueres desse cliente...
+            break;
         }
-    }
-    if(g_vec[i].id != id) //se chegou ao fim do vetor e não um ID igual ao introduzido...
-    {
-        fprintf(stderr, "Essa guitarra nao existe!\n"); //... mostra uma mensagem de erro...
-        return c;   //... e devolve o ponteiro para o inicio da lista sem haver modificações.
+        aux = aux->prox;    //... e se o elemento atual não tiver o nif procurado, avança a lista.
     }
     
-    aux = c;
-    
-    while(aux)
+    if(!aux)    //Caso o ciclo não tenha encontrado o nif inserido...
     {
-        lista = aux->aprox;
-        
-        while(lista)
-        {
-            if(lista->id == id);
-            {
-                lista->diaf = dia;
-                lista->mesf = mes;
-                lista->anof = ano;
-                
-                fprintf(stdout, "A Guitarra esta danificada?(S ou s para Sim): ");
-                fscanf(stdin, " %c", &op);
-                
-                if(op == 'S' || op == 's')
-                {
-                    lista->estado_aluguer = 2;
-                    aux->danificadas += 1;
-                    
-                    for(i=0 ;i<g_tam ;i++)
-                    {
-                        if(g_vec[i].id == id)
-                        {
-                            g_vec[i].estado = 2;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    lista->estado_aluguer = 1;
-                    
-                    for(i=0 ;i<g_tam ;i++)
-                    {
-                        if(g_vec[i].id == id)
-                        {
-                            g_vec[i].estado = 0;
-                            break;
-                        }
-                    }
-                }
-                
-                if(dias_atraso > 0)
-                {
-                    aux->atraso = dias_atraso;
-                }
-                
-                return c;
-            }
-            lista = lista->prox;
-        }
-        aux = aux->prox;
-    }
-
-    if(!aux)
-    {
-        fprintf(stderr, "Erro ao encontrar um cliente a alugar essa guitarra!\n");
+        fprintf(stderr, "Esse cliente nao existe!\n");  //... mensagem de erro e termina imediatamente a função.
         return c;
     }
+    
+    fprintf(stdout, "Introduza o id da guitarra: ");    //Pede o ID da guitarra a ser entregue
+    fscanf(stdin, " %i", &id);
+    
+    while(aaux) //Igualmente para a procura do cliente, um ciclo que procura todos os alugueres desse cliente...
+    {
+        if(aaux->id == id)  //... e verifica todos os elementos da sub-lista a procura de um ID igual ao introduzido...
+        {
+            if(aaux->estado_aluguer == 0)   //... se o encontra, verifica o estado do elemento para ver se está a ser alugado
+            {
+                break;  //... e se sim, avança a lista...
+            }
+        }
+        aaux = aaux->prox;  //... caso ambos as verificações não sejam verdadeiras, avança a lista para o próximo elemento.
+    }
+    
+    if(!aaux)   //Caso não tenha encontrado nenhuma guitarra com o ID introduzido que esteja a ser alugada...
+    {
+        fprintf(stderr, "O cliente nao essa a alugar essa guitarra ou essa guitarra nao existe!\n");    //... mensagem de erro...
+        return c;   //... e termina imediatamente a função
+    }
+    
+    fprintf(stdout, "A guitarra esta danificada?(1-Sim \ 2-Nao): ");
+    fscanf(stdin, " %i", &conf);
+    
+    //TERMINA A PARTIR DAQUI.
+    
+    return c;
 }
