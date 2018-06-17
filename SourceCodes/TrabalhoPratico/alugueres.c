@@ -120,9 +120,16 @@ pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes
     
     pAluguer novo = malloc(sizeof(Aluguer));    //Novo bloco de memóra para um novo aluguer
     
+    if(!novo)
+    {
+        fprintf(stderr, "Erro ao realocar memoria para o novo aluguer!\n");
+        return NULL;
+    }
+    
     pClientes aux;
     
     int id, i, nif;
+    int *data;
     
     fprintf(stdout, "Introduza o NIF do cliente: ");
     fscanf(stdin, " %i", &nif); //NIF do cliente a alugar a guitarra
@@ -147,6 +154,108 @@ pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes
         return c;   //... e devolve o ponteiro para o inicio da lista sem haver modificações.
     }
     
+    int totaldias=0, contdan=0, dias_atraso=0;
+    int elementos=0, nchar, razao, ban;
+    float valor;
+    pAluguer aaux;
+    aaux = aux->aprox;
+    
+    FILE *f = fopen("listanegra.bin", "r+b");
+    if(!f)
+    {
+        f = fopen("listanegra.bin", "w+b");
+        fwrite(&elementos, sizeof(int), 1, f);
+    }
+    else
+    {
+        fseek(f, 0, SEEK_SET);
+        fread(&elementos, sizeof(int), 1, f);
+        fseek(f, 0, SEEK_END);
+    }
+    
+    while(aaux)
+    {
+        if(aaux->estado_aluguer == 2)
+        {
+            contdan++;
+        }
+        else if(aaux->estado_aluguer == 1)
+        {
+            data = DataEntregaPrevista(aaux->diai, aaux->mesi, aaux->anoi, diames);
+            dias_atraso = DiasAtraso(aaux->diaf, aaux->mesf, aaux->anof, data, diames);
+            
+            totaldias += dias_atraso;
+        }
+        
+        if(contdan > 3)
+        {
+            razao = 2;
+            fwrite(&aux->nif, sizeof(int), 1, f);
+            nchar = strlen(aux->c_nome);
+            nchar++;
+            fwrite(&nchar, sizeof(int), 1, f);
+            fwrite(aux->c_nome, sizeof(char), nchar, f);
+            fwrite(&razao, sizeof(int), 1, f);
+            elementos++;
+            fseek(f, 0, SEEK_SET);
+            fwrite(&elementos, sizeof(int), 1, f);
+            ban=1;
+        }
+        else if(totaldias > 20)
+        {
+            razao = 1;
+            fwrite(&aux->nif, sizeof(int), 1, f);
+            nchar = strlen(aux->c_nome);
+            nchar++;
+            fwrite(&nchar, sizeof(int), 1, f);
+            fwrite(aux->c_nome, sizeof(char), nchar, f);
+            fwrite(&razao, sizeof(int), 1, f);
+            elementos++;
+            fseek(f, 0, SEEK_SET);
+            fwrite(&elementos, sizeof(int), 1, f);
+            ban=1;
+        }
+        aaux = aaux->prox;
+    }
+    
+    if(ban == 1)
+    {
+        pClientes aux2;
+        pAluguer aaux2;
+        
+        if(!aux->ant)
+        {
+            c = aux->prox;
+        }
+        else if(!aux->aprox)
+        {
+            aux2 = aux->ant;
+            aux2->prox = NULL;
+        }
+        else
+        {
+            aux2 = aux->ant;
+            aux2->prox = aux->prox;
+            aux->prox->ant = aux2;
+        }
+        
+        aaux = aux->aprox;
+
+        while(aaux)
+        {
+            aaux2 = aaux->prox;
+            free(aaux);
+            aaux = aaux2;
+        }
+        free(aux);
+        
+        fprintf(stderr, "O cliente foi banido da loja!\n");
+        fclose(f);
+        return c;
+    }
+    
+    fclose(f);
+    
     fprintf(stdout, "Introduza o ID da guitarra a alugar: ");
     fscanf(stdin, " %i", &id);  //ID da guitarra a ser alugada
     
@@ -158,12 +267,17 @@ pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes
             {
                 if(g_vec[i].valor > 500)
                 {
-                    fprintf(stderr, "Falta implementar o algoritmo!\n");
-                    break;
+                    if(aux->nalugueres < 6)
+                    {
+                        fprintf(stderr, "O cliente ainda nao alugou guitarras baratas suficientes para alugar guitarras caras!\n");
+                        fprintf(stdout, "O cliente ainda só alugou %i guitarras ao todo.\n", aux->nalugueres);
+                        return c;
+                    }
                 }
                 else
                 {
                     g_vec[i].estado = 1;    //... muda o estado da guitarra para "Alugada"
+                    valor = g_vec[i].ppd;
                     break;
                 }
             }
@@ -198,10 +312,10 @@ pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes
     novo->id = g_vec[i].id;                     //A estrutura de aluguer tẽm um campo para o ID da guitarra alugada
     novo->estado_aluguer = 0;
     
-    int *data = DataEntregaPrevista(dia, mes, ano, diames);
+    data = DataEntregaPrevista(dia, mes, ano, diames);
     
     fprintf(stdout, "Data de Entrega: %i/%i/%i\n", data[0], data[1], data[2]);  //Mostra a data limite do aluguer.
-    fprintf(stdout, "Valor maximo previsto para o aluguer: %i", (g_vec[i].ppd * 7));
+    fprintf(stdout, "Valor maximo previsto para o aluguer: %5.2f\n", (valor * 7));
     
     if(aux->aprox == NULL)  //Se o cliente não tiver nenhum aluguer associado a sua conta...
     {

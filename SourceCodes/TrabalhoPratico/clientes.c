@@ -20,7 +20,7 @@ pClientes LeFicheiroClientes(char *fc)
     
     c = NULL;   //Inicio um ponteiro da estrutura de Clientes vazio.
     
-    if(!f)      //Se houver erro a abrir o ficheiro dos clientes, devolve uma lista vazia e continua a execução.
+    if(!f)      //Se houver erro a abrir o ficheiro dos clientes, devolve uma lista vazia, termina esta função e continua a execução do programa.
     {
         fprintf(stderr, "Nao foi possivel ler o ficheiro %s!\n", fc);
         fprintf(stderr, "A lista de clientes ficara vazia!\n");
@@ -31,6 +31,12 @@ pClientes LeFicheiroClientes(char *fc)
     while(1) //Ciclo infinito de leitura do ficheiro
     {
         novo = malloc(sizeof(Clientes));    //de cada vez que o ciclo corre, um novo bloco de memória é alocado.
+        
+        if(!novo)   //Caso exista algum erro na alocação da memória, termina a função e devolve c como se encontra
+        {
+            fprintf(stderr, "Erro a alocar memoria para um novo cliente!\n");
+            return c;
+        }
         novo->prox = novo->ant = NULL;      //ambos os ponteiro prox e ant são deixados a NULL.
         novo->aprox = NULL;                 //o mesmo de passa com o ponteiro para aprox.
         
@@ -67,6 +73,12 @@ pClientes LeFicheiroClientes(char *fc)
             {
                 pAluguer alug_novo, aux_alug;   //2 novos ponteiros de memória do tipo "Estrutura de Aluguer"
                 alug_novo = malloc(sizeof(Aluguer));    //Alocação de um unico bloco de memória para uma nova estrutura
+                
+                if(!alug_novo)  //Handle acaso erro na alocação de memória
+                {
+                    fprintf(stderr, "Erro ao realocar memoria para o novo aluguer!\n");
+                    return c;
+                }
                 
                 fscanf(f, " %i", &alug_novo->id);               //Leitura
                 fscanf(f, " %i", &alug_novo->estado_aluguer);   //de dados
@@ -113,20 +125,27 @@ pClientes AdicionarCliente(pClientes c)
     
     novo = malloc(sizeof(Clientes));    //Criação de um ponteiro para uma nova estrutura de clientes
     
+    if(!novo)   //Handle básico para erro de alocação de memória
+    {
+        fprintf(stderr, "Erro ao alocar memoria para um novo cliente!\n");
+        return c;
+    }
+    
     fprintf(stdout, "NIF do Cliente(9 digitos): ");
     fscanf(stdin, " %i", &novo->nif);   //NIF do novo cliente...
     
-    if(novo->nif <100000000 || novo->nif>999999999)
+    if(novo->nif <100000000 || novo->nif>999999999) //Verificação básica para um nº de Identificação Fiscal de 9 digitos
     {
         fprintf(stderr, "Formato de NIF invalido. Introduza um NIF de 9 digitos!\n");
         free(novo);
         return c;
     }
     
-    aux = c;
+    aux = c;    //Ponteiro auxiliar toma o endereço do inicio da lista...
+    
     if(aux)
     {
-        while(1)    //... ciclo infinito...
+        while(aux)    //... ciclo que corre a lista ligada dos clientes até ao final...
         {
             if(aux->nif == novo->nif)   //... que procura um NIF igual ao introduzido...
             {
@@ -136,33 +155,30 @@ pClientes AdicionarCliente(pClientes c)
                 return c;       //... e devolve o ponteiro sem qualquer modificação.
             }
 
-            if(aux->prox == NULL)   //Condição de saída do ciclo
-                break;
-
-            aux = aux->prox;
+            aux = aux->prox;    //Faz avançar a lista
         }
     }
     
-    FILE *f = fopen("listanegra.bin", "rb");
+    FILE *f = fopen("listanegra.bin", "rb");    //Abre o ficheiro da Lista Negra para procurar se o NIF está banido.
     
     int elementos = 0, nif, nchar, razao;
     char nome[NAME];
     
-    fread(&elementos, sizeof(int), 1, f);
+    fread(&elementos, sizeof(int), 1, f);   //Lê o nº de elementos previamente banidos e guarda-o em 'elementos'
     
-    for(int i=0; i<elementos; i++)
+    for(int i=0; i<elementos; i++)  //Ciclo que irá ler 'elementos' vezes as mesmas variáveis com ordem especifica...
     {
         fread(&nif, sizeof(int), 1, f);
         fread(&nchar, sizeof(int), 1, f);
         fread(nome, sizeof(char), nchar, f);
         fread(&razao, sizeof(int), 1, f);
         
-        if(novo->nif == nif)
+        if(novo->nif == nif)    //... e de cada vez que o faz, verifica que o NIF do cliente banido corresponde ao NIF do novo cliente...
         {
-            fprintf(stderr, "Esse cliente esta banido!\n");
-            fclose(f);
-            free(novo);
-            return c;
+            fprintf(stderr, "Esse cliente esta banido!\n"); //... e se corresponder: Mensagem de erro...
+            fclose(f);  //... fecha o ficheiro...
+            free(novo); //... liberta a memória previamente alocada...
+            return c;   //... e devolve o ponteiro c do inicio da lista ligada sem qualquer modificação
         }
     }
     
@@ -170,7 +186,7 @@ pClientes AdicionarCliente(pClientes c)
     fscanf(stdin, " %100[^\n]s", novo->c_nome); //Nome do novo cliente...
     
     aux = c;
-    if(aux)
+    if(aux) //Tal e qual anteriormente, um ciclo que percorre a lista ligada dos clientes à procura de alguem com um nome igual...
     {
         while(aux->prox)    //... e um ciclo semelhante ao anterior com o mesmo objetivo.
         {
@@ -195,7 +211,7 @@ pClientes AdicionarCliente(pClientes c)
         fread(nome, sizeof(char), nchar, f);
         fread(&razao, sizeof(int), 1, f);
         
-        if(novo->c_nome == nome)
+        if(novo->c_nome == nome)    //... ou então procura no mesmo ficheiro "listanegra.bin", mas agora a comparar nomes
         {
             fprintf(stderr, "Esse cliente esta banido!\n");
             fclose(f);
@@ -205,9 +221,9 @@ pClientes AdicionarCliente(pClientes c)
     }
     
     novo->nalugueres = 0;   //Nenhum cliente é criado com guitarras já alugadas.
-    novo->prox = NULL;      //Ambros os ponteiros de prox e ant ficam a NULL para já
+    novo->prox = NULL;      //Ambros os ponteiros de prox e ant ficam a NULL para não causar problemas de segmentação de memória mais tarde
     novo->ant = NULL;
-    novo->aprox = NULL;
+    novo->aprox = NULL;     //Igualmente para o ponteiro do próximo aluguer
     
     if(c == NULL) //Se o ponteiro inicial estiver vazio...
     {
@@ -261,52 +277,28 @@ pClientes RemoverCliente(pClientes c)
     }
     
     aaux = aux->aprox;
-    while(aaux)
+    while(aaux) //Ciclo que irá percorrer a sub-lista de alugueres do cliente selecionado...
     {
         aaux2 = aaux->prox;
-        free(aaux);
+        free(aaux); //... e por cada elemento que corra, liberta o bloco de memória previamente alocado
         aaux = aaux2;
-        aaux = aaux->prox;
     }
     
     if(!aux->ant)    //Caso a condiçao anterior não se tenha concretizado, é porque o ciclo parou ao encontrar um NIF de um cliente igual ao introduzido
     {                       //Esta condição testa se o ponteiro auxiliar está a apontar para o primeiro elemento da lista com a ajuda do ponteiro ant
         c = aux->prox;      //Atualiza o ponteiro da lista 'c' para apontar para o segundo elemento da lista...
-        aaux = aux->aprox;
-        while(aaux)
-        {
-            aaux2 = aaux->prox;
-            free(aaux);
-            
-            aaux = aaux2;
-        }
         free(aux);          //... liberta o bloco de memória associado ao cliente escolhido para eliminação...
     }
     else if(!aux->prox)  //Caso a condição acima não seja executada, a seguir testa se a estrutura encontrar se encontra no final da lista...
     {
         aux2->prox = NULL;      //... e nesse caso aux2, o elemento anterior a aux, modificará o seu ponteiro prox para NULL, fazendo assim com que seja o ultimo elemento...
-        aaux = aux->aprox;
-        while(aaux)
-        {
-            aaux2 = aaux->prox;
-            free(aaux);
-            
-            aaux = aaux2;
-        }
-        free(aux);              //... liberta-se o espaço de memória o ex-ultimo elemento da lista e estrutura do cliente e eliminar...
+        free(aux);              //... liberta-se o espaço de memória do ex-ultimo elemento da lista e estrutura do cliente a eliminar...
     }
     else    //Caso nenhuma das condições acima se verifique...
     {
         aux2->prox = aux->prox; //... o ponteiro prox do elemento anterior a aux apontará para o elemento a seguir a aux...
         aux->prox->ant = aux2;  //... o ponteiro ant do elemento a seguir a aux apontara para aux2...
-        aaux = aux->aprox;
-        while(aaux)
-        {
-            aaux2 = aaux->prox;
-            free(aaux);
-            
-            aaux = aaux2;
-        }                        //... fazendo assim com que nenhum elemento esteja a apontar para aux...
+                                //... fazendo assim com que nenhum elemento esteja a apontar para aux...
         free(aux);              //... e liberta-se o espaço de memória da estrutura do cliente a eliminar.
     }
     
@@ -315,7 +307,7 @@ pClientes RemoverCliente(pClientes c)
 
 void MostraCliente(pClientes c, int *diames)
 {
-    if(!c)
+    if(!c)  //Testa se existem clientes, caso contrário, termina de imediato a função
     {
         fprintf(stderr, "Nao existem cliente registados!\n");
         return;
@@ -333,13 +325,13 @@ void MostraCliente(pClientes c, int *diames)
     
     aux = c;
     
-    while(aux)
+    while(aux) //Ciclo que percorre a lista ligada dos clientes inteira...
     {
-        if(aux->nif == nif)
+        if(aux->nif == nif) //... e quando encontra um cliente com o NIF igual ao introduzido...
         {
-            fprintf(stdout, "Nome: %s\n", aux->c_nome);
-            fprintf(stdout, "NIF: %i\n", aux->nif);
-            fprintf(stdout, "Total de Alugueres: %i\n", aux->nalugueres);
+            fprintf(stdout, "Nome: %s\n", aux->c_nome);                     //Imprime as
+            fprintf(stdout, "NIF: %i\n", aux->nif);                         //informações
+            fprintf(stdout, "Total de Alugueres: %i\n", aux->nalugueres);   //necessárias
             fprintf(stdout, "\nAlugueres atuais: \n");
             aaux = aux->aprox;
             while(aaux)
@@ -376,6 +368,8 @@ void MostraCliente(pClientes c, int *diames)
             }
             fprintf(stdout, "\tAtrasados: %i\n", contatra);
             fprintf(stdout, "\tDanificados: %i\n", contdan);
+            
+            return;
         }
         aux = aux->prox;
     }

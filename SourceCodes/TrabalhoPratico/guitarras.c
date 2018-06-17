@@ -47,11 +47,24 @@ Guitarras* LeFicheiroGuitarras(char *fg, int *g_tam)
     
     g_vec = malloc(sizeof(Guitarras));  //Bloco inicial de memória do vetor
     
+    if(!g_vec)  //Caso exista algum erro a alocar memória...
+    {
+        fprintf(stderr, "Erro ao alocar memoria!\n");   //... mensagem de erro...
+        (*g_tam) = 0;   //... tamanho volta a 0...
+        return NULL;    //... e devolve NULL
+    }
+    
     while(1)    //Ciclo infinito até a condição de saída se verificar
     {
         if(fscanf(f, "%i", &g_vec[i].id) == EOF)    //Condição de saída: se fscanf devolver EOF
         {
             g_vec = realloc(g_vec, i * sizeof(Guitarras));  //Muda o tamanho o vetor para i, onde i = tamanho do vetor
+            
+            if(!g_vec)  //Se existir algum problema com a realocação de memória...
+            {
+                fprintf(stderr, "Erro ao realocar memoria para o vetor!\n");    //... mensagem de erro...
+                return g_vec;   //... mas devolve g_vec em vez de NULL porque o vetor pode já estar habitado.
+            }
             i--;        //Decrementa i, a razão sendo a linha de código mais abaixo.
             break;
         }
@@ -62,6 +75,13 @@ Guitarras* LeFicheiroGuitarras(char *fg, int *g_tam)
         
         i++;    //Incrementa i para o próximo ciclo.
         g_vec = realloc(g_vec, (i+1) * sizeof(Guitarras));  //Incrementa o tamanha do vetor por 1
+        if(!g_vec)
+        {
+            fprintf(stderr, "Erro ao realocar memoria para o vetor!\n");
+            i--;
+            (*g_tam) = i;
+            return g_vec;
+        }
     }
     
     (*g_tam) = i+1; //Tamanho será o número de vezes que o ciclo correu +1 devido a i começar em zero.
@@ -98,6 +118,12 @@ Guitarras* AdicionarGuitarras(Guitarras *g_vec, int *g_tam)
     
     g_vec = realloc(g_vec, sizeof(Guitarras) * newTam); //Aumento o vetor das guitarras com o novo tamanho
     
+    if(!g_vec)
+    {
+        fprintf(stderr, "Erro ao realocar memoria para o vetor!\n");
+        return g_vec;
+    }
+    
     fprintf(stdout, "ID da Guitarra: ");
     fscanf(stdin, "%i", &g_vec[*g_tam].id); //ID da nova guitarra...
     while(i<(*g_tam))   //... e um ciclo básico e rápido a verificar se esse ID já existe no vetor existente
@@ -106,6 +132,11 @@ Guitarras* AdicionarGuitarras(Guitarras *g_vec, int *g_tam)
         {
             fprintf(stderr, "Ja existe uma guitarra com esse numero de ID!\n");
             g_vec = realloc(g_vec, sizeof(Guitarras) * (*g_tam));   //... decrementa o tamanho do vetor de volta a como estava inicialmente...
+            if(!g_vec)
+            {
+                fprintf(stderr, "Erro ao realocar memoria para o vetor!\n");
+                return g_vec;
+            }
             return g_vec;   //... e devolve o ponteiro da primeira posição do vetor
         }
         i++;
@@ -142,60 +173,62 @@ void GuardaDadosGuitarras(char *fg, Guitarras *g_vec, int g_tam)
         fprintf(f, "%i ", g_vec[i].estado);     //aberto
         fprintf(f, "%s\n", g_vec[i].g_nome);    //o nome da guitarra em ultimo com o caracter de nova linha
     }
+    
+    free(g_vec);    //Liberto o bloco de memória alocado na criação do vetor
 }
 
 void ListarGuitarrasAlugadas(pClientes c, Guitarras *g_vec, int g_tam)
 {
-    if(!g_vec)
+    if(!g_vec)  //Se o vetor estiver vazio, termina imediatamente a função.
     {
         fprintf(stderr, "Nao existem guitarras em stock!\n");
         return;
     }
-    else if(!c)
+    else if(!c) //Igualmente para a lista ligada dos clientes
     {
         fprintf(stderr, "Nao existem clientes registados na loja!\n");
         return;
     }
     
-    pClientes aux;
-    aux = c;
+    pClientes aux;  //Ponteiro auxiliar...
+    aux = c;    //... iguala-do a c
     pAluguer aaux;
     
-    while(aux)
+    while(aux)  //Ciclo que irá correr a lista ligada inteira...
     {
-        aaux = aux->aprox;
+        aaux = aux->aprox;  //... e em cada elemento...
         
-        while(aaux)
+        while(aaux) //... irá correr a sua sub-lista de alugueres...
         {
-            if(aaux->estado_aluguer == 0)
+            if(aaux->estado_aluguer == 0)   //... à procura de guitarras custo estado de aluguer seja esteja a Decorrer...
             {
-                for(int i=0; i<g_tam; i++)
+                for(int i=0; i<g_tam; i++)  //... e quando encontra, irá correr o vetor das guitarras à procura de uma guitarra com ID igual ao do elemento da sub-lista...
                 {
-                    if(g_vec[i].id == aaux->id)
+                    if(g_vec[i].id == aaux->id) //... e quando o encontrar...
                     {
-                        fprintf(stdout, "Nome da Guitarra: %s\n", g_vec[i].g_nome);
-                        fprintf(stdout, "ID da Guitarra: %i\n", g_vec[i].id);
-                        fprintf(stdout, "Preco por Dia: %5.2f\n", g_vec[i].ppd);
-                        fprintf(stdout, "Valor da Guitarra: %5.2f\n", g_vec[i].valor);
-                        fprintf(stdout, "Nome do Cliente a alugar: %s\n", aux->c_nome);
-                        fprintf(stdout, "NIF do Cliente: %i\n\n", aux->nif);
+                        fprintf(stdout, "Nome da Guitarra: %s\n", g_vec[i].g_nome);     //... irá imprimir todos
+                        fprintf(stdout, "ID da Guitarra: %i\n", g_vec[i].id);           //os dados
+                        fprintf(stdout, "Preco por Dia: %5.2f\n", g_vec[i].ppd);        //necessários
+                        fprintf(stdout, "Valor da Guitarra: %5.2f\n", g_vec[i].valor);  //sobre a guitarra
+                        fprintf(stdout, "Nome do Cliente a alugar: %s\n", aux->c_nome); //que está atualmente
+                        fprintf(stdout, "NIF do Cliente: %i\n\n", aux->nif);            //a ser alugada
                         
                     }
                 }
             }
-            aaux = aaux->prox;
+            aaux = aaux->prox;  //Avança a sub-lista de alugueres
         }
         
-        aux = aux->prox;
+        aux = aux->prox;    //Avança a lista de clientes.
     }
 }
 
 void ListarHistoricoGuitarra(pClientes c, int *diames)
 {
-    if(!c)
+    if(!c)  //Se não existirem clientes...
     {
         fprintf(stderr, "Nao existem clientes registados para terem alugado uma guitarra\n");
-        return;
+        return; //... termina de imediato a função
     }
     
     fprintf(stdout, "Introduza o ID da guitarra: ");
@@ -208,36 +241,36 @@ void ListarHistoricoGuitarra(pClientes c, int *diames)
     
     aux = c;
     
-    while(aux)
+    while(aux)  //Ciclo que percorre a lista ligada dos clientes...
     {
-        if(aux->nalugueres > 0)
+        if(aux->nalugueres > 0) //... à procura de clientes que tenham um histórico de alugueres...
         {
             aaux = aux->aprox;
 
-            while(aaux)
+            while(aaux) //... e inicia um ciclo que corre a sub-lista dos alugueres por cliente...
             {
-                if(aaux->id == id)
+                if(aaux->id == id)  //... e sempre que encontra um elemento dessa sub-lista com o ID igual ao pedido pelo utilizador...
                 {
-                    if(aaux->estado_aluguer == 1 || aaux->estado_aluguer == 2)
+                    if(aaux->estado_aluguer == 1 || aaux->estado_aluguer == 2)  //... verifica se o aluguer já terminou...
                     {
-                        fprintf(stdout, "Nome do Cliente: %s\n", aux->c_nome);
-                        fprintf(stdout, "Data de Inicio: %i/%i/%i\n", aaux->diai, aaux->mesi, aaux->anoi);
+                        fprintf(stdout, "Nome do Cliente: %s\n", aux->c_nome);      //... e se já, irá imprimir a informação necessária
+                        fprintf(stdout, "Data de Inicio: %i/%i/%i\n", aaux->diai, aaux->mesi, aaux->anoi);  //para demonstrar o histórico de algueres da guitarra
                         fprintf(stdout, "Data de Entrega: %i/%i/%i\n", aaux->diaf, aaux->mesf, aaux->anof);
 
-                        data = DataEntregaPrevista(aaux->diai, aaux->mesi, aaux->anoi, diames);
-                        dias_atraso = DiasAtraso(aaux->diaf, aaux->mesf, aaux->anof, data, diames);
+                        data = DataEntregaPrevista(aaux->diai, aaux->mesi, aaux->anoi, diames); //Calcula a data prevista da entrega com base na data de inicio...
+                        dias_atraso = DiasAtraso(aaux->diaf, aaux->mesf, aaux->anof, data, diames); //... e calcula se existem dias de atraso com base na data de fim de aluguer
 
-                        if(dias_atraso > 0)
+                        if(dias_atraso > 0) //Acaso existam dias de atraso nesse aluguer...
                         {
-                            fprintf(stdout, "Dias de Atraso: %i\n\n", dias_atraso);
+                            fprintf(stdout, "Dias de Atraso: %i\n\n", dias_atraso); //... imprime-os no output
                         }
 
                         fprintf(stdout, "\n");
                     }
                 }
-                aaux = aaux->prox;
+                aaux = aaux->prox;  //Faz avançar a sub-lista dos alugueres
             }
         }
-        aux = aux->prox;
+        aux = aux->prox;    //Faz avançar a lista dos clientes
     }
 }

@@ -4,13 +4,16 @@
  Turma Prática: P3
  */
 
+ /* Este ficheiro de código servirá só como estrutura principal do programa, com as várias funções
+  de menus e sub-menus, juntamente com as funções de leitura e escrita dos ficheiros de texto.*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "functions.h"
 
-#define NAME 101
+#define NAME 50
 
 #define CLTTXT "clientes.txt"
 #define GTRTXT "guitarras.txt"
