@@ -308,3 +308,38 @@ void GuardaDadosClientes(char *fc, pClientes c)
         c = c->prox;
     }
 }
+
+void ListaClientesBanidos()
+{
+    FILE *f = fopen("listanegra.bin", "rb");
+    
+    if(!f)
+    {
+        fprintf(stderr, "O ficheiro da listanegra (listanegra.bin) nao existe do diretorio!\n");
+        return;
+    }
+    
+    int elementos, nchar, nif, razao;
+    char nome[NAME];
+    
+    fread(&elementos, sizeof(int), 1, f);
+    
+    for(int i=0; i<elementos; i++)
+    {
+        fread(&nif, sizeof(int), 1, f);
+        fread(&nchar, sizeof(int), 1, f);
+        fread(nome, sizeof(char), nchar, f);
+        fread(&razao, sizeof(int), 1, f);
+        
+        fprintf(stdout, "Nome: %s\n", nome);
+        fprintf(stdout, "NIF: %i\n", nif);
+        if(razao == 1)
+        {
+            fprintf(stdout, "Razao: Atraso nas Entregas\n\n");
+        }
+        else if(razao == 2)
+        {
+            fprintf(stdout, "Razao: Entrega excessiva de guitarras danificadas\n\n");
+        }
+    }
+}

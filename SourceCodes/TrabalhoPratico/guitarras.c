@@ -143,3 +143,101 @@ void GuardaDadosGuitarras(char *fg, Guitarras *g_vec, int g_tam)
         fprintf(f, "%s\n", g_vec[i].g_nome);    //o nome da guitarra em ultimo com o caracter de nova linha
     }
 }
+
+void ListarGuitarrasAlugadas(pClientes c, Guitarras *g_vec, int g_tam)
+{
+    if(!g_vec)
+    {
+        fprintf(stderr, "Nao existem guitarras em stock!\n");
+        return;
+    }
+    else if(!c)
+    {
+        fprintf(stderr, "Nao existem clientes registados na loja!\n");
+        return;
+    }
+    
+    pClientes aux;
+    aux = c;
+    pAluguer aaux;
+    
+    while(aux)
+    {
+        aaux = aux->aprox;
+        
+        while(aaux)
+        {
+            if(aaux->estado_aluguer == 0)
+            {
+                for(int i=0; i<g_tam; i++)
+                {
+                    if(g_vec[i].id == aaux->id)
+                    {
+                        fprintf(stdout, "Nome da Guitarra: %s\n", g_vec[i].g_nome);
+                        fprintf(stdout, "ID da Guitarra: %i\n", g_vec[i].id);
+                        fprintf(stdout, "Preco por Dia: %5.2f\n", g_vec[i].ppd);
+                        fprintf(stdout, "Valor da Guitarra: %5.2f\n", g_vec[i].valor);
+                        fprintf(stdout, "Nome do Cliente a alugar: %s\n", aux->c_nome);
+                        fprintf(stdout, "NIF do Cliente: %i\n\n", aux->nif);
+                        
+                    }
+                }
+            }
+            aaux = aaux->prox;
+        }
+        
+        aux = aux->prox;
+    }
+}
+
+void ListarHistoricoGuitarra(pClientes c, int *diames)
+{
+    if(!c)
+    {
+        fprintf(stderr, "Nao existem clientes registados para terem alugado uma guitarra\n");
+        return;
+    }
+    
+    fprintf(stdout, "Introduza o ID da guitarra: ");
+    int id, dias_atraso;
+    int *data;
+    fscanf(stdin, " %i", &id);
+    
+    pClientes aux;
+    pAluguer aaux;
+    
+    aux = c;
+    
+    while(aux)
+    {
+        if(aux->nalugueres > 0)
+        {
+            aaux = aux->aprox;
+
+            while(aaux)
+            {
+                if(aaux->id == id)
+                {
+                    if(aaux->estado_aluguer == 1 || aaux->estado_aluguer == 2)
+                    {
+                        fprintf(stdout, "Nome do Cliente: %s\n", aux->c_nome);
+                        fprintf(stdout, "Data de Inicio: %i/%i/%i\n", aaux->diai, aaux->mesi, aaux->anoi);
+                        fprintf(stdout, "Data de Entrega: %i/%i/%i\n", aaux->diaf, aaux->mesf, aaux->anof);
+
+                        data = DataEntregaPrevista(aaux->diai, aaux->mesi, aaux->anoi, diames);
+                        dias_atraso = DiasAtraso(aaux->diaf, aaux->mesf, aaux->anof, data, diames);
+
+                        if(dias_atraso > 0)
+                        {
+                            fprintf(stdout, "Dias de Atraso: %i\n\n", dias_atraso);
+                        }
+
+                        fprintf(stdout, "\n");
+                    }
+                }
+                aaux = aaux->prox;
+            }
+        }
+        aux = aux->prox;
+    }
+}

@@ -54,6 +54,8 @@ extern "C" {
     Guitarras* AdicionarGuitarras(Guitarras *g_vec, int *g_tam); //Funciona!
     void ListaGuitarras(Guitarras *g_vec, int g_tam); //Funciona!
     void GuardaDadosGuitarras(char *fg, Guitarras *g_vec, int g_tam); //Funciona!
+    void ListarGuitarrasAlugadas(pClientes c, Guitarras *g_vec, int g_tam); //Funciona!
+    void ListarHistoricoGuitarra(pClientes c, int *diames);
     
     //Protótipos de Clientes
     
@@ -61,6 +63,7 @@ extern "C" {
     pClientes AdicionarCliente(pClientes c); //Funciona!
     pClientes RemoverCliente(pClientes c); //Funciona!
     void ListaClientesAtivos(pClientes c); //Funciona!
+    void ListaClientesBanidos();    //Not Yet!
     void GuardaDadosClientes(char *fc, pClientes c); //Funciona!
     
     //Protótipos de Alugueres
@@ -68,6 +71,10 @@ extern "C" {
     pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames);    //Funciona!
     void ListarAlugueres(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames);     //Funciona!
     pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames); //Falta terminar
+    
+    //Protótipos de Outras Funções
+    int* DataEntregaPrevista(int dia, int mes, int ano, int *diames);
+    int DiasAtraso(int dia, int mes, int ano, int *data, int *diames);
 
 #ifdef __cplusplus
 }

@@ -45,11 +45,13 @@ void MenuGuitarra()
                 g_vec = AdicionarGuitarras(g_vec, &g_tam);
                 break;
             case 2:
+                ListarHistoricoGuitarra(c, diames);
                 break;
             case 3:
                 ListaGuitarras(g_vec, g_tam);
                 break;
             case 4:
+                ListarGuitarrasAlugadas(c, g_vec,g_tam);
                 break;
             case 0:
                 break;
@@ -92,6 +94,7 @@ void MenuClientes()
                 ListaClientesAtivos(c);
                 break;
             case 5:
+                ListaClientesBanidos();
                 break;
             case 0:
                 break;
@@ -123,6 +126,7 @@ void MenuAluguer()
                 c = NovoAluguer(c, g_vec, g_tam, dia, mes, ano, diames);
                 break;
             case 2:
+                TerminaAluguer(c, g_vec, g_tam, dia, mes, ano, diames);
                 break;
             case 3:
                 ListarAlugueres(c, g_vec, g_tam, dia, mes, ano, diames);
