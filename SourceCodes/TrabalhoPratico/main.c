@@ -89,6 +89,7 @@ void MenuClientes()
                 c = RemoverCliente(c);
                 break;
             case 3:
+                MostraCliente(c, diames);
                 break;
             case 4:
                 ListaClientesAtivos(c);

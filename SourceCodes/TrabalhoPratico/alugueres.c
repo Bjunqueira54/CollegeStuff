@@ -44,7 +44,7 @@ int* DataEntregaPrevista(int dia, int mes, int ano, int *diames)
 
 int DiasAtraso(int dia, int mes, int ano, int *data, int *diames)
 {
-    int dias_atraso, atraso = 0; //Variável a devolver com dias de atraso e variável de controlo
+    int dias_atraso = 0, atraso = 0; //Variável a devolver com dias de atraso e variável de controlo
     
     if(ano - data[2] > 0) //Se o ano da data atual for superior ao ano da data prevista...
     {
@@ -201,6 +201,7 @@ pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes
     int *data = DataEntregaPrevista(dia, mes, ano, diames);
     
     fprintf(stdout, "Data de Entrega: %i/%i/%i\n", data[0], data[1], data[2]);  //Mostra a data limite do aluguer.
+    fprintf(stdout, "Valor maximo previsto para o aluguer: %i", (g_vec[i].ppd * 7));
     
     if(aux->aprox == NULL)  //Se o cliente não tiver nenhum aluguer associado a sua conta...
     {
@@ -284,7 +285,7 @@ pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int 
     }
     
     int nif, id, i, dias_atraso, totaldias = 0, valor = 0, multa = 0;
-    int elementos, nchar, razao, cont = 0;
+    int elementos = 0, nchar, razao, cont = 0;
     char conf;
     int *data;
     pClientes aux, aux2;
@@ -339,7 +340,7 @@ pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int 
     
     if(!aaux)   //Caso não tenha encontrado nenhuma guitarra com o ID introduzido que esteja a ser alugada...
     {
-        fprintf(stderr, "O cliente nao essa a alugar essa guitarra ou essa guitarra nao existe!\n");    //... mensagem de erro...
+        fprintf(stderr, "O cliente nao esta a alugar essa guitarra ou essa guitarra nao existe!\n");    //... mensagem de erro...
         return c;   //... e termina imediatamente a função
     }
     
@@ -379,87 +380,13 @@ pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int 
             if(banaux->estado_aluguer == 2) //... á procura de todas as guitarras até á data que tenham sido entregues danificadas...
             {
                 cont++; //... e se encontra uma, vai incrementar o contador...
-            }
-            
-            if(cont > 3)    //... e se o contador for maior do que 3...
-            {
-                razao = 2;  //Razao: 1=Atrasos nas entregas, 2=Entregues danificadas
-                
-                FILE *f = fopen("listanegra.bin", "r+b");   //... vai abrir o ficheiro da lista negra no modo de leitura+escrita para adicionar uma nova entrada...
-    
-                if(!f)  //... se não existe, ...
-                {
-                    f = fopen("listanegra.bin", "w+b");  //... vai criar um novo no modo de escrita+leitura...
-                    fwrite(&elementos, sizeof(int), 1, f);  //... escreve o nº de elementos banidos no ficheiro (neste caso, 0)...
-                }
-                else    //.. caso contrário...
-                {
-                    fread(&elementos, sizeof(int), 1, f);   //... le só o nº de elementos já banidos.
-                }
-                
-                nchar = strlen(aux->c_nome);
-                nchar++;    //Incremento nchar pois strlen() só lê os caracters de um vetor, não lê '\0', que é necessário
-                
-                fwrite(&aux->nif, sizeof(int), 1, f);
-                fwrite(&nchar, sizeof(int), 1, f);
-                fwrite(aux->c_nome, sizeof(char), nchar, f);
-                fwrite(&razao, sizeof(int), 1, f);
-                elementos++;    //Incrementa o nº de elementos banidos...
-                fseek(f, 0, SEEK_SET);
-                fwrite(&elementos, sizeof(int), 1, f);  //... e reescreve no inicio do ficheiro
-                fclose(f);  //fecha o ficheiro
-                
-                if(aux->ant == NULL)    //Se o cliente está no inicio da lista...
-                {
-                    aux->prox->ant = NULL;  //... o campo de anterior do elemento seguinte fica nulo, ...
-                    c = aux->prox;  //... fica como novo 1º elemento da lista...
-                    aaux = aux->aprox;
-                    while(aaux)
-                    {
-                        aaux2 = aaux->prox;
-                        free(aaux);
-
-                        aaux = aaux2;
-                    }
-                    free(aux);  //... e é libertado o espaço de memória do cliente banido, incluindo dos seus alugueres.
-                }
-                else if(aux->prox == NULL)
-                {
-                    aux->ant->prox = NULL;
-
-                    aaux = aux->aprox;
-                    while(aaux)
-                    {
-                        aaux2 = aaux->prox;
-                        free(aaux);
-
-                        aaux = aaux2;
-                    }
-                    free(aux);
-                }
-                else
-                {
-                    aux2 = aux->ant;
-                    aux2->prox = aux->prox;
-                    aux->prox->ant = aux2;
-
-                    aaux = aux->aprox;
-                    while(aaux)
-                    {
-                        aaux2 = aaux->prox;
-                        free(aaux);
-
-                        aaux = aaux2;
-                    }
-                    free(aux);
-                }
-            }
+            }       
             banaux = banaux->prox;
         }
     }
     else
     {
-        for(int i=0; i<g_tam; i++)  //... inicia um ciclo que vai correr o vector das guitarras...
+        for(i=0; i<g_tam; i++)  //... inicia um ciclo que vai correr o vector das guitarras...
         {
             if(g_vec[i].id == id)   //... á procura da guitarra com o id igual ao introduzido...
             {
@@ -472,90 +399,196 @@ pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int 
     
     aaux = aux->aprox;
     
-    while(aaux)
+    if(cont > 3)    //... e se o contador for maior do que 3...
     {
-        if(aaux->estado_aluguer == 1 || aaux->estado_aluguer == 2)
+        razao = 2;  //Razao: 1=Atrasos nas entregas, 2=Entregues danificadas
+
+        FILE *f = fopen("listanegra.bin", "r+b");   //... vai abrir o ficheiro da lista negra no modo de leitura+escrita para adicionar uma nova entrada...
+
+        if(!f)  //... se não existe, ...
         {
-            data = DataEntregaPrevista(aaux->diai, aaux->mesi, aaux->anoi, diames);
-            totaldias += DiasAtraso(aaux->diaf, aaux->mesf, aaux->anof, data, diames);
-            
-            if(totaldias > 20)
-            {
-                razao = 1;  //Razao: 1=Atrasos nas entregas, 2=Entregues danificadas
-                
-                FILE *f = fopen("listanegra.bin", "r+b");   //... vai abrir o ficheiro da lista negra
-    
-                if(!f)  //... se não existe, ...
-                {
-                    f = fopen("listanegra.bin", "wb");  //... vai criar um novo...
-                    fwrite(&elementos, sizeof(int), 1, f);  //... escreve o nº de elementos banidos no ficheiro (neste caso, 0)...
-                }
-                else    //.. caso contrário...
-                {
-                    fread(&elementos, sizeof(int), 1, f);   //... le só o nº de elementos já banidos.
-                }
-                
-                nchar = strlen(aux->c_nome);
-                nchar++;    //Incremento nchar pois strlen() só lê os caracters de um vetor, não lê '\0', que é necessário
-                
-                fwrite(&aux->nif, sizeof(int), 1, f);
-                fwrite(&nchar, sizeof(int), 1, f);
-                fwrite(aux->c_nome, sizeof(char), nchar, f);
-                fwrite(&razao, sizeof(int), 1, f);
-                elementos++;    //Incrementa o nº de elementos banidos...
-                fseek(f, 0, SEEK_SET);
-                fwrite(&elementos, sizeof(int), 1, f);  //... e reescreve no inicio do ficheiro
-                fclose(f);
-                
-                if(aux->ant == NULL)    //Se o cliente está no inicio da lista...
-                {
-                    aux->prox->ant = NULL;  //... o campo de anterior do elemento seguinte fica nulo, ...
-                    c = aux->prox;  //... fica como novo 1º elemento da lista...
-                    aaux = aux->aprox;
-                    while(aaux)
-                    {
-                        aaux2 = aaux->prox;
-                        free(aaux);
-
-                        aaux = aaux2;
-                    }
-                    free(aux);  //... e é libertado o espaço de memória do cliente banido, incluindo dos seus alugueres.
-                }
-                else if(aux->prox == NULL)
-                {
-                    aux->ant->prox = NULL;
-
-                    aaux = aux->aprox;
-                    while(aaux)
-                    {
-                        aaux2 = aaux->prox;
-                        free(aaux);
-
-                        aaux = aaux2;
-                    }
-                    free(aux);
-                }
-                else
-                {
-                    aux2 = aux->ant;
-                    aux2->prox = aux->prox;
-                    aux->prox->ant = aux2;
-
-                    aaux = aux->aprox;
-                    while(aaux)
-                    {
-                        aaux2 = aaux->prox;
-                        free(aaux);
-
-                        aaux = aaux2;
-                    }
-                    free(aux);
-                }
-                
-                break;
-            }
+            f = fopen("listanegra.bin", "w+b");  //... vai criar um novo no modo de escrita+leitura...
+            fwrite(&elementos, sizeof(int), 1, f);  //... escreve o nº de elementos banidos no ficheiro (neste caso, 0)...
         }
-        aaux = aaux->prox;
+        else    //.. caso contrário...
+        {
+            fread(&elementos, sizeof(int), 1, f);   //... le só o nº de elementos já banidos.
+            fseek(f, 0, SEEK_END);
+        }
+
+        nchar = strlen(aux->c_nome);
+        nchar++;    //Incremento nchar pois strlen() só lê os caracters de um vetor, não lê '\0', que é necessário
+
+        fwrite(&aux->nif, sizeof(int), 1, f);
+        fwrite(&nchar, sizeof(int), 1, f);
+        fwrite(aux->c_nome, sizeof(char), nchar, f);
+        fwrite(&razao, sizeof(int), 1, f);
+        elementos++;    //Incrementa o nº de elementos banidos...
+        fseek(f, 0, SEEK_SET);
+        fwrite(&elementos, sizeof(int), 1, f);  //... e reescreve no inicio do ficheiro
+        fclose(f);  //fecha o ficheiro
+        
+        aaux = aux->aprox;
+        
+        while(aaux)
+        {
+            for(i=0; i<g_tam; i++)
+            {
+                if(g_vec[i].id == aaux->id)
+                {
+                    g_vec[i].estado = 0;
+                }
+            }
+            aaux = aaux->prox;
+        }
+
+        if(aux->ant == NULL)    //Se o cliente está no inicio da lista...
+        {
+            aux->prox->ant = NULL;  //... o campo de anterior do elemento seguinte fica nulo, ...
+            c = aux->prox;  //... fica como novo 1º elemento da lista...
+            aaux = aux->aprox;
+            while(aaux)
+            {
+                aaux2 = aaux->prox;
+                free(aaux);
+
+                aaux = aaux2;
+            }
+            free(aux);  //... e é libertado o espaço de memória do cliente banido, incluindo dos seus alugueres.
+        }
+        else if(aux->prox == NULL)
+        {
+            aux->ant->prox = NULL;
+
+            aaux = aux->aprox;
+            while(aaux)
+            {
+                aaux2 = aaux->prox;
+                free(aaux);
+
+                aaux = aaux2;
+            }
+            free(aux);
+        }
+        else
+        {
+            aux2 = aux->ant;
+            aux2->prox = aux->prox;
+            aux->prox->ant = aux2;
+
+            aaux = aux->aprox;
+            while(aaux)
+            {
+                aaux2 = aaux->prox;
+                free(aaux);
+
+                aaux = aaux2;
+            }
+            free(aux);
+        }
+    }
+    else
+    {
+        while(aaux)
+        {
+            if(aaux->estado_aluguer == 1 || aaux->estado_aluguer == 2)
+            {
+                data = DataEntregaPrevista(aaux->diai, aaux->mesi, aaux->anoi, diames);
+                totaldias += DiasAtraso(aaux->diaf, aaux->mesf, aaux->anof, data, diames);
+
+                if(totaldias > 20)
+                {
+                    razao = 1;  //Razao: 1=Atrasos nas entregas, 2=Entregues danificadas
+
+                    FILE *f = fopen("listanegra.bin", "r+b");   //... vai abrir o ficheiro da lista negra
+
+                    if(!f)  //... se não existe, ...
+                    {
+                        f = fopen("listanegra.bin", "wb");  //... vai criar um novo...
+                        fwrite(&elementos, sizeof(int), 1, f);  //... escreve o nº de elementos banidos no ficheiro (neste caso, 0)...
+                    }
+                    else    //.. caso contrário...
+                    {
+                        fread(&elementos, sizeof(int), 1, f);   //... le só o nº de elementos já banidos.
+                        fseek(f, 0, SEEK_END);
+                    }
+
+                    nchar = strlen(aux->c_nome);
+                    nchar++;    //Incremento nchar pois strlen() só lê os caracters de um vetor, não lê '\0', que é necessário
+
+                    fwrite(&aux->nif, sizeof(int), 1, f);
+                    fwrite(&nchar, sizeof(int), 1, f);
+                    fwrite(aux->c_nome, sizeof(char), nchar, f);
+                    fwrite(&razao, sizeof(int), 1, f);
+                    elementos++;    //Incrementa o nº de elementos banidos...
+                    fseek(f, 0, SEEK_SET);
+                    fwrite(&elementos, sizeof(int), 1, f);  //... e reescreve no inicio do ficheiro
+                    fclose(f);
+                    
+                    aaux = aux->aprox;
+        
+                    while(aaux)
+                    {
+                        for(i=0; i<g_tam; i++)
+                        {
+                            if(g_vec[i].id == aaux->id)
+                            {
+                                g_vec[i].estado = 0;
+                            }
+                        }
+                        aaux = aaux->prox;
+                    }
+
+                    if(aux->ant == NULL)    //Se o cliente está no inicio da lista...
+                    {
+                        aux->prox->ant = NULL;  //... o campo de anterior do elemento seguinte fica nulo, ...
+                        c = aux->prox;  //... fica como novo 1º elemento da lista...
+                        aaux = aux->aprox;
+                        while(aaux)
+                        {
+                            aaux2 = aaux->prox;
+                            free(aaux);
+
+                            aaux = aaux2;
+                        }
+                        free(aux);  //... e é libertado o espaço de memória do cliente banido, incluindo dos seus alugueres.
+                    }
+                    else if(aux->prox == NULL)
+                    {
+                        aux->ant->prox = NULL;
+
+                        aaux = aux->aprox;
+                        while(aaux)
+                        {
+                            aaux2 = aaux->prox;
+                            free(aaux);
+
+                            aaux = aaux2;
+                        }
+                        free(aux);
+                    }
+                    else
+                    {
+                        aux2 = aux->ant;
+                        aux2->prox = aux->prox;
+                        aux->prox->ant = aux2;
+
+                        aaux = aux->aprox;
+                        while(aaux)
+                        {
+                            aaux2 = aaux->prox;
+                            free(aaux);
+
+                            aaux = aaux2;
+                        }
+                        free(aux);
+                    }
+
+                    break;
+                }
+            }
+            aaux = aaux->prox;
+        }
     }
     
     fprintf(stdout, "Total a pagar do aluguer: %i\n", valor);

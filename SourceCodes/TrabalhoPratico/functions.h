@@ -62,19 +62,20 @@ extern "C" {
     pClientes LeFicheiroClientes(char *fc); //Funciona!
     pClientes AdicionarCliente(pClientes c); //Funciona!
     pClientes RemoverCliente(pClientes c); //Funciona!
+    void MostraCliente(pClientes c, int *diames);
     void ListaClientesAtivos(pClientes c); //Funciona!
-    void ListaClientesBanidos();    //Not Yet!
+    void ListaClientesBanidos();    //Funciona!
     void GuardaDadosClientes(char *fc, pClientes c); //Funciona!
     
     //Protótipos de Alugueres
     
     pClientes NovoAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames);    //Funciona!
     void ListarAlugueres(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames);     //Funciona!
-    pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames); //Falta terminar
+    pClientes TerminaAluguer(pClientes c, Guitarras *g_vec, int g_tam, int dia, int mes, int ano, int *diames); //Funciona!
     
     //Protótipos de Outras Funções
-    int* DataEntregaPrevista(int dia, int mes, int ano, int *diames);
-    int DiasAtraso(int dia, int mes, int ano, int *data, int *diames);
+    int* DataEntregaPrevista(int dia, int mes, int ano, int *diames);   //Funciona!
+    int DiasAtraso(int dia, int mes, int ano, int *data, int *diames);  //Funciona!
 
 #ifdef __cplusplus
 }

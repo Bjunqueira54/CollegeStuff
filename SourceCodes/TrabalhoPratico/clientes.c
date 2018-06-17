@@ -113,8 +113,15 @@ pClientes AdicionarCliente(pClientes c)
     
     novo = malloc(sizeof(Clientes));    //Criação de um ponteiro para uma nova estrutura de clientes
     
-    fprintf(stdout, "NIF do Cliente: ");
+    fprintf(stdout, "NIF do Cliente(9 digitos): ");
     fscanf(stdin, " %i", &novo->nif);   //NIF do novo cliente...
+    
+    if(novo->nif <100000000 || novo->nif>999999999)
+    {
+        fprintf(stderr, "Formato de NIF invalido. Introduza um NIF de 9 digitos!\n");
+        free(novo);
+        return c;
+    }
     
     aux = c;
     if(aux)
@@ -133,6 +140,29 @@ pClientes AdicionarCliente(pClientes c)
                 break;
 
             aux = aux->prox;
+        }
+    }
+    
+    FILE *f = fopen("listanegra.bin", "rb");
+    
+    int elementos = 0, nif, nchar, razao;
+    char nome[NAME];
+    
+    fread(&elementos, sizeof(int), 1, f);
+    
+    for(int i=0; i<elementos; i++)
+    {
+        fread(&nif, sizeof(int), 1, f);
+        fread(&nchar, sizeof(int), 1, f);
+        fread(nome, sizeof(char), nchar, f);
+        fread(&razao, sizeof(int), 1, f);
+        
+        if(novo->nif == nif)
+        {
+            fprintf(stderr, "Esse cliente esta banido!\n");
+            fclose(f);
+            free(novo);
+            return c;
         }
     }
     
@@ -156,9 +186,28 @@ pClientes AdicionarCliente(pClientes c)
         }
     }
     
+    fseek(f, 0, SEEK_SET);
+    fread(&elementos, sizeof(int), 1, f);
+    for(int i=0; i<elementos; i++)
+    {
+        fread(&nif, sizeof(int), 1, f);
+        fread(&nchar, sizeof(int), 1, f);
+        fread(nome, sizeof(char), nchar, f);
+        fread(&razao, sizeof(int), 1, f);
+        
+        if(novo->c_nome == nome)
+        {
+            fprintf(stderr, "Esse cliente esta banido!\n");
+            fclose(f);
+            free(novo);
+            return c;
+        }
+    }
+    
     novo->nalugueres = 0;   //Nenhum cliente é criado com guitarras já alugadas.
     novo->prox = NULL;      //Ambros os ponteiros de prox e ant ficam a NULL para já
     novo->ant = NULL;
+    novo->aprox = NULL;
     
     if(c == NULL) //Se o ponteiro inicial estiver vazio...
     {
@@ -196,6 +245,7 @@ pClientes RemoverCliente(pClientes c)
     fscanf(stdin, " %i", &nif);
     
     pClientes aux, aux2;
+    pAluguer aaux, aaux2;
     aux = c;
     
     while(aux->prox && aux->nif != nif) //Ciclo que termina quando chegar ao final da lista ou encontre um cliente com o NIF introduzido
@@ -210,25 +260,131 @@ pClientes RemoverCliente(pClientes c)
         return c;       //do endereço inicial da lista.
     }
     
+    aaux = aux->aprox;
+    while(aaux)
+    {
+        aaux2 = aaux->prox;
+        free(aaux);
+        aaux = aaux2;
+        aaux = aaux->prox;
+    }
+    
     if(!aux->ant)    //Caso a condiçao anterior não se tenha concretizado, é porque o ciclo parou ao encontrar um NIF de um cliente igual ao introduzido
     {                       //Esta condição testa se o ponteiro auxiliar está a apontar para o primeiro elemento da lista com a ajuda do ponteiro ant
         c = aux->prox;      //Atualiza o ponteiro da lista 'c' para apontar para o segundo elemento da lista...
+        aaux = aux->aprox;
+        while(aaux)
+        {
+            aaux2 = aaux->prox;
+            free(aaux);
+            
+            aaux = aaux2;
+        }
         free(aux);          //... liberta o bloco de memória associado ao cliente escolhido para eliminação...
     }
     else if(!aux->prox)  //Caso a condição acima não seja executada, a seguir testa se a estrutura encontrar se encontra no final da lista...
     {
         aux2->prox = NULL;      //... e nesse caso aux2, o elemento anterior a aux, modificará o seu ponteiro prox para NULL, fazendo assim com que seja o ultimo elemento...
+        aaux = aux->aprox;
+        while(aaux)
+        {
+            aaux2 = aaux->prox;
+            free(aaux);
+            
+            aaux = aaux2;
+        }
         free(aux);              //... liberta-se o espaço de memória o ex-ultimo elemento da lista e estrutura do cliente e eliminar...
     }
     else    //Caso nenhuma das condições acima se verifique...
     {
         aux2->prox = aux->prox; //... o ponteiro prox do elemento anterior a aux apontará para o elemento a seguir a aux...
         aux->prox->ant = aux2;  //... o ponteiro ant do elemento a seguir a aux apontara para aux2...
-                                //... fazendo assim com que nenhum elemento esteja a apontar para aux...
+        aaux = aux->aprox;
+        while(aaux)
+        {
+            aaux2 = aaux->prox;
+            free(aaux);
+            
+            aaux = aaux2;
+        }                        //... fazendo assim com que nenhum elemento esteja a apontar para aux...
         free(aux);              //... e liberta-se o espaço de memória da estrutura do cliente a eliminar.
     }
     
     return c;   //Devolve o ponteiro para a lista atualizada.
+}
+
+void MostraCliente(pClientes c, int *diames)
+{
+    if(!c)
+    {
+        fprintf(stderr, "Nao existem cliente registados!\n");
+        return;
+    }
+    
+    int nif, dias_atraso;
+    int cont = 0, contatra = 0, contdan = 0;
+    int *data;
+    
+    fprintf(stdout, "NIF do Cliente a mostrar: ");
+    fscanf(stdin, " %i", &nif);
+    
+    pClientes aux;
+    pAluguer aaux;
+    
+    aux = c;
+    
+    while(aux)
+    {
+        if(aux->nif == nif)
+        {
+            fprintf(stdout, "Nome: %s\n", aux->c_nome);
+            fprintf(stdout, "NIF: %i\n", aux->nif);
+            fprintf(stdout, "Total de Alugueres: %i\n", aux->nalugueres);
+            fprintf(stdout, "\nAlugueres atuais: \n");
+            aaux = aux->aprox;
+            while(aaux)
+            {
+                if(aaux->estado_aluguer == 0)
+                {
+                    cont++;
+                    fprintf(stdout, "\tID: %i\n", aaux->id);
+                    fprintf(stdout, "\tData de Inicio: %i/%i/%i\n", aaux->diai, aaux->mesi, aaux->anoi);
+                    data = DataEntregaPrevista(aaux->diai, aaux->mesi, aaux->anoi, diames);
+                }
+                aaux = aaux->prox;
+            }
+            fprintf(stdout, "Numero de Alugueres Atuais: %i", cont);
+            fprintf(stdout, "\nAlugueres Entregues:\n");
+            aaux = aux->aprox;
+            while(aaux)
+            {
+                if(aaux->estado_aluguer == 1)
+                {
+                    data = DataEntregaPrevista(aaux->diai, aaux->mesi, aaux->anoi, diames);
+                    dias_atraso = DiasAtraso(aaux->diaf, aaux->mesf, aaux->anof, data, diames);
+                    if(dias_atraso > 0)
+                    {
+                        contatra++;
+                    }
+                }
+                else if(aaux->estado_aluguer == 2)
+                {
+                    contdan++;
+                }
+                
+                aaux = aaux->prox;
+            }
+            fprintf(stdout, "\tAtrasados: %i\n", contatra);
+            fprintf(stdout, "\tDanificados: %i\n", contdan);
+        }
+        aux = aux->prox;
+    }
+    
+    if(!aux)
+    {
+        fprintf(stderr, "Nao existe nenhum cliente com esse NIF registado!\n");
+        return;
+    }
 }
 
 void ListaClientesAtivos(pClientes c)
