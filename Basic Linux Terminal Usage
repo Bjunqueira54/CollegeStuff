@@ -1,0 +1,27 @@
+ls -> Lista ficheiros e pastas no atual diretorio do terminal
+  -l -> opção para listar todos os detalhes de um determinado ficheiro (tipo de ficheiro|permissões|dono|grupo|etc)
+  -a -> opção para listar todos os ficheiros e pastas do atual diretorio, incluindo ficheiros e pastas escondidos
+  
+ nano [FILE] -> Editor de texto do terminal. Abre FILE se existir, senão cria um novo
+  CTRL+O (aparece como ^O) -> Guarda o ficheiro (no nano tem nome "Write Out")
+  CTRL+X (^X) -> Sai do editor nano
+  
+cat [FILE] -> Abre o ficheiro FILE para leitura. Se o ficheiro contiver characters binários (exe: ficheiros binário ou executaveis)
+              o terminal ficará repleto de "lixo"
+
+gcc [FILE.c] -> compila um ficheiro c para um ficheiro binário executável.
+  -o [FILE] -> opção que deixa escolher o nome e extensão do ficheiro executável. Por defeito, sem esta opção, o ficheiro será sempre
+                chamado de a.out
+  -save-temps -> opção que grava todos os ficheiros criados pelo compilador durante a operação de compilação. Por defeito, sem esta opção
+                o compilador cria e apaga os ficheiro sem que o utilizador alguma vez os veja. São guardados no mesmo diratório que
+                a.out
+                
+gdb [a.out\FILE] -> Debbuger de executáveis. Ficamos por aqui.
+
+
+Por defeito, todos os comandos do Linux encontram-se dentro de uma pasta que pode ser encontrado usando o comando: echo $PATH
+
+Dito isto, após a compilação de um programa através do gcc, não podemos escrever no terminal: a.out
+Isto acontece porque a.out não se encontra dentro do diretório que o Linux utiliza para ir buscar os programas usados pelos comandos.
+Por isso escreve-mos: ./a.out
+./ em linux simboliza "diretório atual", ou seja, a linha acima quer dizer: executa a.out que se encontra no diretório atual.
