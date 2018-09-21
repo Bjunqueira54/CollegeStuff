@@ -1,0 +1,51 @@
+#include <cstdlib>
+#include <iostream>
+
+using namespace std;
+
+string Concatena(string s1, string s2)
+{
+    string s3;
+    
+    if(s1.size() < s2.size())
+    {
+        s3 = s1 + ' ' + s2;
+    }
+    else
+    {
+        s3 = s2 + ' ' + s1;
+    }
+    return s3;
+}
+
+string EliminaEspacos(string s1) //Não Funciona
+{
+    string s4;
+    
+    int i, j = 0;
+    
+    for(i=0; i<=s1.size(); i++)
+    {
+        if(s1[i] != ' ')
+        {
+            s4 += s1[i];
+            j++;
+        }
+    }
+    return s4;
+}
+
+int main(int argc, char** argv)
+{
+    string s1, s2, s3, s4;
+    
+    getline(cin, s1);
+    getline(cin, s2);
+    
+    s3 = Concatena(s1, s2);
+    
+    s4 = EliminaEspacos(s3);
+    
+    cout << s3 << endl << s4 << endl;
+    return 0;
+}
