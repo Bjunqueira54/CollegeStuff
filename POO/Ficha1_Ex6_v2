@@ -1,0 +1,42 @@
+#include <cstdlib>
+#include <iostream>
+
+using namespace std;
+
+void troca(int &a, int &b)
+{
+    int temp;
+    
+    temp = a;
+    
+    a=b;
+    b=temp;
+}
+
+void media(int &a, int &b, float &m)
+{
+    float aa, ab;
+    
+    aa = a;
+    ab = b;
+    
+    m = (aa + ab) / 2;
+    
+    if(a < m)
+    {
+        a = 0;
+    }
+    else if(b < m)
+    {
+        b = 0;
+    }
+}
+
+int main(int argc, char** argv)
+{
+    int a=5, b=10;
+    float m = 0;
+    
+    troca(a, b);
+    
+    cout << "a = " << a << " b = " << b << endl;
