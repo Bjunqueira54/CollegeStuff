@@ -1,0 +1,18 @@
+#include <cstdlib>
+#include <iostream>
+
+using namespace std;
+
+int soma(int a=0, int b=0, int c=0) //Função com argumentos com valores por defeito. Desta maneira pode-se chamar a função com menos
+                                    //argumentos que o necessário. Só ter atenção a ordem a que são chamados.
+{
+    return a+b+c;
+}
+
+int main(int argc, char** argv)
+{
+    cout << "\n" << soma() << ' ' << soma(1) << endl;
+    cout << soma(1,2) << ' ' << soma(1,2,3) << endl;
+    
+    return 0;
+}
