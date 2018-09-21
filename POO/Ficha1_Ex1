@@ -1,0 +1,24 @@
+#include <cstdlib>
+#include <stdio.h>
+#include <iostream>
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    char nome[101];
+    int idade;
+    
+    fprintf(stdout, "Como se chama: ");
+    fgets(nome, 100, stdin);
+    
+    fprintf(stdout, "\n");
+    
+    fprintf(stdout, "Que idade tem: ");
+    fscanf(stdin, "%i", &idade);
+    
+    fprintf(stdout,"\n\n");
+    fprintf(stdout, "Chama-se %s e tem %i anos.\n\n", nome, idade);
+
+    return 0;
+}
