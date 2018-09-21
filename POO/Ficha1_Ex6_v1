@@ -1,0 +1,49 @@
+//Este código está feito com C em mente. Se sabes C, entendes isto.
+
+#include <cstdlib>
+#include <iostream>
+
+using namespace std;
+
+void troca(int *a, int *b)
+{
+    int aux;
+    
+    aux = (*a);
+    (*a) = (*b);
+    (*b) = aux;
+}
+
+void media(int *a, int *b, float *m)
+{
+    float aa, ab;
+    float am;
+    
+    aa = (*a);
+    ab = (*b);
+    
+    am = (aa + ab) / 2;
+    
+    (*m) = am;
+    
+    if((*a) < (*m))
+    {
+        (*a) = 0;
+    }
+    else if((*b) < (*m))
+    {
+        (*b) = 0;
+    }
+}
+
+int main(int argc, char** argv)
+{
+    int a=5, b=10;
+    
+    troca(&a, &b);
+    
+    cout << "\na = " << a << "\nb = " << b <<endl;
+
+    float m=0;
+    
+    media(&a, &b, &m);
