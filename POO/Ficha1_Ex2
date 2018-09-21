@@ -1,0 +1,20 @@
+#include <cstdlib>
+#include <iostream>
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    char nome[101];
+    int idade;
+    
+    cout << "O seu nome: "; //Substitui printf()
+    cin >> nome;            //Substitui scanf();
+    
+    cout << "A sua idade: ";
+    cin >> idade;
+    
+    cout << "Chama-se " << nome << "e tem " << idade << " anos" << endl; //Substitui printf() com vars, ex.: printf("Chama-se %s e tem %i anos", nome, idade)
+    
+    return 0;
+}
