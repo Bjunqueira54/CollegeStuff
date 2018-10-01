@@ -1,0 +1,61 @@
+/* 
+ * File:   main.cpp
+ * Author: gothicdread
+ *
+ * Created on September 26, 2018, 12:58 PM
+ */
+
+#include <cstdlib>
+#include <iostream>
+
+#define TAM 15
+
+struct Tabela
+{
+  int tab[TAM];  
+};
+
+using namespace std;
+
+void preenche(Tabela &a, int v)
+{
+    for(int i=0; i<=TAM; i++)
+    {
+        a.tab[i] = v++;
+    }
+}
+
+void listar(Tabela a)
+{
+    for(int i=0; i<=TAM; i++)
+    {
+        cout << a.tab[i] << ' ';
+    }
+    cout << endl;
+}
+
+void setValor(Tabela &a, int pos, int v)
+{
+    a.tab[pos] = v;
+}
+
+int getValor(Tabela a, int pos)
+{
+    if(pos >= 0 && pos < TAM)
+        return a.tab[pos];
+    else
+        return -1;
+}
+
+int main(int argc, char** argv)
+{
+    Tabela a;
+    
+    preenche(a, 10);
+    listar(a);
+    setValor(a, 7, 420);
+    
+    cout << getValor(a, 12) << endl;
+    
+    return 0;
+}
