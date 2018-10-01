@@ -1,0 +1,71 @@
+/* 
+ * File:   main.cpp
+ * Author: gothicdread
+ *
+ * Created on September 26, 2018, 12:14 PM
+ */
+
+#include <cstdlib>
+#include <iostream>
+#include <sstream>
+
+using namespace std;
+
+int ConvertNum(string tNum)
+{
+    int num, i;
+    string numeros[] = {"zero", "um", "dois", "tres", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez"};
+
+    for(i=0; i <= 11; i++)
+    {
+        if(tNum == numeros[i])
+            return i;
+    }
+    
+    return 1337;
+}
+
+string ConvertNum(int num)
+{
+    string numeros[] = {"zero", "um", "dois", "tres", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez"};
+    if(num >= 0 && num <= 10)
+    {
+        return numeros[num];
+    }
+    else
+    {
+        return "Idiot!";
+    }
+}
+
+int main(int argc, char** argv)
+{
+    bool t = true;
+    string tNum;
+    int num;
+    
+    while(t == true)
+    {
+        cout << "Numero(texto): ";
+        cin >> num;
+        if(cin.good() == true)
+        {
+            cout << ConvertNum(num) << endl;
+        }
+        else
+        {
+            cin.clear();
+            cin >> tNum;
+            if(tNum == "fim" || tNum == "Fim" || tNum == "FIM")
+            {
+                t = false;
+            }
+            else
+            {
+                cout << ConvertNum(tNum) << endl;
+
+            }
+        }
+    }
+    return 0;
+}
