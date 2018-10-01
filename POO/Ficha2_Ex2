@@ -1,0 +1,61 @@
+/* 
+ * File:   main.cpp
+ * Author: gothicdread
+ *
+ * Created on September 28, 2018, 10:44 AM
+ */
+
+#include <cstdlib>
+#include <iostream>
+
+using namespace std;
+
+class Tabela
+{
+    static int const TAM=15;
+    int tab[TAM];
+    
+public:
+    
+    void listar() const
+    {
+        for(int i=0; i<TAM; i++)
+            cout << tab[i] << ' ';
+    }
+    
+    int getValor(int pos) const
+    {
+        return tab[pos];
+    }
+    
+    void setValor(int p, int v)
+    {
+        tab[p] = v;
+    }
+    
+    void preenche(int v)
+    {
+        for(int i=0; i<TAM; i++)
+        {
+            tab[i] = v;
+        }
+    }
+    
+    Tabela()
+    {
+        for(int i=0; i<TAM; i++)
+            tab[i]=0;
+    }
+    Tabela(int x)
+    {
+        for(int i=0; i<TAM; i++)
+            tab[i]=x;
+    }
+};
+
+int main(int argc, char** argv)
+{
+    Tabela a;
+    a.listar();
+    return 0;
+}
