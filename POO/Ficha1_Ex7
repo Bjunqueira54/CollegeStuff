@@ -1,0 +1,41 @@
+/* 
+ * File:   main.cpp
+ * Author: gothicdread
+ *
+ * Created on September 26, 2018, 11:46 AM
+ */
+
+#include <cstdlib>
+#include <iostream>
+#include <sstream>
+
+using namespace std;
+
+int main(int argc, char** argv)
+{
+    string nome, word;
+    bool t = false;
+    
+    istringstream is;
+    
+    cout << "Nome: ";
+    getline(cin, nome);
+    
+    is.str(nome);
+    
+    while(is >> word)
+    {
+        cout << word << endl;
+        if(word == "silva" || word == "Silva")
+        {
+            t = true;
+        }
+    }
+    
+    if(t == true)
+    {
+        cout << "E o Silva" << endl;
+    }
+
+    return 0;
+}
