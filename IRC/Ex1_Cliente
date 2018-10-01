@@ -1,0 +1,55 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <netinet/ip.h>
+#include <netinet/in.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+
+#define SERV_HOST_ADDR "127.0.0.1"
+#define SERV_UDP_PORT  6000
+#define BUFFERSIZE     4096
+
+void Abort(char *msg);
+
+int main(int argc, char **argv)
+{
+    if(argc != 2)
+    {
+        fprintf(stderr, "Falta de argumentos!\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    char message[BUFFERSIZE];
+    struct sockaddr_in serv_addr;
+    int msg_len;
+    int udp_socket = socket(AF_INET, SOCK_DGRAM, 0);
+    if (udp_socket == -1)
+    {
+        fprintf(stderr, "Erro a criar socket!\n");
+        return -1;
+    }
+    
+    memset((char*) &serv_addr, 0, sizeof(serv_addr));
+    
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_addr.s_addr = inet_addr(SERV_HOST_ADDR);
+    serv_addr.sin_port = htons(SERV_UDP_PORT);
+    
+    msg_len = strlen(argv[1]);
+    
+    if(sendto(udp_socket, argv[1], msg_len, 0, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) == -1)
+    {
+        fprintf(stderr, "Erro no envio da mensagem!\n");
+        return -2;
+    }
+    
+    fprintf(stdout, "Mensagem enviada!\n");
+    
+    close(udp_socket);
+    fprintf(stdout, "\n");
+        
+    return EXIT_SUCCESS;
+}
