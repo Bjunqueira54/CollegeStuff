@@ -1,3 +1,11 @@
+/*
+
+In this code we'll the getting 3 int numbers from the user's input and comparing them against each
+other trying to find the largest of the 3. Once the largest number is found, it'll be printed to the
+terminal with the appropriate message.
+
+*/
+
 #include <stdio.h>
 
 void main()
