@@ -1,3 +1,11 @@
+/*
+
+In this code a total number of seconds will be scanned from the user's input.
+After that several division and module operations will be carried out to fill the
+hours and the minutes variables to calculate the total amount of time in a HH:MM:SS format
+
+*/
+
 #include <stdio.h>  //included library. STandard Input Out
 
 void main() //main function. VOID returns nothing
