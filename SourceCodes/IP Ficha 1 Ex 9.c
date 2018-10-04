@@ -1,3 +1,9 @@
+/*
+
+Here we ask the user for 3 numbers, and the algorithm shall order from lowest to highest with multiple if\else conditions.
+
+*/
+
 #include <stdio.h>
 
 void main()
@@ -13,18 +19,18 @@ void main()
     printf("Numero 3: ");
     scanf("%i", &n3);
 
-    if (n1 > n2 && n1 > n3)
+    if (n1 > n2 && n1 > n3) //if n1 is the highest number
     {
-        if (n2 > n3)
+        if (n2 > n3)    //test to see if n2 is higher than n3
         {
-            printf("%i < %i < %i", n3, n2, n1);
+            printf("%i < %i < %i", n3, n2, n1); //and prints this if yes
         }
-        else
+        else    //else it means what this line is printing.
         {
             printf("%i < %i < %i", n2, n3, n1);
         }
     }
-    else if (n2 > n1 && n2 > n3)
+    else if (n2 > n1 && n2 > n3)    //Same as above, but for n2...
     {
         if (n1 > n3)
         {
@@ -35,7 +41,7 @@ void main()
             printf("%i < %i < %i", n1, n3, n2);
         }
     }
-    else if (n3 > n1 && n3 > n2)
+    else if (n3 > n1 && n3 > n2)    //...and for n3
     {
         if (n1 > n2)
         {
@@ -47,3 +53,5 @@ void main()
         }
     }
 }
+
+//PS: I don't check if all numbers are equal to each other. I was young and dumb back them (Now I'm just older and still dumb)
