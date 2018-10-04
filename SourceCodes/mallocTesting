@@ -1,3 +1,13 @@
+/*
+
+This is a basic malloc() testing code.
+It creates a basic pointer to memory and then
+increases it with malloc() to turn it into an array.
+THIS IS BASIC AND JUST FOR EASE OF LEARNING.
+The complex code is just bellow the first commented code.
+
+*/
+
 /* ESTE CÓDIGO É MUITO BÁSICO E FUNCIONA!
  * SERVE SÓ PARA MOSTRAR FUNCIONALIDADE BÁSICA DE
  * malloc() PARA CRIAÇÃO DE UM VETOR!
@@ -28,57 +38,68 @@ int main(int argc, char** argv)
     
     return (EXIT_SUCCESS);
 }*/
-// TERMINA AQUI O CÓDIGO BÁSICO!
+// TERMINA AQUI O CÓDIGO BÁSICO!    BASIC CODE ENDS HERE!
 
 #include <stdio.h>
 #include <stdlib.h>
 
-int* CriaVec(int *tam) //função ponteiro, necessário para fazer return de um ponteiro a igualar na main()
+int* CriaVec(int *tam) //função ponteiro, necessário para fazer return de um ponteiro a igualar na main(). Pointer function, necessary to return a pointer to another pointer in main()
 {
-    int *vec; //Inicia um ponteiro a um vetor local da função; Escolhendo a opção desta função novamente irá apagar o vetor e recomeçar
-    
+    int *vec;   //Inicia um ponteiro a um vetor local da função; Escolhendo a opção desta função novamente irá apagar o vetor e recomeçar
+                //Starts a pointer to a local array in the function. Choosing the option to this function again will delete the array and restart
+                
     printf("Tamanho do vetor inicial: ");
     fscanf(stdin, "%i", tam); //Escolhendo o tamanho inicial do vetor; Notem a falta de &, pois tam já é um ponteiro localizado em main()
                               // e nós queremos estar sempre a trabalhar com a mesma variável
+                              //Choosing the initial array size. Notice the lack of &, because this tam is already pointing to tam in main()
+                              // and we always want to work with the same variable
 
     vec = malloc(*tam * sizeof(int)); //Inicia-se um espaço de memória do tamanho (*tam) vezes o tamanho de um (int) e o ponteiro devolvido
                                       // é igual ao ponteiro vec.
+                                      //We create a space of memory with the size "(*tam) times the size of (int)" and the returned pointer
+                                      // is equal to the pointer vec.
     
     for(int i=0; i<(*tam); i++)
     {
-        printf("Pos. %i: ", i+1);
-        fscanf(stdin, "%i", vec+i); //Usamos o ciclo for para dar-mos um valor a cada espaço do vetor vec
+        printf("Pos. %i: ", i+1);   //Usamos o ciclo for para dar-mos um valor a cada espaço do vetor vec
+        fscanf(stdin, "%i", vec+i); //We use a cycle to give a value to each space of the array vec
     }
     
     return vec; //devolvemos vec, que como a função é um ponteiro em si, irá igualar ao ponteiro vec em main() e será o vetor a ser
                 //constantemente trabalhado durante todo o tempo que este programa esteja a correr
+                //We return vec, and since this function is a pointer function, it will equal to the pointer vec in main() and it'll be
+                //the array that will be constantly worked on during the whole time this code is running
 }
 
-int* AumentaVec(int *vec, int *tam) //Outra Função ponteiro
+int* AumentaVec(int *vec, int *tam) //Outra Função ponteiro     Another Pointer Function
 {
     int newTam, i;
     
     printf("Novo tamanho?(Atual %i): ", (*tam));
     fscanf(stdin, "%i", &newTam); //Escolhe-se o novo tamanho do vetor.
+                                  //Choosing the new array size
     
     //ATENÇÃO: Eu só testei e escrevi este programa a testar aumentos de tamanho de vetores.
     //Não sei como a função se comportará com valores menores que o tamanho atual!
+    //ATTENTION: I've only tested increasing the array in size.
+    //I have no idea how it'll behave with values lower than the current array size!
     
     vec  = realloc(vec, newTam * sizeof(int)); //Aumenta o vetor vec com o tamanho (newTam) vezes o tamanho de um (int) e iguala-o a vec
+                                               //Increased the array vec with the size "(newTam) times the size of an (int)" and equals it to vec
     
     for(i=(*tam); i<newTam; i++)
     {
-        printf("Pos. %i: ", i+1);
-        fscanf(stdin, "%i", &vec[i]); //Ciclo para escrever os novos espaços realocados no vetor vec
+        printf("Pos. %i: ", i+1);       //Ciclo para escrever os novos espaços realocados no vetor vec
+        fscanf(stdin, "%i", &vec[i]);   //Cycle to write all the new spaces reallocated in the array vec
     }
 
     (*tam) = newTam; //Atualizamos o tamanho de vec graças ao ponteiro que iniciamos em main()
-    
+                     //Updating vec's size thanks to the pointer to tam we created in main()
     return vec;
 }
 
-void ListaVec(int *vec, int tam)
-{
+void ListaVec(int *vec, int tam)    //Função para listar todos os valores the vec
+{                                   //Function that will list all values in vec
     for(int i=0; i<tam; i++)
     {
         printf("%i\n", vec[i]);
@@ -88,16 +109,17 @@ void ListaVec(int *vec, int tam)
 int main(int argc, char** argv)
 {
     int *vec;   //Este é o ponteiro para o vetor que será unicamente trabalho ao longo da execução deste programa e não será mudado
+                //This is the pointer to the array that will be worked on during the execution of this program and it will never be changed
     int tam, escolha = -1;
     
     while(escolha != 0) //O programa manterá a execução enquanto a escolha não for "0- Sair do Programa"
-    {
+    {                   //The code will be kept running until the choice is 0
         printf("Teste de mAlloc()\n");
-        printf("\t1- Criar o vetor\n");
-        printf("\t2- Aumentar o vetor\n");
-        printf("\t3- Diminuir o vetor\n");
-        printf("\t4- Lista o vetor\n");
-        printf("\t0- Sair do Programa\n\n");
+        printf("\t1- Criar o vetor\n");     //Create array
+        printf("\t2- Aumentar o vetor\n");  //Increase array
+        printf("\t3- Diminuir o vetor (NAO IMPLEMENTADO!)\n");  //Shrink array (NOT CODED!)
+        printf("\t4- Lista o vetor\n");     //List array
+        printf("\t0- Sair do Programa\n\n");    //Exit program
         
         printf("Escolha: ");
         fscanf(stdin, "%i", &escolha);
@@ -106,14 +128,17 @@ int main(int argc, char** argv)
         {
             case 1:
                 vec = CriaVec(&tam); //Temos o nosso ponteiro igual ao return da função ponteiro CriaVec()
+                                     //Our pointer is equal to what is returned in the function CriaVec()
                 break;
             case 2:
                 vec = AumentaVec(vec, &tam); // "^"
                 break;
             case 3: //Eram 4 da manha, quero descanço....
+                    //Pretty much me... "It was 4 in the morning, I to want rest..."
                 break;
             case 4:
                 ListaVec(vec, tam); //Listagem básica de um vetor só para ver se está tudo a funcionar certinho
+                                    //Basic array listing just to see if everything is working nicelly
                 break;
             case 0: 
                 break;
