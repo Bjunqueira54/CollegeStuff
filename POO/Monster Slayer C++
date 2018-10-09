@@ -1,0 +1,458 @@
+#include <cstdlib>
+#include <iostream>
+#include <sstream>
+#include <ctime>
+#include <random>
+
+#define HEROHP 100
+#define HEROMIN 10
+#define HEROMAX 50
+#define HEALMIN 15
+#define HEALMAX 30
+
+#define MONSTERHP 500
+#define MONSTERMIN 30
+#define MONSTERMAX 60
+
+using namespace std;
+
+mt19937 rng(time(NULL));
+uniform_int_distribution<int> critc(1, 100);
+uniform_int_distribution<int> herodmg(HEROMIN, HEROMAX);
+uniform_int_distribution<int> heroheal(HEALMIN, HEALMAX);
+uniform_int_distribution<int> monsterdmg(MONSTERMIN, MONSTERMAX);
+
+class Human
+{
+    string name;
+    int dmg, crit;
+    int hp, heal, hturn;
+    bool defending;
+    
+public:
+    Human()
+    {
+        hp = HEROHP;
+        hturn = 0;
+        defending = false;
+    }
+    
+    void SetName(string n)
+    {
+        name = n;
+    }
+    
+    string GetName()
+    {
+        return name;
+    }
+    
+    int Attack()
+    {   
+        dmg = herodmg(rng);
+        
+        crit = critc(rng);
+        
+        if(crit <= 35)
+        {
+            dmg = dmg * 2.5;
+            cout << name << " has landed a critical strike, dealing " << dmg << " damage to the monster." << endl;
+        }
+        else
+        {
+            cout << name << " has dealt " << dmg << " damage to the monster." << endl;
+        }
+        
+        return dmg;
+    }
+    
+    int Special()
+    {
+        if(critc(rng) >= 60)
+        {
+            dmg = herodmg(rng) * 5;
+            heal = dmg / 3;
+            hp += heal;
+            cout << name << " has landed a special attack, dealing " << dmg << " damage to the monster \nand healing himself for " << heal << " Health Points." << endl;
+            return dmg;
+        }
+        else
+        {
+            cout << name << " has missed the attack." << endl;
+            return 0;
+        }
+    }
+    
+    void Heal(int i)
+    {
+        heal = heroheal(rng);
+        hp = hp + heal;
+        hturn = i;
+        cout << "After focusing his powers, " << name << " has healed himself for " << heal << " Health Points." << endl;
+    }
+    
+    void Defend()
+    {
+        defending = true;
+        cout << name << " raises his shield and prepares for an attack." << endl;
+    }
+    bool GetDef()
+    {
+        return defending;
+    }
+    
+    void TakeDamage(int d)
+    {
+        hp = hp - d;
+    }
+    
+    int GetHealTurn()
+    {
+        return hturn;
+    }
+    
+    int GetHP()
+    {
+        return hp;
+    }
+};
+
+class Enemy
+{
+    int hp, dmg;
+    int dur, dimret, lsturn;
+    bool stun;
+    
+public:
+    Enemy()
+    {
+        hp = MONSTERHP;
+        dur = 0;
+        dimret = 0;
+        stun = false;
+        lsturn = 0;
+    }
+    
+    int Attack()
+    {
+        if(critc(rng) <= 10)
+        {
+            cout << "The monster missed his attack." << endl;
+            return 0;
+        }
+        else
+        {
+            dmg = monsterdmg(rng);
+            cout << "The monster attacks for " << dmg << " damage." << endl;
+        }
+        
+        return dmg;
+    }
+    
+    void TakeDamage(int d)
+    {
+        hp = hp - d;
+    }
+    
+    bool CheckStun()
+    {
+        return stun;
+    }
+    
+    void SetStun()
+    {
+        stun = true;
+        dur = 3 - dimret;
+        dimret++;
+        if(dur > 0)
+        {
+            cout << "The monster is now stunned." << endl;
+        }
+        else
+        {
+            cout << "The monster is stun imune." << endl;
+        }
+    }
+    
+    void SetDuration()
+    {
+        if(dur > 0)
+        {
+            dur--;
+        }
+        if(stun == false)
+        {
+            if(dimret > 0)
+                dimret--;
+        }
+        if(dur == 0)
+        {
+            stun = false;
+            //lsturn = i;
+        }
+    }
+    
+    void SetDimishingReturns(int i)
+    {
+        if(((i-lsturn) == 1) && stun == false)
+        {
+            dimret++;
+        }
+        else if(((i - lsturn) > 1) && stun == false)
+        {
+            if(dimret > 0)
+            {
+                dimret--;
+            }
+        }
+    }
+    
+    int GetHP()
+    {
+        return hp;
+    }
+    
+    void GetStunDuration()
+    {
+        if(dur > 1)
+        {
+            cout << "The monster is still stunned for " << dur << " turns." << endl;
+        }
+        else
+        {
+            cout << "The monster is still stunned for " << dur << " turn." << endl;
+        }
+    }
+};
+
+void Turorial();
+
+void Credits()
+{
+    system("clear");
+    cout << "Lead Programmer: Bruno 'GothicDread' Junqueira" << endl;
+    cout << "Game Tester: Bruno 'GothicDread' Junqueira \n\tKostas 'Reeko' Makridis" << endl;
+    cin.get();
+    cin.get();
+}
+
+void Victory(Human &Hero)
+{
+    system("clear");
+    cout <<  Hero.GetName() << " has defeated the monters!" << endl;
+    cout << "Congratulations!" << endl;
+    exit (EXIT_SUCCESS);
+}
+
+void Defeat()
+{
+    system("clear");
+    cout << "You've lost to the monster." << endl;
+    cout << "Git Gud!" << endl;
+    exit (EXIT_SUCCESS);
+}
+
+void MainTurnLoop(string n)
+{
+    Human Hero;
+    Enemy Monster;
+    
+    Hero.SetName(n);
+    
+    string handler;
+    
+    int i = 1;
+    int dmg, heal;
+    int choice, cflag;
+    
+    while(Monster.GetHP() > 0 && Hero.GetHP() > 0)
+    {
+        system("clear");
+        
+        //Monster.SetDimishingReturns(i);
+        Monster.SetDuration();
+        
+        cin.clear();
+
+        cout << "Turn " << i << endl;
+        
+        cout << Hero.GetName() << " has " << Hero.GetHP() << " hp and the monster has " << Monster.GetHP() << " HP." << endl;
+
+        cout << "1 - Attack" << endl;
+        cout << "2 - Special Attack" << endl;
+        cout << "3 - Heal" << endl;
+        cout << "4 - Defend" << endl;
+        cout << "Choice: ";
+        
+        do
+        {
+            cin >> choice;
+            
+            if(cin.good() == false)
+            {
+                cflag = 1;
+                cin.clear();
+                cin >> handler;
+            }
+            else
+            {
+                cflag = 0;
+            }
+        }
+        while(cflag == 1 || (choice < 1 && choice > 4));
+        
+        switch(choice)
+        {
+            case 1:
+                dmg = Hero.Attack();
+                Monster.TakeDamage(dmg);
+                
+                if(Monster.CheckStun() == true)
+                {
+                    Monster.GetStunDuration();
+                }
+                else
+                {
+                    dmg = Monster.Attack();
+                    Hero.TakeDamage(dmg);
+                }
+                break;
+                
+            case 2:
+                dmg = Hero.Special();
+                Monster.TakeDamage(dmg);
+                
+                if(Monster.CheckStun() == true)
+                {
+                    Monster.GetStunDuration();
+                }
+                else
+                {
+                    dmg = Monster.Attack();
+                    Hero.TakeDamage(dmg);
+                }
+                break;
+                
+            case 3:
+                if(i == 1)
+                {
+                    cout << "You can't heal on the first turn. \nYour mistake left a opening for the monster to attack." << endl;
+                }
+                else if((i - Hero.GetHealTurn()) == 1)
+                {
+                    cout << "You can't heal 2 turns in a row. \nYour mistake left an opening for the monster to attack." << endl;
+                }
+                else
+                {
+                    Hero.Heal(i);
+                }
+                
+                if(Monster.CheckStun() == true)
+                {
+                    Monster.GetStunDuration();
+                }
+                else
+                {
+                    dmg = Monster.Attack();
+                    Hero.TakeDamage(dmg);
+                }
+                break;
+                
+            case 4:
+                Hero.Defend();
+                if(Monster.CheckStun() == false)
+                {
+                    Monster.SetStun();
+                }
+                else
+                {
+                    cout << "The monster is already stunned." << endl;
+                }
+        }
+        
+        cin.get();
+        cin.get();
+        
+        i++;
+    }
+    
+    if(Monster.GetHP() <= 0)
+    {
+        Victory(Hero);
+    }
+    else if(Hero.GetHP() <= 0)
+    {
+        Defeat();
+    }
+}
+
+void StartGame()
+{
+    system("clear");
+    cout << "What's the Hero's name?" << endl;
+    string name;
+    cin >> name;
+    cout << "Good luck in your fight " << name << endl;
+    
+    MainTurnLoop(name);
+}
+
+void MainMenu()
+{
+    cout << "1 - Play Game" << endl;
+    cout << "2 - Tutorial" << endl;
+    cout << "3 - Credits" << endl;
+    cout << "4 - Exit Game" << endl;
+    
+    string handler;
+    int choice, cflag;
+    
+    do
+    {
+        cin >> choice;
+
+        if(cin.good() == false)
+        {
+            cflag = 1;
+            cin.clear();
+            cin >> handler;
+        }
+        else
+        {
+            cflag = 0;
+        }
+    }
+    while(cflag == 1 || (choice < 1 && choice > 4));
+    
+    switch(choice)
+    {
+        case 1:
+            StartGame();
+            break;
+        case 2:
+            //Tutorial();
+            MainMenu();
+            break;
+        case 3:
+            Credits();
+            MainMenu();
+            break;
+        case 4:
+            exit(EXIT_SUCCESS);
+            break;
+        default:
+            cout << "Invalid Option!" << endl;
+            cin.get();
+            MainMenu();
+    }
+}
+
+int main(int argc, char** argv)
+{
+    cout << "Welcome to Monster Slayer!" << endl;
+    cin.get();
+    
+    MainMenu();
+    return 0;
+}
+
