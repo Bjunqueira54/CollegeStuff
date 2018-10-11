@@ -1,0 +1,55 @@
+Geral:
+
+    Celulas alimento (5-20 configuravel) -DONE
+    Energia obtida por alimento (1-50 configuravel) -DONE
+    Nivel de fertilidade aleatorio ([1-100]) -DONE
+    Redução do nivel de fertilidade configurável (1-10) -DONE
+    Alimento consumido, patch fica preto -DONE
+    Quando energia fica 0, morrer -DONE
+
+    Moscas e Moscas-Estéreis (quantidade inicial configuravel) -DONE
+    Tempo de nascimento dos ovos configuravel por tick -DONE
+
+
+MOSCAS:
+
+    Verificar neighbors4 -DONE
+    Prioridade: Interações (Moscas, MoscasE) > Alimento -DONE?
+
+    Interações:
+
+        Se mosca encontrada em neighbors4, criar ovo nessa mosca encontrada -DONE
+
+    Alimentação: Mover-se para o patch alimento e consumir, restabelecendo energia -DONE
+
+    Caso não se alimente nem reproduza, mover-se para celula vazia -DONE?
+
+    Caso todas as celulas vizinhas tenham agentes (só ovos?), random para a direita ou para a esquerda -DONE?
+(só pode fazer 1 ação por "turno"?)
+
+
+MOSCASE:
+
+    Verificar neighbors -Done
+    Este agente só pode interagir
+
+    Interações:
+
+        Moscas: Reduz o nivel de fertilidade conforme o configurado -DONE
+                Quando uma mosca chega a nivel de fertilidade 0, morre e nasce uma moscaE com a energia da mosca que morreu
+        MoscasE: Se algum dos agentes tiver 10% ou menos de energia, o com menor energia morre e a energia que tinha passará a sobrevivente
+        OvoMosca: Reduz o nº total de moscas a nascer por 1 -DONE
+
+    Se no mesmo espaço existirem mais de 2 moscasE, morrem todas e nasce um mosca.
+        O nivel de energia desta nova mosca será o maior valor de energia de moscas vizinhas, se não houver nenhuma na vizinhança, o valor será 1
+
+    Se não puder realizar uma ação, mover-se aleatóriamente para a direita ou para a esquerda -DONE
+(Só pode fazer uma ação por "turno"?)
+
+OVOMOSCA:
+
+    Após X ticks (configuráveis), Y moscas nascem do ovo. -DONE?
+        Y = (fert1 + fert2) / 20 (arredondado por inteiro) -DONE?
+
+    Após o nascimento das moscas, OvoMosca morre. -DONE
+    
