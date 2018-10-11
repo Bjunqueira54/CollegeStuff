@@ -1,122 +1,464 @@
-breed [Flies Fly]
-breed [Sflies sfly]
-breed [Eggs Egg]
+breed [Flies Fly] ; criar as moscas
+breed [Sflies Sfly] ; criar as moscas estereis
+breed [Eggs Egg] ; criar ovos
 
-turtles-own [energy]
-Flies-own [fRate]
+turtles-own [energy] ; cada agente tem energia propria
+Flies-own [fRate] ;Fertility Rate
 Eggs-own [spawntick FliesHatch]
 
-to Setup
-  clear-all
-  reset-ticks
-  setup-patches
-  setup-turtles
+globals [fert1 fert2]
+
+to Setup ; função botão Setup
+  clear-all ; limpar memoria
+  reset-ticks ; fazer reset ao tempo
+  setup-patches ; chama setup-patches
+  setup-turtles ; chama setup-turtles
 End
 
-to setup-patches
-  ask patches with [pcolor = black]
+to setup-patches ; cria o ambiente
+  ask patches with [pcolor = black] ; patches com cor preta (cor de fundo)
   [
-    if random 101 < pFood
+    if random 101 < pFood ; random percentagem destas
     [
       set pcolor brown
     ]
   ]
 End
 
-to setup-turtles
-  create-flies nFlies
+to setup-turtles ; cria os agentes
+  create-flies nFlies ; moscas
   [
-    set color green
-    setxy random-xcor random-ycor
-    set fRate random 101
-    while [pcolor = brown]
+    set color green ; moscas a verde
+    setxy random-xcor random-ycor ; coordenadas iniciais random
+    set fRate random 101 ; nivel de fertilidade aleatório
+    while [pcolor = brown] ; enquanto o agente estiver no castanho
     [
-      setxy random-xcor random-ycor
+      setxy random-xcor random-ycor ; escolher posição nova random
     ]
   ]
-  create-sflies nSflies
+  create-sflies nSflies ;moscas estereis
   [
-    set color yellow
-    setxy random-xcor random-ycor
-    while [pcolor = brown]
+    set color yellow ; estereis a amarelo
+    setxy random-xcor random-ycor ; coordenadas iniciais random
+    while [pcolor = brown] ; enquanto o agente estiver no castanho
     [
-      setxy random-xcor random-ycor
+      setxy random-xcor random-ycor ; escolher posição nova random
     ]
   ]
 
-  ask turtles
+  ask turtles ; os agentes
   [
-    set shape "butterfly"
-    set energy random 100
-    set heading 0
+    set shape "butterfly" ; forma
+    set energy random 100 ; energia random
+    set heading 0 ;
   ]
 End
 
 to Go
+  ; mover agentes
+  manage-eggs
   move-sflies
   move-flies
 
-  ask turtles
+  ask turtles ; agentes
   [
-    if(energy <= 0)
+    if(energy <= 0) ; teste de energia
     [
-      die
+      die ; matar agente
     ]
   ]
 
-  if count turtles = 0
+  if count turtles = 0 ; nuemro de agentes = 0
   [
-    stop
+    stop ; parar simulação
   ]
-  tick
+  tick ; conta um tick
 End
 
-to move-sflies
+to move-sflies ; não foi testado
   ask Sflies
   [
-    fd 1
+    ifelse (any? Flies-on neighbors) or (any? Sflies-on neighbors) or (any? Eggs-on neighbors)
+    [
+      ifelse (any? Flies-on neighbors)
+      [
+        Sflies-LF-Flies
+      ]
+      [
+        ifelse (any? Sflies-on neighbors)
+        [
+          Sflies-LF-Sflies
+        ]
+        [
+          Sflies-LF-Eggs
+        ]
+      ]
+    ]
+    [
+      ifelse random 101 < 50
+      [
+        rt 90
+        fd 1
+      ]
+      [
+        lt 90
+        fd 1
+      ]
+    ]
+
     set energy energy - 1
   ]
 End
 
-to move-flies
+to move-flies ;Concluido, falta testar a fundo
   ask Flies
   [
-    ifelse any? Flies-on neighbors4
+    ifelse (any? Flies-on neighbors4) or (any? Flies-on neighbors4)
     [
-      ifelse any? Flies-on patch-ahead 1
+      ifelse (any? Flies-on neighbors4) and (any? Sflies-on neighbors4)
       [
-        fd 1
-        MakeLove
-      ]
-      [
-        rt 90
-        ifelse any? Flies-on patch-ahead 1
+        ifelse random 101 < 50
         [
-          fd 1
+          Flies-LF-Flies
         ]
         [
-          rt 90
-          ifelse any? Flies-on patch-ahead 1
-          [
-            fd 1
-          ]
-          [
-            rt 90
-            fd 1
-          ]
+          Flies-LF-Sflies
+          set fRate fRate - lRate
+        ]
+      ]
+      [
+        ifelse (any? Flies-on neighbors4)
+        [
+          Flies-LF-Flies
+        ]
+        [
+          Flies-LF-Sflies
+          set fRate fRate - lRate
         ]
       ]
     ]
     [
-      ifelse any? Sflies-on neighbors4
-      []
-      []
+      ifelse (any? neighbors4 with [pcolor = brown])
+      [
+        Flies-LF-Food
+      ]
+      [
+        ifelse random 101 < 50
+        [
+          rt 90
+          fd 1
+        ]
+        [
+          lt 90
+          fd 1
+        ]
+      ]
+    ]
+    set energy energy - 1
+  ]
+End
+
+to manage-eggs
+  ask Eggs
+  [
+    set spawntick spawntick - 1
+
+    if spawntick <= 0
+    [
+      hatch-Flies FliesHatch
+      [
+        set color green
+        set fRate random 101
+        set shape "butterfly"
+        set energy random 100
+        set heading 0
+      ]
+      die
     ]
   ]
 End
 
-to MakeLove
+to MakeLove ;Criação de novos ovos
+  set fert1 fRate ;nivel de fertilidade da mosca que percepciona em primeiro
+  ask Flies-on patch-ahead 1
+  [
+    set fert2 fRate ;nivel de fertilidade da mosca percepcionada
+    ask patch-here ;patch da mosca percepcionada
+    [
+      sprout-Eggs 1 ;cria um ovo no patch atual
+      [
+        set color gray
+        set shape "circle 2"
+        set spawntick tts ;ticks até nascerem as moscas
+        set FliesHatch (round ((fert1 + fert2) / 20)) ;calculo entre os 2 niveis de fertilidade
+        set energy 1 ;1 de energia só para não morrer
+      ]
+    ]
+  ]
+End
+
+to Eat
+  ask patch-ahead 1
+  [
+    set pcolor black
+  ]
+  fd 1
+  set energy energy + nEnergy
+End
+
+to Flies-LF-Sflies
+  ifelse any? Sflies-on patch-ahead 1
+  [stop]
+  [
+    rt 90
+    ifelse any? Sflies-on patch-ahead 1
+    [stop]
+    [
+      rt 90
+      ifelse any? Sflies-on patch-ahead 1
+      [stop]
+      [
+        rt 90
+        stop
+      ]
+    ]
+  ]
+End
+
+to Flies-LF-Flies
+  ifelse any? Flies-on patch-ahead 1
+  [MakeLove]
+  [
+    rt 90
+    ifelse any? Flies-on patch-ahead 1
+    [MakeLove]
+    [
+      rt 90
+      ifelse any? Flies-on patch-ahead 1
+      [MakeLove]
+      [
+        rt 90
+        MakeLove
+      ]
+    ]
+  ]
+End
+
+to Flies-LF-Food
+  ifelse [pcolor] of patch-ahead 1 = brown
+  [Eat]
+  [
+    rt 90
+    ifelse [pcolor] of patch-ahead 1 = brown
+    [Eat]
+    [
+      rt 90
+      ifelse [pcolor] of patch-ahead 1 = brown
+      [Eat]
+      [
+        rt 90
+        Eat
+      ]
+    ]
+  ]
+End
+
+to Sflies-LF-Flies
+  ifelse (any? Flies-on patch-ahead 1) or (any? Flies-on patch-left-and-ahead 90 1) or (any? Flies-on patch-right-and-ahead 90 1)
+  [
+    ifelse (any? Flies-on patch-ahead 1)
+    [
+      ask one-of Flies-on patch-ahead 1
+      [
+        set fRate fRate - lRate
+      ]
+    ]
+    [
+      ifelse (any? Flies-on patch-left-and-ahead 90 1)
+      [
+        ask one-of Flies-on patch-left-and-ahead 90 1
+        [
+          set fRate fRate - lRate
+        ]
+      ]
+      [
+        ask one-of Flies-on patch-right-and-ahead 90 1
+        [
+          set fRate fRate - lRate
+        ]
+      ]
+    ]
+  ]
+  [
+    rt 180
+    ifelse (any? Flies-on patch-ahead 1) or (any? Flies-on patch-left-and-ahead 90 1) or (any? Flies-on patch-right-and-ahead 90 1)
+    [
+      ifelse (any? Flies-on patch-ahead 1)
+      [
+        ask one-of Flies-on patch-ahead 1
+        [
+          set fRate fRate - lRate
+        ]
+      ]
+      [
+        ifelse (any? Flies-on patch-left-and-ahead 90 1)
+        [
+          ask one-of Flies-on patch-left-and-ahead 90 1
+          [
+            set fRate fRate - lRate
+          ]
+        ]
+        [
+          ask one-of Flies-on patch-right-and-ahead 90 1
+          [
+            set fRate fRate - lRate
+          ]
+        ]
+      ]
+    ]
+    [
+      rt 90
+      ifelse any? Flies-on patch-ahead 1
+      [
+        ask (one-of Flies-on patch-ahead 1)
+        [
+          set fRate fRate - lRate
+        ]
+      ]
+      [
+        rt 180
+        if any? Flies-on patch-ahead 1
+        [
+          ask (one-of Flies-on patch-ahead 1)
+          [
+            set fRate fRate - lRate
+          ]
+        ]
+      ]
+    ]
+  ]
+End
+
+to Sflies-LF-Sflies
+  ifelse (any? Sflies-on patch-ahead 1) or (any? Sflies-on patch-left-and-ahead 90 1) or (any? Sflies-on patch-right-and-ahead 90 1)
+  [
+    ifelse (any? Sflies-on patch-ahead 1)
+    [
+
+    ]
+    [
+      ifelse (any? Sflies-on patch-left-and-ahead 90 1)
+      [
+
+      ]
+      [
+
+      ]
+    ]
+  ]
+  [
+    rt 180
+    ifelse (any? Sflies-on patch-ahead 1) or (any? Sflies-on patch-left-and-ahead 90 1) or (any? Sflies-on patch-right-and-ahead 90 1)
+    [
+      ifelse (any? Sflies-on patch-ahead 1)
+      [
+
+      ]
+      [
+        ifelse (any? Sflies-on patch-left-and-ahead 90 1)
+        [
+
+        ]
+        [
+
+        ]
+      ]
+    ]
+    [
+      rt 90
+      ifelse any? Sflies-on patch-ahead 1
+      [
+
+      ]
+      [
+        rt 180
+
+      ]
+    ]
+  ]
+End
+
+to Sflies-LF-Eggs
+  ifelse (any? Eggs-on patch-ahead 1) or (any? Eggs-on patch-right-and-ahead 90 1) or (any? Eggs-on patch-left-and-ahead 90 1)
+  [
+    ifelse (any? Eggs-on patch-ahead 1)
+    [
+      ask one-of Eggs-on patch-ahead 1
+      [
+        set FliesHatch FliesHatch - 1
+      ]
+    ]
+    [
+      ifelse (any? Eggs-on patch-left-and-ahead 90 1)
+      [
+        ask one-of Eggs-on patch-left-and-ahead 90 1
+        [
+          set FliesHatch FliesHatch - 1
+        ]
+      ]
+      [
+        ask one-of Eggs-on patch-right-and-ahead 90 1
+        [
+          set FliesHatch FliesHatch - 1
+        ]
+      ]
+    ]
+  ]
+  [
+    rt 180
+    ifelse (any? Eggs-on patch-ahead 1) or (any? Eggs-on patch-right-and-ahead 90 1) or (any? Eggs-on patch-left-and-ahead 90 1)
+    [
+      ifelse (any? Eggs-on patch-ahead 1)
+      [
+        ask one-of Eggs-on patch-ahead 1
+        [
+          set FliesHatch FliesHatch - 1
+        ]
+      ]
+      [
+        ifelse (any? Eggs-on patch-left-and-ahead 90 1)
+        [
+          ask one-of Eggs-on patch-left-and-ahead 90 1
+          [
+            set FliesHatch FliesHatch - 1
+          ]
+        ]
+        [
+          ask one-of Eggs-on patch-right-and-ahead 90 1
+          [
+            set FliesHatch FliesHatch - 1
+          ]
+        ]
+      ]
+    ]
+    [
+      rt 90
+      ifelse (any? Eggs-on patch-ahead 1)
+      [
+        ask one-of Eggs-on patch-ahead 1
+        [
+          set FliesHatch FliesHatch - 1
+        ]
+      ]
+      [
+        rt 180
+        ask one-of Eggs-on patch-ahead 1
+        [
+          set FliesHatch FliesHatch - 1
+        ]
+      ]
+    ]
+  ]
 End
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -204,7 +546,7 @@ nEnergy
 nEnergy
 1
 50
-0.0
+50.0
 1
 1
 NIL
@@ -234,7 +576,7 @@ nSflies
 nSflies
 1
 100
-50.0
+91.0
 15
 1
 NIL
@@ -249,7 +591,22 @@ lRate
 lRate
 0
 10
-0.0
+10.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+13
+221
+185
+254
+tts
+tts
+1
+1000
+1.0
 1
 1
 NIL
