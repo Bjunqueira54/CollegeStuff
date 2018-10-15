@@ -56,7 +56,7 @@ End
 
 to Go
   ; mover agentes
-  manage-eggs
+  ;manage-eggs
   move-sflies
   move-flies
 
