@@ -113,7 +113,7 @@ End
 to move-flies ;Concluido, falta testar a fundo
   ask Flies
   [
-    ifelse (any? Flies-on neighbors4) or (any? Flies-on neighbors4)
+    ifelse (any? Flies-on neighbors4) or (any? Sflies-on neighbors4)
     [
       ifelse (any? Flies-on neighbors4) and (any? Sflies-on neighbors4)
       [
