@@ -206,6 +206,31 @@ to Eat
   set energy energy + nEnergy
 End
 
+to GetOff
+  ifelse random 101 < 50
+  [
+    ifelse random 101 < 50
+    [
+      fd 1
+    ]
+    [
+      rt 180
+      fd 1
+    ]
+  ]
+  [
+    lt 90
+    ifelse random 101 < 50
+    [
+      fd 1
+    ]
+    [
+      rt 180
+      fd 1
+    ]
+  ] 
+End
+
 to Flies-LF-Sflies
   ifelse any? Sflies-on patch-ahead 1
   [stop]
@@ -225,20 +250,30 @@ to Flies-LF-Sflies
   ]
 End
 
-to Flies-LF-Flies
+to Flies-LF-Flies ; moscas à procura de moscas
   ifelse any? Flies-on patch-ahead 1
-  [MakeLove]
+  [
+    MakeLove
+    GetOff
+  ]
   [
     rt 90
     ifelse any? Flies-on patch-ahead 1
-    [MakeLove]
+    [
+      MakeLove
+      GetOff
+    ]
     [
       rt 90
       ifelse any? Flies-on patch-ahead 1
-      [MakeLove]
+      [
+        MakeLove
+        GetOff
+      ]
       [
         rt 90
         MakeLove
+        GetOff
       ]
     ]
   ]
