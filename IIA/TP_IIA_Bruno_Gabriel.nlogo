@@ -45,7 +45,7 @@ to setup-turtles ; cria os agentes
       setxy random-xcor random-ycor ; escolher posição nova random
     ]
   ]
-
+  
   ask turtles ; os agentes
   [
     set shape "butterfly" ; forma
@@ -56,10 +56,10 @@ End
 
 to Go
   ; mover agentes
-  ;manage-eggs
+  manage-eggs
   move-sflies
   move-flies
-
+  
   ask turtles ; agentes
   [
     if(energy <= 0) ; teste de energia
@@ -67,7 +67,7 @@ to Go
       die ; matar agente
     ]
   ]
-
+  
   if count turtles = 0 ; nuemro de agentes = 0
   [
     stop ; parar simulação
@@ -105,7 +105,7 @@ to move-sflies ; não foi testado
         fd 1
       ]
     ]
-
+    
     set energy energy - 1
   ]
 End
@@ -162,8 +162,8 @@ to manage-eggs
   ask Eggs
   [
     set spawntick spawntick - 1
-
-    if spawntick <= 0
+    
+    if (spawntick = 0)
     [
       hatch-Flies FliesHatch
       [
@@ -171,7 +171,32 @@ to manage-eggs
         set fRate random 101
         set shape "butterfly"
         set energy random 100
-        set heading 0
+        ifelse random 101 < 50
+        [
+          ifelse random 101 < 50
+          [
+            rt 90
+            fd 2
+            set energy energy - 1
+          ]
+          [
+            lt 90
+            fd 2
+            set energy energy - 1
+          ]
+        ]
+        [
+          ifelse random 101 < 50
+          [
+            fd 2
+            set energy energy - 1
+          ]
+          [
+            rt 180
+            fd 2
+            set energy energy - 1
+          ]
+        ]
       ]
       die
     ]
@@ -379,15 +404,15 @@ to Sflies-LF-Sflies
   [
     ifelse (any? Sflies-on patch-ahead 1)
     [
-
+      
     ]
     [
       ifelse (any? Sflies-on patch-left-and-ahead 90 1)
       [
-
+        
       ]
       [
-
+        
       ]
     ]
   ]
@@ -397,15 +422,15 @@ to Sflies-LF-Sflies
     [
       ifelse (any? Sflies-on patch-ahead 1)
       [
-
+        
       ]
       [
         ifelse (any? Sflies-on patch-left-and-ahead 90 1)
         [
-
+          
         ]
         [
-
+          
         ]
       ]
     ]
@@ -413,11 +438,11 @@ to Sflies-LF-Sflies
       rt 90
       ifelse any? Sflies-on patch-ahead 1
       [
-
+        
       ]
       [
         rt 180
-
+        
       ]
     ]
   ]
