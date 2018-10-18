@@ -45,7 +45,7 @@ to setup-turtles ; cria os agentes
       setxy random-xcor random-ycor ; escolher posição nova random
     ]
   ]
-  
+
   ask turtles ; os agentes
   [
     set shape "butterfly" ; forma
@@ -59,7 +59,7 @@ to Go
   manage-eggs
   move-sflies
   move-flies
-  
+
   ask turtles ; agentes
   [
     if(energy <= 0) ; teste de energia
@@ -67,7 +67,7 @@ to Go
       die ; matar agente
     ]
   ]
-  
+
   if count turtles = 0 ; nuemro de agentes = 0
   [
     stop ; parar simulação
@@ -106,7 +106,6 @@ to move-sflies ; não foi testado
         fd 1
       ]
     ]
-    
     set energy energy - 1
   ]
 End
@@ -157,7 +156,13 @@ to move-flies ;Concluido, falta testar a fundo
     ]
     if(fRate <= 0)
     [
-      set breed Sflies
+      hatch-Sflies 1
+      [
+        set color yellow
+        set shape "butterfly"
+        set heading 0
+      ]
+      die
     ]
     set energy energy - 1
   ]
@@ -178,7 +183,7 @@ to manage-eggs
       die
     ]
     set spawntick spawntick - 1
-    
+
     if (spawntick = 0)
     [
       hatch-Flies FliesHatch
@@ -585,9 +590,9 @@ to-report max-energy
       set newenergy energy
     ]
   ]
-  
+
   rt 180
-  
+
   if any? Flies-on patch-left-and-ahead 90 1
   [
     ask one-of Flies-on patch-left-and-ahead 90 1
@@ -609,9 +614,9 @@ to-report max-energy
       set newenergy energy
     ]
   ]
-  
+
   rt 90
-  
+
   if any? Flies-on patch-ahead 1
   [
     ask one-of Flies-on patch-ahead 1
@@ -619,9 +624,9 @@ to-report max-energy
       set newenergy energy
     ]
   ]
-  
+
   rt 180
-  
+
   if any? Flies-on patch-ahead 1
   [
     ask one-of Flies-on patch-ahead 1
@@ -629,7 +634,7 @@ to-report max-energy
       set newenergy energy
     ]
   ]
-  
+
   report newenergy
 End
 
@@ -804,7 +809,7 @@ pFood
 pFood
 5
 20
-10.0
+5.0
 1
 1
 NIL
@@ -819,7 +824,7 @@ nEnergy
 nEnergy
 1
 50
-50.0
+1.0
 1
 1
 NIL
@@ -834,7 +839,7 @@ nFlies
 nFlies
 1
 100
-100.0
+10.0
 1
 1
 NIL
@@ -849,8 +854,8 @@ nSflies
 nSflies
 1
 100
-91.0
-15
+50.0
+1
 1
 NIL
 HORIZONTAL
@@ -879,11 +884,52 @@ tts
 tts
 1
 1000
-1.0
+3.0
 1
 1
 NIL
 HORIZONTAL
+
+MONITOR
+36
+328
+93
+373
+Flies
+count Flies
+17
+1
+11
+
+MONITOR
+92
+328
+149
+373
+SFlies
+count Sflies
+17
+1
+11
+
+PLOT
+651
+10
+851
+160
+Graph
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"Flies" 1.0 0 -15040220 true "" "plot count Flies"
+"Sflies" 1.0 0 -1184463 true "" "plot count Sflies"
 
 @#$#@#$#@
 ## WHAT IS IT?
