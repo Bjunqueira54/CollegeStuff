@@ -6,7 +6,7 @@ turtles-own [energy] ; cada agente tem energia propria
 Flies-own [fRate] ;Fertility Rate
 Eggs-own [spawntick FliesHatch]
 
-globals [fert1 fert2]
+globals [fert1 fert2 deadenergy newenergy]
 
 to Setup ; função botão Setup
   clear-all ; limpar memoria
@@ -78,6 +78,7 @@ End
 to move-sflies ; não foi testado
   ask Sflies
   [
+    Sflies-breeding
     ifelse (any? Flies-on neighbors) or (any? Sflies-on neighbors) or (any? Eggs-on neighbors)
     [
       ifelse (any? Flies-on neighbors)
@@ -154,6 +155,10 @@ to move-flies ;Concluido, falta testar a fundo
         ]
       ]
     ]
+    if(fRate <= 0)
+    [
+      set breed Sflies
+    ]
     set energy energy - 1
   ]
 End
@@ -161,6 +166,17 @@ End
 to manage-eggs
   ask Eggs
   [
+    if ((count Eggs-on patch-here) > 1)
+    [
+      ask one-of Eggs-on patch-here
+      [
+        die
+      ]
+    ]
+    if (FliesHatch <= 0)
+    [
+      die
+    ]
     set spawntick spawntick - 1
     
     if (spawntick = 0)
@@ -176,24 +192,24 @@ to manage-eggs
           ifelse random 101 < 50
           [
             rt 90
-            fd 2
+            fd 1
             set energy energy - 1
           ]
           [
             lt 90
-            fd 2
+            fd 1
             set energy energy - 1
           ]
         ]
         [
           ifelse random 101 < 50
           [
-            fd 2
+            fd 1
             set energy energy - 1
           ]
           [
             rt 180
-            fd 2
+            fd 1
             set energy energy - 1
           ]
         ]
@@ -253,23 +269,25 @@ to GetOff
       rt 180
       fd 1
     ]
-  ] 
+  ]
 End
 
 to Flies-LF-Sflies
   ifelse any? Sflies-on patch-ahead 1
-  [stop]
+  [set fRate fRate - lRate]
   [
     rt 90
     ifelse any? Sflies-on patch-ahead 1
-    [stop]
+    [
+      set fRate fRate - lRate
+    ]
     [
       rt 90
       ifelse any? Sflies-on patch-ahead 1
-      [stop]
+      [set fRate fRate - lRate]
       [
         rt 90
-        stop
+        set fRate fRate - lRate
       ]
     ]
   ]
@@ -278,27 +296,51 @@ End
 to Flies-LF-Flies ; moscas à procura de moscas
   ifelse any? Flies-on patch-ahead 1
   [
-    MakeLove
-    GetOff
+    ifelse any? Eggs-on patch-ahead 1
+    [
+      GetOff
+    ]
+    [
+      MakeLove
+      GetOff
+    ]
   ]
   [
     rt 90
     ifelse any? Flies-on patch-ahead 1
     [
-      MakeLove
-      GetOff
+      ifelse any? Eggs-on patch-ahead 1
+      [
+        GetOff
+      ]
+      [
+        MakeLove
+        GetOff
+      ]
     ]
     [
       rt 90
       ifelse any? Flies-on patch-ahead 1
       [
-        MakeLove
-        GetOff
+        ifelse any? Eggs-on patch-ahead 1
+        [
+          GetOff
+        ]
+        [
+          MakeLove
+          GetOff
+        ]
       ]
       [
         rt 90
-        MakeLove
-        GetOff
+        ifelse any? Eggs-on patch-ahead 1
+        [
+          GetOff
+        ]
+        [
+          MakeLove
+          GetOff
+        ]
       ]
     ]
   ]
@@ -404,15 +446,42 @@ to Sflies-LF-Sflies
   [
     ifelse (any? Sflies-on patch-ahead 1)
     [
-      
+      ask (one-of Sflies-on patch-ahead 1)
+      [
+        if (energy < 10)
+        [
+          set deadenergy energy
+          die
+        ]
+      ]
+      set energy energy + deadenergy
     ]
     [
       ifelse (any? Sflies-on patch-left-and-ahead 90 1)
       [
-        
+        ask (one-of Sflies-on patch-left-and-ahead 90 1)
+        [
+          if (energy < 10)
+          [
+            set deadenergy energy
+            die
+          ]
+        ]
+        set energy energy + deadenergy
       ]
       [
-        
+        if (any? Sflies-on patch-right-and-ahead 90 1)
+        [
+          ask (one-of Sflies-on patch-right-and-ahead 90 1)
+          [
+            if (energy < 10)
+            [
+              set deadenergy energy
+              die
+            ]
+          ]
+          set energy energy + deadenergy
+        ]
       ]
     ]
   ]
@@ -422,15 +491,42 @@ to Sflies-LF-Sflies
     [
       ifelse (any? Sflies-on patch-ahead 1)
       [
-        
+        ask (one-of Sflies-on patch-ahead 1)
+        [
+          if (energy < 10)
+          [
+            set deadenergy energy
+            die
+          ]
+        ]
+        set energy energy + deadenergy
       ]
       [
         ifelse (any? Sflies-on patch-left-and-ahead 90 1)
         [
-          
+          ask (one-of Sflies-on patch-left-and-ahead 90 1)
+          [
+            if (energy < 10)
+            [
+              set deadenergy energy
+              die
+            ]
+          ]
+          set energy energy + deadenergy
         ]
         [
-          
+          if (any? Sflies-on patch-right-and-ahead 90 1)
+          [
+            ask (one-of Sflies-on patch-right-and-ahead 90 1)
+            [
+              if (energy < 10)
+              [
+                set deadenergy energy
+                die
+              ]
+            ]
+            set energy energy + deadenergy
+          ]
         ]
       ]
     ]
@@ -438,14 +534,125 @@ to Sflies-LF-Sflies
       rt 90
       ifelse any? Sflies-on patch-ahead 1
       [
-        
+        ask (one-of Sflies-on patch-ahead 1)
+        [
+          if (energy < 10)
+          [
+            set deadenergy energy
+            die
+          ]
+        ]
+        set energy energy + deadenergy
       ]
       [
         rt 180
-        
+        if any? Sflies-on patch-ahead 1
+        [
+          ask (one-of Sflies-on patch-ahead 1)
+          [
+            if (energy < 10)
+            [
+              set deadenergy energy
+              die
+            ]
+          ]
+          set energy energy + deadenergy
+        ]
       ]
     ]
   ]
+End
+
+to-report max-energy
+  if any? Flies-on patch-left-and-ahead 90 1
+  [
+    ask one-of Flies-on patch-left-and-ahead 90 1
+    [
+      set newenergy energy
+    ]
+  ]
+  if any? Flies-on patch-ahead 1
+  [
+    ask one-of Flies-on patch-ahead 1
+    [
+      set newenergy energy
+    ]
+  ]
+  if any? Flies-on patch-right-and-ahead 90 1
+  [
+    ask one-of Flies-on patch-right-and-ahead 90 1
+    [
+      set newenergy energy
+    ]
+  ]
+  
+  rt 180
+  
+  if any? Flies-on patch-left-and-ahead 90 1
+  [
+    ask one-of Flies-on patch-left-and-ahead 90 1
+    [
+      set newenergy energy
+    ]
+  ]
+  if any? Flies-on patch-ahead 1
+  [
+    ask one-of Flies-on patch-ahead 1
+    [
+      set newenergy energy
+    ]
+  ]
+  if any? Flies-on patch-right-and-ahead 90 1
+  [
+    ask one-of Flies-on patch-right-and-ahead 90 1
+    [
+      set newenergy energy
+    ]
+  ]
+  
+  rt 90
+  
+  if any? Flies-on patch-ahead 1
+  [
+    ask one-of Flies-on patch-ahead 1
+    [
+      set newenergy energy
+    ]
+  ]
+  
+  rt 180
+  
+  if any? Flies-on patch-ahead 1
+  [
+    ask one-of Flies-on patch-ahead 1
+    [
+      set newenergy energy
+    ]
+  ]
+  
+  report newenergy
+End
+
+to Sflies-breeding
+  if ((count Sflies-on patch-here) > 2)
+  [
+    ask one-of Sflies-on patch-here
+    [
+      set breed Flies
+      ifelse (any? Flies-on neighbors)
+      [
+        set energy max-energy
+      ]
+      [
+        set energy 1
+      ]
+    ]
+    ask Sflies-on patch-here
+    [
+      die
+    ]
+  ]
+  fd 1
 End
 
 to Sflies-LF-Eggs
@@ -512,9 +719,15 @@ to Sflies-LF-Eggs
       ]
       [
         rt 180
-        ask one-of Eggs-on patch-ahead 1
+        ifelse (any? Eggs-on patch-ahead 1)
         [
-          set FliesHatch FliesHatch - 1
+          ask one-of Eggs-on patch-ahead 1
+          [
+            set FliesHatch FliesHatch - 1
+          ]
+        ]
+        [
+          fd 1
         ]
       ]
     ]
