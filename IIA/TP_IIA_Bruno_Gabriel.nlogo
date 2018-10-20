@@ -21,6 +21,16 @@ to setup-patches ; cria o ambiente
     if random 101 < pFood ; random percentagem destas
     [
       set pcolor brown
+      if poison ; se switch poison - on 
+      [
+        ask patches with [pcolor = brown] ; todas as patches castanhas
+        [
+          if random 101 > pQuant ; numero random de patches consoante o pQuant slider
+          [
+            set plabel one-of ["P" ""] ; metes labels a "P" e ""
+          ]
+        ]
+      ]
     ]
   ]
 End
@@ -249,7 +259,12 @@ to Eat
     set pcolor black
   ]
   fd 1
-  set energy energy + nEnergy
+  ifelse plabel = "P" ; se for veneno
+  [
+    set plabel "" ; tira a label da patch
+    die ; o agente morre
+  ]
+  [set energy energy + energy] ; caso contrario, aumenta a energia devido ao alimento
 End
 
 to GetOff
