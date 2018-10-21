@@ -5,19 +5,17 @@
 
 int main(int argc, char** argv) 
 {
-   float qtd_proprio, qtd_branco, qtd_tinto, qtd_coop, qtd_colhidas ;
+   float qtd_proprio, qtd_branco, qtd_tinto, qtd_coop, qtd_colhidas;
       
-    printf("Qual a quantidade de uvas colhidas:");
-    scanf("%f",&qtd_colhidas);
+    printf("Qual a quantidade de uvas colhidas: ");
+    scanf("%f", &qtd_colhidas);
     
     qtd_coop = COOP * qtd_colhidas;
     qtd_proprio = qtd_colhidas - qtd_coop;
     qtd_branco = PRODBRANCO * qtd_colhidas;
     qtd_tinto = qtd_coop - qtd_branco;
     
-    printf("Consumo Proprio:%5.2f\n" "Vinho Branco: %5.2f\n" 
-            "Vinho Tinto:%5.2f\n" 
-            "Cooperativa:%5.2f\n", qtd_proprio,qtd_branco, qtd_tinto, qtd_coop);
+    printf("Consumo Proprio: %5.2f\nVinho Branco: %5.2f\nVinho Tinto:%5.2f\nCooperativa:%5.2f\n", qtd_proprio, qtd_branco, qtd_tinto, qtd_coop);
             
     return (EXIT_SUCCESS);
 }
