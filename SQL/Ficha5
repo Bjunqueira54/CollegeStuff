@@ -1,8 +1,18 @@
--- 1.
+-- 1. a)
 
 SELECT LIVROS.TITULO, LIVROS.PRECO_TABELA
 FROM LIVROS
-WHERE LIVROS.GENERO LIKE 'I%' AND LIVROS.PRECO_TABELA = (
-SELECT MAX(LIVROS.PRECO_TABELA)
+WHERE LIVROS.GENERO LIKE 'I%' AND LIVROS.PRECO_TABELA = (SELECT MAX(LIVROS.PRECO_TABELA)
+                                                         FROM LIVROS
+                                                         WHERE LIVROS.GENERO LIKE 'I%');
+
+-- 1. b)
+
+SELECT LIVROS.TITULO, LIVROS.PRECO_TABELA
 FROM LIVROS
-WHERE LIVROS.GENERO LIKE 'I%');
+WHERE LIVROS.GENERO LIKE 'I%' AND PRECO_TABELA >= ALL (SELECT LIVROS.PRECO_TABELA
+                                                       FROM LIVROS
+                                                       WHERE LIVROS.GENERO LIKE 'I%');
+
+-- 1. c)
+
