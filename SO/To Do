@@ -1,0 +1,85 @@
+MEDIT
+
+1. DESCRIÇÃO GERAL
+
+- cada utilizador tem um username (solicitado no inicio)
+
+FORMATO DE TEXTO:
+
+    - edição de texto num unico ecra (15 linhas, 45 colunas) alteravel (MEDIT_MAXLINES e MEDIT_MAXCOLUMNS)
+    - a unidade de edição de texto em a linha do ecra (não o paragrafo)
+
+VERIFICAÇÃO ORTOGRAFICA:
+
+    - feita pelo Servidor, após a edição de uma linha
+    - verificação consiste em saber se a palavra existe num dicionário (GNU Aspell) através de pipes entre o Servidor e Aspell
+    - manter o dicionário em execução permanente
+
+UTILIZAÇÃO EM PARALELO:
+
+    - alterações são visiveis em real time a todos
+    - edição de uma linha de cada vez por utilizador
+    - movimento pelo texto com teclas de cursor
+    - inicio da edição: premir ENTER na linha (utilizador ganha posse dessa linha)
+    - final da edição: premir ENTER de novo
+    - cancelar a edição: premir ESC
+    - no ecra as linhas devem ser precedidas do seu número e do username responsável, ou sem nenhum caso não tenham sido editadas
+
+EDIÇÃO DE TEXTO:
+
+    MODO DE NAVEGAÇÃO DE TEXTO:
+        - movimentar-se ao longo do texto com teclas de cursor
+        - pode se mover por linhas em branco ou com conteudo
+        - iniciar edição: premir ENTER numa linha
+
+    MODO DE EDIÇÃO DE LINHA:
+        - movimentar-se na linha com teclas de cursor (não pode mudar de linha)
+        - inserir carateres (modo insert) (->texto)
+        - caso não exista espaço, não são permitidos mais carateres
+        - apagar carateres (modo insert) (<-texto)
+        - finalizar edição: premir ENTER (servidor verifica ortografia)
+            - recusa-se a finalizar a edição se houver erros 
+            - alerta o utilizador para a existencia de erros 
+            - mantem se aberto para ser corrigido
+        - cancelar a edição feita: ESC (volta para o MODO DE NAVEGAÇÃO DE TEXTO)
+            - o servidor restaura o conteudo da linha
+        - carateres introduzidos em real time
+
+ASPETOS DE ARQUITETURA DE SISTEMA:
+
+    CLIENTE/SERVIDOR (named pipes)
+        - o servidor tem 1 named pipe principal e N named pipes de iteração
+            - named pipe principal recebe pedidos de ligação de novos utilizadores
+            - os outros named pipes são para atender clientes entretanto recebidos
+        - os clientes através da named pipe principal solicitam uma ligação
+        - é feita a verificação na base de dados de usernames registados
+        - named pipes de interação devem usar o username (?)
+        - servidor atribui o named pipe que está a servir menos utilizadores
+        - mais detalhes no inicio da pag. 4
+
+OUTRAS CARATERISTICAS DE FUNCIONALIDADE:
+
+    ESTATISTICAS:
+        - o servidor fornece estatisticas relativas ao texto em edição:
+            - numero total de palavras
+            - numero de letras 
+            - 5 carateres mais comuns (ordem decrescente)
+            - informação atualizada ao segundo
+
+    TIMEOUT POR INATIVIDADE:
+        - uma linha em edição que não tenha alteraçĩes durante 10 segundos (var. MEDIT_TIMEOUT) é considerada livre para edição
+        - libertação por timeout funciona igual a cancelar a edição (ESC)
+
+    INTERFACE VISUAL E PERCEÇÃO VISUAL DE EDIÇÃO:
+        - modificações de texto são visiveis a todos os clientes em real time
+        - esta visualização pode incluir mudanças de cor do texto ou do fundo
+        - detalhes ficam ao nosso rigor
+
+    ADMINISTRADOR DO SERVIDOR:
+        - administrador: utilizador lançado pelo servidor
+        - o servidor recebe do administrador comandos escritos
+        - estes comandos são aceites e processados em paralelo com o resto
+        - as operações do utilizador são gestão de utilizadores e controlo de texto.
+    
+2. AQUITETURA E DETALHES ADICIONAIS DE FUNCIONALIDADE
+...
