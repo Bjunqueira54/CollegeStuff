@@ -82,4 +82,41 @@ OUTRAS CARATERISTICAS DE FUNCIONALIDADE:
         - as operações do utilizador são gestão de utilizadores e controlo de texto.
     
 2. AQUITETURA E DETALHES ADICIONAIS DE FUNCIONALIDADE
-...
+
+- todos os programas são lançados através da linha de comandos
+- cada um de um terminal diferente
+
+SERVIDOR:
+
+    - amazena e gere toda a informação relativa à edição de texto
+    - só corre um processo de cada vez
+    - programa definido pelo administrador do MEDIT (configura e contrala ambiente de edição)
+    - o servidor pode ser controlado diretamente através de uma interface (linha de comandos):
+        - settings: apresenta os parametros de funcionamento atuais
+        - load <filename>: carrega um numero maximo de linhas possivel do ficheiro de texto (conteudo do editor de texto é descartado)
+        - save <filename>: salvaguarda no ficheiro o mencionada conteudo atual do editor (validando a ortografia)
+        - free <linenumber>: liberta compulsivamente a linha especificada (descarta alterações entretanto introduzidas)
+        - statistics: mostra estatisticas coligadas a cada segundo
+        - users: mostra utilizadores (ordenados por ordem de entrada):
+            - para cada username mostra a idade de sessao
+            - mostra o named pipe de interação
+            - a percentagem de linhas da autoria no texto atual
+            - linha que se encontra a editar nesse momento (caso exista)
+        - text: mostra o texto presente no mesmo formato que é apresentado aos cliente
+        - shutdown: termina edições sem gravar e informa os clientes ativos
+
+CLIENTE:
+
+    - programa serve de interface com o utilizador para editar
+    - este não valida quaisquer regras de funcinamento do MEDIT nem armazena informação localmente acerca do estado atual do texto
+    - cada utilizador executa um só cliente (validação feita pelo servidor)
+    - interface com o utilizador (facil de usar):
+        - deve permitir a edição de uma linha de texto
+        - UP, DOWN, LEFT e RIGHT: movimentar-se ao longo do texto no MODO DE MAVEGAÇÃO DE TEXTO e MODO DE EDIÇÃO DE LINHA
+        - ENTER: comutar entre dois modos de funcionamento
+        - ESC: abandonar o MODO DE EDIÇÃO DE LINHA
+        - DEL e BACKSPACE: apagar carateres (<-texto)
+    - interage com o servidor através de named pipes e sinais
+    - processos clientes não interagem um com o outro diretamente
+    - informação a passar entre clietes é passada pelo servidor
+    
