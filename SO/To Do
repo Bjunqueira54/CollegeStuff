@@ -85,6 +85,7 @@ OUTRAS CARATERISTICAS DE FUNCIONALIDADE:
 
 - todos os programas são lançados através da linha de comandos
 - cada um de um terminal diferente
+- existe um numero maximo de utilizadores (var. MEDIT_MAXUSERS)
 
 SERVIDOR:
 
