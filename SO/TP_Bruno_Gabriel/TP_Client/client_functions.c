@@ -118,3 +118,23 @@ int mvModeLoop()
             return 0;
     }
 }
+
+char* preLinePrep(char* string, int stringlen, int curind)
+{
+    if(curind < 10)
+        sprintf(string, "(0%i)", curind);
+    else
+        sprintf(string, "(%i)", curind);
+    
+    //characters 5-14 are reserved for client [username]
+    for(int i=4; i<15; i++)
+        string[i] = ' ';
+    
+    string[15] = '|';
+    
+    for(int i=16; i<(stringlen+15); i++)
+        string[i] = ' ';
+    string[stringlen+15] = '\0';
+    
+    return string;
+}

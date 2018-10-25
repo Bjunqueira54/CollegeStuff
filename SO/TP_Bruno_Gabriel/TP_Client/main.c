@@ -31,24 +31,23 @@ int main(int argc, char** argv)
     ///// Preparação das variáveis necessárias para a edição de texto /////
     ///////////////////////////////////////////////////////////////////////
     
-    char line[15][46]; //15 linhas, 45 colunas + \0. Valores por defeito até ser implementada comunicação
-    char curline[46]; //Linha atual, 45 colunas + \0.
-    char preline[46]; //Linha antes de entrar no modo de edição
-    char linen[5]; //O numero que precede a linha, exemplo: "(03) ...", com 1 espaço extra para '\0'
-    //char lineu[10][MAXNAME]; //15 linhas, 8 colunas. Serve para mostrar o username na linha se estiver a ser editada
+    char line[15][15+45+1]; //15 linhas, 15 caracters de precedencia + 45 colunas + \0. Valores por defeito até ser implementada comunicação
+    char* curline; //Linha atual, 15 caracters de precedencia + 45 colunas + \0.
+    curline = malloc((15+45+1)*sizeof(char));
+    char preline[15+45+1]; //Linha antes de entrar no modo de edição
     int x, newx, y, newy;
     int c;
     int mode = 0; //Var. para determinar se estamos em modo de edição ou de seleção. 0=Seleção, 1=Edição, 2=Exit
     
-    /////////////////////////////////////
-    ///// Inicialização das strings /////
-    /////////////////////////////////////
+    /////////////////////////////////////////////
+    ///// Inicialização da string principal /////
+    /////////////////////////////////////////////
     
     for(int y=0; y<15; y++)
     {
-        for(int x=0; x<45; x++)
+        for(int x=0; x<15+45+1; x++)
             line[y][x] = ' ';
-        line[y][45] = '\0';
+        line[y][45+15+1] = '\0';
     }
     
     ////////////////////////////////////////////////////////////
@@ -59,23 +58,23 @@ int main(int argc, char** argv)
     noecho();
     keypad(stdscr, TRUE);
     
-    for(y=0; y<20; y++)
-        for(x=0; x<50; x++)
-            mvaddch(y, x, ' ');
-    
     for(y=1; y<=9; y++)
     {
-        sprintf(linen, "(0%i)", y);
-        mvaddstr(y-1, 0, linen);
+        curline = preLinePrep(curline, 45+1, y);
+        mvaddstr(y-1, 0, curline);
+        for(x=0; x<15+45+1; x++)
+            line[y-1][x] = curline[x];
     }
     for(y=10; y<=15; y++)
     {
-        sprintf(linen, "(%i)", y);
-        mvaddstr(y-1, 0, linen);
+        curline = preLinePrep(curline, 45+1, y);
+        mvaddstr(y-1, 0, curline);
+        for(x=0; x<15+45+1; x++)
+            line[y-1][x] = curline[x];
     }
     refresh();
 
-    move(0, 4);
+    move(0, 16);
     
     do
     {

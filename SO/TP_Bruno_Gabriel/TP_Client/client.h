@@ -23,6 +23,8 @@ extern "C" {
     //Protótipos de funções
     int edModeLoop();
     int mvModeLoop();
+    
+    char* preLinePrep(char* string, int stringlen, int curind);
 
 
 #ifdef __cplusplus

@@ -1,0 +1,25 @@
+Line format:
+
+(ln)[username]| (rest of string)
+example:
+
+(07)[gothic54]| This is an example string for medit
+
+ln - line number
+username - from 1 to 8 characters, client's username in pos 5-14
+
+total characters before line string -> 15
+
+
+[1] [2] [3] [4] [5]   [6] [7] [8] [9] [10] [11] [12] [13] [14]  [15]
+[(] [0] [1] [)] ['['] []  []  []  []  []   []   []   []   [']'] [|]
+
+
+
+
+TO-DO:
+
+    From line 80 until the end, fix the code to
+    accomodate the new string format changes.
+
+    Expect bugs at first run
