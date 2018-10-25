@@ -24,30 +24,57 @@ int edModeLoop()
             }
             return 1;
             
-        case 10:
+        case 10: //keyboard enter
             move(y, 4);
             return 0;
             break;
             
-        case KEY_ENTER:
+        case KEY_ENTER: //keypad enter
             move(y, 4);
             return 0;
             break;
             
-        case 27:
-            return 2;
+        case 27: //keyboard escape
+            move(y, 4);
+            return 5;
             break;
             
-        case 8:
+        case KEY_BACKSPACE: //keyboard backspace
+            if(x>4)
+            {
+                return 3;
+            }
+            return 1;
+            break;
+            
+        case KEY_DC: //keyboard del
+            if(x>4)
+            {
+                return 3;
+            }
+            return 1;
             break;
             
         default:
             if(c >= 32 && c <= 126)
             {
-                return c;
+                if(x<48)
+                    return c;
+                else
+                    return 1;
             }
+            /*else
+            {
+                int newx, newy;
+                getyx(stdscr, y, x);
+                newx=x;
+                newy=y;
+                char whatis[25];
+                sprintf(whatis, "%i", c);
+                mvwaddstr(stdscr, 17, 2, whatis);
+                move(newy, newx);
+            }*/
             return 1;
-            
     }
 }
 
@@ -75,15 +102,15 @@ int mvModeLoop()
             }
             return 0;
             
-        case 10:
-            return 1;
+        case 10:    //Keyboard Enter
+            return 4;
             break;
             
-        case KEY_ENTER:
-            return 1;
+        case KEY_ENTER: //Keypad Enter
+            return 4;
             break;
             
-        case 27:
+        case 27:    //Escape
             return 2;
             break;
             
