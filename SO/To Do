@@ -121,3 +121,23 @@ CLIENTE:
     - processos clientes não interagem um com o outro diretamente
     - informação a passar entre clietes é passada pelo servidor
     
+3. REQUISITOS E DESCRIÇÃO ADICIONAIS
+
+- OBRIGATÓRIOS
+
+SERVIDOR:
+
+    - apenas um processo servidor em execução (não é permitida um segundo)
+    - caso seja executada um novo processo servidor, esta devera terminar de imediato
+    - quando termina informa todos os clientes
+    - o servidor termina caso receba o sinal SIGUSR1 ou comando shutdown
+    - o acesso de dados por várias threads deve ser acutelado através de macanismos de sincronização (mutexes ou semáforos)
+    - o sevidor deve dar atenção a mais do que uma entrada de dados em simultaneo. isto será através de mecanismos estudados
+
+CLIENTE:
+
+    - podem correr vários processos em simultaneo
+    - o utilizador poderá abandonar a qualquer instante a edição do texto ou o programa todo (servidor age em conformidade)
+    - a interface é toda em modo texto (recurso a ncurses)
+    - visão do texto permanentemente atualizada
+    - cliente pode ter de dar atenção a mais que um assunto, por exemplo várias entradas de dados, em simultaneo (mecanismos estudados (threads, select...))
