@@ -85,7 +85,7 @@ int main(int argc, char** argv)
             if(mode == 4)
             {
                 getyx(stdscr, y, x);
-                for(x=0; x<46; x++)
+                for(x=0; x<15+45+1; x++)
                 {
                     preline[x] = line[y][x];
                 }
@@ -101,7 +101,7 @@ int main(int argc, char** argv)
                 getyx(stdscr, y, x);
                 newx = x;
                 newy = y;
-                line[y][x-4] = mode;
+                line[y][x] = mode;
                 mode = 1;
                 move(newy, newx+1);
             }
@@ -109,21 +109,21 @@ int main(int argc, char** argv)
             {
                 getyx(stdscr, y, x);
                 newx=x;
-                x-=4;
+                //x-=4;
                 newy=y;
-                line[y][45] = ' ';
-                for(;x<46; x++)
+                line[y][15+45] = ' ';
+                for(;x<15+45+1; x++)
                 {
                     line[y][x-1] = line[y][x];
                 }
-                line[y][45] = '\0';
+                line[y][15+45] = '\0';
                 move(newy, newx-1);
                 mode = 1;
             }
             else if(mode == 5)
             {
                 getyx(stdscr, y, x);
-                for(x=0; x<46; x++)
+                for(x=0; x<15+45+1; x++)
                 {
                     line[y][x] = preline[x];
                 }
@@ -135,11 +135,11 @@ int main(int argc, char** argv)
             newy=y;
             for(y=0; y<15; y++)
             {
-                for(x=0; x<46; x++)
+                for(x=0; x<15+45+1; x++)
                 {
                     curline[x] = line[y][x];
                 }
-                mvwaddstr(stdscr, y, 4, curline);
+                mvwaddstr(stdscr, y, 0, curline);
             }
             move(newy, newx);
         }

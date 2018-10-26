@@ -9,7 +9,7 @@ int edModeLoop()
     switch(c)
     {
         case KEY_RIGHT:
-            if(x<48)
+            if(x<15+45)
             {
                 x++;
                 move(y,x);
@@ -17,7 +17,7 @@ int edModeLoop()
             return 1;
             
         case KEY_LEFT:
-            if(x>4)
+            if(x>16)
             {
                 x--;
                 move(y,x);
@@ -25,22 +25,22 @@ int edModeLoop()
             return 1;
             
         case 10: //keyboard enter
-            move(y, 4);
+            move(y, 16);
             return 0;
             break;
             
         case KEY_ENTER: //keypad enter
-            move(y, 4);
+            move(y, 16);
             return 0;
             break;
             
         case 27: //keyboard escape
-            move(y, 4);
+            move(y, 16);
             return 5;
             break;
             
         case KEY_BACKSPACE: //keyboard backspace
-            if(x>4)
+            if(x>16)
             {
                 return 3;
             }
@@ -48,7 +48,7 @@ int edModeLoop()
             break;
             
         case KEY_DC: //keyboard del
-            if(x>4)
+            if(x>16)
             {
                 return 3;
             }
@@ -58,7 +58,7 @@ int edModeLoop()
         default:
             if(c >= 32 && c <= 126)
             {
-                if(x<48)
+                if(x<15+45)
                     return c;
                 else
                     return 1;
