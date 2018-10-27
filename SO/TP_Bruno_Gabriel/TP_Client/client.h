@@ -18,13 +18,16 @@ extern "C" {
 #include <ncurses.h>
 #include <curses.h>
 
-#define MAXNAME 9
+#define MAXNAME 8
     
     //Protótipos de funções
-    int edModeLoop();
+    int edModeLoop(int string_len);
     int mvModeLoop();
     
     char* preLinePrep(char* string, int stringlen, int curind);
+    void getUsername(char* userstring);
+    void invertString(char* userstring);
+    void printLine(char** line, char* curline);
 
 
 #ifdef __cplusplus

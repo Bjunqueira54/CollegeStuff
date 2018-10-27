@@ -7,6 +7,7 @@ int main(int argc, char** argv)
     ////////////////////////////////////////
     
     char username[MAXNAME];
+    int u=0;
     
     if(argc != 1)
     {
@@ -16,8 +17,8 @@ int main(int argc, char** argv)
             switch(c)
             {
                 case 'u':
-                    memcpy(username, optarg, 8*sizeof(char));
-                    username[MAXNAME-1] = '\0';
+                    u=1;
+                    memcpy(username, optarg, MAXNAME*sizeof(char));
                     break;
                 case 'p':
                     break;
@@ -45,9 +46,9 @@ int main(int argc, char** argv)
     
     for(int y=0; y<15; y++)
     {
-        for(int x=0; x<15+45+1; x++)
+        for(int x=0; x<15+45; x++)
             line[y][x] = ' ';
-        line[y][45+15+1] = '\0';
+        line[y][15+45] = '\0';
     }
     
     ////////////////////////////////////////////////////////////
@@ -58,23 +59,28 @@ int main(int argc, char** argv)
     noecho(); 
     keypad(stdscr, TRUE); // enable keypad input
     
+    if(u == 0)
+        getUsername(username);
+    
+    invertString(username);
+    
     for(y=1; y<=9; y++)
     {
-        curline = preLinePrep(curline, 45+1, y); // colocar espaçamento de username
+        curline = preLinePrep(curline, 45, y); // colocar espaçamento de username
         mvaddstr(y-1, 0, curline); // escreve string str na janela
-        for(x=0; x<15+45+1; x++)
+        for(x=0; x<=15+45; x++)
             line[y-1][x] = curline[x];
-    } // porque separar?
+    }
     for(y=10; y<=15; y++)
     {
-        curline = preLinePrep(curline, 45+1, y);
+        curline = preLinePrep(curline, 45, y);
         mvaddstr(y-1, 0, curline);
-        for(x=0; x<15+45+1; x++)
+        for(x=0; x<15+45; x++)
             line[y-1][x] = curline[x];
     }
     refresh(); // refresh necessario para ncurses
 
-    move(0, 16); // move o cursor da janela para pos (x,y)
+    move(0, 15); // move o cursor da janela para pos (x,y)
     
     do
     {
@@ -85,48 +91,79 @@ int main(int argc, char** argv)
             if(mode == 4)
             {
                 getyx(stdscr, y, x); // busca posição (x,y) do standard screen
-                for(x=0; x<15+45+1; x++)
+                for(x=0; x<=15+45; x++)
                 {
                     preline[x] = line[y][x];
                 }
+                line[y][4] = '[';
+                line[y][13] = ']';
+                for(int i=0, j=5; i<MAXNAME; i++, j++)
+                {
+                    line[y][j] = username[i];
+                }
+                
+                for(x=0; x<=15+45; x++)
+                    curline[x] = line[y][x];
+                mvwaddstr(stdscr, y, 0, curline);
+                refresh();
+                move(y, 15);
+                
                 mode = 1;
             }
         }
         else if(mode == 1) // edit
         {
-            mode = edModeLoop();
+            mode = edModeLoop(45);
             
             if(mode >= 32 && mode <= 126)
             {
                 getyx(stdscr, y, x); // busca posição (x,y) do standard screen
                 newx = x;
                 newy = y;
-                line[y][x] = mode;
+                
+                if(line[y][15+45-1] == ' ')
+                {
+                    for(x=(15+45-1); x>newx; x--)
+                    {
+                        line[y][x] = line[y][x-1];
+                    }
+                    
+                    line[y][newx] = mode;
+                    move(newy, newx+1);
+                }
                 mode = 1;
-                move(newy, newx+1);
             }
             if(mode == 3)
             {
-                getyx(stdscr, y, x); // busca posição (x,y) do standard screen
-                newx=x;
-                //x-=4;
+                getyx(stdscr, y, x); //busca posição (x,y) do standard screen
+                newx=x; //guarda a pos atual
                 newy=y;
-                line[y][15+45] = ' ';
-                for(;x<15+45+1; x++)
+                line[y][15+45] = ' '; //A pos onde estava o '\0' passa a ser um espaço
+                
+                for(;x<=15+45; x++) //Ciclo para mover...
                 {
-                    line[y][x-1] = line[y][x];
+                    line[y][x-1] = line[y][x];  //... todos os caracteres da linha 1 pos. a esquerda
                 }
-                line[y][15+45] = '\0';
-                move(newy, newx-1);
-                mode = 1;
+                
+                line[y][15+45] = '\0';  //repõe o '\0' no final da linha;
+                move(newy, newx-1); //move o cursor uma pos. a esquerda
+                mode = 1; //continua no modo de edição
             }
             else if(mode == 5)
             {
                 getyx(stdscr, y, x); // busca posição (x,y) do standard screen
-                for(x=0; x<15+45+1; x++)
+                for(x=0; x<=15+45; x++)
                 {
                     line[y][x] = preline[x];
                 }
+                mode = 0;
+            }
+            else if(mode == 6)
+            {
+                getyx(stdscr, y, x);
+                for(x=4; x<14; x++)
+                    line[y][x] = ' ';
+                
                 mode = 0;
             }
 
@@ -135,7 +172,7 @@ int main(int argc, char** argv)
             newy=y;
             for(y=0; y<15; y++)
             {
-                for(x=0; x<15+45+1; x++)
+                for(x=0; x<=15+45; x++)
                 {
                     curline[x] = line[y][x];
                 }
@@ -145,9 +182,11 @@ int main(int argc, char** argv)
         }
         refresh(); // refresh necessario para ncurses
     }
-    while(mode != 2); // diferente de ESC
+    while(mode != 2); // Enquanto a tecla premida não for ESC
     
-    endwin(); // fechar ncurses
+    free(curline);
+    endwin(); // fecha a janela do ncurses e devolve o controlo ao terminal original
+    
     return (EXIT_SUCCESS);
 }
 
