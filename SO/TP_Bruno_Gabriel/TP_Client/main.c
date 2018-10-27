@@ -64,7 +64,7 @@ int main(int argc, char** argv)
         mvaddstr(y-1, 0, curline); // escreve string str na janela
         for(x=0; x<15+45+1; x++)
             line[y-1][x] = curline[x];
-    }
+    } // porque separar?
     for(y=10; y<=15; y++)
     {
         curline = preLinePrep(curline, 45+1, y);
