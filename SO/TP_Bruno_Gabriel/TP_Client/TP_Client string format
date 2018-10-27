@@ -11,7 +11,7 @@ username - from 1 to 8 characters, client's username in pos 5-14
 total characters before line string -> 15
 
 
-[1] [2] [3] [4] [5]   [6] [7] [8] [9] [10] [11] [12] [13] [14]  [15]
+[0] [1] [2] [3] [4]   [5] [6] [7] [8] [9]  [10] [11] [12] [13]  [14]
 [(] [0] [1] [)] ['['] []  []  []  []  []   []   []   []   [']'] [|]
 
 
