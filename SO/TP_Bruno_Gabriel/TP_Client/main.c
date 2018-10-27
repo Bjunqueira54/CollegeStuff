@@ -31,13 +31,13 @@ int main(int argc, char** argv)
     ///// Preparação das variáveis necessárias para a edição de texto /////
     ///////////////////////////////////////////////////////////////////////
     
-    char line[15][15+45+1]; //15 linhas, 15 caracters de precedencia + 45 colunas + \0. Valores por defeito até ser implementada comunicação
-    char* curline; //Linha atual, 15 caracters de precedencia + 45 colunas + \0.
+    char line[15][15+45+1]; // 15 linhas, 15 caracters de precedencia + 45 colunas + \0. Valores por defeito até ser implementada comunicação
+    char* curline; // Linha atual, 15 caracters de precedencia + 45 colunas + \0.
     curline = malloc((15+45+1)*sizeof(char));
-    char preline[15+45+1]; //Linha antes de entrar no modo de edição
+    char preline[15+45+1]; // Linha antes de entrar no modo de edição
     int x, newx, y, newy;
     int c;
-    int mode = 0; //Var. para determinar se estamos em modo de edição ou de seleção. 0=Seleção, 1=Edição, 2=Exit
+    int mode = 0; // Var. para determinar se estamos em modo de edição ou de seleção. 0=Seleção, 1=Edição, 2=Exit
     
     /////////////////////////////////////////////
     ///// Inicialização da string principal /////
@@ -54,14 +54,14 @@ int main(int argc, char** argv)
     ///// Inicio da janela de ncurses para edição de texto /////
     ////////////////////////////////////////////////////////////
     
-    initscr();
-    noecho();
-    keypad(stdscr, TRUE);
+    initscr(); // inicializa ncurses 	
+    noecho(); 
+    keypad(stdscr, TRUE); // enable keypad input
     
     for(y=1; y<=9; y++)
     {
-        curline = preLinePrep(curline, 45+1, y);
-        mvaddstr(y-1, 0, curline);
+        curline = preLinePrep(curline, 45+1, y); // colocar espaçamento de username
+        mvaddstr(y-1, 0, curline); // escreve string str na janela
         for(x=0; x<15+45+1; x++)
             line[y-1][x] = curline[x];
     }
@@ -72,19 +72,19 @@ int main(int argc, char** argv)
         for(x=0; x<15+45+1; x++)
             line[y-1][x] = curline[x];
     }
-    refresh();
+    refresh(); // refresh necessario para ncurses
 
-    move(0, 16);
+    move(0, 16); // move o cursor da janela para pos (x,y)
     
     do
     {
-        if(mode == 0)
+        if(mode == 0) // move
         {
-            mode = mvModeLoop();
+            mode = mvModeLoop(); 
             
             if(mode == 4)
             {
-                getyx(stdscr, y, x);
+                getyx(stdscr, y, x); // busca posição (x,y) do standard screen
                 for(x=0; x<15+45+1; x++)
                 {
                     preline[x] = line[y][x];
@@ -92,13 +92,13 @@ int main(int argc, char** argv)
                 mode = 1;
             }
         }
-        else if(mode == 1)
+        else if(mode == 1) // edit
         {
             mode = edModeLoop();
             
             if(mode >= 32 && mode <= 126)
             {
-                getyx(stdscr, y, x);
+                getyx(stdscr, y, x); // busca posição (x,y) do standard screen
                 newx = x;
                 newy = y;
                 line[y][x] = mode;
@@ -107,7 +107,7 @@ int main(int argc, char** argv)
             }
             if(mode == 3)
             {
-                getyx(stdscr, y, x);
+                getyx(stdscr, y, x); // busca posição (x,y) do standard screen
                 newx=x;
                 //x-=4;
                 newy=y;
@@ -122,7 +122,7 @@ int main(int argc, char** argv)
             }
             else if(mode == 5)
             {
-                getyx(stdscr, y, x);
+                getyx(stdscr, y, x); // busca posição (x,y) do standard screen
                 for(x=0; x<15+45+1; x++)
                 {
                     line[y][x] = preline[x];
@@ -130,7 +130,7 @@ int main(int argc, char** argv)
                 mode = 0;
             }
 
-            getyx(stdscr, y, x);
+            getyx(stdscr, y, x); // busca posição (x,y) do standard screen
             newx=x;
             newy=y;
             for(y=0; y<15; y++)
@@ -139,15 +139,15 @@ int main(int argc, char** argv)
                 {
                     curline[x] = line[y][x];
                 }
-                mvwaddstr(stdscr, y, 0, curline);
+                mvwaddstr(stdscr, y, 0, curline); // escreve na posição atual do cursor (linha atual)
             }
             move(newy, newx);
         }
-        refresh();
+        refresh(); // refresh necessario para ncurses
     }
-    while(mode != 2);
+    while(mode != 2); // diferente de ESC?
     
-    endwin();
+    endwin(); // fechar ncurses
     return (EXIT_SUCCESS);
 }
 
