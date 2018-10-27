@@ -61,6 +61,13 @@ int main(int argc, char** argv)
     
     if(u == 0)
         getUsername(username);
+    else
+    {
+        for(int i=strlen(username); i<MAXNAME; i++)
+        {
+            username[i] = ' ';
+        }
+    }
     
     invertString(username);
     
