@@ -1,30 +1,55 @@
-#define _DEFAULT_SOURCE
-
 #include "server.h"
 
 int main(int argc, char** argv)
 {
-    char processid[6];
-    
-    FILE *pExists = popen("pidof medit_server", "r");
-    fgets(processid, 6, pExists);
-    pid_t pid = strtoul(processid, NULL, 10);
+    char processid[19];
+    char idnum[8];
+
+    FILE *pExists = popen("pidof tp_server", "r");
+    fgets(processid, 19, pExists);
     pclose(pExists);
     
-    if(pid != 0)
+    pid_t pid, self;
+    self = getpid();
+    int i, j=0;
+    
+    for(i=0; i<strlen(processid); i++)
     {
-        fprintf(stderr, "Another server already exists on the system.\nEXITING!");
-        return (EXIT_FAILURE);
+        if(processid[i] == ' ')
+        {
+            idnum[j] = '\0';
+            j=0;
+            pid = strtoul(idnum, NULL, 10);
+
+            if(pid != self)
+            {
+                fprintf(stderr, "Process already exists\nEXITING!\n");
+                return (EXIT_FAILURE);
+            }
+        }
+        else
+        {
+            idnum[j] = processid[i];
+            j++;
+        }
     }
     
+    pid = strtoul(idnum, NULL, 10);
+    
+    if(pid != self)
+    {
+        fprintf(stderr, "Process already exists\nEXITING!\n");
+        return (EXIT_FAILURE);
+    }
+
     Params params;
     params.f = 0;
     params.n = 0;
     params.p = 0;
-    
+
     FILE *f;
     char c;
-    
+
     if(argc != 1)
     {
         while((c = getopt(argc, argv, "f:n:p:")) != -1)
@@ -48,11 +73,15 @@ int main(int argc, char** argv)
             }
         }
     }
-    
+
     Settings options;
-    
+
     ParseEnvVars(&options);
     
+    char line[options.lines][15+options.columns+1];
+    char curLine[15+options.columns+1];
+    char preLine[15+options.columns+1];
+
     if(params.f == 1)
     {
         f = fopen(params.fname, "a+t");
@@ -61,33 +90,6 @@ int main(int argc, char** argv)
     {
         f = fopen(DEFAULT_DB_FILE, "a+t");
     }
-    
-    char cmd[10];
-    
-    while(1)
-    {
-        fprintf(stdout, "Command: ");
-        fscanf(stdin, "%s", cmd);
-        
-        for(int i=0; i<strlen(cmd); i++)
-        {
-            cmd[i] = tolower(cmd[i]);
-        }
-        
-        if(strcmp(cmd, "settings") == 0)
-        {
-            CheckArgs(&params);
-            CheckOptions(&options);
-        }
-        else if(strcmp(cmd, "shutdown") == 0)
-        {
-            fclose(f);
-            
-            return (EXIT_SUCCESS);
-        }
-        else
-        {
-            fprintf(stderr, "Unknown command!\n");
-        }
-    }
+
+    while(ParseCommands(&params, &options, f) == 1);
 }

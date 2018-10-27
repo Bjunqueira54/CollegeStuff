@@ -8,11 +8,16 @@ extern "C" {
 #include "server.h"
 
 #define DEFAULT_DB_FILE "medit.db"
-
+    
+#define MEDIT_MAXLINES 15
+#define MEDIT_MAXCOLUMNS 45
+    
+#define MEDIT_TIMEOUT 10
+#define MEDIT_MAXUSERS 3
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* SERVER_DEFAULTS_H */
+#endif
 
