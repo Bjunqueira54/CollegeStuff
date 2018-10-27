@@ -119,7 +119,7 @@ CLIENTE:
         - DEL e BACKSPACE: apagar carateres (<-texto)
     - interage com o servidor através de named pipes e sinais
     - processos clientes não interagem um com o outro diretamente
-    - informação a passar entre clietes é passada pelo servidor
+    - informação a passar entre clientes é passada pelo servidor
     
 3. REQUISITOS E DESCRIÇÃO ADICIONAIS
 
