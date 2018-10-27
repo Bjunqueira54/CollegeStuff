@@ -145,7 +145,7 @@ int main(int argc, char** argv)
         }
         refresh(); // refresh necessario para ncurses
     }
-    while(mode != 2); // diferente de ESC?
+    while(mode != 2); // diferente de ESC
     
     endwin(); // fechar ncurses
     return (EXIT_SUCCESS);
