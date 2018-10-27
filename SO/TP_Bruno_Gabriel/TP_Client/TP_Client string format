@@ -6,7 +6,7 @@ example:
 (07)[gothic54]| This is an example string for medit
 
 ln - line number
-username - from 1 to 8 characters, client's username in pos 5-14
+username - from 1 to 8 characters, client's username in pos 5-1 (no space allowed)
 
 total characters before line string -> 15
 
