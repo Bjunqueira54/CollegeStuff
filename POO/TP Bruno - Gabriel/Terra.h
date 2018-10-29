@@ -8,12 +8,12 @@ using namespace std;
 
 class Terra
 {
-    
+    const char tile = '+';
     
 public:
     
     Terra();
 };
 
-#endif /* TERRA_H */
+#endif
 

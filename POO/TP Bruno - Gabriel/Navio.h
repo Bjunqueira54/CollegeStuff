@@ -7,18 +7,18 @@ using namespace std;
 
 class Navio
 {
-    /*const*/ int id; //Number ID
-    /*const*/ int type, price, moves;
-    /*const*/ int maxload;
+    const int id; //Number ID
+    const int type, price, moves;
+    const int maxload;
     int load, fish;
-    /*const*/ int maxwater;
+    const int maxwater;
     int water;
-    /*const*/ int maxcrew;
+    const int maxcrew;
     int crew;
     
 public:
     
-    Navio();
+    Navio(int i, int t, int p, int m, int l, int w, int c);
     
 };
 

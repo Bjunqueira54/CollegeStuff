@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Player::Player()
+Player::Player(string a): name(a)
 {
     
 }

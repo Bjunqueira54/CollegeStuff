@@ -8,7 +8,7 @@ using namespace std;
 
 class Oceano
 {
-    
+    const char tile = '.';
     
 public:
     

@@ -8,6 +8,7 @@ using namespace std;
 
 class Player
 {
+    const string name;
     int money;
     int nMain; //Nº de portos principais
     
@@ -15,7 +16,7 @@ class Player
     
 public:
     
-    Player();
+    Player(string a);
 };
 
 #endif

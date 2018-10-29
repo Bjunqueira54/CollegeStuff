@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Porto::Porto()
+Porto::Porto(char a): id(a)
 {
     
 }

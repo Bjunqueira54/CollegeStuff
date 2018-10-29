@@ -7,14 +7,14 @@ using namespace std;
 
 class Porto 
 {
-    /*const*/ char id;  //Letter ID
+    const char id;  //Letter ID
     bool pFriendly; //Player Friendly?
     bool isMain;    //É um dos 2 portos principais?
     
 public:
     
-    Porto();
+    Porto(char a);
 };
 
-#endif /* PORTO_H */
+#endif
 
