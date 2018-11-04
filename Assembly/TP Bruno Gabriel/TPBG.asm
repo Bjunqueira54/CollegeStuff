@@ -93,6 +93,8 @@ main	proc
 
 	mov ax, dseg
 	mov ds, ax
+    mov ax, 0B800h
+    mov es, ax
 	
 	call apaga_ecran
 	call tabela
@@ -108,15 +110,14 @@ main	endp
 ;//PROCS//
 ;/////////
 	
-apaga_ecran	proc
+apaga_ecran	proc near
 	xor		bx, bx			; limpa o bx
 	mov		cx, 25*80		; 
 		
 apaga:
-	mov	byte ptr es:[bx],' '; (nao sei)
-	mov	byte ptr es:[bx+1],7; 
-	inc	bx					; incrementa o bx
-	inc bx					; incrementa o bx
+	mov	byte ptr es:[bx], ' '; (nao sei)
+	mov	byte ptr es:[bx+1], 00h; 
+	add	bx, 2				; incrementa o bx
 	loop apaga				; faz loop
 	ret						; 
 apaga_ecran	endp 
@@ -138,6 +139,7 @@ le_tecla	endp
 tabela proc
 
 	mov	cx, 10		; Faz o ciclo 10 vezes
+
 ciclo4:
 	call CalcAleat
 	pop	ax 			; vai buscar 'a pilha o número aleatório
@@ -164,7 +166,7 @@ ciclo2:
 	mov	cx, 9		; São 9 colunas 
 	
 ciclo:  	
-	mov dh,	tabcar	; vai imprimir o caracter "SAPCE"
+	mov dh,	tabcar	; vai imprimir o caracter "SPACE"
 	mov	es:[bx], dh
 	
 novacor:	
@@ -175,16 +177,14 @@ novacor:
 	je	novacor		; vai buscar outra cor 
 
 	mov dh, tabcar	; Repete mais uma vez porque cada peça do tabuleiro ocupa dois carecteres de ecran
-	mov	es:[bx],   dh		
+	mov	es:[bx], dh		
 	mov	es:[bx+1], al	; Coloca as características de cor da posição atual 
-	inc	bx		
-	inc	bx		; próxima posição e ecran dois bytes à frente 
+	add bx, 2		; próxima posição e ecran dois bytes à frente 
 
 	mov dh, tabcar	; Repete mais uma vez porque cada peça do tabuleiro ocupa dois carecteres de ecran
 	mov	es:[bx], dh
 	mov	es:[bx+1], al
-	inc	bx
-	inc	bx
+	add bx, 2
 	
 	mov	di, 1 ;delay de 1 centesimo de segundo
 	call delay
@@ -194,11 +194,12 @@ novacor:
 	dec	tabnlinhas		; contador de linhas
 	mov	al, tabnlinhas
 	cmp	al, 0		; verifica se já desenhou todas as linhas 
-	jne	ciclo2		; se ainda há linhas a desenhar continua 
+	jne	ciclo2		; se ainda há linhas a desenhar continua
+    ret
 	
 tabela endp
 
-CalcAleat proc
+CalcAleat proc near
 	sub	sp, 2			; subtrai 2 ao ponteiro?
 	push bp				; coloca o valor de bp na pilha
 	mov	bp, sp			; mover o valor do ponteiro para bp
@@ -344,103 +345,6 @@ ler_tempo proc
 	pop ax
 	ret 
 ler_tempo   endp
-
-hoje proc	
-
-		push ax
-		push bx
-		push cx
-		push dx
-		push si
-		pushf
-		
-		mov ah, 2ah             ; buscar a data
-		int 21h                 
-		push cx                 ; ano-> pilha
-		xor cx,cx              	; limpa cx
-		mov cl, dh              ; mes para cl
-		push cx                 ; mes-> pilha
-		mov cl, dl				; dia para cl
-		push cx                 ; dia -> pilha
-		xor dh,dh                    
-		xor	si,si
-		
-; dia ------------------ 
-; dx=dx/ax --- resto dx   
-
-		xor dx,dx               ; limpa dx
-		pop ax                  ; tira dia da pilha
-		mov cx, 0               ; cx = 0 
-		mov bx, 10              ; divisor
-		mov	cx,2
-dd_div:                         
-		div bx                  ; divide por 10
-		push dx                 ; resto para pilha
-		mov dx, 0               ; limpa resto
-		loop dd_div
-		mov	cx,2
-dd_resto:
-		pop dx                  ; resto da divisao
-		add dl, 30h             ; add 30h (2) to dl
-		mov tempDDMMAA[si],dl
-		inc	si
-		loop dd_resto            
-		mov dl, '/'             ; separador
-		mov tempDDMMAA[si],dl
-		inc si
-; mes -------------------
-; dx=dx/ax --- resto dx
-
-		mov dx, 0               ; limpar dx
-		pop ax                  ; tira mes da pilha
-		xor cx,cx               
-		mov bx, 10				; divisor
-		mov cx,2
-mm_div:                         
-		div bx                  ; divisao or 10
-		push dx                 ; resto para pilha
-		mov dx, 0               ; limpa resto
-		loop mm_div
-		mov cx,2 
-mm_resto:
-		pop dx                  ; resto
-		add dl, 30h             ; soma 30h
-		mov tempDDMMAA[si],dl
-		inc si		
-		loop mm_resto
-		
-		mov dl, '/'             ; character to display goes in dl
-		mov tempDDMMAA[si],dl
-		inc si
- 
-;  ano ----------------------
-
-		mov dx, 0               
-		pop ax                  ; mes para ax
-		mov cx, 0               ; 
-		mov bx, 10              ; 
- aa_div:                         
-		div bx                   
-		push dx                 ; guarda resto
-		add cx, 1               ; soma 1 contador
-		mov dx, 0               ; limpa resto
-		cmp ax, 0               ; compara quotient com zero
-		jne aa_div              ; se nao zero
-aa_resto:
-		pop dx                  
-		add dl, 30h             ; add 30h (2) to dl
-		mov tempDDMMAA[si],dl
-		inc si
-		loop aa_resto
-		popf
-		pop si
-		pop dx
-		pop cx
-		pop bx
-		pop ax
- 		ret
-		
-hoje   endp 
 
 tempLe_tecla	proc
 
@@ -630,25 +534,20 @@ teclanum endp
 
 Cursor proc
 
-	mov	ax, dseg
-	mov	ds,ax
-	mov	ax, 0B800h
-	mov	es, ax
-
-	goto_xy	curPOSx, curPOSy	; Vai para nova possição
-	mov ah, 08h	; Guarda o Caracter que está na posição do Cursor
-	mov	bh, 0		; numero da página
+	goto_xy	curPOSx, curPOSy	;Vai para nova possição
+	mov ah, 08h	                ;Guarda o Caracter que está na posição do Cursor
+	mov	bh, 0		            ;numero da página
 	int	10h			
-	mov	curCar, al	; Guarda o Caracter que está na posição do Cursor
-	mov	curCor, ah	; Guarda a cor que está na posição do Cursor	
+	mov	curCar, al	            ;Guarda o Caracter que está na posição do Cursor
+	mov	curCor, ah	            ;Guarda a cor que está na posição do Cursor	
 	
 	inc	curPOSx
-	goto_xy	curPOSx, curPOSy	; Vai para nova possição2
-	mov 		ah, 08h		; Guarda o Caracter que está na posição do Cursor
-	mov		bh,0		; numero da página
+	goto_xy	curPOSx, curPOSy	;Vai para nova possição2
+	mov 		ah, 08h		    ;Guarda o Caracter que está na posição do Cursor
+	mov		bh,0		        ;numero da página
 	int		10h			
-	mov		curCar2, al	; Guarda o Caracter que está na posição do Cursor
-	mov		curCor2, ah	; Guarda a cor que está na posição do Cursor	
+	mov		curCar2, al	        ;Guarda o Caracter que está na posição do Cursor
+	mov		curCor2, ah	        ;Guarda a cor que está na posição do Cursor	
 	dec		curPOSx
 
 ciclo:
@@ -750,8 +649,7 @@ direita:
 	jmp	ciclo
 	
 fim:	
-	mov	ah,4ch
-	int	21h
+	ret
 
 Cursor endp
 
@@ -790,8 +688,7 @@ close:
 	int	21h
 	
 fim:
-	mov	ah, 4ch
-	int	21h
+	ret
 	
 CriaFich endp
 
@@ -848,4 +745,3 @@ Imp_Fich	endp
 
 cseg    ends
 end     main
-
