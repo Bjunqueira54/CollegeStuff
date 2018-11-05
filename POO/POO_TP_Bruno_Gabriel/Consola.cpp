@@ -1,25 +1,25 @@
 // Biblioteca Consola para TP de POO
-// Última alteracao: 17/18 - Nov 2018
+// ultima alteracao: 17/18 - Nov 2018
 // J
 
 /*
 Versoes e historial
-Dez 2010 - Implementação: Funcoes da consola + exemplo + comentários
-Nov 2013 - Pequenas correcções
-Dez 2015 - Comentários melhorados
+Dez 2010 - Implementacao: Funcoes da consola + exemplo + comentarios
+Nov 2013 - Pequenas correccoes
+Dez 2015 - Comentarios melhorados
 Dez 2016 - Exemplo melhorado.
          - Compatibilidade com mingw automatizada
-         - As funções passaram a ser estáticas
-Nov 2018 - Pequenos melhoramentos nos comentários
+         - As funï¿½ï¿½es passaram a ser estï¿½ticas
+Nov 2018 - Pequenos melhoramentos nos comentï¿½rios
 */
 
-/* --> ver comentários em consola.h */
+/* --> ver comentarios em consola.h */
 
 #include "consola.h"                      
 #include <windows.h>
 #include <stdio.h>
 
-// Definição das variáveis estáticas
+// Definicao das variaveis estaticas
 HANDLE Consola::hconsola = GetStdHandle(STD_OUTPUT_HANDLE);
 HANDLE Consola::hStdin = GetStdHandle(STD_INPUT_HANDLE);;
 HWND Consola::hwnd = GetConsoleWindow();
@@ -30,8 +30,8 @@ Consola::Consola() {
 	hStdin = GetStdHandle(STD_INPUT_HANDLE);
 	hwnd = GetConsoleWindow();
 	// NT "upwards" apenas
-	// O suporte para w95 e w98 é demasiado retorcido
-	// e já ninguém usa esses "sistemas"
+	// O suporte para w95 e w98 a demasiado retorcido
+	// e ja ninguï¿½m usa esses "sistemas"
 }
 */
 
@@ -67,7 +67,7 @@ void Consola::setTextColor(WORD color) {
 	WORD cor = csbi.wAttributes;
 	cor &= 0xFFF0;  // isola os bits que interessam
 	cor |= color;   // lga os bits da cor
-	// duvidas na operacação binária -> ver TI ou TAC
+	// duvidas na operacacao binaria -> ver TI ou TAC
 	SetConsoleTextAttribute(hconsola, cor);
 	return;
 }
@@ -78,7 +78,7 @@ void Consola::setBackgroundColor(WORD color) {
 	WORD cor = csbi.wAttributes;
 	cor &= 0xFF0F;
 	cor |= (color << 4);  // coloca os bits da cor nos bits certos
-	// duvidas na operacação binária -> ver TI ou TAC
+	// duvidas na operacacao binaria -> ver TI ou TAC
 	SetConsoleTextAttribute(hconsola, cor);
 }
 
@@ -98,7 +98,7 @@ void Consola::setScreenSize(int nLinhas, int nCols) {
 	SetConsoleWindowInfo(hconsola, TRUE, &DisplayArea);  // isto muda o tamanho da area da janela em caracteres
 }
 
-// usar esta de preferência a não ser que se esteja no XP ou anterior
+// usar esta de preferencia a nao ser que se esteja no XP ou anterior
 // ver notas no .h
 void Consola::setTextSize(int x, int y) {
 #ifdef _MSC_VER
@@ -140,11 +140,11 @@ char Consola::getch(void) {
 }
 
 
-// setTextSizeXP - Usar isto apenas se a outra não funcionar (XP ou menos)
-// O método de funcionamento é bastante força-bruta
+// setTextSizeXP - Usar isto apenas se a outra nao funcionar (XP ou menos)
+// O metodo de funcionamento e bastante forca-bruta
 //   Procura uma fonte que cumpra os requisitos do novo tamanho
-//   e muda para essa fonte (ou seja, muda tambéma fonte)
-// Usa funções não documentadas da Microsoft (são secretas :) )
+//   e muda para essa fonte (ou seja, muda tambem a fonte)
+// Usa funcoes nao documentadas da Microsoft (sao secretas :) )
 // Mais info: http://blogs.microsoft.co.il/blogs/pavely/archive/2009/07/23/changing-console-fonts.aspx
 typedef BOOL(WINAPI * SetConsoleFont_)(HANDLE ConsoleOutput, DWORD FontIndex); // kernel32!SetConsoleFont
 typedef BOOL(WINAPI * GetConsoleFontInfo_)(HANDLE ConsoleOutput, BOOL Unknown1, DWORD Unknown2, PCONSOLE_FONT_INFO ConsoleFontInfo); // kernel32!GetConsoleFontInfo
@@ -153,7 +153,7 @@ typedef DWORD(WINAPI * GetNumberOfConsoleFonts_)(); // kernel32!GetNumberOfConso
 
 void Consola::setTextSizeXP(int x, int y){
 #ifdef _MSC_VER
-	// Obtém acesso às funções "secretas" do Windows
+	// Obtem acesso as funcoes "secretas" do Windows
 	SetConsoleFont_ SetConsoleFont = reinterpret_cast<SetConsoleFont_>(GetProcAddress(GetModuleHandle(L"kernel32.dll"), "SetConsoleFont"));
 	GetConsoleFontInfo_ GetConsoleFontInfo = reinterpret_cast<GetConsoleFontInfo_>(GetProcAddress(GetModuleHandle(L"kernel32.dll"), "GetConsoleFontInfo"));
 	GetNumberOfConsoleFonts_ GetNumberOfConsoleFonts = reinterpret_cast<GetNumberOfConsoleFonts_>(GetProcAddress(GetModuleHandle(L"kernel32.dll"), "GetNumberOfConsoleFonts"));
@@ -167,21 +167,21 @@ void Consola::setTextSizeXP(int x, int y){
 	// obtem info das fontes todas
 	GetConsoleFontInfo(hconsola, FALSE, NumFonts, ConsoleInfo);
 
-	// percorre-as todas. O melhor é não chamar isto muitas vezes
+	// percorre-as todas. O melhor e nao chamar isto muitas vezes
 	for (size_t i = 0; i < NumFonts; ++i) {
-		// Indaga o tamanho (suportado) da fonte. Pode não haver nenhuma para esse tamanho
+		// Indaga o tamanho (suportado) da fonte. Pode nao haver nenhuma para esse tamanho
 		ConsoleInfo[i].dwFontSize = GetConsoleFontSize(GetStdHandle(STD_OUTPUT_HANDLE), ConsoleInfo[i].nFont);
 
-		// Encontrou uma. muda para essa e já está (mesmo que haja outras)
+		// Encontrou uma. muda para essa e ja esta (mesmo que haja outras)
 		if (ConsoleInfo[i].dwFontSize.X == x && ConsoleInfo[i].dwFontSize.Y == y) {
 			// x,y = tamanho desejado (se houver)
 			// muda para essa fonte e sai
 			SetConsoleFont(GetStdHandle(STD_OUTPUT_HANDLE), ConsoleInfo[i].nFont);
 			break;
 		}
-		// isto é mesmo força bruta, mas no XP, é o que há (já ninguém usa isso)
-		//  - usar só se se estiver mesmo no XP
-		//  - reclamações:enviar mail para ->  weCareAboutYou@microsft.com
+		// isto e mesmo forca bruta, mas no XP, e o que ha (ja ninguem usa isso)
+		//  - usar so se se estiver mesmo no XP
+		//  - reclamacoes:enviar mail para ->  weCareAboutYou@microsft.com
 	}
 
 	// devolve a matriz de INFO
@@ -191,9 +191,9 @@ void Consola::setTextSizeXP(int x, int y){
 
 
 // estas funcoes servem para pouco a nao ser que nao se tape/destape a janela
-//   o refresh da janela da consola não re-actualiza isto
-//   por esse motivo nao vale a pena optimizar certos aspectos destas funções
-// os alunos que gostarem de informática podem pegar nisto
+//   o refresh da janela da consola nao re-actualiza isto
+//   por esse motivo nao vale a pena optimizar certos aspectos destas funcoes
+// os alunos que gostarem de informatica podem pegar nisto
 //  e explorar e acrescentar 
 void Consola::drawLine(int x1, int y1, int x2, int y2, int cor){
 #ifdef _MSC_VER
