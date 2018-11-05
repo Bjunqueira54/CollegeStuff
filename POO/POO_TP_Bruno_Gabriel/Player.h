@@ -2,6 +2,7 @@
 #define PLAYER_H
 
 #include "headers.h"
+#include "Ship.h"
 
 using namespace std;
 
@@ -11,7 +12,7 @@ class Player
     int money;  //Dinheiro do jogador
     int fPorts; //Portos amigos
     int nShips; //Nº de navios
-    /*vector <Ship> fleet*/ //Vetor da frota
+    vector <Ship> fleet; //Vetor da frota
     
 public:
     
