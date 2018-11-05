@@ -2,17 +2,17 @@
 
 using namespace std;
 
-Ship::Ship(int i, int p, int t, int w, int c, int l, int f): id(i), price(p), type(t), max_water(w), max_crew(c), max_load(l), max_fish(f)
+Ship::Ship(int i, int p, char t, int w, int c, int l, int f): id(i), price(p), type(t), max_water(w), max_crew(c), max_load(l), max_fish(f)
 {
-    if(type == 0) //Sailboat
+    if(type == 'V') //Sailboat
         cout << "You have bought a Sailboat!";
-    else if(type == 1) // Galeon
+    else if(type == 'G') // Galeon
         cout << "You have bought a Galeon!";
-    else if(type == 2)  //Schooner
+    else if(type == 'E')  //Schooner
         cout << "You have bought a Schooner!";
-    else if(type == 3) //Frigate
+    else if(type == 'F') //Frigate
         cout << "You have bought a Frigate!";
-    else
+    else if(type == 'S') //Special
         cout << "You filthy cheater!";
 }
 

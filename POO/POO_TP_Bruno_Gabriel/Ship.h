@@ -12,7 +12,7 @@
 class Ship
 {
     const int id; //Nº de identificacao do navio
-    const int type; //Preco do navio
+    const char type; //Preco do navio
     int price;
     const int max_water, max_crew, max_load, max_fish;
     int water, crew, cargo, fish;
@@ -20,7 +20,7 @@ class Ship
     
 public:
     
-    Ship(int i, int p, int t, int w, int c, int l, int f);
+    Ship(int i, int p, char t, int w, int c, int l, int f);
     ~Ship();
 };
 

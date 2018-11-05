@@ -1,0 +1,37 @@
+Funcoes Gerais:
+    Config por defeito (Default Map, default Var values, etc) (config.cfg)
+    Funcao de desenhar o mapa (drawWorldMap)
+    Funcao de Leitura, parsing e execucao de comandos (rpeCmd)
+    Ciclo para processamento dos comandos executados(MainLoop)
+    Ciclo para Combate de todos os inimigos que estejam adjacentes(BattleLoop)
+    Ciclo para calcular probabilidades para eventos no mapa(EventLoop)
+    Ciclo para criar um barco de piratas dependente de probabilidade (PirateLoop)
+
+Comandos que sao aceites:
+
+    config <Nome_do_ficheiro>
+    exec <Nome_do_ficheiro>
+    prox
+    compranav <Tipo>
+    vendenav <Tipo>
+    lista
+    compra <Id> <Toneladas_Mercadoria>
+    move <Id> <Dir> //Dir= D, E, C, B, CE, CD, BE, BD
+    auto <Id>
+    stop <Id>
+    pirata <x> <y> <tipo> //Tipo = F ou V
+    evpos <Evento> <x> <y>
+    evnav <Evento> <Id>
+    moedas <Montante>
+    vaipara <Id> <Porto>
+    comprasold <Id> <Montante>
+    saveg <Nome>
+    loadg <Nome>
+    delg <Nome>
+    sair
+
+Class Player:
+
+
+Class Ship:
+
