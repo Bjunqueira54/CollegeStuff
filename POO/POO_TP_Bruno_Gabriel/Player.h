@@ -15,7 +15,7 @@ class Player
     
 public:
     
-    Player();
+    Player(string n);
 
 };
 
