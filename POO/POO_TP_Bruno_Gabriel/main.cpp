@@ -6,33 +6,48 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    Consola::setScreenSize(45, 40);
-    cout << "Bem vindo a mistura de Sid Meyer's Civilization + Pirates!... versao consola!" << endl;
+    Consola::setScreenSize(50,60);
+    drawUI(20,40);
+    Consola::gotoxy(10,15);
+    cout << "\nBem vindo a Cid Meier's Pirates!" << endl;  // alterei o nome de proposito
+    cout << "(Pressiona qualquer botao para continuar)" << endl;
+    Consola::getch();
     
     string name;
-    cout << "Qual o seu nome: ";
-    getline(cin, name);
+    while(name == "")
+    {
+        Consola::clrscr();
+        cout << "\nIntroduza o seu nome: ";
+        getline(cin, name);
+        if(name == "") 
+        {
+            Consola::clrscr();
+            cout << "\nNome invalido!";
+            Consola::getch();
+        }
+    }
     
     int turn=0;
     string cmd = "";
     
     Player player(name);
     
-    cout << "Boa Sorte e Diverte-te " << name << "!" << endl;
-    cout << "(Pressiona qualquer butao para continuar... menos o de desligar)" << endl;
+    Consola::clrscr();
+    cout << "\nBoa sorte marinheiro " << name << "!" << endl;
+    cout << "(Pressiona qualquer botao para continuar)" << endl;
     Consola::getch();
-
+    
     while(cmd != "sair")
     {
         Consola::clrscr();
         cmd = "";
         turn++;
-        cout << "Turno " << turn << endl;
+        cout << "\nTurno " << turn << endl;
         
         while(cmd != "prox" && cmd != "sair")    //Phase 1: Command reading and execution
         {
             //drawUI();
-            cout << "Command: ";
+            cout << "Comando: ";
             getline(cin, cmd);
             //parseCmd();
         }

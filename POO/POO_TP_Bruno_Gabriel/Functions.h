@@ -3,7 +3,7 @@
 
 //Protótipos de funções
 
-void drawUI();
+void drawUI(int nL, int nC);
 
 void parseCmd();
 
