@@ -6,7 +6,7 @@
 Versoes e historial
 Dez 2010 - Implementacao: Funcoes da consola + exemplo + comentarios
 Nov 2013 - Pequenas correcoes
-Dez 2015 - Coment�rios melhorados
+Dez 2015 - Comentarios melhorados
 Dez 2016 - Exemplo melhorado.
          - Compatibilidade com mingw automatizada
          - As funcoes passaram a ser estaticas

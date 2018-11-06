@@ -6,9 +6,9 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    Consola::setScreenSize(50,60);
+    Consola::setScreenSize(45,40);
     drawUI(20,40);
-    Consola::gotoxy(10,15);
+    Consola::gotoxy(5,5);
     cout << "\nBem vindo a Cid Meier's Pirates!" << endl;  // alterei o nome de proposito
     cout << "(Pressiona qualquer botao para continuar)" << endl;
     Consola::getch();
