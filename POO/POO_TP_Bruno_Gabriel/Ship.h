@@ -45,7 +45,7 @@ class Ship
     const char type; //Preco do navio
     int water, crew, load, fish;
 
-    union shiptype
+    union shiptype  //Is this even possible?
     {
         Galeon galeon;
         Frigate frigate;

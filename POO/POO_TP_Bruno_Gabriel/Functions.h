@@ -3,7 +3,7 @@
 
 //Protótipos de funções
 
-void drawUI(int nL, int nC);
+void drawUI(int nL, int nC); //Do not use. Pending nCurses implementation
 
 void parseCmd();
 

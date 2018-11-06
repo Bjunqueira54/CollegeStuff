@@ -4,7 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>Consola.h</itemPath>
       <itemPath>Functions.h</itemPath>
       <itemPath>Player.h</itemPath>
       <itemPath>Ship.h</itemPath>
@@ -17,7 +16,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>Consola.cpp</itemPath>
       <itemPath>Functions.cpp</itemPath>
       <itemPath>Player.cpp</itemPath>
       <itemPath>Ship.cpp</itemPath>
@@ -49,10 +47,6 @@
           <standard>8</standard>
         </ccTool>
       </compileType>
-      <item path="Consola.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Consola.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Functions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Functions.h" ex="false" tool="3" flavor2="0">
@@ -91,10 +85,6 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="Consola.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Consola.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Functions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Functions.h" ex="false" tool="3" flavor2="0">

@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void drawUI(int nL, int nC)
+/*void drawUI(int nL, int nC)   //Undefined. Do not use until nCurses implementation!
 {   // l - line c - columns
     for(int l=0; l!=nL; l++)
     {
@@ -16,4 +16,4 @@ void drawUI(int nL, int nC)
         }
         cout << endl;
     }       
-}
+}*/

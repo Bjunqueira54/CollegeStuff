@@ -11,7 +11,5 @@
 #include <vector>
 #include <string>
 
-#include "Consola.h"
-
 #endif /* HEADERS_H */
 

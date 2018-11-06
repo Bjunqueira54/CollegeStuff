@@ -6,24 +6,18 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    Consola::setScreenSize(45,80);
-    drawUI(20,40);
-    Consola::gotoxy(15,5);
+    //drawUI(20,40); //Pending nCurses implementation
     cout << "\nBem vindo a Cid Meier's Pirates!" << endl;  // alterei o nome de proposito
     cout << "(Pressiona qualquer botao para continuar)" << endl;
-    Consola::getch();
     
     string name;
     while(name == "")
     {
-        Consola::clrscr();
         cout << "\nIntroduza o seu nome: ";
         getline(cin, name);
         if(name == "") 
         {
-            Consola::clrscr();
             cout << "\nNome invalido!";
-            Consola::getch();
         }
     }
     
@@ -32,21 +26,18 @@ int main(int argc, char** argv)
     
     Player player(name);
     
-    Consola::clrscr();
     cout << "\nBoa sorte marinheiro " << name << "!" << endl;
     cout << "(Pressiona qualquer botao para continuar)" << endl;
-    Consola::getch();
     
     while(cmd != "sair")
     {
-        Consola::clrscr();
         cmd = "";
         turn++;
         cout << "\nTurno " << turn << endl;
         
         while(cmd != "prox" && cmd != "sair")    //Phase 1: Command reading and execution
         {
-            //drawUI();
+            //drawUI(); //Pending nCurses implementation
             cout << "Comando: ";
             getline(cin, cmd);
             //parseCmd();
