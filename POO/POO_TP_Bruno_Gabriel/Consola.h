@@ -1,16 +1,16 @@
 // Biblioteca Consola para TP de POO
-// Última alteracao: 17/18 - Nov 2018
+// Ultima alteracao: 17/18 - Nov 2018
 // J
 
 /*
 Versoes e historial
-Dez 2010 - Implementação: Funcoes da consola + exemplo + comentários
-Nov 2013 - Pequenas correcções
-Dez 2015 - Comentários melhorados
+Dez 2010 - Implementacao: Funcoes da consola + exemplo + comentarios
+Nov 2013 - Pequenas correcoes
+Dez 2015 - Comentï¿½rios melhorados
 Dez 2016 - Exemplo melhorado.
          - Compatibilidade com mingw automatizada
-         - As funções passaram a ser estáticas
-Nov 2018 - Pequenos melhoramentos nos comentários
+         - As funcoes passaram a ser estaticas
+Nov 2018 - Pequenos melhoramentos nos comentarios
 */
 
 
@@ -55,75 +55,75 @@ public:
 	const static char ESCAPE = 27;
 
 	Consola() = delete;  // Nao quero objectos disto a proliferarem por ai.
-	                     // As funcçõe são estáticas por alguma razão.
+	                     // As funcoes sao estaticas por alguma razao.
 	                     // ----------> C++ 2011 ou posterior
 
-	// Posiciona o cursor na posição x,y
-	// - Os proximos cout/cin serão feitos a partir daí
+	// Posiciona o cursor na posicao x,y
+	// - Os proximos cout/cin serao feitos a partir dao
 	static void gotoxy(int x, int y);
 
-	// Limpa o ecrã
-	// - Usa a côr de fundo que estiver definida
+	// Limpa o ecra
+	// - Usa a cor de fundo que estiver definida
 	static void clrscr();
 
-	// Muda a côr das letras
-	// - Os cout/cin seguintes usarão essa côr
+	// Muda a cor das letras
+	// - Os cout/cin seguintes usarao essa cor
 	static void setTextColor(WORD color);
 
-	// Muda a côr de fundo
-	// - Os printf/cout seguintes usarão essa côr
-	// - Os clrsrc() seguintes usarão essa côr de fundo
+	// Muda a cor de fundo
+	// - Os printf/cout seguintes usarao essa cor
+	// - Os clrsrc() seguintes usarao essa cor de fundo
 	static void setBackgroundColor(WORD color);
 
-	// Muda a dimensão do ecrã para NLinhas x NCols
+	// Muda a dimensao do ecra para NLinhas x NCols
 	// - O redimensionamento pode falhar se o tamanho
 	//   indicado for excessivo ou se for demasiado
 	//   pequeno
-	// - Limpa o ecrã usando a côr que estiver definida?
+	// - Limpa o ecra usando a cor que estiver definida?
 	static void setScreenSize(int nLinhas, int nCols);
 
 	// Muda (tenta mudar) o tamanho da letra
-	// - Esta função pode falhar em determinadas situações
-	//   (falhar = não muda nada)
-	//   É mais provável falhar no sistemas antigos (XP)
-	// - Ver também setSTextSizeXP
-	static void setTextSize(int x, int y); // ##### Mingw ->Sem efeito (Não disponivel) #####
+	// - Esta funcao pode falhar em determinadas situacoes
+	//   (falhar = nao muda nada)
+	//   O mais provavel falhar no sistemas antigos (XP)
+	// - Ver tambem setSTextSizeXP
+	static void setTextSize(int x, int y); // ##### Mingw ->Sem efeito (Nao disponivel) #####
 
-	// Muda (tenta mudar) o tamanho da letra para XP (alguém ainda usa isso?)
-	// - Esta função é para usar apenas no caso do sistema
+	// Muda (tenta mudar) o tamanho da letra para XP (alguem ainda usa isso?)
+	// - Esta funcao e para usar apenas no caso do sistema
 	//   ser o XP
-	//   No outros sistemas existe a função setTextSize
-	// - Pode falhar em determinadas situações
-	//   (falhar = não muda nada)
-	// - Ver também setSTextSizeXP
-	static void setTextSizeXP(int x, int y);  // ##### Mingw ->Sem efeito (Não disponivel) #####
+	//   No outros sistemas existe a funcao setTextSize
+	// - Pode falhar em determinadas situacoes
+	//   (falhar = nao muda nada)
+	// - Ver tambem setSTextSizeXP
+	static void setTextSizeXP(int x, int y);  // ##### Mingw ->Sem efeito (Nao disponivel) #####
 
-	// Lê um caracter sem precisar de "enter" no fim
+	// Le um caracter sem precisar de "enter" no fim
 	// - Util para fazer pausas do tipo
 	//   "press any key to continue"
-	// - Esta funcionalidade também se consegue de
+	// - Esta funcionalidade tambem se consegue de
 	//   outras formas
 	static char getch(void);
 
-	// As duas funções seguintes são pouco interessantes
+	// As duas funcoes seguintes sao pouco interessantes
 
-	// Desenha uma linha usando pixeis (não é com caracteres)
-	// - Esta é uma função gráfica. Trabalha com pixeis
+	// Desenha uma linha usando pixeis (nao e com caracteres)
+	// - Esta e uma funcao grafica. Trabalha com pixeis
 	// - Os pixeis da linha ficam sobrepostos ao texto
-	// Esta função é pouco interessante porque:
-	// - A linha não fica memorizada. Desaparece quando:
+	// Esta funcao e pouco interessante porque:
+	// - A linha nao fica memorizada. Desaparece quando:
 	//   . Se oculta e volta a mostrar a janela da consola
 	//   . Se redimensiona a janela
-	static void drawLine(int x1, int y1, int x2, int y2, int cor);  // ##### Mingw ->Sem efeito (Não disponivel) #####
+	static void drawLine(int x1, int y1, int x2, int y2, int cor);  // ##### Mingw ->Sem efeito (Nao disponivel) #####
 
-	// Desenha um círculo usando pixeis (não é com caracteres)
-	// - Esta é uma função gráfica. Trabalha com pixeis
-	// - Os pixeis do círculo ficam sobrepostos ao texto
-	// Esta função é pouco interessante porque:
-	// - O círculo não fica memorizado. Desaparece quando:
+	// Desenha um circulo usando pixeis (nao e com caracteres)
+	// - Esta e uma funcao grafica. Trabalha com pixeis
+	// - Os pixeis do circulo ficam sobrepostos ao texto
+	// Esta funcao e pouco interessante porque:
+	// - O circulo nao fica memorizado. Desaparece quando:
 	//   . Se oculta e volta a mostrar a janela da consola
 	//   . Se redimensiona a janela
-	static void drawCircle(int X, int Y, int R, int Pen, int Fill);  // ##### Mingw ->Sem efeito (Não disponivel) #####
+	static void drawCircle(int X, int Y, int R, int Pen, int Fill);  // ##### Mingw ->Sem efeito (Nao disponivel) #####
 };
 
 #endif
