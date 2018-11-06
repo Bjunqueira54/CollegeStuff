@@ -1,8 +1,8 @@
 Funcoes Gerais:
     Config por defeito (Default Map, default Var values, etc) (config.cfg)
-    Funcao de desenhar o mapa (drawWorldMap)
-    Funcao de Leitura, parsing e execucao de comandos (rpeCmd)
-    Ciclo para processamento dos comandos executados(MainLoop)
+    Funcao de desenhar o interface (drawUI)
+    Funcao de Leitura, parsing e execucao de comandos (parseCmd)
+    Ciclo para processamento dos comandos executados
     Ciclo para Combate de todos os inimigos que estejam adjacentes(BattleLoop)
     Ciclo para calcular probabilidades para eventos no mapa(EventLoop)
     Ciclo para criar um barco de piratas dependente de probabilidade (PirateLoop)

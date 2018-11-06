@@ -17,6 +17,8 @@ class Player
 public:
     
     Player(string n);
+    
+    bool NewShip(char t);
 
 };
 

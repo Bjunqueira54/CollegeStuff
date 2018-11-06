@@ -3,6 +3,10 @@
 
 //Protótipos de funções
 
+void drawUI();
+
+void parseCmd();
+
 
 #endif /* FUNCTIONS_H */
 

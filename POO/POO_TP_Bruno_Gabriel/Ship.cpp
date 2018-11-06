@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Ship::Ship(int i, int p, char t, int w, int c, int l, int f): id(i), price(p), type(t), max_water(w), max_crew(c), max_load(l), max_fish(f)
+Ship::Ship(int i, char t): id(i), type(t)
 {
     if(type == 'V') //Sailboat
         cout << "You have bought a Sailboat!";
