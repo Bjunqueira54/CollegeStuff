@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Functions.h</itemPath>
+      <itemPath>Language.h</itemPath>
       <itemPath>Player.h</itemPath>
       <itemPath>Ship.h</itemPath>
       <itemPath>headers.h</itemPath>
@@ -56,6 +57,8 @@
       </item>
       <item path="Functions.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Language.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Player.h" ex="false" tool="3" flavor2="0">
@@ -93,6 +96,8 @@
       <item path="Functions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Functions.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Language.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -13,5 +13,7 @@
 #include <ncurses.h>
 #include <curses.h>
 
+using namespace std;
+
 #endif /* HEADERS_H */
 
