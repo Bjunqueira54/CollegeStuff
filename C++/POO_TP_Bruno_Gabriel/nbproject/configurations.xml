@@ -46,6 +46,11 @@
         <ccTool>
           <standard>8</standard>
         </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerOptionItem>-lncurses</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
       <item path="Functions.cpp" ex="false" tool="1" flavor2="0">
       </item>

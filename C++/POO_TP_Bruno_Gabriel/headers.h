@@ -10,6 +10,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <ncurses.h>
+#include <curses.h>
 
 #endif /* HEADERS_H */
 
