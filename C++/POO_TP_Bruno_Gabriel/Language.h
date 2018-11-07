@@ -8,6 +8,7 @@ class Language
     static vector <string> cmd;
     static vector <string> line;
     static vector <string> tutorial;
+    static vector <string> credits;
     
 public:
     
@@ -16,6 +17,7 @@ public:
     static vector <string>& getLine();
     static vector <string>& getCmd();
     static void tutPage(int n);
+    static void credPage(int n);
 };
 
 #endif /* LANGUAGE_H */

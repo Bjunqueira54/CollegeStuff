@@ -30,6 +30,15 @@ Language::Language(int lang)
         cmd.push_back("sair");      //19
         
         line.push_back("(Carrega em qualquer tecla para continuar...");
+        line.push_back("Bem vindo a Cid Martin's Pirates!");
+        line.push_back("1 - Novo Jogo");
+        line.push_back("2 - Tutorial");
+        line.push_back("3 - Creditos");
+        line.push_back("4 - Sair do Jogo");
+        line.push_back("Introduza o seu nome: ");
+        line.push_back("Bem vindo ");
+        line.push_back("Boa sorte e diverte-te!");
+        line.push_back("Comando: ");
     }
     else if(lang == 2)
     {
@@ -55,6 +64,15 @@ Language::Language(int lang)
         cmd.push_back("exit");
         
         line.push_back("(Press any key to continue...");
+        line.push_back("Welcome to High Sea Adventure!");
+        line.push_back("1 - New Game");
+        line.push_back("2 - Tutorial");
+        line.push_back("3 - Credits");
+        line.push_back("4 - Exit Game");
+        line.push_back("Enter your name: ");
+        line.push_back("Welcome ");
+        line.push_back("Good Luck and Have Fun!");
+        line.push_back("Command: ");
     }
 }
 
@@ -72,3 +90,5 @@ void Language::tutPage(int n)
 {
     
 }
+
+void Language::credPage(int n);
