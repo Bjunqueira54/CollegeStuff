@@ -38,13 +38,24 @@ int main(int argc, char** argv)
         mvwaddstr(stdscr, 1, 1, lang.getLine()[6].c_str());
         move(3,1);
         refresh();
+        char opti[5];
+        while(1)
+        {
+            opt = getch();
+            sprintf(opti, "%i", opt);
+            clear();
+            mvwaddstr(stdscr, 5, 5, opti);
+            refresh();
+        }
         
-        for(int x=0; ( opt = getch() ) != 10 || ( opt = getch() ) != KEY_ENTER; x++)
+        /*for(int x=0;; x++)
         {
             if(x == 15)
                 x--;
             else
             {
+                opt = getch();
+                
                 if( (opt == 32) ||                  //Se a tecla for espaço...
                     (opt >= 48 && opt <= 57) ||     //... ou se o código ASCII da tecla estiver entre 0-9...
                     (opt >= 65 && opt <= 90) ||     //... ou se o código ASCII da tecla estiver entre A-Z...
@@ -54,8 +65,20 @@ int main(int argc, char** argv)
                     tempname[x] = opt;
                     refresh();
                 }
+                
+                else if((opt == 126) || (opt == 127))
+                {
+                    if(x>0)
+                    {
+                        --x;
+                        tempname[x] = ' ';
+                    }
+                }
+                else if(opt == 10)
+                    break;
                 else
-                    x--;
+                    --x;
+
             }
         }
         
@@ -68,7 +91,7 @@ int main(int argc, char** argv)
             name = "";
             for(int i=0; i<20; i++)
                 tempname[i] = '\0';
-        }
+        }*/
     }
     
     int turn=0;
