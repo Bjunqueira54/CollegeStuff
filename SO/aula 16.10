@@ -1,0 +1,28 @@
+exemplo:
+gcc -o fork -g ex3.5.fork.c
+
+gdb fork
+
+b (main) -> breakpoint (na main)
+r -> run
+n -> next
+! -> comandos da shell 
+show follow-fork-mode -> segue o processo pai (default)
+set follow-fork-mode child -> segue o processo filho
+    
+    t - stopped by debugger
+
+detach-on-fork -> ver info sobre fork
+set detach-on-fork off
+
+info inferiors -> mostra os pro
+cessos que estão sobre controlo do gdb
+atach - ver**
+
+gcc -o fork -static ex3.5.fork.c -> cria executavel que corre sozinho. sem bibliotecas na RAM
+
+SIGNAL:
+
+signal(SIGINT, func) -> quando receber sinal (SIGINT), inicia esta função
+kill -SIGINT 8209 (pid processo) -> manda sinal ^C
+

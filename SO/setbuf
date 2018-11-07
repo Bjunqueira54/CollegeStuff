@@ -1,0 +1,4 @@
+setbuf(stdout,NULL); -> todas as chamadas consderam que não há buffer
+// só incomoda o OS uma unica vez
+
+printf(---) == fprintf(stdout,---)

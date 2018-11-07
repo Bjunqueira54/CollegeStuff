@@ -1,0 +1,13 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char **argv, char **envv)
+
+{
+	for(int i=1; i<argc; i++)
+	{
+		fpritnf(stdout,"Variavel %i -> %s",i,getenv(argc[i]));
+	}
+
+	return 0;
+}
