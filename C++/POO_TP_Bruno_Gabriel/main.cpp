@@ -9,13 +9,29 @@ int main(int argc, char** argv)
 {
     initscr();
     noecho();
-    //keypad(stdscr, TRUE);
     //drawUI(20,40);
     
     Language lang(1);
+    char opt;
     
-    mvwaddstr(stdscr, 9, 25, "Bem vindo a Cid Martin's Pirates");
-    mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+    /* ==== PEDE E VERIFICA A LINGUAGEM ==== */
+    while(opt != '1' && opt != '2')
+    {
+        mvwaddstr(stdscr, 1, 1, "Portugues - 1\n English - 2\n\n ->");
+        refresh();
+        opt = getch();
+        clear();
+    }
+    
+    if(opt == '1')
+    {
+        mvwaddstr(stdscr, 9, 25, "Bem vindo a Cid Martin's Pirates");
+        mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+    }
+    else
+    {
+        
+    }
     refresh();
     getch();
     
