@@ -29,18 +29,19 @@ Language::Language(int lang)
         cmd.push_back("delg");      //18
         cmd.push_back("sair");      //19
         
-        line.push_back("(Prima qualquer tecla para continuar)");
-        line.push_back("Bem vindo a Cid Martin's Pirates!");
-        line.push_back("1 - Novo Jogo");
-        line.push_back("2 - Tutorial");
-        line.push_back("3 - Creditos");
-        line.push_back("4 - Sair do Jogo");
-        line.push_back("Introduza o seu nome: ");
-        line.push_back("Nome invalido!");        
-        line.push_back("Bem vindo ");
-        line.push_back("Boa sorte marinheiro ");
-        line.push_back("Comando: ");
-        line.push_back("Turno ");
+        line.push_back("(Prima qualquer tecla para continuar)");    //0
+        line.push_back("Bem vindo a Cid Martin's Pirates!");        //1
+        line.push_back("1 - Novo Jogo");                            //2
+        line.push_back("2 - Tutorial");                             //3
+        line.push_back("3 - Creditos");                             //4
+        line.push_back("4 - Sair do Jogo");                         //5
+        line.push_back("Introduza o seu nome: ");                   //6
+        line.push_back("Nome invalido!");                           //7
+        line.push_back("Bem vindo ");                               //8
+        line.push_back("Boa sorte marinheiro ");                    //9
+        line.push_back("Turno ");                                   //10
+        line.push_back("Comando: ");                                //11
+        line.push_back("Comando não especificado");                 //12
     }
     else if(lang == 2)
     {
@@ -75,8 +76,9 @@ Language::Language(int lang)
         line.push_back("Invalid name!");
         line.push_back("Welcome ");
         line.push_back("Good Luck sailor ");
-        line.push_back("Command: ");
         line.push_back("Turn ");
+        line.push_back("Command: ");
+        line.push_back("Command not specified");
     }
 }
 
@@ -95,4 +97,4 @@ void Language::tutPage(int n)
     
 }
 
-void Language::credPage(int n);
+//void Language::credPage(int n);
