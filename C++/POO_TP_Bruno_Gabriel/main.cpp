@@ -1,6 +1,7 @@
 #include "headers.h"
 #include "Functions.h"
 #include "Player.h"
+#include "Language.h"
 
 using namespace std;
 
@@ -11,16 +12,20 @@ int main(int argc, char** argv)
     //keypad(stdscr, TRUE);
     //drawUI(20,40);
     
+    Language lang(1);
+    
     mvwaddstr(stdscr, 9, 25, "Bem vindo a Cid Martin's Pirates");
     mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+    refresh();
     getch();
-    clear();
     
     string name;
     while(name == "")
     {
         clear();
         mvwaddstr(stdscr, 1, 1, "Introduza o seu nome: ");
+        refresh();
+        echo();
         getline(cin, name);
         if(name == "") 
         {
@@ -37,8 +42,9 @@ int main(int argc, char** argv)
     
     clear();
     mvwaddstr(stdscr, 9, 28, "Boa sorte marinheiro ");
-    //mvwaddstr(stdscr, 9, 40, name);
+    mvwaddstr(stdscr, 9, 40, name.c_str());
     mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+    refresh();
     getch();
     clear();
     
