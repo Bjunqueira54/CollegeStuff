@@ -28,6 +28,8 @@ Language::Language(int lang)
         cmd.push_back("loadg");
         cmd.push_back("delg");
         cmd.push_back("sair");
+        
+        line.push_back("(Carrega em qualquer tecla para continuar...");
     }
     else if(lang == 2)
     {
@@ -51,6 +53,8 @@ Language::Language(int lang)
         cmd.push_back("loadg");
         cmd.push_back("delg");
         cmd.push_back("exit");
+        
+        line.push_back("(Press any key to continue...");
     }
 }
 
