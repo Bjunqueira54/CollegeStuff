@@ -30,7 +30,8 @@ int main(int argc, char** argv)
     }
     else
     {
-        
+        mvwaddstr(stdscr, 9, 25, "Bem vindo a Cid Martin's Pirates");
+        mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
     }
     refresh();
     getch();
@@ -39,14 +40,23 @@ int main(int argc, char** argv)
     while(name == "")
     {
         clear();
-        mvwaddstr(stdscr, 1, 1, "Introduza o seu nome: ");
+        if(opt == '1')
+            mvwaddstr(stdscr, 1, 1, "Introduza o seu nome: ");
+        else
+            mvwaddstr(stdscr, 1, 1, "Introduza o seu nome: ");
+        
         refresh();
         echo();
         getline(cin, name);
+        
         if(name == "") 
         {
             clear();
-            mvwaddstr(stdscr, 1, 1, "Nome invalido!");
+            if(opt == '1')
+                mvwaddstr(stdscr, 1, 1, "Nome invalido!");
+            else
+                mvwaddstr(stdscr, 1, 1, "Nome invalido!");
+            refresh();
             getch();
         }
     }
@@ -57,23 +67,40 @@ int main(int argc, char** argv)
     Player player(name);
     
     clear();
-    mvwaddstr(stdscr, 9, 28, "Boa sorte marinheiro ");
-    mvwaddstr(stdscr, 9, 40, name.c_str());
-    mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+    if(opt == '1')
+    {
+        mvwaddstr(stdscr, 9, 28, "Boa sorte marinheiro ");
+        mvwaddstr(stdscr, 9, 40, name.c_str());
+        mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+    }
+    else
+    {
+        mvwaddstr(stdscr, 9, 28, "Boa sorte marinheiro ");
+        mvwaddstr(stdscr, 9, 40, name.c_str());
+        mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+    }
     refresh();
     getch();
     clear();
     
-    while(cmd != "sair")
+    while(cmd != "sair" && cmd != "exit")
     {
         cmd = "";
         turn++;
         clear();
-        cout << "\nTurno " << turn << endl;
-        
-        while(cmd != "prox" && cmd != "sair")    //Phase 1: Command reading and execution
+        if(opt == '1')
         {
-            //drawUI(); //Pending nCurses implementation
+            mvwaddstr(stdscr, 1, 1, "Turno ");
+            mvwaddstr(stdscr, 1, 8, turn.c_str());
+        }
+        else 
+        {
+            mvwaddstr(stdscr, 1, 1, "Turno ");
+            mvwaddstr(stdscr, 1, 8, turn.c_str());
+        }
+        
+        while(cmd != "prox" && cmd != "sair" && cmd != "exit")    //Phase 1: Command reading and execution
+        {
             cout << "Comando: ";
             getline(cin, cmd);
             if(cmd == "") 
