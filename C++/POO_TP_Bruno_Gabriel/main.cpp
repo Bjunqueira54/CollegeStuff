@@ -56,6 +56,7 @@ int main(int argc, char** argv)
                 mvwaddstr(stdscr, 1, 1, "Nome invalido!");
             else
                 mvwaddstr(stdscr, 1, 1, "Nome invalido!");
+            
             refresh();
             getch();
         }
@@ -70,13 +71,13 @@ int main(int argc, char** argv)
     if(opt == '1')
     {
         mvwaddstr(stdscr, 9, 28, "Boa sorte marinheiro ");
-        mvwaddstr(stdscr, 9, 40, name.c_str());
+        mvwaddstr(stdscr, 9, 49, name.c_str());
         mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
     }
     else
     {
         mvwaddstr(stdscr, 9, 28, "Boa sorte marinheiro ");
-        mvwaddstr(stdscr, 9, 40, name.c_str());
+        mvwaddstr(stdscr, 9, 49, name.c_str());
         mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
     }
     refresh();
@@ -89,23 +90,29 @@ int main(int argc, char** argv)
         turn++;
         clear();
         if(opt == '1')
-        {
             mvwaddstr(stdscr, 1, 1, "Turno ");
-            mvwaddstr(stdscr, 1, 8, turn.c_str());
-        }
         else 
-        {
             mvwaddstr(stdscr, 1, 1, "Turno ");
-            mvwaddstr(stdscr, 1, 8, turn.c_str());
-        }
+        
+        mvwaddstr(stdscr, 1, 8, turn.c_str());
+        refresh();
         
         while(cmd != "prox" && cmd != "sair" && cmd != "exit")    //Phase 1: Command reading and execution
         {
-            cout << "Comando: ";
+            if(opt == '1')
+                mvwaddstr(stdscr, 1, 1, "Comando: ");
+            else 
+                mvwaddstr(stdscr, 1, 1, "Comando: ");
+            
+            refresh();
             getline(cin, cmd);
             if(cmd == "") 
             {
-                cout << "Comando não especificado" << endl;
+                if(opt == '1')
+                    mvwaddstr(stdscr, 1, 1, "Comando não especificado");
+                else 
+                    mvwaddstr(stdscr, 1, 1, "Comando não especificado");
+                refresh();
                 getch();
             }
             //else
@@ -113,7 +120,7 @@ int main(int argc, char** argv)
             //parseCmd();
         }
         
-        if(cmd != "sair")
+        if(cmd != "sair" && cmd != "exit")
         {
             //Phase 2: Player command processing
 
