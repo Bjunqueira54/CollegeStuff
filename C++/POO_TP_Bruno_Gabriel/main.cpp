@@ -9,15 +9,20 @@ int main(int argc, char** argv)
     //drawUI(20,40); //Pending nCurses implementation
     cout << "\nBem vindo a Cid Martin's Pirates" << endl;  // alterei o nome de proposito
     cout << "(Pressione qualquer botao para continuar)" << endl;
+    getch();
+    clear();
     
     string name;
     while(name == "")
     {
+        clear();
         cout << "\nIntroduza o seu nome: ";
         getline(cin, name);
         if(name == "") 
         {
-            cout << "\nNome invalido\n!";
+            clear();
+            cout << "\nNome invalido!\n";
+            getch();
         }
     }
     
@@ -26,13 +31,17 @@ int main(int argc, char** argv)
     
     Player player(name);
     
+    clear();
     cout << "\nBoa sorte marinheiro " << name << "!" << endl;
     cout << "(Pressiona qualquer botao para continuar)" << endl;
+    getch();
+    clear();
     
     while(cmd != "sair")
     {
         cmd = "";
         turn++;
+        clear();
         cout << "\nTurno " << turn << endl;
         
         while(cmd != "prox" && cmd != "sair")    //Phase 1: Command reading and execution
@@ -41,9 +50,12 @@ int main(int argc, char** argv)
             cout << "Comando: ";
             getline(cin, cmd);
             if(cmd == "") 
-                cout << "Comando não especificado" << end;
+            {
+                cout << "Comando não especificado" << endl;
+                getch();
+            }
             //else
-            //clear screen
+            clear();
             //parseCmd();
         }
         
