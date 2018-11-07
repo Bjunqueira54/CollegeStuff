@@ -29,7 +29,7 @@ Language::Language(int lang)
         cmd.push_back("delg");      //18
         cmd.push_back("sair");      //19
         
-        line.push_back("(Carrega em qualquer tecla para continuar...");
+        line.push_back("(Prima qualquer tecla para continuar)");
         line.push_back("Bem vindo a Cid Martin's Pirates!");
         line.push_back("1 - Novo Jogo");
         line.push_back("2 - Tutorial");
@@ -63,7 +63,7 @@ Language::Language(int lang)
         cmd.push_back("delg");
         cmd.push_back("exit");
         
-        line.push_back("(Press any key to continue...");
+        line.push_back("(Press any key to continue");
         line.push_back("Welcome to High Sea Adventure!");
         line.push_back("1 - New Game");
         line.push_back("2 - Tutorial");
