@@ -17,7 +17,7 @@ int main(int argc, char** argv)
         getline(cin, name);
         if(name == "") 
         {
-            cout << "\nNome invalido!";
+            cout << "\nNome invalido\n!";
         }
     }
     
@@ -40,6 +40,10 @@ int main(int argc, char** argv)
             //drawUI(); //Pending nCurses implementation
             cout << "Comando: ";
             getline(cin, cmd);
+            if(cmd == "") 
+                cout << "Comando não especificado" << end;
+            //else
+            //clear screen
             //parseCmd();
         }
         
