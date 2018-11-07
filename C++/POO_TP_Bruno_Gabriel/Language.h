@@ -5,17 +5,17 @@
 
 class Language
 {
-    vector <string> cmd;
-    vector <string> line;
-    vector <string> tutorial;
+    static vector <string> cmd;
+    static vector <string> line;
+    static vector <string> tutorial;
     
 public:
     
-    Language(){}
+    Language(string lang);
     
-    string getLine();
-    string getCmg();
-    void tutPage();
+    static string getLine(int n);
+    static string getCmd(int n);
+    static void tutPage(int n);
 };
 
 #endif /* LANGUAGE_H */
