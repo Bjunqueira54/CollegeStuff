@@ -11,7 +11,7 @@ int main(int argc, char** argv)
     noecho();
     //drawUI(20,40);
     
-    Language lang(1);
+    Language langP(1),langE(2);
     char opt;
     
     /* ==== PEDE E VERIFICA A LINGUAGEM ==== */
@@ -25,13 +25,13 @@ int main(int argc, char** argv)
     
     if(opt == '1')
     {
-        mvwaddstr(stdscr, 9, 25, "Bem vindo a Cid Martin's Pirates");
-        mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+        mvwaddstr(stdscr, 9, 25, langP.getLine()[1].c_str());
+        mvwaddstr(stdscr, 11, 23, langP.getLine()[0].c_str());
     }
-    else
+    else if(opt == '2')
     {
-        mvwaddstr(stdscr, 9, 25, "Bem vindo a Cid Martin's Pirates");
-        mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+        mvwaddstr(stdscr, 9, 25, langE.getLine()[1].c_str());
+        mvwaddstr(stdscr, 11, 20, langE.getLine()[0].c_str());
     }
     refresh();
     getch();
@@ -41,9 +41,9 @@ int main(int argc, char** argv)
     {
         clear();
         if(opt == '1')
-            mvwaddstr(stdscr, 1, 1, "Introduza o seu nome: ");
-        else
-            mvwaddstr(stdscr, 1, 1, "Introduza o seu nome: ");
+            mvwaddstr(stdscr, 1, 1, langP.getLine()[6].c_str());
+        else if(opt == '2')
+            mvwaddstr(stdscr, 1, 1, langE.getLine()[6].c_str());
         
         refresh();
         echo();
@@ -53,9 +53,9 @@ int main(int argc, char** argv)
         {
             clear();
             if(opt == '1')
-                mvwaddstr(stdscr, 1, 1, "Nome invalido!");
-            else
-                mvwaddstr(stdscr, 1, 1, "Nome invalido!");
+                mvwaddstr(stdscr, 1, 1, langP.getLine()[7].c_str());
+            else if(opt == '2')
+                mvwaddstr(stdscr, 1, 1, langE.getLine()[7].c_str());
             
             refresh();
             getch();
@@ -70,15 +70,15 @@ int main(int argc, char** argv)
     clear();
     if(opt == '1')
     {
-        mvwaddstr(stdscr, 9, 28, "Boa sorte marinheiro ");
+        mvwaddstr(stdscr, 9, 28, langP.getLine()[9].c_str());
         mvwaddstr(stdscr, 9, 49, name.c_str());
-        mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+        mvwaddstr(stdscr, 11, 20, langP.getLine()[0].c_str());
     }
-    else
+    else if(opt == '2')
     {
-        mvwaddstr(stdscr, 9, 28, "Boa sorte marinheiro ");
+        mvwaddstr(stdscr, 9, 28, langE.getLine()[9].c_str());
         mvwaddstr(stdscr, 9, 49, name.c_str());
-        mvwaddstr(stdscr, 11, 20, "(Pressione qualquer botao para continuar)");
+        mvwaddstr(stdscr, 11, 20, langE.getLine()[0].c_str());
     }
     refresh();
     getch();
@@ -90,28 +90,28 @@ int main(int argc, char** argv)
         turn++;
         clear();
         if(opt == '1')
-            mvwaddstr(stdscr, 1, 1, "Turno ");
-        else 
-            mvwaddstr(stdscr, 1, 1, "Turno ");
+            mvwaddstr(stdscr, 1, 1, langP.getLine()[10].c_str());
+        else if(opt == '2')
+            mvwaddstr(stdscr, 1, 1, langE.getLine()[10].c_str());
         
-        mvwaddstr(stdscr, 1, 8, turn.c_str());
+        //mvwaddstr(stdscr, 1, 8, turn); /* erro aqui no turn */
         refresh();
         
         while(cmd != "prox" && cmd != "sair" && cmd != "exit")    //Phase 1: Command reading and execution
         {
             if(opt == '1')
-                mvwaddstr(stdscr, 1, 1, "Comando: ");
-            else 
-                mvwaddstr(stdscr, 1, 1, "Comando: ");
+                mvwaddstr(stdscr, 1, 1, langP.getLine()[11].c_str());
+            else if(opt == '2')
+                mvwaddstr(stdscr, 1, 1, langE.getLine()[11].c_str());
             
             refresh();
             getline(cin, cmd);
             if(cmd == "") 
             {
                 if(opt == '1')
-                    mvwaddstr(stdscr, 1, 1, "Comando não especificado");
-                else 
-                    mvwaddstr(stdscr, 1, 1, "Comando não especificado");
+                    mvwaddstr(stdscr, 1, 1, langP.getLine()[12].c_str());
+                else if(opt == '2')
+                    mvwaddstr(stdscr, 1, 1, langE.getLine()[12].c_str());
                 refresh();
                 getch();
             }
