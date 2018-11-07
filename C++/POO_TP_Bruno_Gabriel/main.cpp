@@ -9,9 +9,7 @@ int main(int argc, char** argv)
 {
     initscr();
     noecho();
-    //drawUI(20,40);
     
-    Language langP(1),langE(2);
     char opt;
     
     /* ==== PEDE E VERIFICA A LINGUAGEM ==== */
@@ -20,45 +18,56 @@ int main(int argc, char** argv)
         mvwaddstr(stdscr, 1, 1, "Portugues - 1\n English - 2\n\n ->");
         refresh();
         opt = getch();
-        clear();
     }
+    clear();
+    refresh();
+    Language lang((opt == '1') ? 1 : 2);
     
-    if(opt == '1')
-    {
-        mvwaddstr(stdscr, 9, 25, langP.getLine()[1].c_str());
-        mvwaddstr(stdscr, 11, 23, langP.getLine()[0].c_str());
-    }
-    else if(opt == '2')
-    {
-        mvwaddstr(stdscr, 9, 25, langE.getLine()[1].c_str());
-        mvwaddstr(stdscr, 11, 20, langE.getLine()[0].c_str());
-    }
+    mvwaddstr(stdscr, 9, 25, lang.getLine()[1].c_str());
+    mvwaddstr(stdscr, 11, 23, lang.getLine()[0].c_str());
+        
     refresh();
     getch();
+    clear();
     
-    string name;
+    string name="";
+    char tempname[20] = "";
+
     while(name == "")
     {
-        clear();
-        if(opt == '1')
-            mvwaddstr(stdscr, 1, 1, langP.getLine()[6].c_str());
-        else if(opt == '2')
-            mvwaddstr(stdscr, 1, 1, langE.getLine()[6].c_str());
-        
+        mvwaddstr(stdscr, 1, 1, lang.getLine()[6].c_str());
+        move(3,1);
         refresh();
-        echo();
-        getline(cin, name);
+        
+        for(int x=0; ( opt = getch() ) != 10 || ( opt = getch() ) != KEY_ENTER; x++)
+        {
+            if(x == 15)
+                x--;
+            else
+            {
+                if( (opt == 32) ||                  //Se a tecla for espaço...
+                    (opt >= 48 && opt <= 57) ||     //... ou se o código ASCII da tecla estiver entre 0-9...
+                    (opt >= 65 && opt <= 90) ||     //... ou se o código ASCII da tecla estiver entre A-Z...
+                    (opt >= 97 && opt <= 122)   )   //... ou se o código ASCII da tecla estiver entre a-z.
+                {
+                    mvwaddch(stdscr, 3, x+1, opt);
+                    tempname[x] = opt;
+                    refresh();
+                }
+                else
+                    x--;
+            }
+        }
+        
+        name = tempname;
         
         if(name == "") 
         {
             clear();
-            if(opt == '1')
-                mvwaddstr(stdscr, 1, 1, langP.getLine()[7].c_str());
-            else if(opt == '2')
-                mvwaddstr(stdscr, 1, 1, langE.getLine()[7].c_str());
-            
-            refresh();
-            getch();
+            mvwaddstr(stdscr, 1, 2, lang.getLine()[7].c_str());
+            name = "";
+            for(int i=0; i<20; i++)
+                tempname[i] = '\0';
         }
     }
     
@@ -68,18 +77,12 @@ int main(int argc, char** argv)
     Player player(name);
     
     clear();
-    if(opt == '1')
-    {
-        mvwaddstr(stdscr, 9, 28, langP.getLine()[9].c_str());
-        mvwaddstr(stdscr, 9, 49, name.c_str());
-        mvwaddstr(stdscr, 11, 20, langP.getLine()[0].c_str());
-    }
-    else if(opt == '2')
-    {
-        mvwaddstr(stdscr, 9, 28, langE.getLine()[9].c_str());
-        mvwaddstr(stdscr, 9, 49, name.c_str());
-        mvwaddstr(stdscr, 11, 20, langE.getLine()[0].c_str());
-    }
+
+    mvwaddstr(stdscr, 9, 28, lang.getLine()[9].c_str());
+    mvwaddstr(stdscr, 9, 49, name.c_str());
+    mvwaddstr(stdscr, 11, 20, lang.getLine()[0].c_str());
+
+
     refresh();
     getch();
     clear();
@@ -89,29 +92,20 @@ int main(int argc, char** argv)
         cmd = "";
         turn++;
         clear();
-        if(opt == '1')
-            mvwaddstr(stdscr, 1, 1, langP.getLine()[10].c_str());
-        else if(opt == '2')
-            mvwaddstr(stdscr, 1, 1, langE.getLine()[10].c_str());
+        mvwaddstr(stdscr, 1, 1, lang.getLine()[10].c_str());
         
         //mvwaddstr(stdscr, 1, 8, turn); /* erro aqui no turn */
         refresh();
         
         while(cmd != "prox" && cmd != "sair" && cmd != "exit")    //Phase 1: Command reading and execution
         {
-            if(opt == '1')
-                mvwaddstr(stdscr, 1, 1, langP.getLine()[11].c_str());
-            else if(opt == '2')
-                mvwaddstr(stdscr, 1, 1, langE.getLine()[11].c_str());
+            mvwaddstr(stdscr, 1, 1, lang.getLine()[11].c_str());
             
             refresh();
             getline(cin, cmd);
             if(cmd == "") 
             {
-                if(opt == '1')
-                    mvwaddstr(stdscr, 1, 1, langP.getLine()[12].c_str());
-                else if(opt == '2')
-                    mvwaddstr(stdscr, 1, 1, langE.getLine()[12].c_str());
+                mvwaddstr(stdscr, 1, 1, lang.getLine()[12].c_str());
                 refresh();
                 getch();
             }

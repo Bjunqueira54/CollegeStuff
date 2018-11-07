@@ -35,7 +35,7 @@ Language::Language(int lang)
         line.push_back("2 - Tutorial");                             //3
         line.push_back("3 - Creditos");                             //4
         line.push_back("4 - Sair do Jogo");                         //5
-        line.push_back("Introduza o seu nome: ");                   //6
+        line.push_back("Introduza o seu nome(20 chars.): ");        //6
         line.push_back("Nome invalido!");                           //7
         line.push_back("Bem vindo ");                               //8
         line.push_back("Boa sorte marinheiro ");                    //9
@@ -67,12 +67,12 @@ Language::Language(int lang)
         cmd.push_back("exit");
         
         line.push_back("(Press any key to continue)");
-        line.push_back("Welcome to High Sea Adventure!");
+        line.push_back("Welcome to Merchants and Pirates!");
         line.push_back("1 - New Game");
         line.push_back("2 - Tutorial");
         line.push_back("3 - Credits");
         line.push_back("4 - Exit Game");
-        line.push_back("Enter your name: ");
+        line.push_back("Enter your name (20 chars.): ");
         line.push_back("Invalid name!");
         line.push_back("Welcome ");
         line.push_back("Good Luck sailor ");
