@@ -8,7 +8,7 @@ int main(int argc, char** argv)
 {
     //drawUI(20,40); //Pending nCurses implementation
     cout << "\nBem vindo a Cid Martin's Pirates!" << endl;  // alterei o nome de proposito
-    cout << "(Pressiona qualquer botao para continuar)" << endl;
+    cout << "(Pressiona qualquer botao para continuar)!" << endl;
     
     string name;
     while(name == "")
