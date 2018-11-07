@@ -36,9 +36,11 @@ Language::Language(int lang)
         line.push_back("3 - Creditos");
         line.push_back("4 - Sair do Jogo");
         line.push_back("Introduza o seu nome: ");
+        line.push_back("Nome invalido!");        
         line.push_back("Bem vindo ");
-        line.push_back("Boa sorte e diverte-te!");
+        line.push_back("Boa sorte marinheiro ");
         line.push_back("Comando: ");
+        line.push_back("Turno ");
     }
     else if(lang == 2)
     {
@@ -63,16 +65,18 @@ Language::Language(int lang)
         cmd.push_back("delg");
         cmd.push_back("exit");
         
-        line.push_back("(Press any key to continue");
+        line.push_back("(Press any key to continue)");
         line.push_back("Welcome to High Sea Adventure!");
         line.push_back("1 - New Game");
         line.push_back("2 - Tutorial");
         line.push_back("3 - Credits");
         line.push_back("4 - Exit Game");
         line.push_back("Enter your name: ");
+        line.push_back("Invalid name!");
         line.push_back("Welcome ");
-        line.push_back("Good Luck and Have Fun!");
+        line.push_back("Good Luck sailor ");
         line.push_back("Command: ");
+        line.push_back("Turn ");
     }
 }
 
