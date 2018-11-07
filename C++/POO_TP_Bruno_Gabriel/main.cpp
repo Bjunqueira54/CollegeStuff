@@ -19,6 +19,14 @@ int main(int argc, char** argv)
     refresh();
     getch();
     
+    //////
+    clear();
+    mvwaddstr(stdscr, 0, 0, lang.getCmd()[13].c_str());
+    refresh();
+    getch();
+    
+    /////
+    
     string name;
     while(name == "")
     {
