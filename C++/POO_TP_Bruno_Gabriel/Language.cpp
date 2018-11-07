@@ -8,64 +8,60 @@ Language::Language(int lang)
 {
     if(lang == 1)
     {
-        cmd[0] = "config";
-        cmd[1] = "exec";
-        cmd[2] = "prox";
-        cmd[3] = "compranav";
-        cmd[4] = "vendenav";
-        cmd[5] = "lista";
-        cmd[6] = "compra";
-        cmd[7] = "move";
-        cmd[8] = "auto";
-        cmd[9] = "stop";
-        cmd[10] = "pirata";
-        cmd[11] = "evpos";
-        cmd[12] = "evnav";
-        cmd[13] = "moedas";
-        cmd[14] = "vaipara";
-        cmd[15] = "comprasold";
-        cmd[16] = "saveg";
-        cmd[17] = "loadg";
-        cmd[18] = "delg";
-        cmd[19] = "sair";
+        cmd.push_back("config");
+        cmd.push_back("exec");
+        cmd.push_back("prox");
+        cmd.push_back("compranav");
+        cmd.push_back("vendenav");
+        cmd.push_back("lista");
+        cmd.push_back("compra");
+        cmd.push_back("move");
+        cmd.push_back("auto");
+        cmd.push_back("stop");
+        cmd.push_back("pirata");
+        cmd.push_back("evpos");
+        cmd.push_back("evnav");
+        cmd.push_back("moedas");
+        cmd.push_back("vaipara");
+        cmd.push_back("comprasold");
+        cmd.push_back("saveg");
+        cmd.push_back("loadg");
+        cmd.push_back("delg");
+        cmd.push_back("sair");
     }
     else if(lang == 2)
     {
-        cmd[0] = "config";
-        cmd[1] = "exec";
-        cmd[2] = "next";
-        cmd[3] = "buyship";
-        cmd[4] = "sellship";
-        cmd[5] = "list";
-        cmd[6] = "buy";
-        cmd[7] = "move";
-        cmd[8] = "auto";
-        cmd[9] = "stop";
-        cmd[10] = "pirate";
-        cmd[11] = "evpos";
-        cmd[12] = "evship";
-        cmd[13] = "coins";
-        cmd[14] = "goto";
-        cmd[15] = "buysoldier";
-        cmd[16] = "saveg";
-        cmd[17] = "loadg";
-        cmd[18] = "delg";
-        cmd[19] = "exit";
+        cmd.push_back("config");
+        cmd.push_back("exec");
+        cmd.push_back("next");
+        cmd.push_back("buyship");
+        cmd.push_back("sellship");
+        cmd.push_back("list");
+        cmd.push_back("buy");
+        cmd.push_back("move");
+        cmd.push_back("auto");
+        cmd.push_back("stop");
+        cmd.push_back("pirate");
+        cmd.push_back("evpos");
+        cmd.push_back("evship");
+        cmd.push_back("coins");
+        cmd.push_back("goto");
+        cmd.push_back("buycrew");
+        cmd.push_back("saveg");
+        cmd.push_back("loadg");
+        cmd.push_back("delg");
+        cmd.push_back("exit");
     }
 }
 
-string Language::getLine(int n)
+vector <string>& Language::getLine()
 {
-    ostringstream gline;
-    gline << line[n];
-    return gline.str();
+    return line;
 }
 
-string Language::getCmd(int n)
+vector <string>& Language::getCmd()
 {
-    ostringstream gcmd;
-    gcmd << cmd[n];
-    return gcmd.str();
+    return cmd;
 }
 
 void Language::tutPage(int n)
