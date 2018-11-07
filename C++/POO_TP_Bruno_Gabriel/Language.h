@@ -11,10 +11,10 @@ class Language
     
 public:
     
-    Language(string lang);
+    Language(int lang);
     
-    static string getLine(int n);
-    static string getCmd(int n);
+    static vector <string>& getLine();
+    static vector <string>& getCmd();
     static void tutPage(int n);
 };
 
