@@ -47,8 +47,9 @@ int main(int argc, char** argv)
             mvwaddstr(stdscr, 5, 5, opti);
             refresh();
         }*/
+        int x=0;
         
-        for(int x=0;; x++)
+        while(1)
         {
             if(x == 15)
                 x--;
@@ -61,9 +62,10 @@ int main(int argc, char** argv)
                 {
                     if(x>0)
                     {
-                        tempname[x-1] = ' ';
-                        move(3, x-2);
-                        x -= 2;
+                        mvwaddch(stdscr, 3, --x, ' ');
+                        tempname[x] = '\0';
+                        //move(3, --x);
+                        refresh();
                     }
                 }
                 else if( (opt == ' ') ||             //Se a tecla for espaço...
@@ -71,13 +73,14 @@ int main(int argc, char** argv)
                     (opt >= 'A' && opt <= 'Z') ||     //... ou se o código ASCII da tecla estiver entre A-Z...
                     (opt >= 'a' && opt <= 'z')   )   //... ou se o código ASCII da tecla estiver entre a-z.
                 {
-                    mvwaddch(stdscr, 3, x+1, opt);
+                    mvwaddch(stdscr, 3, x, opt);
                     tempname[x] = opt;
                     refresh();
+                    x++;
                 }
                 else
-                    move(3,x--);
-
+                    if(x>0)
+                        move(3,--x);
             }
         }
         
