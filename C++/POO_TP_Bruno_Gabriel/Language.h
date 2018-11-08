@@ -14,8 +14,10 @@ public:
     
     Language(int lang);
     
-    static vector <string>& getLine();
-    static vector <string>& getCmd();
+    //static vector <string>& getLine();
+    //static vector <string>& getCmd();
+    static const char* getCmd(int i);
+    static const char* getLine(int i);
     static void tutPage(int n);
     static void credPage(int n);
 };

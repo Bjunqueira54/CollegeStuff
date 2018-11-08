@@ -36,12 +36,13 @@ Language::Language(int lang)
         line.push_back("3 - Creditos");                             //4
         line.push_back("4 - Sair do Jogo");                         //5
         line.push_back("Introduza o seu nome(20 chars.): ");        //6
-        line.push_back("Nome invalido!");                           //7
-        line.push_back("Bem vindo ");                               //8
-        line.push_back("Boa sorte marinheiro ");                    //9
-        line.push_back("Turno ");                                   //10
-        line.push_back("Comando: ");                                //11
-        line.push_back("Comando não especificado");                 //12
+        line.push_back("Nome: ");                                   //7
+        line.push_back("Nome invalido!");                           //8
+        line.push_back("Bem vindo ");                               //9
+        line.push_back("Boa sorte marinheiro ");                    //10
+        line.push_back("Turno ");                                   //11
+        line.push_back("Comando: ");                                //12
+        line.push_back("Comando não especificado");                 //13
     }
     else if(lang == 2)
     {
@@ -73,6 +74,7 @@ Language::Language(int lang)
         line.push_back("3 - Credits");
         line.push_back("4 - Exit Game");
         line.push_back("Enter your name (20 chars.): ");
+        line.push_back("Name: ");
         line.push_back("Invalid name!");
         line.push_back("Welcome ");
         line.push_back("Good Luck sailor ");
@@ -82,7 +84,7 @@ Language::Language(int lang)
     }
 }
 
-vector <string>& Language::getLine()
+/*vector <string>& Language::getLine()
 {
     return line;
 }
@@ -90,6 +92,16 @@ vector <string>& Language::getLine()
 vector <string>& Language::getCmd()
 {
     return cmd;
+}*/
+
+const char* Language::getCmd(int i)
+{
+    return cmd[i].c_str();
+}
+
+const char* Language::getLine(int i)
+{
+    return line[i].c_str();
 }
 
 void Language::tutPage(int n)
