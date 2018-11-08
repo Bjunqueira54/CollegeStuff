@@ -38,7 +38,7 @@ int main(int argc, char** argv)
         mvwaddstr(stdscr, 1, 1, lang.getLine()[6].c_str());
         move(3,1);
         refresh();
-        char opti[5];
+        /*char opti[5];
         while(1)
         {
             opt = getch();
@@ -46,38 +46,37 @@ int main(int argc, char** argv)
             clear();
             mvwaddstr(stdscr, 5, 5, opti);
             refresh();
-        }
+        }*/
         
-        /*for(int x=0;; x++)
+        for(int x=0;; x++)
         {
             if(x == 15)
                 x--;
             else
             {
                 opt = getch();
-                
-                if( (opt == 32) ||                  //Se a tecla for espaço...
-                    (opt >= 48 && opt <= 57) ||     //... ou se o código ASCII da tecla estiver entre 0-9...
-                    (opt >= 65 && opt <= 90) ||     //... ou se o código ASCII da tecla estiver entre A-Z...
-                    (opt >= 97 && opt <= 122)   )   //... ou se o código ASCII da tecla estiver entre a-z.
+                if(opt == 10)   //Tecla Enter
+                    break;
+                else if((opt == KEY_BACKSPACE) || (opt == KEY_DC)) //Tecla Backspace
+                {
+                    if(x>0)
+                    {
+                        tempname[x-1] = ' ';
+                        move(3, x-2);
+                        x -= 2;
+                    }
+                }
+                else if( (opt == ' ') ||             //Se a tecla for espaço...
+                    (opt >= '0' && opt <= '9') ||     //... ou se o código ASCII da tecla estiver entre 0-9...
+                    (opt >= 'A' && opt <= 'Z') ||     //... ou se o código ASCII da tecla estiver entre A-Z...
+                    (opt >= 'a' && opt <= 'z')   )   //... ou se o código ASCII da tecla estiver entre a-z.
                 {
                     mvwaddch(stdscr, 3, x+1, opt);
                     tempname[x] = opt;
                     refresh();
                 }
-                
-                else if((opt == 126) || (opt == 127))
-                {
-                    if(x>0)
-                    {
-                        --x;
-                        tempname[x] = ' ';
-                    }
-                }
-                else if(opt == 10)
-                    break;
                 else
-                    --x;
+                    move(3,x--);
 
             }
         }
@@ -91,7 +90,7 @@ int main(int argc, char** argv)
             name = "";
             for(int i=0; i<20; i++)
                 tempname[i] = '\0';
-        }*/
+        }
     }
     
     int turn=0;
