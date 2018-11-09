@@ -25,3 +25,12 @@ void parseCmd(string cmd, const Language lang)
         return;
     }
 }
+
+int getCenter(string a)
+{
+    int x;
+    
+    x = (80-strlen(a.c_str()))/2;
+    
+    return x;
+}
