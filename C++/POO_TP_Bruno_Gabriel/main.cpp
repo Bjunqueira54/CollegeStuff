@@ -34,7 +34,7 @@ int main(int argc, char** argv)
     refresh();
     getch();
     
-    do
+    do // Main Menu
     {
         clear();
         mvwaddstr(stdscr, 7, getCenter(lang.getLine(2)), lang.getLine(2));
@@ -46,7 +46,7 @@ int main(int argc, char** argv)
         opt = getch();
         clear();
 
-        if(opt == '1')
+        if(opt == '1') // New Game
         {
             while(1)
             {
@@ -169,20 +169,19 @@ int main(int argc, char** argv)
                 }
             }
             while(cmd != lang.getCmd(19));
-            opt = '4';
         }
-        else if(opt == '2')
+        else if(opt == '2') // Tutorial
         {
             tutorial();
         }
-        else if(opt == '3')
+        else if(opt == '3') // Credits
         {
             credits();
         }
-        else if(opt == '4')
+        else if(opt == '4') // Exit
         {
             clear();
-            mvwaddstr(stdscr, 1, 1, "Obrigada por jogar"); // mensagem temporaria (sem linguagem)
+            mvwaddstr(stdscr, 1, 1, lang.getLine(17));
             refresh();
             getch();
         }
