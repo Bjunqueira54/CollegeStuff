@@ -1,5 +1,5 @@
-#include "headers.h"
 #include "Functions.h"
+#include "headers.h"
 #include "Player.h"
 #include "Language.h"
 
@@ -7,6 +7,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+    setScreenSize(30,160);
     initscr();
     noecho();
     

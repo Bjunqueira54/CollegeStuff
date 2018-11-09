@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=POO_TP_Bruno_Gabriel
+PROJECTNAME=POO_TP_Bruno_Gabriel_Portable
 
 # Active Configuration
 DEFAULTCONF=Debug
