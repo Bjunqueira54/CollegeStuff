@@ -27,135 +27,166 @@ int main(int argc, char** argv)
     clear();
     refresh();
     Language lang((opt == '1') ? 1 : 2); // opt == 1? else opt == 2
-    
+        
     mvwaddstr(stdscr, 9, getCenter(lang.getLine(1)), lang.getLine(1));
     mvwaddstr(stdscr, 11, getCenter(lang.getLine(0)), lang.getLine(0));
-        
-    refresh();
-    getch();
-    clear();
-
-    while(1)
-    {
-        mvwaddstr(stdscr, 1, 1, lang.getLine(6));
-        mvwaddstr(stdscr, 3, 1, lang.getLine(7));
-        refresh();
-        
-        opt = 0;
-        
-        while(opt != KEY_ENTER)
-        {
-            opt = getch();
-            
-            if((opt == ' ') || (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
-            {
-                name.push_back(opt);
-                mvwaddstr(stdscr, 3, strlen(lang.getLine(7)) + 1, name.c_str());
-                refresh();
-            }
-            else if(opt == 8 || opt == 127)
-            {
-                if(!( name.empty() ))
-                {
-                    name.pop_back();
-                    mvwaddch(stdscr, 3, strlen(lang.getLine(7)) + strlen(name.c_str()) + 1, ' ');
-                    mvwaddstr(stdscr, 3, strlen(lang.getLine(7)) + 1, name.c_str());
-                    refresh();
-                }
-            }
-            else if(opt == KEY_ENTER || opt == 10 || opt == '\n') break;
-        }
-        
-        if(name.empty())
-            mvwaddstr(stdscr, 1, 2, lang.getLine(8));
-        else
-            break;
-    }
     
-    Player player(name);
-    
-    clear();
-    
-    aux.clear();
-    aux = lang.getLine(10);
-    aux += name;
-
-    mvwaddstr(stdscr, 9, getCenter(aux), aux.c_str());
-    mvwaddstr(stdscr, 11, getCenter(lang.getLine(0)), lang.getLine(0));
-
     refresh();
     getch();
     
     do
     {
-        ostringstream sturn;
-        turn++;
         clear();
-        mvwaddstr(stdscr, 1, 1, lang.getLine(11));
-        sturn << turn;
-        mvwaddstr(stdscr, 1, strlen(lang.getLine(11)) + 1, sturn.str().c_str());
+        mvwaddstr(stdscr, 7, getCenter(lang.getLine(2)), lang.getLine(2));
+        mvwaddstr(stdscr, 9, getCenter(lang.getLine(3)), lang.getLine(3));
+        mvwaddstr(stdscr, 11, getCenter(lang.getLine(4)), lang.getLine(4));
+        mvwaddstr(stdscr, 13, getCenter(lang.getLine(5)), lang.getLine(5));
+
         refresh();
-        
-        do    //Phase 1: Command reading and execution
+        opt = getch();
+        clear();
+
+        if(opt == '1')
         {
-            cmd.clear();
-            mvwaddstr(stdscr, 2, 1, lang.getLine(12));
+            while(1)
+            {
+                mvwaddstr(stdscr, 1, 1, lang.getLine(6));
+                mvwaddstr(stdscr, 3, 1, lang.getLine(7));
+                refresh();
+
+                opt = 0;
+
+                while(opt != KEY_ENTER)
+                {
+                    opt = getch();
+
+                    if((opt == ' ') || (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
+                    {
+                        name.push_back(opt);
+                        mvwaddstr(stdscr, 3, strlen(lang.getLine(7)) + 1, name.c_str());
+                        refresh();
+                    }
+                    else if(opt == 8 || opt == 127)
+                    {
+                        if(!( name.empty() ))
+                        {
+                            name.pop_back();
+                            mvwaddch(stdscr, 3, strlen(lang.getLine(7)) + strlen(name.c_str()) + 1, ' ');
+                            mvwaddstr(stdscr, 3, strlen(lang.getLine(7)) + 1, name.c_str());
+                            refresh();
+                        }
+                    }
+                    else if(opt == KEY_ENTER || opt == 10 || opt == '\n') break;
+                }
+
+                if(name.empty())
+                    mvwaddstr(stdscr, 1, 2, lang.getLine(8));
+                else
+                    break;
+            }
+
+            Player player(name);
+
+            clear();
+
+            aux.clear();
+            aux = lang.getLine(10);
+            aux += name;
+
+            mvwaddstr(stdscr, 9, getCenter(aux), aux.c_str());
+            mvwaddstr(stdscr, 11, getCenter(lang.getLine(0)), lang.getLine(0));
+
             refresh();
-            
+            getch();
+
             do
             {
-                opt = getch();
-                
-                if((opt == ' ') || (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
-                {
-                    if(!(cmd.empty() && opt == ' '))
-                    {
-                        cmd.push_back(opt);
-                        mvwaddstr(stdscr, 2, 1 + strlen(lang.getLine(12)), cmd.c_str());
-                        refresh();
-                    }
-                }
-                else if(opt == 8 || opt == 127)
-                {
-                    if(!(cmd.empty()))
-                    {
-                        mvwaddch(stdscr, 2, strlen(lang.getLine(12)) + strlen(cmd.c_str()), ' ');
-                        cmd.pop_back();
-                        mvwaddstr(stdscr, 2, 1 + strlen(lang.getLine(12)), cmd.c_str());
-                        refresh();
-                    }
-                }
-            }
-            while(opt != KEY_ENTER && opt != 10 && opt != '\n');
-            
-            if(cmd.empty()) 
-            {
-                mvwaddstr(stdscr, 3, 1, lang.getLine(13));
+                ostringstream sturn;
+                turn++;
+                clear();
+                mvwaddstr(stdscr, 1, 1, lang.getLine(11));
+                sturn << turn;
+                mvwaddstr(stdscr, 1, strlen(lang.getLine(11)) + 1, sturn.str().c_str());
                 refresh();
-                getch();
+
+                do    //Phase 1: Command reading and execution
+                {
+                    cmd.clear();
+                    mvwaddstr(stdscr, 2, 1, lang.getLine(12));
+                    refresh();
+
+                    do
+                    {
+                        opt = getch();
+
+                        if((opt == ' ') || (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
+                        {
+                            if(!(cmd.empty() && opt == ' '))
+                            {
+                                cmd.push_back(opt);
+                                mvwaddstr(stdscr, 2, 1 + strlen(lang.getLine(12)), cmd.c_str());
+                                refresh();
+                            }
+                        }
+                        else if(opt == 8 || opt == 127)
+                        {
+                            if(!(cmd.empty()))
+                            {
+                                mvwaddch(stdscr, 2, strlen(lang.getLine(12)) + strlen(cmd.c_str()), ' ');
+                                cmd.pop_back();
+                                mvwaddstr(stdscr, 2, 1 + strlen(lang.getLine(12)), cmd.c_str());
+                                refresh();
+                            }
+                        }
+                    }
+                    while(opt != KEY_ENTER && opt != 10 && opt != '\n');
+
+                    if(cmd.empty()) 
+                    {
+                        mvwaddstr(stdscr, 3, 1, lang.getLine(13));
+                        refresh();
+                        getch();
+                    }
+                    else
+                    {
+                        parseCmd(cmd, lang);
+                        mvwaddstr(stdscr, 2, 1, "                                       "); //just for now;
+                    }
+                }
+                while(cmd != lang.getCmd(2) && cmd != lang.getCmd(19));
+
+                if(cmd != "sair" && cmd != "exit")
+                {
+                    //Phase 2: Player command processing
+
+                    //Phase 3: AI Movement
+
+                    //Phase 4: Battle procedure
+
+                    //Phase 5: Map Events
+
+                    //Phase 6: Enemy AI Ship spawn
+                }
             }
-            else
-            {
-                parseCmd(cmd, lang);
-                mvwaddstr(stdscr, 2, 1, "                                       "); //just for now;
-            }
+            while(cmd != lang.getCmd(19));
+            opt = '4';
         }
-        while(cmd != lang.getCmd(2) && cmd != lang.getCmd(19));
-        
-        if(cmd != "sair" && cmd != "exit")
+        else if(opt == '2')
         {
-            //Phase 2: Player command processing
-
-            //Phase 3: AI Movement
-
-            //Phase 4: Battle procedure
-
-            //Phase 5: Map Events
-
-            //Phase 6: Enemy AI Ship spawn
+            tutorial();
         }
-    }
-    while(cmd != lang.getCmd(19));
+        else if(opt == '3')
+        {
+            credits();
+        }
+        else if(opt == '4')
+        {
+            clear();
+            mvwaddstr(stdscr, 1, 1, "Obrigada por jogar"); // mensagem temporaria (sem linguagem)
+            refresh();
+            getch();
+        }
+    } while(opt != '4');
     
     endwin();
     return 0;
