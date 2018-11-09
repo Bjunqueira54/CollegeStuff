@@ -36,15 +36,7 @@ int main(int argc, char** argv)
     
     do // Main Menu
     {
-        clear();
-        mvwaddstr(stdscr, 7, getCenter(lang.getLine(2)), lang.getLine(2));
-        mvwaddstr(stdscr, 9, getCenter(lang.getLine(3)), lang.getLine(3));
-        mvwaddstr(stdscr, 11, getCenter(lang.getLine(4)), lang.getLine(4));
-        mvwaddstr(stdscr, 13, getCenter(lang.getLine(5)), lang.getLine(5));
-
-        refresh();
-        opt = getch();
-        clear();
+        opt = drawMainMenu(lang);
 
         if(opt == '1') // New Game
         {

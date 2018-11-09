@@ -3,6 +3,23 @@
 
 using namespace std;
 
+char drawMainMenu(Language lang)
+{
+    char opt;
+    
+    clear();
+    mvwaddstr(stdscr, 7, getCenter(lang.getLine(2)), lang.getLine(2));
+    mvwaddstr(stdscr, 9, getCenter(lang.getLine(3)), lang.getLine(3));
+    mvwaddstr(stdscr, 11, getCenter(lang.getLine(4)), lang.getLine(4));
+    mvwaddstr(stdscr, 13, getCenter(lang.getLine(5)), lang.getLine(5));
+
+    refresh();
+    opt = getch();
+    clear();
+    
+    return opt;
+}
+
 void parseCmd(string cmd, const Language lang)
 {
     string parse;
