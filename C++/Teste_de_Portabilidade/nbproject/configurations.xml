@@ -4,13 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>Mapa.h</itemPath>
-      <itemPath>Navio.h</itemPath>
-      <itemPath>Oceano.h</itemPath>
-      <itemPath>Player.h</itemPath>
-      <itemPath>Porto.h</itemPath>
-      <itemPath>Terra.h</itemPath>
-      <itemPath>libs.h</itemPath>
       <itemPath>main.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -20,12 +13,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>Mapa.cpp</itemPath>
-      <itemPath>Navio.cpp</itemPath>
-      <itemPath>Oceano.cpp</itemPath>
-      <itemPath>Player.cpp</itemPath>
-      <itemPath>Porto.cpp</itemPath>
-      <itemPath>Terra.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -52,33 +39,12 @@
         <ccTool>
           <standard>8</standard>
         </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerOptionItem>-lncurses</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
       </compileType>
-      <item path="Mapa.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Mapa.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Navio.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Navio.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Oceano.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Oceano.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Player.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Player.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Porto.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Porto.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Terra.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Terra.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="libs.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="main.h" ex="false" tool="3" flavor2="0">
@@ -105,32 +71,6 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="Mapa.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Mapa.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Navio.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Navio.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Oceano.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Oceano.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Player.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Player.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Porto.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Porto.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Terra.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Terra.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="libs.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="main.h" ex="false" tool="3" flavor2="0">

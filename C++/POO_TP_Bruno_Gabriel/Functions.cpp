@@ -13,6 +13,11 @@ void drawMainMenu(const Language lang)
     refresh();
 }
 
+void drawMap(const Language lang)
+{
+    move(0,0);
+}
+
 void parseCmd(string cmd, const Language lang)
 {
     string parse;
