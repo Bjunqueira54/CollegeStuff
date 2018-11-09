@@ -25,7 +25,7 @@ int main(int argc, char** argv)
     refresh();
     Language lang((opt == '1') ? 1 : 2);
     
-    mvwaddstr(stdscr, 9, , lang.getLine(1));
+    mvwaddstr(stdscr, 9, getCenter(), lang.getLine(1));
     mvwaddstr(stdscr, 11, , lang.getLine(0));
         
     refresh();
@@ -36,7 +36,7 @@ int main(int argc, char** argv)
     
     while(1)
     {
-        mvwaddstr(stdscr, 0, 0, lang.getLine(6));
+        mvwaddstr(stdscr, 1, 1, lang.getLine(6));
         mvwaddstr(stdscr, 3, 1, lang.getLine(7));
         refresh();
         
