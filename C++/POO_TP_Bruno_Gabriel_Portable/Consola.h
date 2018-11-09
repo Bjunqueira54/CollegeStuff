@@ -103,7 +103,7 @@ public:
 	//   "press any key to continue"
 	// - Esta funcionalidade tambêm se consegue de
 	//   outras formas
-	static char getch(void);
+	static char (getch)(void);
 
 	// As duas funções seguintes são pouco interessantes
 
