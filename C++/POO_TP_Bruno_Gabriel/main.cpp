@@ -28,7 +28,7 @@ int main(int argc, char** argv)
     
     clear();
     refresh();
-    Language lang((opt == '1') ? 1 : 2);
+    Language lang((opt == '1') ? 1 : 2); // opt == 1? else opt == 2
     
     mvwaddstr(stdscr, 9, getCenter(lang.getLine(1)), lang.getLine(1));
     mvwaddstr(stdscr, 11, getCenter(lang.getLine(0)), lang.getLine(0));
