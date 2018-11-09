@@ -28,12 +28,13 @@ void parseCmd(string cmd, const Language lang)
 
 int getCenter(const char* a)
 {
-    int x;
+    int x, y;
     
     if(a == "")
         return 0;
     
     string str(a);
+    getmaxyx(stdscr, y, x);
     
     x = (80-strlen(str.c_str()))/2;
     
@@ -42,7 +43,9 @@ int getCenter(const char* a)
 
 int getCenter(string a)
 {
-    int x;
+    int x, y;
+    
+    getmaxyx(stdscr, y, x);
     
     x = (80 - strlen(a.c_str()))/2;
     
