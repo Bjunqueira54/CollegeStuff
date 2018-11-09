@@ -9,14 +9,12 @@ int main(int argc, char** argv)
 {
     initscr();
     noecho();
-    resizeterm(30, 100);
     
     char opt;
     string name = "";
     string cmd = "";
     string aux;
     int turn=0;
-    ostringstream sturn;
     
     /* ==== PEDE E VERIFICA A LINGUAGEM ==== */
     while(opt != '1' && opt != '2')
@@ -90,7 +88,7 @@ int main(int argc, char** argv)
     
     do
     {
-        sturn.str().clear();
+        ostringstream sturn;
         turn++;
         clear();
         mvwaddstr(stdscr, 1, 1, lang.getLine(11));
@@ -100,7 +98,7 @@ int main(int argc, char** argv)
         
         do    //Phase 1: Command reading and execution
         {
-            cmd.empty();
+            cmd.clear();
             mvwaddstr(stdscr, 2, 1, lang.getLine(12));
             refresh();
             
@@ -113,17 +111,17 @@ int main(int argc, char** argv)
                     if(!(cmd.empty() && opt == ' '))
                     {
                         cmd.push_back(opt);
-                        mvwaddstr(stdscr, 2, strlen(lang.getLine(12)) + 1, cmd.c_str());
+                        mvwaddstr(stdscr, 2, 1 + strlen(lang.getLine(12)), cmd.c_str());
                         refresh();
                     }
                 }
                 else if(opt == 8 || opt == 127)
                 {
-                    if(!( cmd.empty() ))
+                    if(!(cmd.empty()))
                     {
-                        cmd.pop_back();
                         mvwaddch(stdscr, 2, strlen(lang.getLine(12)) + strlen(cmd.c_str()), ' ');
-                        mvwaddstr(stdscr, 2, strlen(lang.getLine(12)), cmd.c_str());
+                        cmd.pop_back();
+                        mvwaddstr(stdscr, 2, 1 + strlen(lang.getLine(12)), cmd.c_str());
                         refresh();
                     }
                 }

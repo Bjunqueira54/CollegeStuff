@@ -34,9 +34,8 @@ int getCenter(const char* a)
         return 0;
     
     string str(a);
-    x = getmaxx(stdscr);
     
-    x = (80-strlen(str.c_str()))/2;
+    x = (getmaxx(stdscr)-strlen(str.c_str()))/2;
     
     return x;
 }
@@ -45,9 +44,7 @@ int getCenter(string a)
 {
     int x;
     
-    x = getmaxx(stdscr);
-    
-    x = (80 - strlen(a.c_str()))/2;
+    x = (getmaxx(stdscr) - strlen(a.c_str()))/2;
     
     return x;
 }
