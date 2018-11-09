@@ -12,6 +12,11 @@ int main(int argc, char** argv)
     resizeterm(30, 100);
     
     char opt;
+    string name = "";
+    string cmd = "";
+    string aux;
+    int turn=0;
+    ostringstream sturn;
     
     /* ==== PEDE E VERIFICA A LINGUAGEM ==== */
     while(opt != '1' && opt != '2')
@@ -25,15 +30,13 @@ int main(int argc, char** argv)
     refresh();
     Language lang((opt == '1') ? 1 : 2);
     
-    mvwaddstr(stdscr, 9, getCenter(), lang.getLine(1));
-    mvwaddstr(stdscr, 11, , lang.getLine(0));
+    mvwaddstr(stdscr, 9, getCenter(lang.getLine(1)), lang.getLine(1));
+    mvwaddstr(stdscr, 11, getCenter(lang.getLine(0)), lang.getLine(0));
         
     refresh();
     getch();
     clear();
-    
-    string name = "";
-    
+
     while(1)
     {
         mvwaddstr(stdscr, 1, 1, lang.getLine(6));
@@ -71,21 +74,21 @@ int main(int argc, char** argv)
             break;
     }
     
-    string cmd = "";
-    
     Player player(name);
     
     clear();
+    
+    aux.clear();
+    aux = lang.getLine(10);
+    aux += name;
 
-    mvwaddstr(stdscr, 9, 28, lang.getLine(10));
-    mvwaddstr(stdscr, 9, (28 + strlen(lang.getLine(10))), name.c_str());
-    mvwaddstr(stdscr, 11, 20, lang.getLine(0));
+    /*mvwaddstr(stdscr, 9, getCenter(lang.getLine(10)), lang.getLine(10));
+    mvwaddstr(stdscr, 9, (28 + strlen(lang.getLine(10))), name.c_str());*/
+    mvwaddstr(stdscr, 9, getCenter(aux), aux.c_str());
+    mvwaddstr(stdscr, 11, getCenter(lang.getLine(0)), lang.getLine(0));
 
     refresh();
     getch();
-    
-    int turn=0;
-    ostringstream sturn;
     
     do
     {
@@ -112,7 +115,7 @@ int main(int argc, char** argv)
                     if(!(cmd.empty() && opt == ' '))
                     {
                         cmd.push_back(opt);
-                        mvwaddstr(stdscr, 2, strlen(lang.getLine(12)), cmd.c_str());
+                        mvwaddstr(stdscr, 2, strlen(lang.getLine(12)) + 1, cmd.c_str());
                         refresh();
                     }
                 }
