@@ -15,7 +15,9 @@ Nov 2018 - Pequenos melhoramentos nos comentários
 
 /* --> ver comentários em consola.h */
 
-#include "consola.h"                      
+#if (defined _WIN32 || defined __unix__) && !(defined __linux__)
+
+#include "Consola.h"
 #include <windows.h>
 #include <stdio.h>
 
@@ -249,3 +251,5 @@ void Consola::drawCircle(int X, int Y, int R, int Pen, int Fill){
     ReleaseDC(hwnd, DrawHDC);  // torna-se lento
 #endif
 }
+
+#endif
