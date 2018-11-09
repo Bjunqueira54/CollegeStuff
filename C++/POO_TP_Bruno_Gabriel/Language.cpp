@@ -35,7 +35,7 @@ Language::Language(int lang)
         line.push_back("2 - Tutorial");                             //3
         line.push_back("3 - Creditos");                             //4
         line.push_back("4 - Sair do Jogo");                         //5
-        line.push_back("Introduza o seu nome (20 chars.): ");        //6
+        line.push_back("Introduza o seu nome (20 chars.): ");       //6
         line.push_back("Nome: ");                                   //7
         line.push_back("Nome invalido!");                           //8
         line.push_back("Bem vindo ");                               //9
@@ -44,6 +44,9 @@ Language::Language(int lang)
         line.push_back("Comando: ");                                //12
         line.push_back("Comando não especificado");                 //13
         line.push_back("Comando Reconhecido");                      //14    //Este vai desaparecer
+        line.push_back("Tutorial");                                 //15
+        line.push_back("Creditos");                                 //16
+        line.push_back("Obrigado por jogar");                       //17
     }
     else if(lang == 2)
     {
@@ -83,6 +86,9 @@ Language::Language(int lang)
         line.push_back("Command: ");
         line.push_back("Command not specified");
         line.push_back("Command Recognized");
+        line.push_back("Tutorial");
+        line.push_back("Credits");
+        line.push_back("Thanks for playing!");
     }
 }
 
