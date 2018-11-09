@@ -46,7 +46,7 @@ Language::Language(int lang)
         line.push_back("Comando Reconhecido");                      //14    //Este vai desaparecer
         line.push_back("Tutorial");                                 //15
         line.push_back("Creditos");                                 //16
-        line.push_back("Obrigado por jogar");                       //17
+        line.push_back("Obrigado por jogar!");                       //17
     }
     else if(lang == 2)
     {
