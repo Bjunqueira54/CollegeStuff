@@ -14,8 +14,8 @@ public:
     
     Language(int lang);
     
-    //static vector <string>& getLine();
-    //static vector <string>& getCmd();
+    vector <string> getLinevec() const;  //Atrevam-se a brincar com isto e depois virem perguntar porque é que
+    vector <string> getCmdvec() const;   //isto não funciona, dou cabo de vocês. Assinado: Bruno
     static const char* getCmd(int i);
     static const char* getLine(int i);
     static void tutPage(int n);

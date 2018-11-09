@@ -9,6 +9,7 @@ int main(int argc, char** argv)
 {
     initscr();
     noecho();
+    resizeterm(30, 100);
     
     char opt;
     
@@ -77,43 +78,70 @@ int main(int argc, char** argv)
     clear();
 
     mvwaddstr(stdscr, 9, 28, lang.getLine(10));
-    mvwaddstr(stdscr, 9, 49, name.c_str());
+    mvwaddstr(stdscr, 9, (28 + strlen(lang.getLine(10))), name.c_str());
     mvwaddstr(stdscr, 11, 20, lang.getLine(0));
-
 
     refresh();
     getch();
-    clear();
     
     int turn=0;
     ostringstream sturn;
     
-    while(cmd != "sair" && cmd != "exit")
+    do
     {
-        cmd = "";
+        sturn.str().clear();
         turn++;
         clear();
         mvwaddstr(stdscr, 1, 1, lang.getLine(11));
         sturn << turn;
-        mvwaddstr(stdscr, 1, 8, sturn.str().c_str());
+        mvwaddstr(stdscr, 1, strlen(lang.getLine(11)) + 1, sturn.str().c_str());
         refresh();
         
-        while(cmd != "prox" && cmd != "sair" && cmd != "exit")    //Phase 1: Command reading and execution
+        do    //Phase 1: Command reading and execution
         {
-            mvwaddstr(stdscr, 1, 1, lang.getLine(12));
-            
+            cmd.empty();
+            mvwaddstr(stdscr, 2, 1, lang.getLine(12));
             refresh();
-            getline(cin, cmd);
-            if(cmd == "") 
+            
+            do
             {
-                mvwaddstr(stdscr, 1, 1, lang.getLine(13));
+                opt = getch();
+                
+                if((opt == ' ') || (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
+                {
+                    if(!(cmd.empty() && opt == ' '))
+                    {
+                        cmd.push_back(opt);
+                        mvwaddstr(stdscr, 2, strlen(lang.getLine(12)), cmd.c_str());
+                        refresh();
+                    }
+                }
+                else if(opt == 8 || opt == 127)
+                {
+                    if(!( cmd.empty() ))
+                    {
+                        cmd.pop_back();
+                        mvwaddch(stdscr, 2, strlen(lang.getLine(12)) + strlen(cmd.c_str()), ' ');
+                        mvwaddstr(stdscr, 2, strlen(lang.getLine(12)), cmd.c_str());
+                        refresh();
+                    }
+                }
+            }
+            while(opt != KEY_ENTER && opt != 10 && opt != '\n');
+            
+            if(cmd.empty()) 
+            {
+                mvwaddstr(stdscr, 3, 1, lang.getLine(13));
                 refresh();
                 getch();
             }
-            //else
-            clear();
-            //parseCmd();
+            else
+            {
+                parseCmd(cmd, lang);
+                mvwaddstr(stdscr, 2, 0, "                                       "); //just for now;
+            }
         }
+        while(cmd != lang.getCmd(2) && cmd != lang.getCmd(19));
         
         if(cmd != "sair" && cmd != "exit")
         {
@@ -128,6 +156,8 @@ int main(int argc, char** argv)
             //Phase 6: Enemy AI Ship spawn
         }
     }
+    while(cmd != lang.getCmd(19));
+    
     endwin();
     return 0;
 }

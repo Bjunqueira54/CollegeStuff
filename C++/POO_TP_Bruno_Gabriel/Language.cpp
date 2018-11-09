@@ -39,10 +39,11 @@ Language::Language(int lang)
         line.push_back("Nome: ");                                   //7
         line.push_back("Nome invalido!");                           //8
         line.push_back("Bem vindo ");                               //9
-        line.push_back("Boa sorte marinheiro ");                    //10
+        line.push_back("Boa Sorte Capitao ");                       //10
         line.push_back("Turno ");                                   //11
         line.push_back("Comando: ");                                //12
         line.push_back("Comando não especificado");                 //13
+        line.push_back("Comando Reconhecido");                      //14    //Este vai desaparecer
     }
     else if(lang == 2)
     {
@@ -77,22 +78,23 @@ Language::Language(int lang)
         line.push_back("Name: ");
         line.push_back("Invalid name!");
         line.push_back("Welcome ");
-        line.push_back("Good Luck sailor ");
+        line.push_back("Good Luck Captain ");
         line.push_back("Turn ");
         line.push_back("Command: ");
         line.push_back("Command not specified");
+        line.push_back("Command Recognized");
     }
 }
 
-/*vector <string>& Language::getLine()
+vector<string> Language::getCmdvec() const
+{
+    return cmd;
+}
+
+vector<string> Language::getLinevec() const
 {
     return line;
 }
-
-vector <string>& Language::getCmd()
-{
-    return cmd;
-}*/
 
 const char* Language::getCmd(int i)
 {

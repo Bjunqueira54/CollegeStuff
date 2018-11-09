@@ -3,19 +3,25 @@
 
 using namespace std;
 
-/*void drawUI(int nL, int nC)   //Undefined. Do not use until nCurses implementation!
-{   // l - line c - columns
-    for(int l=0; l!=nL; l++)
+void parseCmd(string cmd, const Language lang)
+{
+    string parse;
+    istringstream is;
+    
+    is.str(cmd);
+    
+    while(is >> parse)
     {
-        for(int c=0; c!=nC; c++)
+        for(int i=0; i<lang.getCmdvec().size(); i++)
         {
-            if(l==0 || l==nL-1 || c==0 || c==nC-1)
-                cout << "+ ";
-            else  
-                cout << "  ";
+            if(parse.compare(lang.getCmd(i)) == 0)
+            {
+                mvwaddstr(stdscr, 4, 0, lang.getLine(14));
+                return;
+            }
         }
-        cout << endl;
-    }       
-}*/
-
-//Swiggity Swooty 
+        
+        mvwaddstr(stdscr, 4, 0, "Command doesn't Exist");
+        return;
+    }
+}
