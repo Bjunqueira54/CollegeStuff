@@ -13,6 +13,9 @@ int getCenter(const char* a);
 
 int getCenter(string a);
 
+void tutorial();
+
+void credits();
 
 #endif /* FUNCTIONS_H */
 

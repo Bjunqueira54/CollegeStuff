@@ -48,3 +48,19 @@ int getCenter(string a)
     
     return x;
 }
+
+void tutorial()
+{
+    clear();
+    mvwaddstr(stdscr, 1, 1, "Tutorial");
+    refresh();
+    getch();
+}
+
+void credits()
+{
+    clear();
+    mvwaddstr(stdscr, 1, 1, "Credits");
+    refresh();
+    getch();
+}
