@@ -7,7 +7,7 @@
 
 void drawUI(int nL, int nC); //Do not use. Pending nCurses implementation
 
-char drawMainMenu(Language lang);
+void drawMainMenu(const Language lang);
 
 void parseCmd(string cmd, const Language lang);
 
