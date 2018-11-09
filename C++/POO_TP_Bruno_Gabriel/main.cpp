@@ -82,8 +82,6 @@ int main(int argc, char** argv)
     aux = lang.getLine(10);
     aux += name;
 
-    /*mvwaddstr(stdscr, 9, getCenter(lang.getLine(10)), lang.getLine(10));
-    mvwaddstr(stdscr, 9, (28 + strlen(lang.getLine(10))), name.c_str());*/
     mvwaddstr(stdscr, 9, getCenter(aux), aux.c_str());
     mvwaddstr(stdscr, 11, getCenter(lang.getLine(0)), lang.getLine(0));
 
