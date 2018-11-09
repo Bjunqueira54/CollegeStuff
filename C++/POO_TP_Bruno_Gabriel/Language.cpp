@@ -35,7 +35,7 @@ Language::Language(int lang)
         line.push_back("2 - Tutorial");                             //3
         line.push_back("3 - Creditos");                             //4
         line.push_back("4 - Sair do Jogo");                         //5
-        line.push_back("Introduza o seu nome(20 chars.): ");        //6
+        line.push_back("Introduza o seu nome (20 chars.): ");        //6
         line.push_back("Nome: ");                                   //7
         line.push_back("Nome invalido!");                           //8
         line.push_back("Bem vindo ");                               //9
