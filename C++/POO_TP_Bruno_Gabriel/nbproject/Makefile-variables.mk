@@ -9,11 +9,11 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux
-CND_ARTIFACT_NAME_Debug=poo_tp_bruno_gabriel_portable
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/poo_tp_bruno_gabriel_portable
+CND_ARTIFACT_NAME_Debug=poo_tp_bruno_gabriel
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux/poo_tp_bruno_gabriel
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
-CND_PACKAGE_NAME_Debug=pootpbrunogabrielportable.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/pootpbrunogabrielportable.tar
+CND_PACKAGE_NAME_Debug=pootpbrunogabriel.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/pootpbrunogabriel.tar
 # Release configuration
 CND_PLATFORM_Release=Cygwin-Windows
 CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows
