@@ -138,7 +138,7 @@ int main(int argc, char** argv)
             else
             {
                 parseCmd(cmd, lang);
-                mvwaddstr(stdscr, 2, 0, "                                       "); //just for now;
+                mvwaddstr(stdscr, 2, 1, "                                       "); //just for now;
             }
         }
         while(cmd != lang.getCmd(2) && cmd != lang.getCmd(19));
