@@ -8,29 +8,12 @@
 
 #ifdef _WIN32
 
-#include <windows.h>
+#include "Consola.h"
 
-    static HANDLE hconsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    static HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
-    static HWND hwnd = GetConsoleWindow();
-
-    static void setScreenSize(int lines, int columns)
-    {
-        COORD tam;
-        SMALL_RECT DisplayArea;
-        
-        tam.X = columns;
-        tam.Y = lines;
-        
-        SetConsoleScreenBufferSize(hconsole, tam);
-        
-        DisplayArea.Top = 0;
-	DisplayArea.Left = 0;
-	DisplayArea.Bottom = lines - 1;
-	DisplayArea.Right = columns - 1;
-	SetConsoleWindowInfo(hconsole, TRUE, &DisplayArea);
-    }
-
+static void setScreenSize(int lines, int columns)
+{
+    Consola::setScreenSize(lines, columns);
+}
 
 #elif __linux__
 
@@ -43,11 +26,12 @@ static void setScreenSize(int lines, int columns)
 
 #elif __unix__
 
+#include "Consola.h"
+
 static void setScreenSize(int lines, int columns)
 {
-    
+    Consola::setScreenSize(lines, columns);
 }
-
 #endif
 
 

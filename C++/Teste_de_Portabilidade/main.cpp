@@ -19,8 +19,10 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    setScreenSize(50, 100);
+    setScreenSize(50, 50);
     initscr();
+    mvwaddstr(stdscr, 0, 0, "Hello!");
+    refresh();
     getch();
     endwin();
     return 0;
