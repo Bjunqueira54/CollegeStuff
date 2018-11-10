@@ -64,6 +64,7 @@ int main(int argc, char** argv)
     
     while(1)
     {
+        clear();
         mvwaddstr(stdscr, 1, 1, lang.getLine(6));
         mvwaddstr(stdscr, 3, 1, lang.getLine(7));
         refresh();
