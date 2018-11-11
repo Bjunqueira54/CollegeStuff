@@ -63,6 +63,9 @@ void parseCmd(string cmd, const Language lang)
     }
 }
 
+//Recieves a const char* string and tries to horizontally
+//center it on the given screen. TO-DO: Change all current
+//getCenter function calls to (WINDOW *win, const char*(OR)string a)
 int getCenter(const char* a)
 {
     int x;
@@ -77,6 +80,9 @@ int getCenter(const char* a)
     return x;
 }
 
+//Recieves a string object and tries to horizontally
+//center it on the given screen. TO-DO: Change all current
+//getCenter function calls to (WINDOW *win, const char*(OR)string a)
 int getCenter(string a)
 {
     int x;
@@ -86,6 +92,10 @@ int getCenter(string a)
     return x;
 }
 
+//Sets *esp to whatever value is required to correctly center
+//and space n itens to window *win. Returns 0 if no more modifications
+//are needed outside of this function, else you need to modify *esp
+//depending if the returned value is an even or an odd number
 int getVertCenter(WINDOW *win, int n, int *esp)
 {
     int y, r;
