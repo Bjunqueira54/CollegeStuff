@@ -13,6 +13,8 @@ int getCenter(const char* a);
 
 int getCenter(string a);
 
+int getVertCenter(WINDOW *win, int n, int &esp, int &extraflag);
+
 //Funcoes do Menu
 
 void MainGameLoop(Language lang);

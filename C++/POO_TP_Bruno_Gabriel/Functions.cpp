@@ -24,10 +24,28 @@ void drawMainMenu(const Language lang)
             }
         }
     }
-    mvwaddstr(stdscr, 5, getCenter(lang.getLine(2)), lang.getLine(2));
-    mvwaddstr(stdscr, 5, getCenter(lang.getLine(3)), lang.getLine(3));
-    mvwaddstr(stdscr, 5, getCenter(lang.getLine(4)), lang.getLine(4));
-    mvwaddstr(stdscr, 5, getCenter(lang.getLine(5)), lang.getLine(5));
+    
+    int y=0, esp, r, extra;
+    r = getVertCenter(stdscr, 4, esp, extra);
+    
+    /*if(r != 0)
+    {
+        y2 = y1 + r;
+        
+        if(extra == 0)
+            y3 = y2;
+        else
+            y3 = y2 + extra;
+    }*/
+    
+    y+=(esp+r);
+    mvwaddstr(stdscr, y, 5, lang.getLine(2));
+    y+=esp;
+    mvwaddstr(stdscr, y, 5, lang.getLine(3));
+    y+=esp;
+    mvwaddstr(stdscr, y, 5, lang.getLine(4));
+    y+=esp;
+    mvwaddstr(stdscr, y, 5, lang.getLine(5));
     refresh();
 }
 
@@ -93,25 +111,41 @@ int getCenter(string a)
 }
 
 //Sets *esp to whatever value is required to correctly center
-//and space n itens to window *win. Returns 0 if no more modifications
-//are needed outside of this function, else you need to modify *esp
-//depending if the returned value is an even or an odd number
-int getVertCenter(WINDOW *win, int n, int *esp)
+//and space out n menus items in window *win. Returns 0 if no 
+//more modifications are needed outside of this function, else
+//you need to check if &extraflag is 0 or 1. If it's 0, you can
+//add whatever is returned from this function to the extremes
+//of your menus; if it's 1, it means there's no possible way to
+//have consistent spacing with in your menu and you'll have to
+//add that 1 extra space wherever.
+int getVertCenter(WINDOW *win, int n, int &esp, int &extraflag)
 {
     int y, r;
     
     y = getmaxy(win);
     
-    *esp = (y-(n+2))/(n+1); //rounds down
+    esp = (y-(n+2))/(n+1); //rounds down
     
     r = (y-(n+2))%(n+1);
     
-    if(r%2 == 0)
-    {}
+    if(r != 0)
+    {
+        if(r%2 == 0)
+        {
+            extraflag = 0;
+            return r/2;
+        }
+        else
+        {
+            extraflag = 1;
+            return r/2;
+        }
+    }
     else
-    {}
-    
-    return r;
+    {
+        extraflag = 0;
+        return 0;
+    }
 }
 
 void tutorial()
