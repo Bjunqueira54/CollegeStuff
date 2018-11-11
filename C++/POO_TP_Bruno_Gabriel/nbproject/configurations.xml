@@ -21,6 +21,7 @@
       <itemPath>Consola.cpp</itemPath>
       <itemPath>Functions.cpp</itemPath>
       <itemPath>Language.cpp</itemPath>
+      <itemPath>MainGame.cpp</itemPath>
       <itemPath>Player.cpp</itemPath>
       <itemPath>Ship.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
@@ -68,6 +69,8 @@
       </item>
       <item path="Language.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="MainGame.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Player.h" ex="false" tool="3" flavor2="0">
@@ -113,6 +116,8 @@
       <item path="Language.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Language.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="MainGame.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>

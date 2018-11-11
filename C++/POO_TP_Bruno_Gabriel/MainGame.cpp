@@ -19,12 +19,12 @@ void MainGameLoop(Language lang)
 
         opt = 0;
 
-        while(opt != KEY_ENTER)
+        do
         {
             opt = getch();
 
             if((opt == ' ') || (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
-            {
+            {   //No Special Characters allowed
                 if(name.size() < 20)
                 {
                     name.push_back(opt);
@@ -32,7 +32,7 @@ void MainGameLoop(Language lang)
                     refresh();
                 }
             }
-            else if(opt == 8 || opt == 127)
+            else if(opt == 8 || opt == 127) // 8 = Backspace, 127 = Delete
             {
                 if(!( name.empty() ))
                 {
@@ -42,8 +42,8 @@ void MainGameLoop(Language lang)
                     refresh();
                 }
             }
-            else if(opt == KEY_ENTER || opt == 10 || opt == '\n') break;
         }
+        while(opt != 10); // 10 = Enter
 
         if(name.empty())
             mvwaddstr(stdscr, 1, 2, lang.getLine(8));

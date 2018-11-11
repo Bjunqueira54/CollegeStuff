@@ -3,21 +3,28 @@
 
 #include "Language.h"
 
-//Protótipos de funções
+//Prototipos de funcoes
 
-void drawUI(int nL, int nC); //Do not use. Pending nCurses implementation
+//Funcoes de desenho
 
 void drawMainMenu(const Language lang);
-
-void parseCmd(string cmd, const Language lang);
 
 int getCenter(const char* a);
 
 int getCenter(string a);
 
+//Funcoes do Menu
+
+void MainGameLoop(Language lang);
+
 void tutorial();
 
 void credits();
+
+//Funcoes dos Comandos
+
+void parseCmd(string cmd, const Language lang);
+
 
 #ifdef __linux__
 

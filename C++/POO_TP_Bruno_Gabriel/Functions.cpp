@@ -36,6 +36,10 @@ void drawMap(const Language lang)
     move(0,0);
 }
 
+//Recieves a string with spaces and the full command
+//to be separated into single words for command processing.
+//Also recieves a Language class object to check the parsed
+//commands against.
 void parseCmd(string cmd, const Language lang)
 {
     string parse;
@@ -63,7 +67,7 @@ int getCenter(const char* a)
 {
     int x;
     
-    if(a == "")
+    if(strcmp(a,"") == 0)
         return 0;
     
     string str(a);

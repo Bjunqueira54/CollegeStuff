@@ -38,6 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Consola.o \
 	${OBJECTDIR}/Functions.o \
 	${OBJECTDIR}/Language.o \
+	${OBJECTDIR}/MainGame.o \
 	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/Ship.o \
 	${OBJECTDIR}/main.o
@@ -81,6 +82,11 @@ ${OBJECTDIR}/Language.o: Language.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Language.o Language.cpp
+
+${OBJECTDIR}/MainGame.o: MainGame.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MainGame.o MainGame.cpp
 
 ${OBJECTDIR}/Player.o: Player.cpp
 	${MKDIR} -p ${OBJECTDIR}
