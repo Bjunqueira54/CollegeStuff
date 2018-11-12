@@ -56,8 +56,8 @@ Language::Language(int lang)
         }
         
         {
-        tutorial.push_back("Bem-Vindo ao Tutorial"); //0
-        tutorial.push_back("Comandos Basicos:"); //1 save, load, delete, next, exit
+        tutorial.push_back("Tutorial"); //0
+        tutorial.push_back("Comandos Basicos:"); //1
         tutorial.push_back("Comandos Avançados:"); //2
         tutorial.push_back("Objetivos do Jogo:"); //3
         tutorial.push_back("config <NomeFicheiro> - Le as carateristicas do mapa e paramentros do ficheiro"); //4
@@ -68,7 +68,7 @@ Language::Language(int lang)
         tutorial.push_back("lista - Listar precos em cada porto"); //9
         tutorial.push_back("compra <N> <M> - Compra M toneladas de mercadoria para o navio N"); //10
         tutorial.push_back("vende <N> - Vende toda a carga e mercadoria do navio N"); //11
-        tutorial.push_back("move <N> <X> - Move o navio N para a posicao X = (D-Direita, E-Esquerda, C-Cima, B-Baixo). Podem-se juntar duas posicoes"); //12
+        tutorial.push_back("move <N> <X> - Move o navio N para a posicao X = (D-Direita, E-Esquerda, C-Cima, B-Baixo)"); //12
         tutorial.push_back("auto <N> - Coloca o navio N em auto-gestao"); //13
         tutorial.push_back("stop <N> - Interrompe o comportamento de auto-gestao do navio N"); //14
         tutorial.push_back("pirata <x> <y> <T> - Cria um navio pirata do tipo T nas coordenadas (x,y)"); //15
@@ -137,9 +137,10 @@ Language::Language(int lang)
         }
         
         {
-        tutorial.push_back("Welcome to the Tutorial");
-        tutorial.push_back("");
+        tutorial.push_back("Tutorial");
         tutorial.push_back("Basic Commands:");
+        tutorial.push_back("Advanced Commands:");
+        tutorial.push_back("Game Objectives:");
         tutorial.push_back("");
         tutorial.push_back("");
         tutorial.push_back("");
@@ -147,6 +148,20 @@ Language::Language(int lang)
         tutorial.push_back("");
         tutorial.push_back("");
         tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("exit - quits game and returns to the main menu");
         tutorial.push_back("Page 1/3");
         tutorial.push_back("Page 2/3");
         tutorial.push_back("Page 3/3");
@@ -176,52 +191,54 @@ const char* Language::getLine(int i)
 
 void Language::tutPage()
 {
-    int x = getmaxy(stdscr);
-    int y = getmaxx(stdscr);
-    int p1 = 7, p2 = 18, p3 = 0; // provisorio
+    int i=5;
     
-    mvwaddstr(stdscr, 3, 3, tutorial[0].c_str());
-    { //page 1 
-        for(int i = -2; i<p1; i++)
-        {   
-            mvwaddstr(stdscr, i, 2, tutorial[1].c_str());
-            mvwaddstr(stdscr, i, 3, tutorial[6].c_str());
-            mvwaddstr(stdscr, i, 3, tutorial[22].c_str());
-            mvwaddstr(stdscr, i, 3, tutorial[23].c_str());
-            mvwaddstr(stdscr, i, 3, tutorial[24].c_str());
-            mvwaddstr(stdscr, i, 3, tutorial[25].c_str());
-            //mvwaddstr(stdscr, x-1, y-1, tutorial[26].s_str());
-        }
-    refresh();
-    getch();
+    { //page 1
+        mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
+        mvwaddstr(stdscr, 4, 3, tutorial[1].c_str());
+        mvwaddstr(stdscr, 6, i, tutorial[6].c_str());
+        mvwaddstr(stdscr, 7, i, tutorial[22].c_str());
+        mvwaddstr(stdscr, 8, i, tutorial[23].c_str());
+        mvwaddstr(stdscr, 9, i, tutorial[24].c_str());
+        mvwaddstr(stdscr, 10, i, tutorial[25].c_str());
+        mvwaddstr(stdscr, getmaxy(stdscr)-2, getmaxx(stdscr)-10, tutorial[26].c_str());
+        refresh();
+        getch();
     }
     
+    drawBox(stdscr);
     { //page 2
-    mvwaddstr(stdscr, 2, 2, tutorial[2].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[4].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[5].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[7].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[8].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[9].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[10].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[11].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[12].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[13].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[14].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[15].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[16].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[17].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[18].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[19].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[20].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[21].c_str());
-    //mvwaddstr(stdscr, x-1, y-1, tutorial[27].s_str());
-    refresh();
-    getch();
+        mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
+        mvwaddstr(stdscr, 4, 3, tutorial[2].c_str());
+        mvwaddstr(stdscr, 6, i, tutorial[4].c_str());
+        mvwaddstr(stdscr, 7, i, tutorial[5].c_str());
+        mvwaddstr(stdscr, 8, i, tutorial[7].c_str());
+        mvwaddstr(stdscr, 9, i, tutorial[8].c_str());
+        mvwaddstr(stdscr, 10, i, tutorial[9].c_str());
+        mvwaddstr(stdscr, 11, i, tutorial[10].c_str());
+        mvwaddstr(stdscr, 12, i, tutorial[11].c_str());
+        mvwaddstr(stdscr, 13, i, tutorial[12].c_str());
+        mvwaddstr(stdscr, 14, i, tutorial[13].c_str());
+        mvwaddstr(stdscr, 15, i, tutorial[14].c_str());
+        mvwaddstr(stdscr, 16, i, tutorial[15].c_str());
+        mvwaddstr(stdscr, 17, i, tutorial[16].c_str());
+        mvwaddstr(stdscr, 18, i, tutorial[17].c_str());
+        mvwaddstr(stdscr, 19, i, tutorial[18].c_str());
+        mvwaddstr(stdscr, 20, i, tutorial[19].c_str());
+        mvwaddstr(stdscr, 21, i, tutorial[20].c_str());
+        mvwaddstr(stdscr, 22, i, tutorial[21].c_str());
+        mvwaddstr(stdscr, getmaxy(stdscr)-2, getmaxx(stdscr)-10, tutorial[27].c_str());
+        refresh();
+        getch();
     }
-    
-    { //page 3
-        
+
+    drawBox(stdscr);
+    { //page 3 (incompleto)
+        mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
+        mvwaddstr(stdscr, 4, 3, tutorial[3].c_str());
+        mvwaddstr(stdscr, getmaxy(stdscr)-2, getmaxx(stdscr)-10, tutorial[28].c_str());
+        refresh();
+        getch();
     }
 }
 
