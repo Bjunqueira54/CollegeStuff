@@ -3,9 +3,6 @@
 #include "Player.h"
 #include "Language.h"
 
-#define MAP_MAXY 40     //Merchants and Pirates Max Height
-#define MAP_MAXX 120    //Merchants and Pirates Max Width
-
 using namespace std;
 
 int main(int argc, char** argv)
