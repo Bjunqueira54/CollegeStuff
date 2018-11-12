@@ -15,11 +15,12 @@ int main(int argc, char** argv)
     noecho();
     
     char opt;
+    int r, extra;
     
     /* ==== PEDE E VERIFICA A LINGUAGEM ==== */
     while(opt != '1' && opt != '2')
     {
-        mvwaddstr(stdscr, 1, 1, "Portugues - 1\n English - 2\n\n ->");
+        mvwaddstr(stdscr, 1, 1, "1 - Portugues\n 2 - English");
         refresh();
         opt = getch();
     }
@@ -28,29 +29,35 @@ int main(int argc, char** argv)
     refresh();
     Language lang((opt == '1') ? 1 : 2); // opt == 1? else opt == 2
         
-    mvwaddstr(stdscr, 9, getCenter(lang.getLine(1)), lang.getLine(1));
-    mvwaddstr(stdscr, 11, getCenter(lang.getLine(0)), lang.getLine(0));
+    mvwaddstr(stdscr, ((getVertCenter(stdscr, 1, r, extra)) + r) - 1, getCenter(lang.getLine(1)), lang.getLine(1));  //Era 9
+    mvwaddstr(stdscr, ((getVertCenter(stdscr, 1, r, extra)) + r) + 1, getCenter(lang.getLine(0)), lang.getLine(0)); //Era 11
     
     refresh();
     getch();
     
     do
     {
+        drawBox(stdscr);
         drawMainMenu(lang);
         opt = getch();
         
         switch(opt)
         {
             case '1':
+                drawBox(stdscr);
                 MainGameLoop(lang);
                 break;
             case '2':
+                drawBox(stdscr);
+                lang.tutPage(0);
                 break;
             case '3':
+                drawBox(stdscr);
+                lang.credPage();
                 break;
             case '4':
-                clear();
-                mvwaddstr(stdscr, getmaxy(stdscr) / 2, getCenter(lang.getLine(17)), lang.getLine(17));
+                drawBox(stdscr);
+                mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, extra), getCenter(lang.getLine(17)), lang.getLine(17));
                 refresh();
                 getch();
                 endwin();

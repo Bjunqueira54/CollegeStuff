@@ -9,11 +9,13 @@
 
 void drawMainMenu(const Language lang);
 
+void drawBox(WINDOW *win);
+
 int getCenter(const char* a);
 
 int getCenter(string a);
 
-int getVertCenter(WINDOW *win, int n, int &esp, int &extraflag);
+int getVertCenter(WINDOW *win, int n, int &rest, int &extraflag);
 
 //Funcoes do Menu
 

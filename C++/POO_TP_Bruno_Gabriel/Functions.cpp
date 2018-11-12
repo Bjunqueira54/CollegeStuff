@@ -7,37 +7,9 @@ using namespace std;
 //Don't forget to give it the a Language object
 //or else nothing will show up
 void drawMainMenu(const Language lang)
-{
-    clear();
-    for(int y = 0; y<getmaxy(stdscr); y++)
-    {
-        for(int x=0; x<getmaxx(stdscr); x++)
-        {
-            if(y==0 || y==(getmaxy(stdscr) - 1)) 
-            {
-                mvwaddch(stdscr, y, x, 'x');
-                x++;
-            }
-            else
-                if(x==0 || x==(getmaxx(stdscr) - 1))
-                    mvwaddch(stdscr, y, x, '+');
-                else
-                    mvwaddch(stdscr, y, x, ' ');
-        }
-    }
-    
+{   
     int y=0, esp, r, extra;
-    r = getVertCenter(stdscr, 4, esp, extra);
-    
-    /*if(r != 0)
-    {
-        y2 = y1 + r;
-        
-        if(extra == 0)
-            y3 = y2;
-        else
-            y3 = y2 + extra;
-    }*/
+    esp = getVertCenter(stdscr, 4, r, extra);
     
     y+=(esp+r);
     mvwaddstr(stdscr, y, 5, lang.getLine(2));
@@ -119,9 +91,9 @@ int getCenter(string a)
 //of your menus; if it's 1, it means there's no possible way to
 //have consistent spacing with in your menu and you'll have to
 //add that 1 extra space wherever.
-int getVertCenter(WINDOW *win, int n, int &esp, int &extraflag)
+int getVertCenter(WINDOW *win, int n, int &r, int &extraflag)
 {
-    int y, r;
+    int y, esp;
     
     y = getmaxy(win);
     
@@ -131,36 +103,43 @@ int getVertCenter(WINDOW *win, int n, int &esp, int &extraflag)
     
     if(r != 0)
     {
+        r=r/2;
         if(r%2 == 0)
         {
             extraflag = 0;
-            return r/2;
+            return esp;
         }
         else
         {
             extraflag = 1;
-            return r/2;
+            return esp;
         }
     }
     else
     {
         extraflag = 0;
-        return 0;
+        return esp;
     }
 }
 
-void tutorial()
+void drawBox(WINDOW *win)
 {
     clear();
-    mvwaddstr(stdscr, 1, 1, "Tutorial");
+    for(int y = 0; y<getmaxy(win); y++)
+    {
+        for(int x=0; x<getmaxx(win); x++)
+        {
+            if(y==0 || y==(getmaxy(win) - 1)) 
+            {
+                mvwaddch(win, y, x, 'x');
+                x++;
+            }
+            else
+                if(x==0 || x==(getmaxx(win) - 1))
+                    mvwaddch(win, y, x, '+');
+                else
+                    mvwaddch(win, y, x, ' ');
+        }
+    }
     refresh();
-    getch();
-}
-
-void credits()
-{
-    clear();
-    mvwaddstr(stdscr, 1, 1, "Credits");
-    refresh();
-    getch();
 }

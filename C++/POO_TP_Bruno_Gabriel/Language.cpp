@@ -1,4 +1,5 @@
 #include "Language.h"
+#include "Functions.h"
 
 vector <string> Language::cmd;
 vector <string> Language::line;
@@ -43,10 +44,12 @@ Language::Language(int lang)
         line.push_back("Turno ");                                   //11
         line.push_back("Comando: ");                                //12
         line.push_back("Comando não especificado");                 //13
-        line.push_back("Comando Reconhecido");                      //14    //Este vai desaparecer
+        line.push_back("Comando Reconhecido");                      //14
         line.push_back("Tutorial");                                 //15
         line.push_back("Creditos");                                 //16
         line.push_back("Obrigado por jogar!");                      //17
+        line.push_back("Programadores:");                           //18
+        line.push_back("Equipa de Controlo de Qualidade:");         //19
     }
     else if(lang == 2)
     {
@@ -89,6 +92,8 @@ Language::Language(int lang)
         line.push_back("Tutorial");
         line.push_back("Credits");
         line.push_back("Thanks for playing!");
+        line.push_back("Programmers:");
+        line.push_back("Game Testing Team:");
     }
 }
 
@@ -114,7 +119,22 @@ const char* Language::getLine(int i)
 
 void Language::tutPage(int n)
 {
+    int r, extra;
     
+    mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, extra) + r, getCenter("xxxxxxxx"), "Git Gud!");
+    refresh();
+    getch();
 }
 
-//void Language::credPage(int n);
+void Language::credPage()
+{
+    mvwaddstr(stdscr, 2, 3, line[18].c_str());
+    mvwaddstr(stdscr, 4, 10, "Bruno Junqueira (Back-end Developer)");
+    mvwaddstr(stdscr, 5, 10, "Gabriel Gomes (Front-end Developer)");
+    
+    mvwaddstr(stdscr, 10, 3, line[19].c_str());
+    mvwaddstr(stdscr, 12, 10, "Kostas Makridis");
+    mvwaddstr(stdscr, 13, 10, "Cassandra Dimas");
+    refresh();
+    getch();
+}
