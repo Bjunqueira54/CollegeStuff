@@ -46,7 +46,7 @@ int main(int argc, char** argv)
                 break;
             case '2':
                 drawBox(stdscr);
-                lang.tutPage(0);
+                lang.tutPage();
                 break;
             case '3':
                 drawBox(stdscr);

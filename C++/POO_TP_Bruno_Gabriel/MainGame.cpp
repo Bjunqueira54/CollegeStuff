@@ -63,6 +63,17 @@ void MainGameLoop(Language lang)
 
     refresh();
     getch();
+    
+    WINDOW *wmap, *wcmd, *wlog;
+    
+    wmap = newwin(20, 40, 1, 1);
+    wcmd = newwin(20, 40, MAP_MAXY-getmaxy(wmap), 1);
+    wlog = newwin(MAP_MAXY, MAP_MAXX-getmaxx(wmap), 1, MAP_MAXX-getmaxx(wmap));
+    
+    drawBox(wmap);
+    drawBox(wcmd);
+    drawBox(wlog);
+    getch();
 
     do
     {

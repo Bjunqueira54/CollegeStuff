@@ -124,7 +124,7 @@ int getVertCenter(WINDOW *win, int n, int &r, int &extraflag)
 
 void drawBox(WINDOW *win)
 {
-    clear();
+    wclear(win);
     int y, x;
     
     getmaxyx(win, y, x);
@@ -145,5 +145,5 @@ void drawBox(WINDOW *win)
     mvwaddch(win, y-1, 0, '*');
     mvwaddch(win, y-1, x-1, '*');
     
-    refresh();
+    wrefresh(win);
 }
