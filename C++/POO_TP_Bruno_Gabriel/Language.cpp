@@ -9,6 +9,7 @@ Language::Language(int lang)
 {
     if(lang == 1)
     {
+        {
         cmd.push_back("config");    //0
         cmd.push_back("exec");      //1
         cmd.push_back("prox");      //2
@@ -29,7 +30,9 @@ Language::Language(int lang)
         cmd.push_back("loadg");     //17
         cmd.push_back("delg");      //18
         cmd.push_back("sair");      //19
+        }
         
+        {
         line.push_back("(Prima qualquer tecla para continuar)");    //0
         line.push_back("Bem vindo a Cid Martin's Pirates!");        //1
         line.push_back("1 - Novo Jogo");                            //2
@@ -50,9 +53,43 @@ Language::Language(int lang)
         line.push_back("Obrigado por jogar!");                      //17
         line.push_back("Programadores:");                           //18
         line.push_back("Equipa de Controlo de Qualidade:");         //19
+        }
+        
+        {
+        tutorial.push_back("Bem-Vindo ao Tutorial"); //0
+        tutorial.push_back("Comandos Basicos:"); //1 save, load, delete, next, exit
+        tutorial.push_back("Comandos Avançados:"); //2
+        tutorial.push_back("Objetivos do Jogo:"); //3
+        tutorial.push_back("config <NomeFicheiro> - Le as carateristicas do mapa e paramentros do ficheiro"); //4
+        tutorial.push_back("exec <NomeFicheiro> - Le comando do ficheiro e executa-os"); //5
+        tutorial.push_back("prox - Avancar um turno"); //6
+        tutorial.push_back("compranav <T> - Compra um navio do tipo T especificado"); //7
+        tutorial.push_back("vendenav <T> - Vende um navio do tipo T especificado"); //8
+        tutorial.push_back("lista - Listar precos em cada porto"); //9
+        tutorial.push_back("compra <N> <M> - Compra M toneladas de mercadoria para o navio N"); //10
+        tutorial.push_back("vende <N> - Vende toda a carga e mercadoria do navio N"); //11
+        tutorial.push_back("move <N> <X> - Move o navio N para a posicao X = (D-Direita, E-Esquerda, C-Cima, B-Baixo). Podem-se juntar duas posicoes"); //12
+        tutorial.push_back("auto <N> - Coloca o navio N em auto-gestao"); //13
+        tutorial.push_back("stop <N> - Interrompe o comportamento de auto-gestao do navio N"); //14
+        tutorial.push_back("pirata <x> <y> <T> - Cria um navio pirata do tipo T nas coordenadas (x,y)"); //15
+        tutorial.push_back("evpos <E> <x> <y> - Cria um evento E = (T-Tempestade, C-Calmaria) na posicao (x,y) "); //16
+        tutorial.push_back("evnav <E> <N> - Cria um evento E = (S-Sereias, M-Motim) no navio N"); //17
+        tutorial.push_back("moedas <N> - Acrescenta N moedas ao jogador"); //18
+        tutorial.push_back("vaipara <N> <x> <y> - Move o navio N na direcao das coordenadas (x,y)"); //19
+        tutorial.push_back("vaipara <N> <P> - Move o navio N em direcao ao porto P"); //20
+        tutorial.push_back("comprasold <N> <S> - Compra soldados S para o navio N"); //21
+        tutorial.push_back("saveg <nome> - Salva o progresso do jogo com um nome"); //22
+        tutorial.push_back("loadg <nome> - Recupera o jogo previamento guardado com o nome"); //23
+        tutorial.push_back("delg <nome> - Apaga a copia do jogo guardado como nome"); //24
+        tutorial.push_back("sair - Sai do jogo e volta para o menu principal"); //25
+        tutorial.push_back("Pag. 1/3"); //26
+        tutorial.push_back("Pag. 2/3"); //27
+        tutorial.push_back("Pag. 3/3"); //28
+        }
     }
     else if(lang == 2)
     {
+        {
         cmd.push_back("config");
         cmd.push_back("exec");
         cmd.push_back("next");
@@ -73,7 +110,9 @@ Language::Language(int lang)
         cmd.push_back("loadg");
         cmd.push_back("delg");
         cmd.push_back("exit");
+        }
         
+        {
         line.push_back("(Press any key to continue)");
         line.push_back("Welcome to Merchants and Pirates!");
         line.push_back("1 - New Game");
@@ -94,6 +133,23 @@ Language::Language(int lang)
         line.push_back("Thanks for playing!");
         line.push_back("Programmers:");
         line.push_back("Game Testing Team:");
+        }
+        
+        {
+        tutorial.push_back("Welcome to the Tutorial");
+        tutorial.push_back("");
+        tutorial.push_back("Basic Commands:");
+        tutorial.push_back();
+        tutorial.push_back();
+        tutorial.push_back();
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("Page 1/3");
+        tutorial.push_back("Page 2/3");
+        tutorial.push_back("Page 3/3");
+        }
     }
 }
 
@@ -119,9 +175,10 @@ const char* Language::getLine(int i)
 
 void Language::tutPage()
 {
-    int r, extra;
-    
-    mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, extra) + r, getCenter("xxxxxxxx"), "Git Gud!");
+    mvwaddstr(stdscr, 1, 1, tutorial[1].c_str());
+    mvwaddstr(stdscr, 2, 2, tutorial[2].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[])
+    mvwaddstr();
     refresh();
     getch();
 }

@@ -8,7 +8,7 @@ class Language
     static vector <string> cmd;
     static vector <string> line;
     static vector <string> tutorial;
-    static vector <string> credits;
+    //static vector <string> credits;
     
 public:
     
