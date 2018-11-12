@@ -53,6 +53,7 @@ Language::Language(int lang)
             line.push_back("Obrigado por jogar!");                      //17
             line.push_back("Programadores:");                           //18
             line.push_back("Equipa de Controlo de Qualidade:");         //19
+            line.push_back("Comando não existe");                       //20
         }
         
         {
@@ -134,6 +135,7 @@ Language::Language(int lang)
             line.push_back("Thanks for playing!");
             line.push_back("Programmers:");
             line.push_back("Game Testing Team:");
+            line.push_back("Command doesn't exist");
         }
         
         {

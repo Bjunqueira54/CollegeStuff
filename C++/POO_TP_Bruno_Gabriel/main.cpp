@@ -9,7 +9,9 @@ int main(int argc, char** argv)
 {
     setScreenSize(MAP_MAXY, MAP_MAXX);
     initscr();
+    start_color();
     noecho();
+    curs_set(FALSE);
     
     char opt;
     int r, extra;
@@ -17,7 +19,7 @@ int main(int argc, char** argv)
     /* ==== PEDE E VERIFICA A LINGUAGEM ==== */
     while(opt != '1' && opt != '2')
     {
-        mvwaddstr(stdscr, 1, 1, "1 - Portugues\n 2 - English");
+        mvwaddstr(stdscr, 1, 1, "1 - Português\n 2 - English");
         refresh();
         opt = getch();
     }
@@ -26,8 +28,8 @@ int main(int argc, char** argv)
     refresh();
     Language lang((opt == '1') ? 1 : 2); // opt == 1? else opt == 2
         
-    mvwaddstr(stdscr, ((getVertCenter(stdscr, 1, r, extra)) + r) - 1, getCenter(lang.getLine(1)), lang.getLine(1));  //Era 9
-    mvwaddstr(stdscr, ((getVertCenter(stdscr, 1, r, extra)) + r) + 1, getCenter(lang.getLine(0)), lang.getLine(0)); //Era 11
+    mvwaddstr(stdscr, ((getVertCenter(stdscr, 1, r, extra)) + r) - 1, getCenter(lang.getLine(1)), lang.getLine(1));
+    mvwaddstr(stdscr, ((getVertCenter(stdscr, 1, r, extra)) + r) + 1, getCenter(lang.getLine(0)), lang.getLine(0));
     
     refresh();
     getch();

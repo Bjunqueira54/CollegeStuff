@@ -7,14 +7,16 @@ using namespace std;
 void MainGameLoop(Language lang)
 {
     int turn=0;
+    int r, extra;
     char opt;
     string name, cmd, aux;
     
     do
     {
-        clear();
+        drawBox(stdscr);
         mvwaddstr(stdscr, 1, 1, lang.getLine(6));
         mvwaddstr(stdscr, 3, 1, lang.getLine(7));
+        mvwaddch(stdscr, 3, 1 + strlen(lang.getLine(7)), '_');
         refresh();
 
         opt = 0;
@@ -28,7 +30,8 @@ void MainGameLoop(Language lang)
                 if(name.size() < 20)
                 {
                     name.push_back(opt);
-                    mvwaddstr(stdscr, 3, strlen(lang.getLine(7)) + 1, name.c_str());
+                    mvwaddstr(stdscr, 3, 1 + strlen(lang.getLine(7)), name.c_str());
+                    mvwaddch(stdscr, 3, 1 + strlen(lang.getLine(7)) + strlen(name.c_str()), '_');
                     refresh();
                 }
             }
@@ -37,8 +40,10 @@ void MainGameLoop(Language lang)
                 if(!( name.empty() ))
                 {
                     name.pop_back();
-                    mvwaddch(stdscr, 3, strlen(lang.getLine(7)) + strlen(name.c_str()) + 1, ' ');
-                    mvwaddstr(stdscr, 3, strlen(lang.getLine(7)) + 1, name.c_str());
+                    mvwaddstr(stdscr, 3, 1+ strlen(lang.getLine(7)), name.c_str());
+                    wclrtoeol(stdscr);
+                    mvwaddch(stdscr, 3, getmaxx(stdscr) - 1, '|');
+                    mvwaddch(stdscr, 3, 1 + strlen(lang.getLine(7)) + strlen(name.c_str()), '_');
                     refresh();
                 }
             }
@@ -57,92 +62,92 @@ void MainGameLoop(Language lang)
     aux.clear();
     aux = lang.getLine(10);
     aux += name;
-
-    mvwaddstr(stdscr, 9, getCenter(aux), aux.c_str());
-    mvwaddstr(stdscr, 11, getCenter(lang.getLine(0)), lang.getLine(0));
+    
+    drawBox(stdscr);
+    mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, extra) - 1, getCenter(aux), aux.c_str());
+    mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, extra) + 1, getCenter(lang.getLine(0)), lang.getLine(0));
 
     refresh();
     getch();
     
     WINDOW *wmap, *wcmd, *wlog;
     
-    wmap = newwin(20, 40, 1, 1);
-    wcmd = newwin(20, 40, MAP_MAXY-getmaxy(wmap), 1);
-    wlog = newwin(MAP_MAXY, MAP_MAXX-getmaxx(wmap), 1, MAP_MAXX-getmaxx(wmap));
-    
-    drawBox(wmap);
-    drawBox(wcmd);
-    drawBox(wlog);
-    getch();
+    wmap = subwin(stdscr, 20, 40, 0, 0);
+    wcmd = subwin(stdscr, 20, 40, getmaxy(wmap), 0);
+    wlog = subwin(stdscr, MAP_MAXY, MAP_MAXX-getmaxx(wmap), 0, getmaxx(wmap));
+    clear();
 
-    do
+    do  //Main Game Loop
     {
         ostringstream sturn;
         turn++;
-        clear();
-        mvwaddstr(stdscr, 1, 1, lang.getLine(11));
-        sturn << turn;
-        mvwaddstr(stdscr, 1, strlen(lang.getLine(11)) + 1, sturn.str().c_str());
-        refresh();
 
-        do    //Phase 1: Command reading and execution
+        {
+            drawBox(wmap);
+            drawBox(wcmd);
+            drawBox(wlog);
+        }
+        
+        mvwaddstr(wcmd, 1, 1, lang.getLine(11));
+        sturn << turn;
+        mvwaddstr(wcmd, 1, strlen(lang.getLine(11)) + 1, sturn.str().c_str());
+        wrefresh(wcmd);
+        
+        do  //Phase 1: Command parsing and Processing
         {
             cmd.clear();
-            mvwaddstr(stdscr, 2, 1, lang.getLine(12));
-            refresh();
-
+            mvwaddstr(wcmd, getmaxy(wcmd)-3, 1, lang.getLine(12));
+            wclrtoeol(wcmd);
+            mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
+            mvwaddch(wcmd, getmaxy(wcmd)-3, 1 + strlen(lang.getLine(12)), '_');
+            wrefresh(wcmd);
+            
             do
             {
                 opt = getch();
-
+                
                 if((opt == ' ') || (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
                 {
-                    if(!(cmd.empty() && opt == ' '))
+                    if(cmd.size() < 20)
                     {
-                        cmd.push_back(opt);
-                        mvwaddstr(stdscr, 2, 1 + strlen(lang.getLine(12)), cmd.c_str());
-                        refresh();
+                        if(!(cmd.empty() && opt == ' '))
+                        {
+                            cmd.push_back(opt);
+                            mvwaddstr(wcmd, getmaxy(wcmd)-3, 1 + strlen(lang.getLine(12)), cmd.c_str());
+                            mvwaddch(wcmd, getmaxy(wcmd)-3, 1 + strlen(lang.getLine(12)) + strlen(cmd.c_str()), '_');
+                            wrefresh(wcmd);
+                        }
                     }
                 }
                 else if(opt == 8 || opt == 127)
                 {
                     if(!(cmd.empty()))
                     {
-                        mvwaddch(stdscr, 2, strlen(lang.getLine(12)) + strlen(cmd.c_str()), ' ');
                         cmd.pop_back();
-                        mvwaddstr(stdscr, 2, 1 + strlen(lang.getLine(12)), cmd.c_str());
-                        refresh();
+                        mvwaddstr(wcmd, getmaxy(wcmd)-3, 1 + strlen(lang.getLine(12)), cmd.c_str());
+                        wclrtoeol(wcmd);
+                        mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
+                        mvwaddch(wcmd, getmaxy(wcmd)-3, 1 + strlen(lang.getLine(12)) + strlen(cmd.c_str()), '_');
+                        wrefresh(wcmd);
                     }
                 }
             }
-            while(opt != KEY_ENTER && opt != 10 && opt != '\n');
-
-            if(cmd.empty()) 
+            while(opt != 10);   //Key Enter
+            
+            if(cmd.empty())
             {
-                mvwaddstr(stdscr, 3, 1, lang.getLine(13));
-                refresh();
-                getch();
+                mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(13));
             }
             else
             {
-                parseCmd(cmd, lang);
-                mvwaddstr(stdscr, 2, 1, "                                       "); //just for now;
+                parseCmd(cmd, lang, wcmd);
             }
         }
         while(cmd != lang.getCmd(2) && cmd != lang.getCmd(19));
-
-        if(cmd != "sair" && cmd != "exit")
-        {
-            //Phase 2: Player command processing
-
-            //Phase 3: AI Movement
-
-            //Phase 4: Battle procedure
-
-            //Phase 5: Map Events
-
-            //Phase 6: Enemy AI Ship spawn
-        }
     }
     while(cmd != lang.getCmd(19));
+    
+    delwin(wmap);
+    delwin(wcmd);
+    delwin(wlog);
 }

@@ -31,7 +31,7 @@ void drawMap(const Language lang)
 //to be separated into single words for command processing.
 //Also recieves a Language class object to check the parsed
 //commands against.
-void parseCmd(string cmd, const Language lang)
+void parseCmd(string cmd, const Language lang, WINDOW *win)
 {
     string parse;
     istringstream is;
@@ -44,12 +44,15 @@ void parseCmd(string cmd, const Language lang)
         {
             if(parse.compare(lang.getCmd(i)) == 0)
             {
-                mvwaddstr(stdscr, 4, 0, lang.getLine(14));
+                wclrtoeol(win);
+                mvwaddch(win, getmaxy(win)-2, getmaxx(win)-1, '|');
+                mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(14));
                 return;
             }
         }
-        
-        mvwaddstr(stdscr, 4, 0, "Command doesn't Exist");
+        mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(20));
+        wclrtoeol(win);
+        mvwaddch(win, getmaxy(win)-2, getmaxx(win)-1, '|');
         return;
     }
 }

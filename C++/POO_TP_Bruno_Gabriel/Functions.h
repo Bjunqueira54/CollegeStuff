@@ -24,13 +24,9 @@ int getVertCenter(WINDOW *win, int n, int &rest, int &extraflag);
 
 void MainGameLoop(Language lang);
 
-/*void tutorial();
-
-void credits();*/
-
 //Funcoes dos Comandos
 
-void parseCmd(string cmd, const Language lang);
+void parseCmd(string cmd, const Language lang, WINDOW *win);
 
 
 #ifdef __linux__
