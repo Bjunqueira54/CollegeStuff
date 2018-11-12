@@ -125,21 +125,25 @@ int getVertCenter(WINDOW *win, int n, int &r, int &extraflag)
 void drawBox(WINDOW *win)
 {
     clear();
-    for(int y = 0; y<getmaxy(win); y++)
+    int y, x;
+    
+    getmaxyx(win, y, x);
+    
+    for(int i=1; i<y; i++)
     {
-        for(int x=0; x<getmaxx(win); x++)
-        {
-            if(y==0 || y==(getmaxy(win) - 1)) 
-            {
-                mvwaddch(win, y, x, 'x');
-                x++;
-            }
-            else
-                if(x==0 || x==(getmaxx(win) - 1))
-                    mvwaddch(win, y, x, '+');
-                else
-                    mvwaddch(win, y, x, ' ');
-        }
+        mvwaddch(win, i, 0, '|');
+        mvwaddch(win, i, x-1, '|');
     }
+    for(int i=1; i<x; i++)
+    {
+        mvwaddch(win, 0, i, '-');
+        mvwaddch(win, y-1, i, '-');
+    }
+    
+    mvwaddch(win, 0, 0, '*');
+    mvwaddch(win, 0, x-1, '*');
+    mvwaddch(win, y-1, 0, '*');
+    mvwaddch(win, y-1, x-1, '*');
+    
     refresh();
 }
