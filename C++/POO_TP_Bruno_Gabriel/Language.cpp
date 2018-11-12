@@ -117,7 +117,7 @@ const char* Language::getLine(int i)
     return line[i].c_str();
 }
 
-void Language::tutPage(int n)
+void Language::tutPage()
 {
     int r, extra;
     

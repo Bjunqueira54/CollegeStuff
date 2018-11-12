@@ -24,9 +24,9 @@ int getVertCenter(WINDOW *win, int n, int &rest, int &extraflag);
 
 void MainGameLoop(Language lang);
 
-void tutorial();
+/*void tutorial();
 
-void credits();
+void credits();*/
 
 //Funcoes dos Comandos
 
