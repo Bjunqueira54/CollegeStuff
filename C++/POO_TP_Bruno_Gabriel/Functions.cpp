@@ -13,13 +13,16 @@ void drawMainMenu(const Language lang)
     {
         for(int x=0; x<getmaxx(stdscr); x++)
         {
-            if(y==0 || y==(getmaxy(stdscr) - 1) || x==0 || x==(getmaxx(stdscr) - 1)) 
+            if(y==0 || y==(getmaxy(stdscr) - 1)) 
             {
-                mvwaddch(stdscr, y, x, '*');
+                mvwaddch(stdscr, y, x, 'x');
                 x++;
             }
             else
-                mvwaddch(stdscr, y, x, ' ');
+                if(x==0 || x==(getmaxx(stdscr) - 1))
+                    mvwaddch(stdscr, y, x, '+');
+                else
+                    mvwaddch(stdscr, y, x, ' ');
         }
     }
     
