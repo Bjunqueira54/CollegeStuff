@@ -85,6 +85,7 @@ Language::Language(int lang)
         tutorial.push_back("Pag. 1/3"); //26
         tutorial.push_back("Pag. 2/3"); //27
         tutorial.push_back("Pag. 3/3"); //28
+        //falta terceira pagina
         }
     }
     else if(lang == 2)
@@ -139,9 +140,9 @@ Language::Language(int lang)
         tutorial.push_back("Welcome to the Tutorial");
         tutorial.push_back("");
         tutorial.push_back("Basic Commands:");
-        tutorial.push_back();
-        tutorial.push_back();
-        tutorial.push_back();
+        tutorial.push_back("");
+        tutorial.push_back("");
+        tutorial.push_back("");
         tutorial.push_back("");
         tutorial.push_back("");
         tutorial.push_back("");
@@ -175,12 +176,53 @@ const char* Language::getLine(int i)
 
 void Language::tutPage()
 {
-    mvwaddstr(stdscr, 1, 1, tutorial[1].c_str());
-    mvwaddstr(stdscr, 2, 2, tutorial[2].c_str());
-    mvwaddstr(stdscr, 2, 3, tutorial[])
-    mvwaddstr();
+    int x = getmaxy(stdscr);
+    int y = getmaxx(stdscr);
+    int p1 = 7, p2 = 18, p3 = 0; // provisorio
+    
+    mvwaddstr(stdscr, 3, 3, tutorial[0].c_str());
+    { //page 1 
+        for(int i = -2; i<p1; i++)
+        {   
+            mvwaddstr(stdscr, i, 2, tutorial[1].c_str());
+            mvwaddstr(stdscr, i, 3, tutorial[6].c_str());
+            mvwaddstr(stdscr, i, 3, tutorial[22].c_str());
+            mvwaddstr(stdscr, i, 3, tutorial[23].c_str());
+            mvwaddstr(stdscr, i, 3, tutorial[24].c_str());
+            mvwaddstr(stdscr, i, 3, tutorial[25].c_str());
+            //mvwaddstr(stdscr, x-1, y-1, tutorial[26].s_str());
+        }
     refresh();
     getch();
+    }
+    
+    { //page 2
+    mvwaddstr(stdscr, 2, 2, tutorial[2].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[4].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[5].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[7].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[8].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[9].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[10].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[11].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[12].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[13].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[14].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[15].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[16].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[17].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[18].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[19].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[20].c_str());
+    mvwaddstr(stdscr, 2, 3, tutorial[21].c_str());
+    //mvwaddstr(stdscr, x-1, y-1, tutorial[27].s_str());
+    refresh();
+    getch();
+    }
+    
+    { //page 3
+        
+    }
 }
 
 void Language::credPage()
