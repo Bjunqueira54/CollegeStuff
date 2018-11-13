@@ -25,16 +25,15 @@ void drawMainMenu(const Language lang)
 void drawMap(WINDOW *win)
 {
     wclear(win);
-    drawBox(win);
-    init_pair(1, COLOR_WHITE, COLOR_BLUE);
-    init_pair(2, COLOR_GREEN, COLOR_BLUE);
-    init_pair(3, COLOR_RED, COLOR_BLUE);
     
     init_color(COLOR_LBROWN, 255, 222, 173);
     init_color(COLOR_DBROWN, 139, 69, 19);
-    
-    init_pair(4, COLOR_WHITE, COLOR_LBROWN);
-    init_pair(5, COLOR_WHITE, COLOR_DBROWN);
+
+    /*Fazer init_color para todas as combinações
+     de cores a serem usadas pelo jogo. Exemplos:
+     Foreground BRANCO e Background AZUL ESCURO
+     Foreground VERMELHO e Background AZUL CLARO
+     Foreground VERDE e Background CASTANHO ESCURO*/
     
     wattron(win, COLOR_PAIR(4));
     mvwaddch(win, 1, 1, ' ');
