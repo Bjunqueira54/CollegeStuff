@@ -84,6 +84,7 @@ void MainGameLoop(Language lang)
 
         {
             drawBox(wmap);
+            drawMap(wmap);
             drawBox(wcmd);
             drawBox(wlog);
         }

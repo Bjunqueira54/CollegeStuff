@@ -6,12 +6,22 @@
 #define MAP_MAXY 40     //Merchants and Pirates Max Height
 #define MAP_MAXX 120    //Merchants and Pirates Max Width
 
+#define COLOR_DBROWN 8 //Ncurses' colors range from 0-7, so this has to be 8
+#define COLOR_LBROWN 9
+
 //Prototipos de funcoes
 
 //Funcoes de desenho
 
+//Writes and centers all needed menu strings to stdscr.
 void drawMainMenu(const Language lang);
 
+//Draws and colors the map to wmap
+//(don't send any other WINDOW* to this function).
+void drawMap(WINDOW *win);
+
+//Clears the given window, prints a neat box
+//around it's edge and refreshes the window.
 void drawBox(WINDOW *win);
 
 int getCenter(const char* a);

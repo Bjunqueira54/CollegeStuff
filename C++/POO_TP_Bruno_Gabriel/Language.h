@@ -22,5 +22,4 @@ public:
     static void credPage();
 };
 
-#endif /* LANGUAGE_H */
-
+#endif

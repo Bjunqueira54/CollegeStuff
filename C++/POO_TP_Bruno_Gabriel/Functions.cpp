@@ -22,9 +22,25 @@ void drawMainMenu(const Language lang)
     refresh();
 }
 
-void drawMap(const Language lang)
+void drawMap(WINDOW *win)
 {
-    move(0,0);
+    wclear(win);
+    drawBox(win);
+    init_pair(1, COLOR_WHITE, COLOR_BLUE);
+    init_pair(2, COLOR_GREEN, COLOR_BLUE);
+    init_pair(3, COLOR_RED, COLOR_BLUE);
+    
+    init_color(COLOR_LBROWN, 255, 222, 173);
+    init_color(COLOR_DBROWN, 139, 69, 19);
+    
+    init_pair(4, COLOR_WHITE, COLOR_LBROWN);
+    init_pair(5, COLOR_WHITE, COLOR_DBROWN);
+    
+    wattron(win, COLOR_PAIR(4));
+    mvwaddch(win, 1, 1, ' ');
+    wattron(win, COLOR_PAIR(5));
+    mvwaddch(win, 2, 2, ' ');
+    wrefresh(win);
 }
 
 //Recieves a string with spaces and the full command
