@@ -16,5 +16,4 @@
 
 using namespace std;
 
-#endif /* HEADERS_H */
-
+#endif

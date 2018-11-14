@@ -9,57 +9,18 @@
 #define PRICE_FRIGATE 100
 #define PRICE_SPECIAL 9001
 
-class Galeon
-{
-    int price;
-    const int max_water, max_crew, max_load, max_fish;
-};
-
-class Frigate
-{
-    int price;
-    const int max_water, max_crew, max_load, max_fish;
-};
-
-class Schooner
-{
-    int price;
-    const int max_water, max_crew, max_load, max_fish;
-};
-
-class Sailboat
-{
-    int price;
-    const int max_water, max_crew, max_load, max_fish;
-};
-
-class Special
-{
-    int price;
-    const int max_water, max_crew, max_load, max_fish;
-};
-
 class Ship
 {
-    const int id; //Nº de identificacao do navio
-    const char type; //Preco do navio
+    const int id; //Ship's id number
+    const char type; //Ship's type
+    const int *maxwater, *maxcrew, *maxtons, *move /*, *price */; //implement price later;
     int water, crew, load, fish;
-
-    union shiptype  //Is this even possible?
-    {
-        Galeon galeon;
-        Frigate frigate;
-        Schooner schooner;
-        Sailboat sailboat;
-        Special special;
-    };
-    
     
 public:
 
     Ship(int i, char t);
+    int getId() const;
     ~Ship();
 };
 
-#endif /* SHIP_H */
-
+#endif

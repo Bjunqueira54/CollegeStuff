@@ -11,5 +11,4 @@ public:
     ~Harbor();
 };
 
-#endif /* HARBOR_H */
-
+#endif

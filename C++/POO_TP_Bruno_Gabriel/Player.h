@@ -8,11 +8,11 @@ using namespace std;
 
 class Player
 {
-    const string name;
-    int money;  //Dinheiro do jogador
-    int fPorts; //Portos amigos
-    int nShips; //Nº de navios
-    vector <Ship> fleet; //Vetor da frota
+    const string name; //Player's name
+    int money;  //Player's money
+    int fPorts; //Number of friendly Harbors
+    int nShips; //Number of currently owned ships
+    vector <Ship> fleet; //Fleet's vector
     
 public:
     
@@ -37,5 +37,4 @@ public:
 
 };
 
-#endif /* PLAYER_H */
-
+#endif

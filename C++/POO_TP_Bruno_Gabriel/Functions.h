@@ -67,5 +67,4 @@ static void setScreenSize(int lines, int columns)
 }
 #endif
 
-#endif /* FUNCTIONS_H */
-
+#endif
