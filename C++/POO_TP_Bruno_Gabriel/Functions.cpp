@@ -46,30 +46,32 @@ void drawMap(WINDOW *win)
 //to be separated into single words for command processing.
 //Also recieves a Language class object to check the parsed
 //commands against.
-void parseCmd(string cmd, const Language lang, WINDOW *win)
+bool parseCmd(string cmd, const Language lang, WINDOW *win)
 {
     string parse;
     istringstream is;
-    
+
     is.str(cmd);
-    
-    while(is >> parse)
+
+    for(int i=0; i<lang.getCmdvec().size(); i++)
     {
-        for(int i=0; i<lang.getCmdvec().size(); i++)
+        if(parse.compare(lang.getCmd(i)) == 0)
         {
-            if(parse.compare(lang.getCmd(i)) == 0)
+            switch(parse)
             {
-                wclrtoeol(win);
-                mvwaddch(win, getmaxy(win)-2, getmaxx(win)-1, '|');
-                mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(14));
-                return;
+                /*ALL
+                 THE
+                 POSSIBLE
+                 FUNCTIONS
+                 HERE*/
             }
+
+            return true;
         }
-        mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(20));
-        wclrtoeol(win);
-        mvwaddch(win, getmaxy(win)-2, getmaxx(win)-1, '|');
-        return;
     }
+
+        return false;
+
 }
 
 //Recieves a const char* string and tries to horizontally

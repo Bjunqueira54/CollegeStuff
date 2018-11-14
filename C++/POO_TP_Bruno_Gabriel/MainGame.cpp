@@ -7,7 +7,7 @@ using namespace std;
 void MainGameLoop(Language lang)
 {
     int turn=0;
-    int r, extra;
+    int r, extra, phase = 1;
     char opt;
     string name, cmd, aux;
     
@@ -141,10 +141,31 @@ void MainGameLoop(Language lang)
             }
             else
             {
-                parseCmd(cmd, lang, wcmd);
+                switch(phase)
+                {
+                    case 1:
+                        if(cmd != "config")
+                            mvwaddstr(wcmd, getmaxy(wcmd) - 2, 2, "Not OK!");
+                        else
+                            parseCmd(cmd, lang, wcmd);
+                        break;
+                    case 2:
+                        if(cmd == "config")
+                            mvwaddstr(wcmd, getmaxy(wcmd) - 2, 2, "Not OK!");
+                        else
+                            parseCmd(cmd, lang, wcmd);
+                }
             }
         }
         while(cmd != lang.getCmd(2) && cmd != lang.getCmd(19));
+        
+        if(cmd == lang.getCmd(19))
+            break;
+        
+        //IMPLEMENT PHASE 2 HERE
+        /*
+         
+         */
     }
     while(cmd != lang.getCmd(19));
     

@@ -36,7 +36,7 @@ void MainGameLoop(Language lang);
 
 //Funcoes dos Comandos
 
-void parseCmd(string cmd, const Language lang, WINDOW *win);
+bool parseCmd(string cmd, const Language lang, WINDOW *win);
 
 
 #ifdef __linux__
