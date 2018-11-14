@@ -1,0 +1,81 @@
+Gestão dinâmica de memória
+
+2 novos operadores para gerir memória:
+    new
+    delete
+
+new é em C++ o equivalente a malloc() de C
+delete é em C++ o equivalente a free() de C
+
+Não existe equivalente de realloc() em C++. Faz-se delete do antigo e chama-se new outra vez.
+
+Ambos os operadores são métodos mais simples de gerir memória em comparação a C.
+
+EXEMPLOS:
+
+new int; => Arranja um novo inteiro. Não existe teste para saber se correr bem ou não. Caso corra mal, lança uma
+            exceção. Não sabemos tratar de exceções agora, fica para mais tarde.
+
+            Devolve um ponteiro para o tipo que queremos (neste caso, o tipo é (int))
+
+int *p = new int;
+*p = 24;
+cout << *p;     //OUTPUT: 24
+
+double *r = new double(25.2);
+cout << *r;     //OUTPUT: 25.2
+
+Caso já não precise das variáveis chamadas com "new":
+
+delete p;
+delete r;
+
+cout << *p      //ERRO!! Ponteiro foi apagado com "delete".
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int *a = new int[4];    //Ponteiro para um array dinâmicamente criado com new não inicializado;
+
+/*depois do array estar prenchido com o que se quiser (neste exemplo {1,2,3,4}*/
+
+for(int i=0; i<4; i++)
+    cout << a[i] << " ";    //OUTPUT: 1 2 3 4
+
+delete a;       //Apaga o array dinâmicamente criado;
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class Pessoa{
+    string nome;
+public:
+    Pessoa(string a): nome(a) {}
+    string getNome() const{
+        return nome;}
+};
+
+
+Pessoa *p = new Pessoa;     //Ponteiro para um objecto da class Pessoa dinâmicamente criado
+                            //Para objectos normais: new chama o construtor e delete chama o destrutor
+
+AVISO!: Mas a class não tem construtor default, tem Pessoa(string a), logo dá erro de compilação
+
+Para tratar disso, na class, na área de "public:" escrevemos:
+
+Pessoa() = default;
+
+AVISO #2!: Ou então, fazemos desta maneira:
+
+Pessoa *p = new Pessoa("Ana");
+
+cout << p->getNome();   //OUTPUT: Ana
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+github: CollegeStuff/C++/POO_Ficha5_Ex1     //Exemplo
+        CollegeStuff/C++/POO_Ficha5_Ex2     //1. Destrutor
+                                            //2. Construtor por Cópia
+                                            //3. Operador de Atribuição
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Uma classe robusta para as operações habituais é uma classe que trata as 3 operações dadas em POO_Ficha5_Ex2 (1./2./3.)
