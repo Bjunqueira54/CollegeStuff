@@ -106,7 +106,7 @@ Language::Language(int lang)
             cmd.push_back("evpos");
             cmd.push_back("evship");
             cmd.push_back("coins");
-            cmd.push_back("goto");
+            cmd.push_back("moveto");
             cmd.push_back("buycrew");
             cmd.push_back("saveg");
             cmd.push_back("loadg");

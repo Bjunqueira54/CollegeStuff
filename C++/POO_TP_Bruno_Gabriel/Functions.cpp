@@ -57,15 +57,142 @@ bool parseCmd(string cmd, const Language lang, WINDOW *win)
     {
         if(parse.compare(lang.getCmd(i)) == 0)
         {
-            switch(parse)
+            switch(i)
             {
-                /*ALL
-                 THE
-                 POSSIBLE
-                 FUNCTIONS
-                 HERE*/
+                case 0: //config <filename>
+                {
+                    string filename;
+                    is >> filename;
+                    /*open file with filename*/
+                    break;
+                }
+                case 1: //exec <filename>
+                {
+                    string filename;
+                    is >> filename;
+                    /*open file with filename*/
+                    break;
+                }
+                case 3: //buyship <T>
+                {
+                    int type;
+                    is >> type;
+                    /*Create addNewShip(int type) method to Player class*/
+                    break;
+                }
+                case 4: //sellship <N>
+                {
+                    int number;
+                    is >> number;
+                    /*Create delShip(int id) method to Player class*/
+                    break;
+                }
+                case 5: //list
+                {
+                    /*Create listPrices() method to Harbor class*/
+                    break;
+                }
+                case 6: //buy <M> <N>
+                {
+                    int m, n;
+                    is >> m;
+                    is >> n;
+                    /*Create buyCargo(int m, int n) method to Ship class*/
+                    break;
+                }
+                case 7: //move <N> <X>
+                {
+                    int n;
+                    char x;
+                    is >> n;
+                    is >> x;
+                    /*Create move(int x, char x) method to Ship Class*/
+                    break;
+                }
+                case 8: //auto <N>
+                {
+                    int n;
+                    is >> n;
+                    /*Create setAuto() method to Ship class and autoShip(int n) to Player class*/
+                    break;
+                }
+                case 9: //stop <N>
+                {
+                    int n;
+                    is >> n;
+                    /*Create stopShip(int n) method to Player Class and stop() to Ship class*/
+                    break;
+                }
+                case 10: //pirate <x> <y> <T>
+                {
+                    int x, y, t;
+                    is >> x;
+                    is >> y;
+                    is >> t;
+                    /*Create overloaded method addNewShip(int x, int y, int t) to Player Class*/
+                    break;
+                }
+                case 11: //evpos <E> <x> <y>
+                {
+                    int event, x, y;
+                    is >> event;
+                    is >> x;
+                    is >> y;
+                    /*Create function eventPosition(int type, int x, int y)*/
+                    break;
+                }
+                case 12: //evship <E> <N>
+                {
+                    int event, id;
+                    is >> event;
+                    is >> id;
+                    /*Create function eventShip(int type, int id) that interacts with class Player*/
+                    break;
+                }
+                case 13: //coins <N>
+                {
+                    int n;
+                    is >> n;
+                    //player.addMoney(n);
+                    break;
+                }
+                case 14: //moveto <N> <x> <y> OR moveto <N> <P>
+                {
+                    /*No idea. Move N to (x,y) or move N to Harbor P*/
+                    break;
+                }
+                case 15: //buycrew <N> <S>
+                {
+                    int id, n;
+                    is >> id;
+                    is >> n;
+                    /*buySoldier(int id, int n) to Player class*/
+                    break;
+                }
+                case 16: //saveg <filename>
+                {
+                    string filename;
+                    is >> filename;
+                    /*Create save game function*/
+                    break;
+                }
+                case 17: //loadg <filename>
+                {
+                    string filename;
+                    is >> filename;
+                    /*create load game function*/
+                    break;
+                }
+                case 18:    //delg <filename>
+                {
+                    string filename;
+                    is >> filename;
+                    /*create delete saved game function*/
+                    break;
+                }
+                default:
+                    mvwaddstr(win, getmaxy(win)-2, 1, "How did you get here?!");
             }
-
             return true;
         }
     }
