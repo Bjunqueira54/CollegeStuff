@@ -10,7 +10,7 @@ Player::Player(string n): name(n)
 bool Player::NewShip(char t)
 {
     mt19937 rng(time(NULL));
-    uniform_int_distribution<int> rid(1, 27554);
+    uniform_int_distribution<int> rid(1, 99);
     int id;
     while(1)
     {

@@ -141,19 +141,9 @@ void MainGameLoop(Language lang)
             }
             else
             {
-                switch(phase)
+                if(parseCmd(cmd, lang, wcmd, phase) == false)
                 {
-                    case 1:
-                        if(cmd != "config")
-                            mvwaddstr(wcmd, getmaxy(wcmd) - 2, 2, "Not OK!");
-                        else
-                            parseCmd(cmd, lang, wcmd);
-                        break;
-                    case 2:
-                        if(cmd == "config")
-                            mvwaddstr(wcmd, getmaxy(wcmd) - 2, 2, "Not OK!");
-                        else
-                            parseCmd(cmd, lang, wcmd);
+                    mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(25));
                 }
             }
         }

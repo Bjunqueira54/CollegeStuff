@@ -3,6 +3,44 @@
 
 using namespace std;
 
+void createDefaultConfig(char opt)
+{
+    ofstream file;
+    file.open("config.ini", ios::out | ios::trunc);
+        
+    if(opt == 'D' || opt == 'd')
+    {
+        file << "...............+++++" << endl;
+        file << "..........++++++++++" << endl;
+        file << "..........A+++++++++" << endl;
+        file << ".............+++++++" << endl;
+        file << "..............++++++" << endl;
+        file << "....+a...........B++" << endl;
+        file << "...++++..........+++" << endl;
+        file << "....++............++" << endl;
+        file << "...................b" << endl;
+        file << "...................." << endl;
+        file << "money 1000" << endl;
+        file << "pirateprob 20" << endl;
+        file << "shipprice 100" << endl;
+        file << "crewprice 1" << endl;
+        file << "fishprice 1" << endl;
+        file << "cargobuy 2" << endl;
+        file << "cargosell 3" << endl;
+        file << "harborcrew 100" << endl;
+        file << "eventprob 30" << endl;
+        file << "stormprob 30" << endl;
+        file << "sirenprob 30" << endl;
+        file << "calmprob 20" << endl;
+        file << "riotprob 20" << endl;
+    }
+    else
+    {
+        /*CONTINUE HERE*/
+    }
+    file.close();
+}
+
 //Draws a neat screen wide box for the main menu.
 //Don't forget to give it the a Language object
 //or else nothing will show up
@@ -46,7 +84,7 @@ void drawMap(WINDOW *win)
 //to be separated into single words for command processing.
 //Also recieves a Language class object to check the parsed
 //commands against.
-bool parseCmd(string cmd, const Language lang, WINDOW *win)
+bool parseCmd(string cmd, const Language lang, WINDOW *win, int &phase)
 {
     string parse;
     istringstream is;
@@ -61,9 +99,77 @@ bool parseCmd(string cmd, const Language lang, WINDOW *win)
             {
                 case 0: //config <filename>
                 {
+                    if(phase != 1)
+                    {
+                        return false;
+                    }
+                    
                     string filename;
                     is >> filename;
-                    /*open file with filename*/
+                    ifstream file;
+                    file.open(filename, ios::in | ios::beg);
+                    
+                    if(!file.is_open())
+                    {
+                        mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(21));
+                        wrefresh(win);
+                        getch();
+                        mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(22));
+                        wrefresh(win);
+                        
+                        char opt;
+                        
+                        do
+                        {
+                            opt = getch();
+                        }
+                        while(opt != 'Y' && opt != 'y' && opt != 'N' && opt != 'n');
+                        
+                        if(opt == 'Y' || opt == 'y')
+                        {
+                            file.open("config.ini", ios::in | ios::beg);
+                            
+                            if(!file.is_open())
+                            {
+                                mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(21));
+                                wrefresh(win);
+                                getch();
+                                mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(23));
+                                wrefresh(win);
+                                
+                                do
+                                {
+                                    opt = getch();
+                                }
+                                while(opt != 'Y' && opt != 'y' && opt != 'N' && opt != 'n');
+                                
+                                if(opt == 'Y' || opt == 'y')
+                                {
+                                    mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(24));
+                                    wrefresh(win);
+                                    
+                                    do
+                                    {
+                                        opt = getch();
+                                    }
+                                    while(opt != 'D' && opt != 'd' && opt != 'C' && opt != 'c');
+                                    
+                                    createDefaultConfig(opt);
+                                    
+                                    file.open("config.ini", ios::in | ios::beg);
+                                }
+                                else
+                                    return false;
+                            }
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    
+                    /*READ FROM FILE HERE*/
+                    
                     break;
                 }
                 case 1: //exec <filename>
@@ -196,9 +302,7 @@ bool parseCmd(string cmd, const Language lang, WINDOW *win)
             return true;
         }
     }
-
         return false;
-
 }
 
 //Recieves a const char* string and tries to horizontally

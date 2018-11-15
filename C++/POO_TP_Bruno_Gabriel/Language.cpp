@@ -54,6 +54,11 @@ Language::Language(int lang)
             line.push_back("Programadores:");                           //18
             line.push_back("Equipa de Controlo de Qualidade:");         //19
             line.push_back("Comando não existe");                       //20
+            line.push_back("Ficheiro não existe");                      //21
+            line.push_back("Deseja abrir o ficheiro por defeito?(Y/n)");//22
+            line.push_back("Deseja criar um ficheiro por defeito?(Y/n");//23
+            line.push_back("Valores por defeito/Seus valores? (D/C)");  //24
+            line.push_back("Comando inválido");                         //25
         }
         
         {
@@ -136,6 +141,11 @@ Language::Language(int lang)
             line.push_back("Programmers:");
             line.push_back("Game Testing Team:");
             line.push_back("Command doesn't exist");
+            line.push_back("File doesn't exist");
+            line.push_back("Do you wish to open the default file?(Y\n)");
+            line.push_back("Do you wish to create a default file?(Y\n)");
+            line.push_back("Default Values/Custom Values? (D/C)");
+            line.push_back("Invalid command");
         }
         
         {

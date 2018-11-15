@@ -9,7 +9,9 @@
 #define COLOR_DBROWN 8 //Ncurses' colors range from 0-7, so this has to be 8
 #define COLOR_LBROWN 9
 
-//Prototipos de funcoes
+///////////////////////////
+///Prototipos de funcoes///
+///////////////////////////
 
 //Funcoes de desenho
 
@@ -30,13 +32,18 @@ int getCenter(string a);
 
 int getVertCenter(WINDOW *win, int n, int &rest, int &extraflag);
 
-//Funcoes do Menu
+/////////////////////
+///Funcoes do Menu///
+/////////////////////
 
 void MainGameLoop(Language lang);
 
-//Funcoes dos Comandos
+//////////////////////////
+///Funcoes dos Comandos///
+//////////////////////////
 
-bool parseCmd(string cmd, const Language lang, WINDOW *win);
+bool parseCmd(string cmd, const Language lang, WINDOW *win, int &phase);
+void createDefaultConfig(char opt);
 
 
 #ifdef __linux__
