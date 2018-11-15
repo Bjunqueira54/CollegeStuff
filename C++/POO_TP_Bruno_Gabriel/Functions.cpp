@@ -115,9 +115,13 @@ bool parseCmd(string cmd, const Language lang, int &phase)
                     if(!file.is_open())
                     {
                         mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(21));
+                        wclrtoeol(wcmd);
+                        mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
                         wrefresh(wcmd);
                         getch();
                         mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(22));
+                        wclrtoeol(wcmd);
+                        mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
                         wrefresh(wcmd);
                         
                         char opt;
@@ -135,9 +139,13 @@ bool parseCmd(string cmd, const Language lang, int &phase)
                             if(!file.is_open())
                             {
                                 mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(21));
+                                wclrtoeol(wcmd);
+                                mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
                                 wrefresh(wcmd);
                                 getch();
                                 mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(23));
+                                wclrtoeol(wcmd);
+                                mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
                                 wrefresh(wcmd);
                                 
                                 do
@@ -149,6 +157,8 @@ bool parseCmd(string cmd, const Language lang, int &phase)
                                 if(opt == 'Y' || opt == 'y')
                                 {
                                     mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(24));
+                                    wclrtoeol(wcmd);
+                                    mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
                                     wrefresh(wcmd);
                                     
                                     do
