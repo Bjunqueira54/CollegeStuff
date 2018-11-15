@@ -3,13 +3,14 @@
 
 using namespace std;
 
-void createDefaultConfig(char opt)
+void createDefaultConfig(char opt, string &filename)
 {
     ofstream file;
-    file.open("config.ini", ios::out | ios::trunc);
         
     if(opt == 'D' || opt == 'd')
     {
+        filename = DEFAULT_CONFIG;
+        file.open(filename, ios::out | ios::trunc);
         file << "...............+++++" << endl;
         file << "..........++++++++++" << endl;
         file << "..........A+++++++++" << endl;
@@ -38,6 +39,7 @@ void createDefaultConfig(char opt)
     {
         /*CONTINUE HERE*/
     }
+    
     file.close();
 }
 
@@ -116,12 +118,12 @@ bool parseCmd(string cmd, const Language lang, int &phase)
                     {
                         mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(21));
                         wclrtoeol(wcmd);
-                        mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
+                        mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                         wrefresh(wcmd);
                         getch();
                         mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(22));
                         wclrtoeol(wcmd);
-                        mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
+                        mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                         wrefresh(wcmd);
                         
                         char opt;
@@ -134,18 +136,19 @@ bool parseCmd(string cmd, const Language lang, int &phase)
                         
                         if(opt == 'Y' || opt == 'y')
                         {
-                            file.open("config.ini", ios::in);
+                            filename = DEFAULT_CONFIG;
+                            file.open(filename, ios::in);
                             
                             if(!file.is_open())
                             {
                                 mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(21));
                                 wclrtoeol(wcmd);
-                                mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
+                                mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                                 wrefresh(wcmd);
                                 getch();
                                 mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(23));
                                 wclrtoeol(wcmd);
-                                mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
+                                mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                                 wrefresh(wcmd);
                                 
                                 do
@@ -158,7 +161,7 @@ bool parseCmd(string cmd, const Language lang, int &phase)
                                 {
                                     mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(24));
                                     wclrtoeol(wcmd);
-                                    mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
+                                    mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                                     wrefresh(wcmd);
                                     
                                     do
@@ -167,9 +170,9 @@ bool parseCmd(string cmd, const Language lang, int &phase)
                                     }
                                     while(opt != 'D' && opt != 'd' && opt != 'C' && opt != 'c');
                                     
-                                    createDefaultConfig(opt);
+                                    createDefaultConfig(opt, filename);
                                     
-                                    file.open("config.ini", ios::in);
+                                    file.open(filename, ios::in);
                                 }
                                 else
                                     return false;
@@ -180,6 +183,12 @@ bool parseCmd(string cmd, const Language lang, int &phase)
                             return false;
                         }
                     }
+
+                    string success;
+                    success += lang.getLine(26) + filename;
+                    mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, success.c_str());
+                    wclrtoeol(wcmd);
+                    mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                     
                     /*READ FROM FILE HERE*/
                     

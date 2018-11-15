@@ -9,6 +9,8 @@
 #define COLOR_DBROWN 8 //Ncurses' colors range from 0-7, so this has to be 8
 #define COLOR_LBROWN 9
 
+#define DEFAULT_CONFIG "config.ini"
+
 extern WINDOW *wmap, *wcmd, *wlog;
 
 ///////////////////////////

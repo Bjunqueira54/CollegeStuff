@@ -144,6 +144,8 @@ void MainGameLoop(Language lang)
                 if(parseCmd(cmd, lang, phase) == false)
                 {
                     mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(25));
+                    wclrtoeol(wcmd);
+                    mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                 }
             }
         }
