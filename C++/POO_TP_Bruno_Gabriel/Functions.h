@@ -9,6 +9,8 @@
 #define COLOR_DBROWN 8 //Ncurses' colors range from 0-7, so this has to be 8
 #define COLOR_LBROWN 9
 
+WINDOW *wmap, *wcmd, *wlog;
+
 ///////////////////////////
 ///Prototipos de funcoes///
 ///////////////////////////
@@ -20,7 +22,7 @@ void drawMainMenu(const Language lang);
 
 //Draws and colors the map to wmap
 //(don't send any other WINDOW* to this function).
-void drawMap(WINDOW *win);
+void drawMap();
 
 //Clears the given window, prints a neat box
 //around it's edge and refreshes the window.

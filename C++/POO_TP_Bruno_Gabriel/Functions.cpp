@@ -60,9 +60,9 @@ void drawMainMenu(const Language lang)
     refresh();
 }
 
-void drawMap(WINDOW *win)
+void drawMap()
 {
-    wclear(win);
+    wclear(wmap);
     
     init_color(COLOR_LBROWN, 255, 222, 173);
     init_color(COLOR_DBROWN, 139, 69, 19);
@@ -73,11 +73,11 @@ void drawMap(WINDOW *win)
      Foreground VERMELHO e Background AZUL CLARO
      Foreground VERDE e Background CASTANHO ESCURO*/
     
-    wattron(win, COLOR_PAIR(4));
-    mvwaddch(win, 1, 1, ' ');
-    wattron(win, COLOR_PAIR(5));
-    mvwaddch(win, 2, 2, ' ');
-    wrefresh(win);
+    wattron(wmap, COLOR_PAIR(4));
+    mvwaddch(wmap, 1, 1, ' ');
+    wattron(wmap, COLOR_PAIR(5));
+    mvwaddch(wmap, 2, 2, ' ');
+    wrefresh(wmap);
 }
 
 //Recieves a string with spaces and the full command
@@ -107,7 +107,7 @@ bool parseCmd(string cmd, const Language lang, WINDOW *win, int &phase)
                     string filename;
                     is >> filename;
                     ifstream file;
-                    file.open(filename, ios::in | ios::beg);
+                    file.open(filename, ios::in);
                     
                     if(!file.is_open())
                     {
@@ -127,7 +127,7 @@ bool parseCmd(string cmd, const Language lang, WINDOW *win, int &phase)
                         
                         if(opt == 'Y' || opt == 'y')
                         {
-                            file.open("config.ini", ios::in | ios::beg);
+                            file.open("config.ini", ios::in);
                             
                             if(!file.is_open())
                             {
@@ -156,7 +156,7 @@ bool parseCmd(string cmd, const Language lang, WINDOW *win, int &phase)
                                     
                                     createDefaultConfig(opt);
                                     
-                                    file.open("config.ini", ios::in | ios::beg);
+                                    file.open("config.ini", ios::in);
                                 }
                                 else
                                     return false;

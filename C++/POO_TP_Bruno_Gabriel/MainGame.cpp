@@ -70,8 +70,6 @@ void MainGameLoop(Language lang)
     refresh();
     getch();
     
-    WINDOW *wmap, *wcmd, *wlog;
-    
     wmap = subwin(stdscr, 20, 40, 0, 0);
     wcmd = subwin(stdscr, 20, 40, getmaxy(wmap), 0);
     wlog = subwin(stdscr, MAP_MAXY, MAP_MAXX-getmaxx(wmap), 0, getmaxx(wmap));
@@ -84,7 +82,7 @@ void MainGameLoop(Language lang)
 
         {
             drawBox(wmap);
-            drawMap(wmap);
+            drawMap();
             drawBox(wcmd);
             drawBox(wlog);
         }

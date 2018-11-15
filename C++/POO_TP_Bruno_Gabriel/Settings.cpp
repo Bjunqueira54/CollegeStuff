@@ -7,72 +7,72 @@ Settings::Settings(ifstream &file)
 
 vector <string> Settings::getMap() const
 {
-    return Map;
+    return *Map;
 }
 
 int Settings::money() const
 {
-    return startmoney;
+    return *startmoney;
 }
 
 int Settings::pirate() const
 {
-    return pirateprob;
+    return *pirateprob;
 }
 
 int Settings::ship() const
 {
-    return shipprice;
+    return *shipprice;
 }
 
 int Settings::crew() const
 {
-    return crewprice;
+    return *crewprice;
 }
 
 int Settings::fish() const
 {
-    return fishprice;
+    return *fishprice;
 }
 
 int Settings::cargoBuyPrice() const
 {
-    return cargobuy;
+    return *cargobuy;
 }
 
 int Settings::cargoSellPrice() const
 {
-    return cargosell;
+    return *cargosell;
 }
 
 int Settings::harborCrew() const
 {
-    return harborcrew;
+    return *harborcrew;
 }
 
 int Settings::eventProb() const
 {
-    return eventprob;
+    return *eventprob;
 }
 
 int Settings::stormProb() const
 {
-    return storm;
+    return *storm;
 }
 
 int Settings::sirensProb() const
 {
-    return sirens;
+    return *sirens;
 }
 
 int Settings::calmProb() const
 {
-    return calm;
+    return *calm;
 }
 
 int Settings::riotProb() const
 {
-    return riot;
+    return *riot;
 }
 
 Settings::~Settings()
