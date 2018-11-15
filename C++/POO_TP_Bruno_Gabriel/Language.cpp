@@ -60,6 +60,7 @@ Language::Language(int lang)
             line.push_back("Valores por defeito/Seus valores?(D/C)");   //24
             line.push_back("Comando inválido");                         //25
             line.push_back("Ficheiro aberto: ");                        //26
+            line.push_back("Fase ");                                    //27
         }
         
         {
@@ -148,6 +149,7 @@ Language::Language(int lang)
             line.push_back("Default Values/Custom Values? (D/C)");
             line.push_back("Invalid command");
             line.push_back("Loaded file: ");
+            line.push_back("Phase ");
         }
         
         {

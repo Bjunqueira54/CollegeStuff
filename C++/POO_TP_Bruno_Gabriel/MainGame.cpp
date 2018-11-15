@@ -89,10 +89,19 @@ void MainGameLoop(Language lang)
             drawBox(wlog);
         }
         
-        mvwaddstr(wcmd, 1, 1, lang.getLine(11));
-        sturn << turn;
-        mvwaddstr(wcmd, 1, strlen(lang.getLine(11)) + 1, sturn.str().c_str());
-        wrefresh(wcmd);
+        if(phase == 1)
+        {
+            mvwaddstr(wcmd, 1, 1, lang.getLine(27));
+            mvwaddstr(wcmd, 1, strlen(lang.getLine(27))+1, "1");
+            wrefresh(wcmd);
+        }
+        else
+        {
+            mvwaddstr(wcmd, 1, 1, lang.getLine(11));
+            sturn << turn;
+            mvwaddstr(wcmd, 1, strlen(lang.getLine(11)) + 1, sturn.str().c_str());
+            wrefresh(wcmd);
+        }
         
         do  //Phase 1: Command parsing and Processing
         {
@@ -141,7 +150,7 @@ void MainGameLoop(Language lang)
             }
             else
             {
-                if(parseCmd(cmd, lang, phase) == false)
+                if(parseCmd(cmd, phase, lang) == false)
                 {
                     mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(25));
                     wclrtoeol(wcmd);

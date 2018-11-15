@@ -46,7 +46,7 @@ void MainGameLoop(Language lang);
 ///Funcoes dos Comandos///
 //////////////////////////
 
-bool parseCmd(string cmd, const Language lang, int &phase);
+bool parseCmd(string cmd, int &phase, const Language lang);
 void createDefaultConfig(char opt);
 
 
