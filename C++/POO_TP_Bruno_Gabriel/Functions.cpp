@@ -85,7 +85,7 @@ void drawMap()
 //to be separated into single words for command processing.
 //Also recieves a Language class object to check the parsed
 //commands against.
-bool parseCmd(string cmd, const Language lang, WINDOW *win, int &phase)
+bool parseCmd(string cmd, const Language lang, int &phase)
 {
     string parse;
     istringstream is;
@@ -112,11 +112,11 @@ bool parseCmd(string cmd, const Language lang, WINDOW *win, int &phase)
                     
                     if(!file.is_open())
                     {
-                        mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(21));
-                        wrefresh(win);
+                        mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(21));
+                        wrefresh(wcmd);
                         getch();
-                        mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(22));
-                        wrefresh(win);
+                        mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(22));
+                        wrefresh(wcmd);
                         
                         char opt;
                         
@@ -132,11 +132,11 @@ bool parseCmd(string cmd, const Language lang, WINDOW *win, int &phase)
                             
                             if(!file.is_open())
                             {
-                                mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(21));
-                                wrefresh(win);
+                                mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(21));
+                                wrefresh(wcmd);
                                 getch();
-                                mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(23));
-                                wrefresh(win);
+                                mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(23));
+                                wrefresh(wcmd);
                                 
                                 do
                                 {
@@ -146,8 +146,8 @@ bool parseCmd(string cmd, const Language lang, WINDOW *win, int &phase)
                                 
                                 if(opt == 'Y' || opt == 'y')
                                 {
-                                    mvwaddstr(win, getmaxy(win)-2, 1, lang.getLine(24));
-                                    wrefresh(win);
+                                    mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(24));
+                                    wrefresh(wcmd);
                                     
                                     do
                                     {
@@ -298,7 +298,7 @@ bool parseCmd(string cmd, const Language lang, WINDOW *win, int &phase)
                     break;
                 }
                 default:
-                    mvwaddstr(win, getmaxy(win)-2, 1, "How did you get here?!");
+                    mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "How did you get here?!");
             }
             return true;
         }

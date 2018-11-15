@@ -107,7 +107,7 @@ void MainGameLoop(Language lang)
             {
                 opt = getch();
                 
-                if((opt == ' ') || (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
+                if((opt == ' ') || (opt == '.')|| (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
                 {
                     if(cmd.size() < 20)
                     {
@@ -141,7 +141,7 @@ void MainGameLoop(Language lang)
             }
             else
             {
-                if(parseCmd(cmd, lang, wcmd, phase) == false)
+                if(parseCmd(cmd, lang, phase) == false)
                 {
                     mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(25));
                 }
