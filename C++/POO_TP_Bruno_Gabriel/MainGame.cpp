@@ -23,34 +23,7 @@ void MainGameLoop(Language lang)
 
         opt = 0;
 
-        do
-        {
-            opt = getch();
-
-            if((opt == ' ') || (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
-            {   //No Special Characters allowed
-                if(name.size() < 20)
-                {
-                    name.push_back(opt);
-                    mvwaddstr(stdscr, 3, 1 + strlen(lang.getLine(7)), name.c_str());
-                    mvwaddch(stdscr, 3, 1 + strlen(lang.getLine(7)) + strlen(name.c_str()), '_');
-                    refresh();
-                }
-            }
-            else if(opt == 8 || opt == 127) // 8 = Backspace, 127 = Delete
-            {
-                if(!( name.empty() ))
-                {
-                    name.pop_back();
-                    mvwaddstr(stdscr, 3, 1+ strlen(lang.getLine(7)), name.c_str());
-                    wclrtoeol(stdscr);
-                    mvwaddch(stdscr, 3, getmaxx(stdscr) - 1, '|');
-                    mvwaddch(stdscr, 3, 1 + strlen(lang.getLine(7)) + strlen(name.c_str()), '_');
-                    refresh();
-                }
-            }
-        }
-        while(opt != 10); // 10 = Enter
+        name = getInput(stdscr, 20);
 
         if(name.empty())
             mvwaddstr(stdscr, 1, 2, lang.getLine(8));
@@ -112,37 +85,7 @@ void MainGameLoop(Language lang)
             mvwaddch(wcmd, getmaxy(wcmd)-3, 1 + strlen(lang.getLine(12)), '_');
             wrefresh(wcmd);
             
-            do
-            {
-                opt = getch();
-                
-                if((opt == ' ') || (opt == '.')|| (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
-                {
-                    if(cmd.size() < 20)
-                    {
-                        if(!(cmd.empty() && opt == ' '))
-                        {
-                            cmd.push_back(opt);
-                            mvwaddstr(wcmd, getmaxy(wcmd)-3, 1 + strlen(lang.getLine(12)), cmd.c_str());
-                            mvwaddch(wcmd, getmaxy(wcmd)-3, 1 + strlen(lang.getLine(12)) + strlen(cmd.c_str()), '_');
-                            wrefresh(wcmd);
-                        }
-                    }
-                }
-                else if(opt == 8 || opt == 127)
-                {
-                    if(!(cmd.empty()))
-                    {
-                        cmd.pop_back();
-                        mvwaddstr(wcmd, getmaxy(wcmd)-3, 1 + strlen(lang.getLine(12)), cmd.c_str());
-                        wclrtoeol(wcmd);
-                        mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
-                        mvwaddch(wcmd, getmaxy(wcmd)-3, 1 + strlen(lang.getLine(12)) + strlen(cmd.c_str()), '_');
-                        wrefresh(wcmd);
-                    }
-                }
-            }
-            while(opt != 10);   //Key Enter
+            cmd = getInput(wcmd, 20);
             
             if(cmd.empty())
             {

@@ -49,7 +49,7 @@ void MainGameLoop(Language lang);
 
 bool parseCmd(string cmd, int &phase, const Language lang);
 void createDefaultConfig(char opt);
-string getInput();
+string getInput(WINDOW *win, int str_size);
 
 
 #ifdef __linux__

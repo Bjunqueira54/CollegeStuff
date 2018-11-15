@@ -10,6 +10,7 @@ string getInput(WINDOW *win, int str_size=20)
     int y, x;
     
     getyx(win, y, x);
+    x-=1;
     
     do
     {
@@ -23,7 +24,7 @@ string getInput(WINDOW *win, int str_size=20)
                 {
                     input.push_back(opt);
                     mvwaddstr(win, y, x, input.c_str());
-                    mvwaddch(win, y, x + strlen(input.c_str())+1, '_');
+                    mvwaddch(win, y, x + strlen(input.c_str()), '_');
                     wrefresh(win);
                 }
             }
@@ -36,7 +37,7 @@ string getInput(WINDOW *win, int str_size=20)
                 mvwaddstr(win, y, x, input.c_str());
                 wclrtoeol(win);
                 mvwaddch(win, y, getmaxx(win)-1, '|');
-                mvwaddch(win, y, x + strlen(input.c_str())+1, '_');
+                mvwaddch(win, y, x + strlen(input.c_str()), '_');
                 wrefresh(win);
             }
         }
