@@ -91,6 +91,8 @@ bool parseCmd(string cmd, const Language lang, int &phase)
     istringstream is;
 
     is.str(cmd);
+    
+    is >> parse;
 
     for(int i=0; i<lang.getCmdvec().size(); i++)
     {
