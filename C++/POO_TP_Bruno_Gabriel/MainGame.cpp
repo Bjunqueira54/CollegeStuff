@@ -4,6 +4,8 @@
 
 using namespace std;
 
+WINDOW *wmap, *wcmd, *wlog;
+
 void MainGameLoop(Language lang)
 {
     int turn=0;

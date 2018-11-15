@@ -63,6 +63,7 @@ void drawMainMenu(const Language lang)
 void drawMap()
 {
     wclear(wmap);
+    drawBox(wmap);
     
     init_color(COLOR_LBROWN, 255, 222, 173);
     init_color(COLOR_DBROWN, 139, 69, 19);
