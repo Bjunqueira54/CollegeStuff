@@ -61,6 +61,22 @@ Language::Language(int lang)
             line.push_back("Comando inválido");                         //25
             line.push_back("Ficheiro aberto: ");                        //26
             line.push_back("Fase ");                                    //27
+            line.push_back("Nome do ficheiro: ");                       //28
+            line.push_back("Desenha desenhar o mapa?(Y/N)");            //29
+            line.push_back("Moedas iniciais: ");                        //30
+            line.push_back("Probabilidade de Piratas por turno: ");     //31
+            line.push_back("Preço por Navio: ");                        //32
+            line.push_back("Preço por Soldado: ");                      //33
+            line.push_back("Preço do peixe: ");                         //34
+            line.push_back("Preço de compra da mercadoria: ");          //35
+            line.push_back("Preço de venda da mercadoria: ");           //36
+            line.push_back("Soldados por porto: ");                     //37
+            line.push_back("Probabilidade de evento: ");                //38
+            line.push_back("Probabilidade de Tempestade: ");            //39
+            line.push_back("Probabilidade de Sereias: ");               //40
+            line.push_back("Probabilidade de Calmaria: ");              //41
+            line.push_back("Probabilidade de Motim: ");                 //42
+            line.push_back("(Se escolher 'N' será criado um por si)");  //43
         }
         
         {
@@ -150,6 +166,22 @@ Language::Language(int lang)
             line.push_back("Invalid command");
             line.push_back("Loaded file: ");
             line.push_back("Phase ");
+            line.push_back("File name: ");
+            line.push_back("Draw map?(Y/N)");
+            line.push_back("Starting coins: ");
+            line.push_back("Pirate chance per turn: ");
+            line.push_back("Ship price: ");
+            line.push_back("Crew price: ");
+            line.push_back("Fish price: ");
+            line.push_back("Cargo buy price: ");
+            line.push_back("Cargo sell price: ");
+            line.push_back("Harbor soldiers: ");
+            line.push_back("Event chance: ");
+            line.push_back("Storm chance: ");
+            line.push_back("Siren chance: ");
+            line.push_back("Calm chance: ");
+            line.push_back("Riot chance: ");
+            line.push_back("(If you choose 'N' we'll use the default)");
         }
         
         {

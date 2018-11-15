@@ -13,11 +13,12 @@
 
 extern WINDOW *wmap, *wcmd, *wlog;
 
-///////////////////////////
-///Prototipos de funcoes///
-///////////////////////////
 
-//Funcoes de desenho
+///Prototipos de funcoes
+
+////////////////////////
+///Funcoes de desenho///
+////////////////////////
 
 //Writes and centers all needed menu strings to stdscr.
 void drawMainMenu(const Language lang);
@@ -48,6 +49,7 @@ void MainGameLoop(Language lang);
 
 bool parseCmd(string cmd, int &phase, const Language lang);
 void createDefaultConfig(char opt);
+string getInput();
 
 
 #ifdef __linux__

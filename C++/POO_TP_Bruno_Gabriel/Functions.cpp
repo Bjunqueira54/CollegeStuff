@@ -3,7 +3,50 @@
 
 using namespace std;
 
-void createDefaultConfig(char opt, string &filename)
+string getInput(WINDOW *win, int str_size=20)
+{
+    string input;
+    char opt;
+    int y, x;
+    
+    getyx(win, y, x);
+    
+    do
+    {
+        opt = getch();
+
+        if((opt == ' ') || (opt == '.')|| (opt >= '0' && opt <= '9') || (opt >= 'A' && opt <= 'Z') || (opt >= 'a' && opt <= 'z'))
+        {
+            if(input.size() < str_size)
+            {
+                if(!(input.empty() && opt == ' '))
+                {
+                    input.push_back(opt);
+                    mvwaddstr(win, y, x, input.c_str());
+                    mvwaddch(win, y, x + strlen(input.c_str())+1, '_');
+                    wrefresh(win);
+                }
+            }
+        }
+        else if(opt == 8 || opt == 127)
+        {
+            if(!(input.empty()))
+            {
+                input.pop_back();
+                mvwaddstr(win, y, x, input.c_str());
+                wclrtoeol(win);
+                mvwaddch(win, y, getmaxx(win)-1, '|');
+                mvwaddch(win, y, x + strlen(input.c_str())+1, '_');
+                wrefresh(win);
+            }
+        }
+    }
+    while(opt != 10);   //Key Enter
+    
+    return input;
+}
+
+void createDefaultConfig(char opt, string &filename, const Language lang)
 {
     ofstream file;
         
@@ -37,7 +80,40 @@ void createDefaultConfig(char opt, string &filename)
     }
     else
     {
-        /*CONTINUE HERE*/
+        for(int i=1; i<=15; i++)
+        {
+            if(i==1)
+            {
+                mvwaddstr(wlog, i, 1, lang.getLine(28));
+                
+            }
+            else if(i==2)
+            {
+                mvwaddstr(wlog, i, 1, lang.getLine(i+27));
+                mvwaddstr(wlog, i+1, 1, lang.getLine(43));
+                
+                char opt;
+                
+                do
+                {
+                    opt = getch();
+                }
+                while(opt!='Y' && opt!='y' && opt!='N' && opt!='n');
+                
+                if(opt=='Y' || opt=='y')
+                {
+                    
+                }
+                else
+                {
+                    file << "";
+                }
+            }
+            else
+            {
+                mvwaddstr(wlog, i, 1, lang.getLine(i+27));
+            }
+        }
     }
     
     file.close();
@@ -170,7 +246,7 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                                     }
                                     while(opt != 'D' && opt != 'd' && opt != 'C' && opt != 'c');
                                     
-                                    createDefaultConfig(opt, filename);
+                                    createDefaultConfig(opt, filename, lang);
                                     
                                     file.open(filename, ios::in);
                                 }
