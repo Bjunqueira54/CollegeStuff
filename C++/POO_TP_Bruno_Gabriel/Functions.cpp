@@ -669,21 +669,21 @@ void drawBox(WINDOW *win)
     
     getmaxyx(win, y, x);
     
-    for(int i=1; i<y; i++)
+    for(int i=0; i<y; i++)
     {
         mvwaddch(win, i, 0, '|');
         mvwaddch(win, i, x-1, '|');
     }
-    for(int i=1; i<x; i++)
+    for(int i=0; i<x; i++)
     {
-        mvwaddch(win, 0, i, '-');
-        mvwaddch(win, y-1, i, '-');
+        mvwaddch(win, 0, i, '=');
+        mvwaddch(win, y-1, i, '=');
     }
     
-    mvwaddch(win, 0, 0, '*');
-    mvwaddch(win, 0, x-1, '*');
-    mvwaddch(win, y-1, 0, '*');
-    mvwaddch(win, y-1, x-1, '*');
-    
+    mvwaddch(win, 0, 0, 'x');
+    mvwaddch(win, 0, x-1, 'x');
+    mvwaddch(win, y-1, 0, 'x');
+    mvwaddch(win, y-1, x-1, 'x');
+
     wrefresh(win);
 }

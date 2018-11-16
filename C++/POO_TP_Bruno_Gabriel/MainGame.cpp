@@ -16,9 +16,9 @@ void MainGameLoop(Language lang)
     do
     {
         drawBox(stdscr);
-        mvwaddstr(stdscr, 1, 1, lang.getLine(6));
-        mvwaddstr(stdscr, 3, 1, lang.getLine(7));
-        mvwaddch(stdscr, 3, 1 + strlen(lang.getLine(7)), '_');
+        mvwaddstr(stdscr, 2, 2, lang.getLine(6));
+        mvwaddstr(stdscr, 4, 2, lang.getLine(7));
+        mvwaddch(stdscr, 4, 2 + strlen(lang.getLine(7)), '_');
         refresh();
 
         opt = 0;
