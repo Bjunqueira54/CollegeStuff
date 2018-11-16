@@ -3,6 +3,67 @@
 
 using namespace std;
 
+vector <string> userDrawCustomMap(const Language lang)
+{
+    char opt;
+    vector<string>Map;
+    int y=1, x=1;
+    mvwaddstr(wlog, 3, 1, lang.getLine(43));
+    mvwaddstr(wlog, 4, 1, lang.getLine(45));
+    wrefresh(wlog);
+    
+    do
+    {
+        curs_set(TRUE);
+        wmove(wmap, y, x);
+        opt = getch();
+        
+        if(opt == '.' || opt == '+')
+        {
+            mvwaddch(wmap, y, x, opt);
+            wrefresh(wmap);
+        }
+        else if(opt >='A' && opt <='Z')
+        {
+            /*CHECK NEIGHBOURS POSITIONS FOR WATER + LAND*/
+        }
+        else if(opt==KEY_RIGHT || opt==KEY_LEFT || opt==KEY_UP || opt==KEY_DOWN)
+        {
+            switch(opt) //THIS IS NOT WORKING. TESTING REQUIRED!
+            {
+                case KEY_RIGHT:
+                    if(x<(getmaxx(wmap)-2))
+                        x++;
+                    break;
+                    
+                case KEY_DOWN:
+                    if(y<(getmaxy(wmap)-2))
+                        y++;
+                    break;
+                    
+                case KEY_UP:
+                    if(y>1)
+                        y--;
+                    break;
+                    
+                case KEY_LEFT:
+                    if(x>1)
+                        x--;
+                    break;
+                default:
+                    break;
+            }
+            
+            wmove(wmap, y, x);
+        }
+    }
+    while(opt != 10);
+    
+    curs_set(FALSE);
+    
+    return Map;
+}
+
 string getInput(WINDOW *win, int str_size=20)
 {
     string input;
@@ -65,6 +126,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         file << "....++............++" << endl;
         file << "...................b" << endl;
         file << "...................." << endl;
+        file << "" << endl;
         file << "money 1000" << endl;
         file << "pirateprob 20" << endl;
         file << "shipprice 100" << endl;
@@ -81,40 +143,168 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
     }
     else
     {
-        for(int i=1; i<=15; i++)
+        string input;
+        filename.clear();
+        mvwaddstr(wlog, 1, 1, lang.getLine(28));
+        wrefresh(wlog);
+        do
         {
-            if(i==1)
-            {
-                mvwaddstr(wlog, i, 1, lang.getLine(28));
-                
-            }
-            else if(i==2)
-            {
-                mvwaddstr(wlog, i, 1, lang.getLine(i+27));
-                mvwaddstr(wlog, i+1, 1, lang.getLine(43));
-                
-                char opt;
-                
-                do
-                {
-                    opt = getch();
-                }
-                while(opt!='Y' && opt!='y' && opt!='N' && opt!='n');
-                
-                if(opt=='Y' || opt=='y')
-                {
-                    
-                }
-                else
-                {
-                    file << "";
-                }
-            }
-            else
-            {
-                mvwaddstr(wlog, i, 1, lang.getLine(i+27));
-            }
+            filename = getInput(wlog, 15);
         }
+        while(filename.empty());
+        
+        file.open(filename, ios::out | ios::trunc);
+
+        mvwaddstr(wlog, 2, 1, lang.getLine(29));
+        mvwaddstr(wlog, 3, 1, lang.getLine(43));
+        wrefresh(wlog);
+
+        char opt;
+
+        do
+        {
+            opt = getch();
+        }
+        while(opt!='Y' && opt!='y' && opt!='N' && opt!='n');
+
+        if(opt=='Y' || opt=='y')
+        {
+            vector<string> Map;
+            Map = userDrawCustomMap(lang);
+            /*man mvwinchstr(WINDOW *win, int y, int x, chtype *chstr);*/
+            /*USE THIS FUNCTION ^*/
+        }
+        else
+        {
+            file << "...............+++++" << endl;
+            file << "..........++++++++++" << endl;
+            file << "..........A+++++++++" << endl;
+            file << ".............+++++++" << endl;
+            file << "..............++++++" << endl;
+            file << "....+a...........B++" << endl;
+            file << "...++++..........+++" << endl;
+            file << "....++............++" << endl;
+            file << "...................b" << endl;
+            file << "...................." << endl;
+            file << "" << endl;
+        }
+
+        mvwaddstr(wlog, 4, 1, lang.getLine(30));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 10);
+        }
+        while(input.empty());
+        file << "money " << input << endl;
+        
+        mvwaddstr(wlog, 5, 1, lang.getLine(31));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 3);
+        }
+        while(input.empty());
+        file << "pirateprob  " << input << endl;
+        
+        mvwaddstr(wlog, 6, 1, lang.getLine(32));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 5);
+        }
+        while(input.empty());
+        file << "shipprice " << input << endl;
+        
+        mvwaddstr(wlog, 7, 1, lang.getLine(33));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 5);
+        }
+        while(input.empty());
+        file << "crewprice " << input << endl;
+        
+        mvwaddstr(wlog, 8, 1, lang.getLine(34));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 10);
+        }
+        while(input.empty());
+        file << "fishprice " << input << endl;
+        
+        mvwaddstr(wlog, 9, 1, lang.getLine(35));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 10);
+        }
+        while(input.empty());
+        file << "cargobuyprice " << input << endl;
+        
+        mvwaddstr(wlog, 10, 1, lang.getLine(36));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 10);
+        }
+        while(input.empty());
+        file << "cargosellprice " << endl;
+        
+        mvwaddstr(wlog, 11, 1, lang.getLine(37));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 10);
+        }
+        while(input.empty());
+        file << "harborcrew " << input << endl;
+        
+        mvwaddstr(wlog, 12, 1, lang.getLine(38));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 10);
+        }
+        while(input.empty());
+        file << "eventprob " << input << endl;
+        
+        mvwaddstr(wlog, 13, 1, lang.getLine(39));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 10);
+        }
+        while(input.empty());
+        file << "stormprob " << input << endl;
+        
+        mvwaddstr(wlog, 14, 1, lang.getLine(40));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 10);
+        }
+        while(input.empty());
+        file << "sirenprob " << input << endl;
+        
+        mvwaddstr(wlog, 15, 1, lang.getLine(41));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 10);
+        }
+        while(input.empty());
+        file << "calmprob " << input << endl;
+        
+        mvwaddstr(wlog, 16, 1, lang.getLine(42));
+        wrefresh(wlog);
+        do
+        {
+            input = getInput(wlog, 10);
+        }
+        while(input.empty());
+        file << "riotprob " << input << endl;
     }
     
     file.close();

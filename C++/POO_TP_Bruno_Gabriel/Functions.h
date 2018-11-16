@@ -27,6 +27,9 @@ void drawMainMenu(const Language lang);
 //(don't send any other WINDOW* to this function).
 void drawMap();
 
+//Sends the user into map drawing mode
+vector <string> userDrawCustomMap();   //This won't be the final version prototype, it's just here as a reminder of wtf am I doing with my life
+
 //Clears the given window, prints a neat box
 //around it's edge and refreshes the window.
 void drawBox(WINDOW *win);
