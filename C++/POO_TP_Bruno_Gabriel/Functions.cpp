@@ -64,7 +64,7 @@ vector <string> userDrawCustomMap(const Language lang)
     return Map;
 }
 
-string getInput(WINDOW *win, int str_size=20)
+string getInput(WINDOW *win = stdscr, int str_size=20)
 {
     string input;
     char opt;
