@@ -17,24 +17,25 @@ Language::Language(int lang)
             cmd.push_back("vendenav");  //4
             cmd.push_back("lista");     //5
             cmd.push_back("compra");    //6
-            cmd.push_back("move");      //7
-            cmd.push_back("auto");      //8
-            cmd.push_back("stop");      //9
-            cmd.push_back("pirata");    //10
-            cmd.push_back("evpos");     //11
-            cmd.push_back("evnav");     //12
-            cmd.push_back("moedas");    //13
-            cmd.push_back("vaipara");   //14
-            cmd.push_back("comprasold");//15
-            cmd.push_back("saveg");     //16
-            cmd.push_back("loadg");     //17
-            cmd.push_back("delg");      //18
-            cmd.push_back("sair");      //19
+            cmd.push_back("vende");     //7
+            cmd.push_back("move");      //8
+            cmd.push_back("auto");      //9
+            cmd.push_back("stop");      //10
+            cmd.push_back("pirata");    //11
+            cmd.push_back("evpos");     //12
+            cmd.push_back("evnav");     //13
+            cmd.push_back("moedas");    //14
+            cmd.push_back("vaipara");   //15
+            cmd.push_back("comprasold");//16
+            cmd.push_back("saveg");     //17
+            cmd.push_back("loadg");     //18
+            cmd.push_back("delg");      //19
+            cmd.push_back("sair");      //20
         }
         
         {
             line.push_back("(Prima qualquer tecla para continuar)");    //0
-            line.push_back("Bem vindo a Cid Martin's Pirates!");        //1
+            line.push_back("Bem vindo a Piratas e Mercadores!");        //1
             line.push_back("1 - Novo Jogo");                            //2
             line.push_back("2 - Tutorial");                             //3
             line.push_back("3 - Creditos");                             //4
@@ -124,6 +125,7 @@ Language::Language(int lang)
             cmd.push_back("sellship");
             cmd.push_back("list");
             cmd.push_back("buy");
+            cmd.push_back("sell");
             cmd.push_back("move");
             cmd.push_back("auto");
             cmd.push_back("stop");
@@ -131,7 +133,7 @@ Language::Language(int lang)
             cmd.push_back("evpos");
             cmd.push_back("evship");
             cmd.push_back("coins");
-            cmd.push_back("moveto");
+            cmd.push_back("goto");
             cmd.push_back("buycrew");
             cmd.push_back("saveg");
             cmd.push_back("loadg");
@@ -188,32 +190,32 @@ Language::Language(int lang)
             line.push_back("Map window. Enter to terminate");
         }
         
-        {
+        {//spellcheck - X
             tutorial.push_back("Tutorial");
             tutorial.push_back("Basic Commands:");
             tutorial.push_back("Advanced Commands:");
             tutorial.push_back("Game Objectives:");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
-            tutorial.push_back("");
+            tutorial.push_back("config <FileName> - Reads the map caracteristics and parameter from the file");
+            tutorial.push_back("exec <FileName> - Reads file commands and executes them");
+            tutorial.push_back("next - Next turn");
+            tutorial.push_back("buyship <T> Buys a ship of type T specified");
+            tutorial.push_back("sellship <T> - Sells a ship of type T specified");
+            tutorial.push_back("list - Lists prices in each harbour");
+            tutorial.push_back("buy <N> <M> - ");
+            tutorial.push_back("sell <N> - ");
+            tutorial.push_back("move <N> <X> - "); 
+            tutorial.push_back("auto <N> - ");
+            tutorial.push_back("stop <N> - ");
+            tutorial.push_back("pirate <x> <y> <T> - ");
+            tutorial.push_back("evpos <E> <x> <y> - ");
+            tutorial.push_back("evship <E> <N> - ");
+            tutorial.push_back("coins <N> - ");
+            tutorial.push_back("goto <N> <x> <y> - ");
+            tutorial.push_back("goto <N> <P> - ");
+            tutorial.push_back("buycrew <N> <S> - ");
+            tutorial.push_back("saveg <name> - ");
+            tutorial.push_back("loadg <name> - ");
+            tutorial.push_back("delg <name> - ");
             tutorial.push_back("exit - quits game and returns to the main menu");
             tutorial.push_back("Page 1/3");
             tutorial.push_back("Page 2/3");
