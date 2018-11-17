@@ -16,6 +16,7 @@ Comandos que sao aceites:
     vendenav <Tipo>
     lista
     compra <Id> <Toneladas_Mercadoria>
+    vende <Id>
     move <Id> <Dir> //Dir= D, E, C, B, CE, CD, BE, BD
     auto <Id>
     stop <Id>

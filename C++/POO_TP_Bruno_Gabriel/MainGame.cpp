@@ -5,11 +5,12 @@
 using namespace std;
 
 WINDOW *wmap, *wcmd, *wlog;
+int phase = 1;
 
 void MainGameLoop(Language lang)
 {
     int turn=0;
-    int r, extra, phase = 1;
+    int r, extra;
     char opt;
     string name, cmd, aux;
     
@@ -53,7 +54,6 @@ void MainGameLoop(Language lang)
     do  //Main Game Loop
     {
         ostringstream sturn;
-        turn++;
 
         {
             drawBox(wmap);
@@ -70,6 +70,7 @@ void MainGameLoop(Language lang)
         }
         else
         {
+            turn++;
             mvwaddstr(wcmd, 1, 1, lang.getLine(11));
             sturn << turn;
             mvwaddstr(wcmd, 1, strlen(lang.getLine(11)) + 1, sturn.str().c_str());
@@ -91,6 +92,10 @@ void MainGameLoop(Language lang)
             {
                 mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(13));
             }
+            else if(cmd == lang.getCmd(2) || cmd == lang.getCmd(20))
+            {
+                break;
+            }
             else
             {
                 if(parseCmd(cmd, phase, lang) == false)
@@ -101,9 +106,9 @@ void MainGameLoop(Language lang)
                 }
             }
         }
-        while(cmd != lang.getCmd(2) && cmd != lang.getCmd(19));
+        while(cmd != lang.getCmd(2) && cmd != lang.getCmd(20));
         
-        if(cmd == lang.getCmd(19))
+        if(cmd == lang.getCmd(20))
             break;
         
         //IMPLEMENT PHASE 2 HERE
@@ -111,7 +116,7 @@ void MainGameLoop(Language lang)
          
          */
     }
-    while(cmd != lang.getCmd(19));
+    while(cmd != lang.getCmd(20));
     
     delwin(wmap);
     delwin(wcmd);

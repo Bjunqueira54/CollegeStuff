@@ -12,6 +12,7 @@
 #define DEFAULT_CONFIG "config.ini"
 
 extern WINDOW *wmap, *wcmd, *wlog;
+extern int phase;
 
 
 ///Prototipos de funcoes

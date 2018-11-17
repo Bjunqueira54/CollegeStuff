@@ -337,19 +337,43 @@ void drawMap()
     wclear(wmap);
     drawBox(wmap);
     
-    init_color(COLOR_LBROWN, 255, 222, 173);
-    init_color(COLOR_DBROWN, 139, 69, 19);
+    /*init_color usa a seguinte syntax
+    
+     init_pair(nº desejado para identificar a cor (Pode usar-se um #define NOME Nº),
+                montante de vermelho (1-1000),
+                montante de verde (1-1000),
+                montante de azul (1-1000));
+     
+     como na internet calcula-se valores para RGB em 1-255, tem-se de calcular
+     os montantes para init_pair() com (valor RGB)*3.9216 (arrendondado para baixo nas unidades)*/
+    
+    /*init_color(COLOR_LBROWN, 255, 222, 173);  //Isto está a usar valores 1-255, e esta errado
+    init_color(COLOR_DBROWN, 139, 69, 19);*/
+    
+    init_color(COLOR_DBROWN, 102*3.9216, 51*3.9216, 0);
+    init_color(COLOR_LBROWN, 1000, 153*3.9216, 51*3.9216);
 
-    /*Fazer init_color para todas as combinações
+    /*Fazer init_pair para todas as combinações
      de cores a serem usadas pelo jogo. Exemplos:
      Foreground BRANCO e Background AZUL ESCURO
      Foreground VERMELHO e Background AZUL CLARO
      Foreground VERDE e Background CASTANHO ESCURO*/
     
+    //Exemplo
+    
+    init_pair(4, COLOR_WHITE, COLOR_LBROWN);
+    init_pair(5, COLOR_WHITE, COLOR_DBROWN);
+    
     wattron(wmap, COLOR_PAIR(4));
     mvwaddch(wmap, 1, 1, ' ');
-    wattron(wmap, COLOR_PAIR(5));
+    mvwaddch(wmap, 1, 2, ' ');
+    mvwaddch(wmap, 2, 1, ' ');
     mvwaddch(wmap, 2, 2, ' ');
+    wattron(wmap, COLOR_PAIR(5));
+    mvwaddch(wmap, 1, 3, ' ');
+    mvwaddch(wmap, 1, 4, ' ');
+    mvwaddch(wmap, 2, 3, ' ');
+    mvwaddch(wmap, 2, 4, ' ');
     wrefresh(wmap);
 }
 
@@ -462,6 +486,16 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                     
                     /*READ FROM FILE HERE*/
                     
+                    phase = 2;
+                    mvwaddstr(wcmd, 1, 1, lang.getLine(11));
+                    wclrtoeol(wcmd);
+                    mvwaddch(wcmd, 1, getmaxx(wcmd)-1, '|');
+                    mvwaddstr(wcmd, 1, strlen(lang.getLine(11)) + 1, "1");
+                    wrefresh(wcmd);
+                    drawBox(wlog);
+                    drawBox(wmap);
+                    drawMap();
+                    
                     break;
                 }
                 case 1: //exec <filename>
@@ -498,7 +532,14 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                     /*Create buyCargo(int m, int n) method to Ship class*/
                     break;
                 }
-                case 7: //move <N> <X>
+                case 7: //sell <N>
+                {
+                    int n;
+                    is >> n;
+                    /*Create sellCargo(int n) method to Ship class*/
+                    break;
+                }
+                case 8: //move <N> <X>
                 {
                     int n;
                     char x;
@@ -507,21 +548,21 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                     /*Create move(int x, char x) method to Ship Class*/
                     break;
                 }
-                case 8: //auto <N>
+                case 9: //auto <N>
                 {
                     int n;
                     is >> n;
                     /*Create setAuto() method to Ship class and autoShip(int n) to Player class*/
                     break;
                 }
-                case 9: //stop <N>
+                case 10: //stop <N>
                 {
                     int n;
                     is >> n;
                     /*Create stopShip(int n) method to Player Class and stop() to Ship class*/
                     break;
                 }
-                case 10: //pirate <x> <y> <T>
+                case 11: //pirate <x> <y> <T>
                 {
                     int x, y, t;
                     is >> x;
@@ -530,7 +571,7 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                     /*Create overloaded method addNewShip(int x, int y, int t) to Player Class*/
                     break;
                 }
-                case 11: //evpos <E> <x> <y>
+                case 12: //evpos <E> <x> <y>
                 {
                     int event, x, y;
                     is >> event;
@@ -539,7 +580,7 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                     /*Create function eventPosition(int type, int x, int y)*/
                     break;
                 }
-                case 12: //evship <E> <N>
+                case 13: //evship <E> <N>
                 {
                     int event, id;
                     is >> event;
@@ -547,19 +588,19 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                     /*Create function eventShip(int type, int id) that interacts with class Player*/
                     break;
                 }
-                case 13: //coins <N>
+                case 14: //coins <N>
                 {
                     int n;
                     is >> n;
                     //player.addMoney(n);
                     break;
                 }
-                case 14: //moveto <N> <x> <y> OR moveto <N> <P>
+                case 15: //moveto <N> <x> <y> OR moveto <N> <P>
                 {
                     /*No idea. Move N to (x,y) or move N to Harbor P*/
                     break;
                 }
-                case 15: //buycrew <N> <S>
+                case 16: //buycrew <N> <S>
                 {
                     int id, n;
                     is >> id;
@@ -567,21 +608,21 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                     /*buySoldier(int id, int n) to Player class*/
                     break;
                 }
-                case 16: //saveg <filename>
+                case 17: //saveg <filename>
                 {
                     string filename;
                     is >> filename;
                     /*Create save game function*/
                     break;
                 }
-                case 17: //loadg <filename>
+                case 18: //loadg <filename>
                 {
                     string filename;
                     is >> filename;
                     /*create load game function*/
                     break;
                 }
-                case 18:    //delg <filename>
+                case 19:    //delg <filename>
                 {
                     string filename;
                     is >> filename;
