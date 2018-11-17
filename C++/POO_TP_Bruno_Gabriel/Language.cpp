@@ -254,7 +254,7 @@ const char* Language::getLine(int i)
 
 void Language::tutPage()
 {
-    int i=5, l=5;
+    int i=6, l=5;
     
     //page 1
     {
@@ -323,7 +323,7 @@ void Language::tutPage()
 
 void Language::credPage()
 {
-    int i=10, l=2;
+    int i=6, l=2;
     
     mvwaddstr(stdscr, 2, 3, line[18].c_str());
     mvwaddstr(stdscr, ++++l, i, "Bruno Junqueira (Back-end Developer)");
