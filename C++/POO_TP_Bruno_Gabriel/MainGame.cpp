@@ -5,14 +5,16 @@
 using namespace std;
 
 WINDOW *wmap, *wcmd, *wlog;
-int phase = 1;
+int phase;
 
 void MainGameLoop(Language lang)
 {
-    int turn=0;
+    int turn=1;
     int r, extra;
     char opt;
     string name, cmd, aux;
+    
+    phase = 1;
     
     do
     {
@@ -91,10 +93,6 @@ void MainGameLoop(Language lang)
             if(cmd.empty())
             {
                 mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(13));
-            }
-            else if(cmd == lang.getCmd(2) || cmd == lang.getCmd(20))
-            {
-                break;
             }
             else
             {

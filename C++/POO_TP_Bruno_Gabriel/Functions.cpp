@@ -630,7 +630,7 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                     break;
                 }
                 default:
-                    mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "How did you get here?!");
+                    break;
             }
             return true;
         }
