@@ -323,13 +323,16 @@ void Language::tutPage()
 
 void Language::credPage()
 {
-    mvwaddstr(stdscr, 2, 3, line[18].c_str());
-    mvwaddstr(stdscr, 4, 10, "Bruno Junqueira (Back-end Developer)");
-    mvwaddstr(stdscr, 5, 10, "Gabriel Gomes (Front-end Developer)");
+    int i=10, l=2;
     
+    mvwaddstr(stdscr, 2, 3, line[18].c_str());
+    mvwaddstr(stdscr, ++++l, i, "Bruno Junqueira (Back-end Developer)");
+    mvwaddstr(stdscr, ++++l, i, "Gabriel Gomes (Front-end Developer)");
+    
+    l=10;
     mvwaddstr(stdscr, 10, 3, line[19].c_str());
-    mvwaddstr(stdscr, 12, 10, "Kostas Makridis");
-    mvwaddstr(stdscr, 13, 10, "Cassandra Dimas");
+    mvwaddstr(stdscr, ++++l, i, "Kostas Makridis");
+    mvwaddstr(stdscr, ++++l, i, "Cassandra Dimas");
     refresh();
     getch();
 }
