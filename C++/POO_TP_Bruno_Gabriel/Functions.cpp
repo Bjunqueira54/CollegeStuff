@@ -665,6 +665,8 @@ int getVertCenter(WINDOW *win, int n, int &r, int &extraflag)
     }
 }
 
+//Draws a default box around a chosen window
+//Works as a clear screen
 void drawBox(WINDOW *win)
 {
     wclear(win);
