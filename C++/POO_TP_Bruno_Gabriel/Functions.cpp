@@ -13,7 +13,6 @@ vector <string> userDrawCustomMap(const Language lang)
     mvwaddstr(wlog, 4, 1, lang.getLine(45));
     wrefresh(wlog);
     
-    //keypad(wmap, TRUE);
     keypad(stdscr, TRUE);
     curs_set(TRUE);
     wmove(wmap, y, x);
@@ -69,7 +68,7 @@ vector <string> userDrawCustomMap(const Language lang)
     while(opt != 10);
     
     curs_set(FALSE);
-    keypad(wmap, FALSE);
+    keypad(stdscr, FALSE);
     
     return Map;
 }
