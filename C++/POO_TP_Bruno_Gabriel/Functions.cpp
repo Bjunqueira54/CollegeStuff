@@ -315,8 +315,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
 //or else nothing will show up
 void drawMainMenu(const Language lang)
 {   
-    int y=0, esp, r, extra;
-    int i=10, i2=getmaxx(stdscr) - 18;
+    int y=0, esp, r, extra, i=10;
     esp = getVertCenter(stdscr, 4, r, extra);
     
     y+=(esp+r);
