@@ -58,8 +58,8 @@ Language::Language(int lang)
             line.push_back("Equipa de Controlo de Qualidade:");         //19
             line.push_back("Comando não existe");                       //20
             line.push_back("Ficheiro não existe");                      //21
-            line.push_back("Abrir o ficheiro de defeito?(Y/N)");        //22
-            line.push_back("Criar um ficheiro de defeito?(Y/N)");       //23
+            line.push_back("Abrir o ficheiro de defeito?(S/N)");        //22
+            line.push_back("Criar um ficheiro de defeito?(S/N)");       //23
             line.push_back("Valores por defeito/Seus valores?(D/C)");   //24
             line.push_back("Comando inválido");                         //25
             line.push_back("Ficheiro aberto: ");                        //26

@@ -5,61 +5,71 @@ using namespace std;
 
 vector <string> userDrawCustomMap(const Language lang)
 {
-    char opt;
+    int opt;
     vector<string>Map;
     int y=1, x=1;
+    drawBox(wmap);
     mvwaddstr(wlog, 3, 1, lang.getLine(43));
     mvwaddstr(wlog, 4, 1, lang.getLine(45));
     wrefresh(wlog);
     
+    //keypad(wmap, TRUE);
+    keypad(stdscr, TRUE);
+    curs_set(TRUE);
+    wmove(wmap, y, x);
+    wrefresh(wmap);
+    
     do
     {
-        curs_set(TRUE);
-        wmove(wmap, y, x);
         opt = getch();
         
         if(opt == '.' || opt == '+')
         {
             mvwaddch(wmap, y, x, opt);
-            wrefresh(wmap);
+            wmove(wmap, y, x);
         }
-        else if(opt >='A' && opt <='Z')
+        else if((opt >='A' && opt <='Z') || (opt >= 'a' && opt <= 'z'))
         {
             /*CHECK NEIGHBOURS POSITIONS FOR WATER + LAND*/
         }
-        else if(opt==KEY_RIGHT || opt==KEY_LEFT || opt==KEY_UP || opt==KEY_DOWN)
+        else if(opt>=KEY_DOWN && opt<=KEY_RIGHT)
         {
-            switch(opt) //THIS IS NOT WORKING. TESTING REQUIRED!
+            int begy=1, begx=1, maxy, maxx;
+            maxy = getmaxy(wmap)-2;
+            maxx = getmaxx(wmap)-2;
+            switch(opt)
             {
                 case KEY_RIGHT:
-                    if(x<(getmaxx(wmap)-2))
+                    if(x<maxx)
                         x++;
                     break;
                     
                 case KEY_DOWN:
-                    if(y<(getmaxy(wmap)-2))
+                    if(y<maxy)
                         y++;
                     break;
                     
                 case KEY_UP:
-                    if(y>1)
+                    if(y>begy)
                         y--;
                     break;
                     
                 case KEY_LEFT:
-                    if(x>1)
+                    if(x>begx)
                         x--;
                     break;
+                    
                 default:
                     break;
             }
-            
             wmove(wmap, y, x);
         }
+        wrefresh(wmap);
     }
     while(opt != 10);
     
     curs_set(FALSE);
+    keypad(wmap, FALSE);
     
     return Map;
 }
@@ -361,7 +371,7 @@ void drawMap()
     
     //Exemplo
     
-    init_pair(4, COLOR_WHITE, COLOR_LBROWN);
+    /*init_pair(4, COLOR_WHITE, COLOR_LBROWN);
     init_pair(5, COLOR_WHITE, COLOR_DBROWN);
     
     wattron(wmap, COLOR_PAIR(4));
@@ -373,7 +383,7 @@ void drawMap()
     mvwaddch(wmap, 1, 3, ' ');
     mvwaddch(wmap, 1, 4, ' ');
     mvwaddch(wmap, 2, 3, ' ');
-    mvwaddch(wmap, 2, 4, ' ');
+    mvwaddch(wmap, 2, 4, ' ');*/
     wrefresh(wmap);
 }
 
@@ -426,9 +436,9 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                         {
                             opt = getch();
                         }
-                        while(opt != 'Y' && opt != 'y' && opt != 'N' && opt != 'n');
+                        while(opt!='Y' && opt!='y' && opt!='S' && opt!='s' && opt!='N' && opt!='n');
                         
-                        if(opt == 'Y' || opt == 'y')
+                        if(opt == 'Y' || opt == 'y' || opt == 'S' || opt == 's')
                         {
                             filename = DEFAULT_CONFIG;
                             file.open(filename, ios::in);
@@ -449,9 +459,9 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                                 {
                                     opt = getch();
                                 }
-                                while(opt != 'Y' && opt != 'y' && opt != 'N' && opt != 'n');
+                                while(opt!='Y' && opt!='y' && opt!='S' && opt!='s' && opt!='N' && opt!='n');
                                 
-                                if(opt == 'Y' || opt == 'y')
+                                if(opt == 'Y' || opt == 'y' || opt == 'S' || opt == 's')
                                 {
                                     mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(24));
                                     wclrtoeol(wcmd);
@@ -474,7 +484,36 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                         }
                         else
                         {
-                            return false;
+                            mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(23));
+                            wclrtoeol(wcmd);
+                            mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                            wrefresh(wcmd);
+                            
+                            do
+                            {
+                                opt = getch();
+                            }
+                            while(opt!='Y' && opt!='y' && opt!='N' && opt!='n');
+                            
+                            if(opt == 'Y' || opt == 'y' || opt == 'S' || opt == 's')
+                            {
+                                mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(24));
+                                wclrtoeol(wcmd);
+                                mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                                wrefresh(wcmd);
+
+                                do
+                                {
+                                    opt = getch();
+                                }
+                                while(opt != 'D' && opt != 'd' && opt != 'C' && opt != 'c');
+
+                                createDefaultConfig(opt, filename, lang);
+
+                                file.open(filename, ios::in);
+                            }
+                            else
+                                return false;
                         }
                     }
 
