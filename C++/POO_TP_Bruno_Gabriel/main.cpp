@@ -19,7 +19,9 @@ int main(int argc, char** argv)
     /* ==== PEDE E VERIFICA A LINGUAGEM ==== */
     while(opt != '1' && opt != '2')
     {
-        mvwaddstr(stdscr, 1, 1, "1 - Português\n 2 - English");
+        clear();
+        mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, extra) - 1, getCenter("1 - Português"), "1 - Português");
+        mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, extra) + 1, getCenter("2 - English") - 1, "2 - English");
         refresh();
         opt = getch();
     }

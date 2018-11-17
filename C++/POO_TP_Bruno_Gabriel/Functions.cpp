@@ -316,16 +316,20 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
 void drawMainMenu(const Language lang)
 {   
     int y=0, esp, r, extra;
+    int i=10, i2=getmaxx(stdscr) - 18;
     esp = getVertCenter(stdscr, 4, r, extra);
     
     y+=(esp+r);
-    mvwaddstr(stdscr, y, 5, lang.getLine(2));
+    mvwaddstr(stdscr, ++y, i, lang.getLine(2));
     y+=esp;
-    mvwaddstr(stdscr, y, 5, lang.getLine(3));
+    mvwaddstr(stdscr, ++y, i, lang.getLine(3));
     y+=esp;
-    mvwaddstr(stdscr, y, 5, lang.getLine(4));
+    mvwaddstr(stdscr, ++y, i, lang.getLine(4));
     y+=esp;
-    mvwaddstr(stdscr, y, 5, lang.getLine(5));
+    mvwaddstr(stdscr, ++y, i, lang.getLine(5));
+    
+    //just for fun
+    mvwaddstr(stdscr, 1, getmaxx(stdscr) - 6, "BETA");
     refresh();
 }
 
