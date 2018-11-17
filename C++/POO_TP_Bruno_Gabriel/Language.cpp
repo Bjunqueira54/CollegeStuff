@@ -82,6 +82,7 @@ Language::Language(int lang)
             line.push_back("(Se escolher 'N' será criado um por si)");  //43
             line.push_back("Dimensões: 10 Linha / 20 Colunas");         //44
             line.push_back("Janela do mapa. Enter para terminar");      //45
+            line.push_back("Programadores:");                           //46
         }
         
         //tutorial
@@ -194,6 +195,7 @@ Language::Language(int lang)
             line.push_back("(If you choose 'N' we'll use the default)");
             line.push_back("Dimensions: 10 Lines / 20 Columns");
             line.push_back("Map window. Enter to terminate");
+            line.push_back("Developers");
         }
         
         //tutorial
