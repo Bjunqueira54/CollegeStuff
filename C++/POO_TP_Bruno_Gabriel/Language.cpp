@@ -9,6 +9,7 @@ Language::Language(int lang)
 {
     if(lang == 1)
     {
+        //commands
         {
             cmd.push_back("config");    //0
             cmd.push_back("exec");      //1
@@ -33,7 +34,8 @@ Language::Language(int lang)
             cmd.push_back("sair");      //20
         }
         
-        {
+        //lines
+        { 
             line.push_back("(Prima qualquer tecla para continuar)");    //0
             line.push_back("Bem vindo a Piratas e Mercadores!");        //1
             line.push_back("1 - Novo Jogo");                            //2
@@ -82,7 +84,8 @@ Language::Language(int lang)
             line.push_back("Janela do mapa. Enter para terminar");      //45
         }
         
-        {
+        //tutorial
+        { 
             tutorial.push_back("Tutorial"); //0
             tutorial.push_back("Comandos Basicos:"); //1
             tutorial.push_back("Comandos Avançados:"); //2
@@ -118,6 +121,7 @@ Language::Language(int lang)
     }
     else if(lang == 2)
     {
+        //commands
         {
             cmd.push_back("config");
             cmd.push_back("exec");
@@ -142,6 +146,7 @@ Language::Language(int lang)
             cmd.push_back("exit");
         }
         
+        //lines
         {
             line.push_back("(Press any key to continue)");
             line.push_back("Welcome to Merchants and Pirates!");
@@ -191,6 +196,7 @@ Language::Language(int lang)
             line.push_back("Map window. Enter to terminate");
         }
         
+        //tutorial
         {//spellcheck - X
             tutorial.push_back("Tutorial");
             tutorial.push_back("Basic Commands:");
@@ -250,7 +256,8 @@ void Language::tutPage()
 {
     int i=5, l=5;
     
-    { //page 1
+    //page 1
+    {
         mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
         mvwaddstr(stdscr, 4, 3, tutorial[1].c_str());
         mvwaddstr(stdscr, ++++l, i, tutorial[6].c_str());
@@ -263,9 +270,10 @@ void Language::tutPage()
         getch();
     }
 
-    drawBox(stdscr);
-    l=5;
-    { //page 2
+    //page 2
+    { 
+        l=5;
+        drawBox(stdscr);
         mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
         mvwaddstr(stdscr, 4, 3, tutorial[2].c_str());
         mvwaddstr(stdscr, ++++l, i, tutorial[4].c_str());
@@ -281,10 +289,11 @@ void Language::tutPage()
         refresh();
         getch();
     }
-
-    drawBox(stdscr);
-    l=5;
-    { //page 3
+    
+    //page 3
+    {
+        l=5;
+        drawBox(stdscr);
         mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
         mvwaddstr(stdscr, 4, 3, tutorial[2].c_str());     
         mvwaddstr(stdscr, ++++l, i, tutorial[14].c_str());
@@ -300,9 +309,10 @@ void Language::tutPage()
         getch();
     }
 
-    drawBox(stdscr);
-    l=5;
-    { //page 4 (incompleto)
+    //page 4 (incomplete)
+    {
+        l=5;
+        drawBox(stdscr);
         mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
         mvwaddstr(stdscr, 4, 3, tutorial[3].c_str());
         mvwaddstr(stdscr, getmaxy(stdscr)-2, getmaxx(stdscr)-10, tutorial[29].c_str());
