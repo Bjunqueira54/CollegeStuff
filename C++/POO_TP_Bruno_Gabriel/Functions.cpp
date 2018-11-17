@@ -680,10 +680,10 @@ void drawBox(WINDOW *win)
         mvwaddch(win, y-1, i, '=');
     }
     
-    mvwaddch(win, 0, 0, 'O');
-    mvwaddch(win, 0, x-1, 'O');
-    mvwaddch(win, y-1, 0, 'O');
-    mvwaddch(win, y-1, x-1, 'O');
+    mvwaddch(win, 0, 0, 'x');
+    mvwaddch(win, 0, x-1, 'x');
+    mvwaddch(win, y-1, 0, 'x');
+    mvwaddch(win, y-1, x-1, 'x');
 
     wrefresh(win);
 }
