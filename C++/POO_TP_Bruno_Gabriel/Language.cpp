@@ -109,9 +109,10 @@ Language::Language(int lang)
             tutorial.push_back("loadg <nome> - Recupera o jogo previamento guardado com o nome"); //23
             tutorial.push_back("delg <nome> - Apaga a copia do jogo guardado como nome"); //24
             tutorial.push_back("sair - Sai do jogo e volta para o menu principal"); //25
-            tutorial.push_back("Pag. 1/3"); //26
-            tutorial.push_back("Pag. 2/3"); //27
-            tutorial.push_back("Pag. 3/3"); //28
+            tutorial.push_back("Pag. 1/4"); //26
+            tutorial.push_back("Pag. 2/4"); //27
+            tutorial.push_back("Pag. 3/4"); //28
+            tutorial.push_back("Pag. 4/4"); //29
         //falta terceira pagina
         }
     }
@@ -217,9 +218,10 @@ Language::Language(int lang)
             tutorial.push_back("loadg <name> - Loads game previously saves with the name");
             tutorial.push_back("delg <name> - Deletes game with the name");
             tutorial.push_back("exit - quits game and returns to the main menu");
-            tutorial.push_back("Page 1/3");
-            tutorial.push_back("Page 2/3");
-            tutorial.push_back("Page 3/3");
+            tutorial.push_back("Page 1/4");
+            tutorial.push_back("Page 2/4");
+            tutorial.push_back("Page 3/4");
+            tutorial.push_back("Page 4/4");
         }
     }
 }
@@ -246,52 +248,64 @@ const char* Language::getLine(int i)
 
 void Language::tutPage()
 {
-    int i=5;
+    int i=5, l=5;
     
     { //page 1
         mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
         mvwaddstr(stdscr, 4, 3, tutorial[1].c_str());
-        mvwaddstr(stdscr, 6, i, tutorial[6].c_str());
-        mvwaddstr(stdscr, 7, i, tutorial[22].c_str());
-        mvwaddstr(stdscr, 8, i, tutorial[23].c_str());
-        mvwaddstr(stdscr, 9, i, tutorial[24].c_str());
-        mvwaddstr(stdscr, 10, i, tutorial[25].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[6].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[22].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[23].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[24].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[25].c_str());
         mvwaddstr(stdscr, getmaxy(stdscr)-2, getmaxx(stdscr)-10, tutorial[26].c_str());
         refresh();
         getch();
     }
-    
+
     drawBox(stdscr);
+    l=5;
     { //page 2
         mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
         mvwaddstr(stdscr, 4, 3, tutorial[2].c_str());
-        mvwaddstr(stdscr, 6, i, tutorial[4].c_str());
-        mvwaddstr(stdscr, 7, i, tutorial[5].c_str());
-        mvwaddstr(stdscr, 8, i, tutorial[7].c_str());
-        mvwaddstr(stdscr, 9, i, tutorial[8].c_str());
-        mvwaddstr(stdscr, 10, i, tutorial[9].c_str());
-        mvwaddstr(stdscr, 11, i, tutorial[10].c_str());
-        mvwaddstr(stdscr, 12, i, tutorial[11].c_str());
-        mvwaddstr(stdscr, 13, i, tutorial[12].c_str());
-        mvwaddstr(stdscr, 14, i, tutorial[13].c_str());
-        mvwaddstr(stdscr, 15, i, tutorial[14].c_str());
-        mvwaddstr(stdscr, 16, i, tutorial[15].c_str());
-        mvwaddstr(stdscr, 17, i, tutorial[16].c_str());
-        mvwaddstr(stdscr, 18, i, tutorial[17].c_str());
-        mvwaddstr(stdscr, 19, i, tutorial[18].c_str());
-        mvwaddstr(stdscr, 20, i, tutorial[19].c_str());
-        mvwaddstr(stdscr, 21, i, tutorial[20].c_str());
-        mvwaddstr(stdscr, 22, i, tutorial[21].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[4].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[5].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[7].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[8].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[9].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[10].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[11].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[12].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[13].c_str());  
         mvwaddstr(stdscr, getmaxy(stdscr)-2, getmaxx(stdscr)-10, tutorial[27].c_str());
         refresh();
         getch();
     }
 
     drawBox(stdscr);
-    { //page 3 (incompleto)
+    l=5;
+    { //page 3
+        mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
+        mvwaddstr(stdscr, 4, 3, tutorial[2].c_str());     
+        mvwaddstr(stdscr, ++++l, i, tutorial[14].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[15].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[16].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[17].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[18].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[19].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[20].c_str());
+        mvwaddstr(stdscr, ++++l, i, tutorial[21].c_str());
+        mvwaddstr(stdscr, getmaxy(stdscr)-2, getmaxx(stdscr)-10, tutorial[28].c_str());
+        refresh();
+        getch();
+    }
+
+    drawBox(stdscr);
+    l=5;
+    { //page 4 (incompleto)
         mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
         mvwaddstr(stdscr, 4, 3, tutorial[3].c_str());
-        mvwaddstr(stdscr, getmaxy(stdscr)-2, getmaxx(stdscr)-10, tutorial[28].c_str());
+        mvwaddstr(stdscr, getmaxy(stdscr)-2, getmaxx(stdscr)-10, tutorial[29].c_str());
         refresh();
         getch();
     }
