@@ -673,7 +673,23 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                 {
                     string filename;
                     is >> filename;
-                    /*open file with filename*/
+                    ifstream file;
+                    file.open(filename, ios::in);
+                    if(!file.is_open())
+                    {
+                        mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, lang.getLine(21));
+                        wrefresh(wcmd);
+                        getch();
+                        return false;
+                    }
+                    string input;
+                    
+                    do
+                    {
+                        getline(file, input);
+                        parseCmd(input, phase, lang);
+                    }
+                    while(!file.eof());
                     break;
                 }
                 case 3: //buyship <T>
