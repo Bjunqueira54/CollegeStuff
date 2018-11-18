@@ -475,7 +475,7 @@ void drawMap()
 //to be separated into single words for command processing.
 //Also recieves a Language class object to check the parsed
 //commands against.
-bool parseCmd(string cmd, int &phase, const Language lang)
+bool parseCmd(string cmd, int &phase, const Language lang/*, Settings settings, Map map*/)
 {
     string parse;
     istringstream is;
@@ -608,6 +608,8 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                     mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                     
                     /*READ FROM FILE HERE*/
+                    
+                    //Settings set(file);
                     
                     phase = 2;
                     mvwaddstr(wcmd, 1, 1, lang.getLine(11));

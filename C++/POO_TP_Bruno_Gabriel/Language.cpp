@@ -59,13 +59,13 @@ Language::Language(int lang)
             line.push_back("Comando não existe");                       //20
             line.push_back("Ficheiro não existe");                      //21
             line.push_back("Abrir o ficheiro de defeito?(S/N)");        //22
-            line.push_back("Criar um ficheiro de defeito?(S/N)");       //23
+            line.push_back("Criar um ficheiro de config?(S/N)");        //23
             line.push_back("Valores por defeito/Seus valores?(D/C)");   //24
             line.push_back("Comando inválido");                         //25
             line.push_back("Ficheiro aberto: ");                        //26
             line.push_back("Fase ");                                    //27
             line.push_back("Nome do ficheiro: ");                       //28
-            line.push_back("Desenha desenhar o mapa?(Y/N)");            //29
+            line.push_back("Deseja desenhar o mapa?(Y/N)");             //29
             line.push_back("Moedas iniciais: ");                        //30
             line.push_back("Probabilidade de Piratas por turno: ");     //31
             line.push_back("Preço por Navio: ");                        //32
@@ -171,7 +171,7 @@ Language::Language(int lang)
             line.push_back("Command doesn't exist");
             line.push_back("File doesn't exist");
             line.push_back("Open the default file?(Y/N)");
-            line.push_back("Create a default file?(Y/N)");
+            line.push_back("Create a config file?(Y/N)");
             line.push_back("Default Values/Custom Values? (D/C)");
             line.push_back("Invalid command");
             line.push_back("Loaded file: ");

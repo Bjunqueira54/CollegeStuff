@@ -6,7 +6,6 @@
 
 class Settings
 {
-    const vector <string> *Map;
     const int *startmoney;
     const int *pirateprob;
     const int *shipprice;
@@ -23,21 +22,35 @@ class Settings
     
 public:
     
-    Settings(ifstream &file);
+    Settings();
+    Settings(ifstream& file);
+    Settings& operator=(const Settings &orig);
     
-    vector<string> getMap() const;
+    //Returns the starting money
     int money() const;
+    //Returns the pirate Spawn Chance
     int pirate() const;
+    //Returns the price per Ship
     int ship() const;
+    //Returns the price per crew member
     int crew() const;
+    //Returns the fish sell price
     int fish() const;
+    //Returns the cargo buy price
     int cargoBuyPrice() const;
+    //Returns the cargo sell price
     int cargoSellPrice() const;
+    //Returns the number of soldiers per harbor
     int harborCrew() const;
+    //Returns the chance for an event
     int eventProb() const;
+    //Returns the chance for a storm
     int stormProb() const;
+    //Returns the chance for sirens
     int sirensProb() const;
+    //Returns the chance for calm
     int calmProb() const;
+    //Returns the chance for a riot
     int riotProb() const;
     
     ~Settings();
