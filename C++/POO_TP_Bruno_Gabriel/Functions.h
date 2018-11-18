@@ -4,7 +4,7 @@
 #include "Language.h"
 
 #define GAME_VERSION_MAJOR "0"
-#define GAME_VERSION_MINOR "01"
+#define GAME_VERSION_MINOR "02"
 
 #define MAP_MAXY 40     //Merchants and Pirates Max Height
 #define MAP_MAXX 120    //Merchants and Pirates Max Width

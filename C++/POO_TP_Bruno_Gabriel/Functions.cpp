@@ -5,18 +5,26 @@ using namespace std;
 
 vector <string> userDrawCustomMap(const Language lang)
 {
+    WINDOW *cmap;
+    cmap = subwin(stdscr, 12, 22, 0, 0);
+    wclear(wmap);
+    wrefresh(wmap);
+    delwin(wmap);
+    drawBox(cmap);
+    
     int opt;
-    vector<string>Map;
     int y=1, x=1;
-    drawBox(wmap);
+    int w=0, l=0;
+    vector<string>Map;
+    
     mvwaddstr(wlog, 3, 1, lang.getLine(43));
     mvwaddstr(wlog, 4, 1, lang.getLine(45));
     wrefresh(wlog);
     
     keypad(stdscr, TRUE);
     curs_set(TRUE);
-    wmove(wmap, y, x);
-    wrefresh(wmap);
+    wmove(cmap, y, x);
+    wrefresh(cmap);
     
     do
     {
@@ -24,18 +32,43 @@ vector <string> userDrawCustomMap(const Language lang)
         
         if(opt == '.' || opt == '+')
         {
-            mvwaddch(wmap, y, x, opt);
-            wmove(wmap, y, x);
+            mvwaddch(cmap, y, x, opt);
+            wmove(cmap, y, x);
         }
         else if((opt >='A' && opt <='Z') || (opt >= 'a' && opt <= 'z'))
         {
-            /*CHECK NEIGHBOURS POSITIONS FOR WATER + LAND*/
+            int cury, curx;
+            vector<char> pos;
+            
+            getyx(cmap, cury, curx);
+            
+            pos.push_back(mvwinch(cmap, cury-1, curx-1));
+            pos.push_back(mvwinch(cmap, cury-1, curx));
+            pos.push_back(mvwinch(cmap, cury-1, curx+1));
+            pos.push_back(mvwinch(cmap, cury, curx-1));
+            pos.push_back(mvwinch(cmap, cury, curx+1));
+            pos.push_back(mvwinch(cmap, cury+1, curx-1));
+            pos.push_back(mvwinch(cmap, cury+1, curx));
+            pos.push_back(mvwinch(cmap, cury+1, curx+1));
+            
+            for(int i=0; i<pos.size(); i++)
+            {
+                if(pos[i] == '.')
+                    w=1;
+                else if(pos[i] == '+')
+                    l=1;
+            }
+            
+            if(w==1 && l==1)
+                mvwaddch(cmap, cury, curx, opt);
+            wmove(cmap, cury, curx);
+            w=l=0;
         }
         else if(opt>=KEY_DOWN && opt<=KEY_RIGHT)
         {
             int begy=1, begx=1, maxy, maxx;
-            maxy = getmaxy(wmap)-2;
-            maxx = getmaxx(wmap)-2;
+            maxy = getmaxy(cmap)-2;
+            maxx = getmaxx(cmap)-2;
             switch(opt)
             {
                 case KEY_RIGHT:
@@ -61,14 +94,24 @@ vector <string> userDrawCustomMap(const Language lang)
                 default:
                     break;
             }
-            wmove(wmap, y, x);
+            wmove(cmap, y, x);
         }
-        wrefresh(wmap);
+        wrefresh(cmap);
     }
     while(opt != 10);
     
+    /*INPUT READING SCREEN->MAP ALGORITHM HERE*/
+    /*man mvwinchstr(WINDOW *win, int y, int x, chtype *chstr);*/
+    /*USE THIS FUNCTION ^*/
+    
     curs_set(FALSE);
     keypad(stdscr, FALSE);
+    wclear(cmap);
+    wrefresh(cmap);
+    delwin(cmap);
+    
+    wmap = subwin(stdscr, 20, 40, 0, 0);
+    drawBox(wmap);
     
     return Map;
 }
@@ -180,8 +223,6 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         {
             vector<string> Map;
             Map = userDrawCustomMap(lang);
-            /*man mvwinchstr(WINDOW *win, int y, int x, chtype *chstr);*/
-            /*USE THIS FUNCTION ^*/
         }
         else
         {
