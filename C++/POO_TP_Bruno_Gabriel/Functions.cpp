@@ -15,6 +15,7 @@ vector <string> userDrawCustomMap(const Language lang)
     int opt;
     int y=1, x=1;
     int w=0, l=0;
+    int spaces=0;
     vector<string>Map;
     
     mvwaddstr(wlog, 3, 1, lang.getLine(43));
@@ -100,9 +101,31 @@ vector <string> userDrawCustomMap(const Language lang)
     }
     while(opt != 10);
     
-    /*INPUT READING SCREEN->MAP ALGORITHM HERE*/
-    /*man mvwinchstr(WINDOW *win, int y, int x, chtype *chstr);*/
-    /*USE THIS FUNCTION ^*/
+    for(int i=1; i<getmaxy(cmap)-1; i++)
+    {
+        char line[20];
+        mvwinnstr(cmap, i, 1, line, 20);
+        
+        for(int j=0; j<20; j++)
+        {
+            if(line[j] == ' ')
+            {
+                spaces = 1;
+                break;
+            }
+        }
+        
+        Map.push_back(line);
+    }
+    
+    //Detect empty spaces here
+    if(spaces == 1)
+    {
+        for(int i=0; i<Map.size(); i++)
+            for(int j=0; j<Map[i].size(); j++)
+                if(Map[i][j] == ' ')
+                    Map[i][j] = '.';
+    }
     
     curs_set(FALSE);
     keypad(stdscr, FALSE);
@@ -204,7 +227,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             filename = getInput(wlog, 15);
         }
         while(filename.empty());
-        
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file.open(filename, ios::out | ios::trunc);
 
         mvwaddstr(wlog, 2, 1, lang.getLine(29));
@@ -223,6 +246,9 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         {
             vector<string> Map;
             Map = userDrawCustomMap(lang);
+            
+            for(int i=0; i<=Map.size(); i++)
+                file << Map[i] << endl;
         }
         else
         {
@@ -239,6 +265,9 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             file << "" << endl;
         }
 
+        wmove(wlog, 4, 1);
+        wclrtoeol(wlog);
+        mvwaddch(wlog, 4, getmaxx(wlog)-1, '|');
         mvwaddstr(wlog, 4, 1, lang.getLine(30));
         wrefresh(wlog);
         do
@@ -246,6 +275,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 10);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "money " << input << endl;
         
         mvwaddstr(wlog, 5, 1, lang.getLine(31));
@@ -255,6 +285,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 3);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "pirateprob  " << input << endl;
         
         mvwaddstr(wlog, 6, 1, lang.getLine(32));
@@ -264,6 +295,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 5);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "shipprice " << input << endl;
         
         mvwaddstr(wlog, 7, 1, lang.getLine(33));
@@ -273,6 +305,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 5);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "crewprice " << input << endl;
         
         mvwaddstr(wlog, 8, 1, lang.getLine(34));
@@ -282,6 +315,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 10);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "fishprice " << input << endl;
         
         mvwaddstr(wlog, 9, 1, lang.getLine(35));
@@ -291,6 +325,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 10);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "cargobuyprice " << input << endl;
         
         mvwaddstr(wlog, 10, 1, lang.getLine(36));
@@ -300,6 +335,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 10);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "cargosellprice " << endl;
         
         mvwaddstr(wlog, 11, 1, lang.getLine(37));
@@ -309,6 +345,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 10);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "harborcrew " << input << endl;
         
         mvwaddstr(wlog, 12, 1, lang.getLine(38));
@@ -318,6 +355,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 10);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "eventprob " << input << endl;
         
         mvwaddstr(wlog, 13, 1, lang.getLine(39));
@@ -327,6 +365,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 10);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "stormprob " << input << endl;
         
         mvwaddstr(wlog, 14, 1, lang.getLine(40));
@@ -336,6 +375,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 10);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "sirenprob " << input << endl;
         
         mvwaddstr(wlog, 15, 1, lang.getLine(41));
@@ -345,6 +385,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 10);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "calmprob " << input << endl;
         
         mvwaddstr(wlog, 16, 1, lang.getLine(42));
@@ -354,6 +395,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
             input = getInput(wlog, 10);
         }
         while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
         file << "riotprob " << input << endl;
     }
     
@@ -535,7 +577,7 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                             {
                                 opt = getch();
                             }
-                            while(opt!='Y' && opt!='y' && opt!='N' && opt!='n');
+                            while(opt!='Y' && opt!='y' && opt!='S' && opt!='s' && opt!='N' && opt!='n');
                             
                             if(opt == 'Y' || opt == 'y' || opt == 'S' || opt == 's')
                             {
