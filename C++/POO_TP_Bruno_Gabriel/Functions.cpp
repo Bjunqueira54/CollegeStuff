@@ -3,6 +3,9 @@
 
 using namespace std;
 
+Settings settings;
+Map map;
+
 vector <string> userDrawCustomMap(const Language lang)
 {
     WINDOW *cmap;
@@ -183,6 +186,47 @@ string getInput(WINDOW *win = stdscr, int str_size=20)
     return input;
 }
 
+string getNumInput(WINDOW *win=stdscr, int str_size=5)
+{
+    string input;
+    char opt;
+    int y, x;
+    
+    getyx(win, y, x);
+    x-=1;
+    
+    do
+    {
+        opt = getch();
+        
+        if(opt >= '0' && opt <= '9')
+        {
+            if(input.size() <= str_size)
+            {
+                input.push_back(opt);
+                mvwaddstr(win, y, x, input.c_str());
+                mvwaddch(win, y, x + strlen(input.c_str()), '_');
+                wrefresh(win);
+            }
+        }
+        else if(opt == 8 || opt == 127)
+        {
+            if(!(input.empty()))
+            {
+                input.pop_back();
+                mvwaddstr(win, y, x, input.c_str());
+                wclrtoeol(win);
+                mvwaddch(win, y, getmaxx(win)-1, '|');
+                mvwaddch(win, y, x + strlen(input.c_str()), '_');
+                wrefresh(win);
+            }
+        }
+    }
+    while(opt != 10);
+    
+    return input;
+}
+
 void createDefaultConfig(char opt, string &filename, const Language lang)
 {
     ofstream file;
@@ -272,7 +316,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 10);
+            input = getNumInput(wlog, 10);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -282,7 +326,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 3);
+            input = getNumInput(wlog, 3);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -292,7 +336,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 5);
+            input = getNumInput(wlog, 5);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -302,7 +346,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 5);
+            input = getNumInput(wlog, 5);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -312,7 +356,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 10);
+            input = getNumInput(wlog, 10);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -322,7 +366,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 10);
+            input = getNumInput(wlog, 10);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -332,7 +376,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 10);
+            input = getNumInput(wlog, 10);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -342,7 +386,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 10);
+            input = getNumInput(wlog, 10);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -352,7 +396,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 10);
+            input = getNumInput(wlog, 10);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -362,7 +406,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 10);
+            input = getNumInput(wlog, 10);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -372,7 +416,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 10);
+            input = getNumInput(wlog, 10);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -382,7 +426,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 10);
+            input = getNumInput(wlog, 10);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -392,7 +436,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         wrefresh(wlog);
         do
         {
-            input = getInput(wlog, 10);
+            input = getNumInput(wlog, 10);
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
@@ -475,7 +519,7 @@ void drawMap()
 //to be separated into single words for command processing.
 //Also recieves a Language class object to check the parsed
 //commands against.
-bool parseCmd(string cmd, int &phase, const Language lang/*, Settings settings, Map map*/)
+bool parseCmd(string cmd, int &phase, const Language lang)
 {
     string parse;
     istringstream is;
@@ -607,9 +651,11 @@ bool parseCmd(string cmd, int &phase, const Language lang/*, Settings settings, 
                     wclrtoeol(wcmd);
                     mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                     
-                    /*READ FROM FILE HERE*/
+                    Settings set(file);
                     
-                    //Settings set(file);
+                    settings = set;
+                    
+                    map = Map(file);
                     
                     phase = 2;
                     mvwaddstr(wcmd, 1, 1, lang.getLine(11));

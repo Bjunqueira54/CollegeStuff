@@ -22,7 +22,6 @@ Settings::Settings(ifstream& file)
     file.seekg(ios::beg);
     
     string input, parse;
-    istringstream is;
     
     do
     {
@@ -33,6 +32,7 @@ Settings::Settings(ifstream& file)
     while(!file.eof())
     {
         getline(file, input);
+        istringstream is;
         is.str(input);
         
         is >> parse;
@@ -157,7 +157,7 @@ Settings::Settings(ifstream& file)
     }
 }
 
-Settings& Settings::operator =(const Settings& orig)
+Settings& Settings::operator =(const Settings &orig)
 {
     if(this == &orig)
         return *this;

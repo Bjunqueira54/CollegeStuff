@@ -2,9 +2,11 @@
 #define FUNCTIONS_H
 
 #include "Language.h"
+#include "Settings.h"
+#include "Map.h"
 
 #define GAME_VERSION_MAJOR "0"
-#define GAME_VERSION_MINOR "03"
+#define GAME_VERSION_MINOR "06"
 
 #define MAP_MAXY 40     //Merchants and Pirates Max Height
 #define MAP_MAXX 120    //Merchants and Pirates Max Width
@@ -15,8 +17,9 @@
 #define DEFAULT_CONFIG "config.ini"
 
 extern WINDOW *wmap, *wcmd, *wlog;
+extern Settings settings;
+extern Map map;
 extern int phase;
-
 
 ///Prototipos de funcoes
 
@@ -57,6 +60,7 @@ void MainGameLoop(Language lang);
 bool parseCmd(string cmd, int &phase, const Language lang);
 void createDefaultConfig(char opt);
 string getInput(WINDOW *win, int str_size);
+string getNumInput(WINDOW *win, int str_size);
 
 
 #ifdef __linux__

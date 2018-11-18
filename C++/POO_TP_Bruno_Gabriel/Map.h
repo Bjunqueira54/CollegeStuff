@@ -2,11 +2,8 @@
 #define MAP_H
 
 #include "headers.h"
-#include "Functions.h"
 #include "Ship.h"
-#include "Harbor.h"
-#include "Player.h"
-#include "Settings.h"
+#include "Language.h"
 
 class Map
 {
@@ -15,7 +12,9 @@ class Map
     
 public:
     Map();
-
+    Map(ifstream &file);
+    Map& operator=(const Map &orig);
+    vector<string> getMap() const;
 };
 
 #endif
