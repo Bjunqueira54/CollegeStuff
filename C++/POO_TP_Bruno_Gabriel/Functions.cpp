@@ -336,8 +336,10 @@ void drawMainMenu(const Language lang)
     y+=esp;
     mvwaddstr(stdscr, ++y, i, lang.getLine(5));
     
-    //just for fun
-    mvwaddstr(stdscr, 1, getmaxx(stdscr) - 6, "BETA");
+    //just for fun  //Don't forget to increment 1 centesimal case on the version define every time you push to git
+    ostringstream con;
+    con << "Beta: " << GAME_VERSION_MAJOR << "." << GAME_VERSION_MINOR;
+    mvwaddstr(stdscr, getmaxy(stdscr) - 2, getmaxx(stdscr) - strlen(con.str().c_str()) - 1, con.str().c_str());
     refresh();
 }
 
