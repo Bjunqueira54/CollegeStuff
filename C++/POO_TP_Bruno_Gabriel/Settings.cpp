@@ -188,6 +188,8 @@ Settings& Settings::operator =(const Settings &orig)
     calm = new int(orig.calmProb());
     delete riot;
     riot = new int(orig.riotProb());
+    
+    return *this;
 }
 
 int Settings::money() const

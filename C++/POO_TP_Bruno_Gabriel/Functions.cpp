@@ -370,7 +370,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
-        file << "cargobuyprice " << input << endl;
+        file << "cargobuy " << input << endl;
         
         mvwaddstr(wlog, 10, 1, lang.getLine(36));
         wrefresh(wlog);
@@ -380,7 +380,7 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
         }
         while(input.empty());
         mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
-        file << "cargosellprice " << endl;
+        file << "cargosell " << endl;
         
         mvwaddstr(wlog, 11, 1, lang.getLine(37));
         wrefresh(wlog);
@@ -654,7 +654,6 @@ bool parseCmd(string cmd, int &phase, const Language lang)
                     Settings set(file);
                     
                     settings = set;
-                    
                     map = Map(file);
                     
                     phase = 2;
