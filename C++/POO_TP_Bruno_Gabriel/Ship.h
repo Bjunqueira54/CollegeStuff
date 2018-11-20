@@ -2,6 +2,7 @@
 #define SHIP_H
 
 #include "headers.h"
+#include "Player.h"
 
 #define PRICE_SAILBOAT 100
 #define PRICE_GALEON 100
@@ -16,10 +17,15 @@ class Ship
     const int *maxwater, *maxcrew, *maxtons, *move /*, *price */; //implement price later;
     int water, crew, load, fish;
     
+    int x, y;
+    
 public:
 
     Ship(int i, char t);
     int getId() const;
+    void setCoord(int yy, int xx);
+    string getCoord() const;
+    string getInfo() const;
     ~Ship();
 };
 

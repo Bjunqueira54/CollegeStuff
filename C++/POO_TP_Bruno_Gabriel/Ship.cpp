@@ -56,6 +56,34 @@ int Ship::getId() const
     return id;
 }
 
+void Ship::setCoord(int yy, int xx)
+{
+    y=yy;
+    x=xx;
+}
+
+string Ship::getCoord() const
+{
+    ostringstream os;
+    os << x << " " << y;
+    return os.str();
+}
+
+string Ship::getInfo() const
+{
+    ostringstream os;
+    os << "Max Water: " << *maxwater << endl;
+    os << "Current Water: " << water << endl;
+    os << "Max Crew: " << *maxcrew << endl;
+    os << "Crew: " << crew << endl;
+    os << "Max Load: " << *maxtons << endl;
+    os << "Load:" << endl;
+    os << "\tCargo: " << load << endl;
+    os << "\tFish: " << fish;
+    
+    return os.str();
+}
+
 Ship::~Ship()
 {
     delete move;

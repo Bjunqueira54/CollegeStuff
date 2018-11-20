@@ -1,6 +1,8 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
+#include "headers.h"
+
 #include "Language.h"
 #include "Settings.h"
 #include "Map.h"

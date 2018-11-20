@@ -3,6 +3,7 @@
 
 #include "headers.h"
 #include "Ship.h"
+#include "Harbor.h"
 
 using namespace std;
 
@@ -13,6 +14,7 @@ class Player
     int fPorts; //Number of friendly Harbors
     int nShips; //Number of currently owned ships
     vector <Ship> fleet; //Fleet's vector
+    const Harbor *MainHarbor;
     
 public:
     
@@ -34,6 +36,8 @@ public:
     //the back to the Ship vector.
     //Return "true" if the operator succeded, else "false" with no defined error
     bool NewShip(char t);
+    
+    void setMainHarbor(const Harbor& main);
 
 };
 
