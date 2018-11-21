@@ -476,6 +476,8 @@ void drawMap()
     wclear(wmap);
     drawBox(wmap);
     
+    /* NAO IMPRIME NADA PARA O WMAP */
+    
     vector <string> smap; //small map
     vector <string> nmap;
     string v;
