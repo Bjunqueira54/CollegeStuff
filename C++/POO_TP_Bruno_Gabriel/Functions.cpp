@@ -476,6 +476,30 @@ void drawMap()
     wclear(wmap);
     drawBox(wmap);
     
+    vector <string> smap; //small map
+    vector <string> nmap;
+    string v;
+    smap = map.getMap();
+
+    nmap.clear();
+    for(int i=0; i<smap.size(); i++)
+    {
+        v.clear();
+        for(int j=0; j<smap[i].size(); j++)
+        {
+            v += smap[i][j];
+            v += smap[i][j];
+        }
+        nmap.push_back(v);
+        nmap.push_back(v);
+    }
+
+    for(int i=0; i<smap.size(); i++)
+    {
+        mvwaddstr(wmap, i+1, 1, nmap[i].c_str());
+    }
+    
+    
     /*init_color usa a seguinte syntax
     
      init_pair(nº desejado para identificar a cor (Pode usar-se um #define NOME Nº),
