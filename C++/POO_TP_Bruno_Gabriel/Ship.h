@@ -2,7 +2,6 @@
 #define SHIP_H
 
 #include "headers.h"
-#include "Player.h"
 
 #define PRICE_SAILBOAT 100
 #define PRICE_GALEON 100
