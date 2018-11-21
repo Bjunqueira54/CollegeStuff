@@ -52,8 +52,8 @@ void MainGameLoop()
     refresh();
     getch();
     
-    wmap = subwin(stdscr, 20, 40, 0, 0);
-    wcmd = subwin(stdscr, 20, 40, getmaxy(wmap), 0);
+    wmap = subwin(stdscr, 22, 42, 0, 0);
+    wcmd = subwin(stdscr, 18, 42, getmaxy(wmap), 0);
     wlog = subwin(stdscr, MAP_MAXY, MAP_MAXX-getmaxx(wmap), 0, getmaxx(wmap));
     clear();
 
