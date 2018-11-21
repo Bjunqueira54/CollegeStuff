@@ -710,8 +710,21 @@ int parseCmd(string cmd)
                 case 3: //buyship <T>
                 {
                     char type;
+                    bool status;
                     is >> type;
-                    if(player.NewShip(type) == true)
+
+                    if(type=='V' || type=='v')
+                        status = player.NewShip('V');
+                    else if(type=='G' || type=='g')
+                        status = player.NewShip('G');
+                    else if(type=='E' || type=='e')
+                        status = player.NewShip('E');
+                    else if(type=='F' || type == 'f')
+                        status = player.NewShip('F');
+                    else if(type=='S' || type=='s')
+                        status == player.NewShip('S');
+ 
+                    if(status == true)
                     {
                         mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Player Bought Ship");
                         wclrtoeol(wcmd);
