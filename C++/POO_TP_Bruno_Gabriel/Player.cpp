@@ -41,12 +41,18 @@ Player::Player(string n)
 bool Player::NewShip(char t)
 {
     int id;
+    int yy, xx;
+    istringstream is;
     
     if(fleet.size() < 100)
     {
         if(fleet.empty())
         {
             fleet.push_back(Ship(1, t));
+            is.str(fleet.begin()->getCoord());
+            is >> xx;
+            is >> yy;
+            fleet.begin()->setCoord(yy, xx);
             return true;
         }
         else
@@ -56,12 +62,22 @@ bool Player::NewShip(char t)
                 if((id+1) != fleet[id].getId())
                 {
                     Ship a(id+1, t);
-                    fleet.insert(fleet.begin()+id, a);
+                    is.str(a.getCoord());
+                    is >> xx;
+                    is >> yy;
+                    a.setCoord(yy, xx);
+                    auto it = fleet.begin();
+                    it += id;
+                    fleet.insert(it, a);
                     return true;
                 }
             }
-            Ship b(id+1, t);
-            fleet.push_back(b);
+            Ship a(id+1, t);
+            is.str(a.getCoord());
+            is >> xx;
+            is >> yy;
+            a.setCoord(yy, xx);
+            fleet.push_back(a);
             return true;
         }
     }

@@ -735,20 +735,22 @@ int parseCmd(string cmd)
                 }
                 case 3: //buyship <T>
                 {
-                    char type;
+                    string type;
                     bool status;
                     is >> type;
 
-                    if(type=='V' || type=='v')
+                    if(type=="V" || type=="v")
                         status = player.NewShip('V');
-                    else if(type=='G' || type=='g')
+                    else if(type=="G" || type=="g")
                         status = player.NewShip('G');
-                    else if(type=='E' || type=='e')
+                    else if(type=="E" || type=="e")
                         status = player.NewShip('E');
-                    else if(type=='F' || type == 'f')
+                    else if(type=="F" || type == "f")
                         status = player.NewShip('F');
-                    else if(type=='S' || type=='s')
-                        status == player.NewShip('S');
+                    else if(type=="S" || type=="s")
+                        status = player.NewShip('S');
+                    else
+                        status = false;
  
                     if(status == true)
                     {

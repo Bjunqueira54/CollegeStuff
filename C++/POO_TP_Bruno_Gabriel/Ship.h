@@ -7,7 +7,7 @@
 #define PRICE_GALEON 100
 #define PRICE_SCHOONER 100
 #define PRICE_FRIGATE 100
-#define PRICE_SPECIAL 9001
+#define PRICE_SPECIAL 9001  //IT'S OVER NINE THOUSAAAAAAAAAAAAAAAND!!!!
 
 class Ship
 {
@@ -21,7 +21,9 @@ class Ship
 public:
     
     Ship(int i, char t);
+    Ship(const Ship& orig);
     int getId() const;
+    char getType() const;
     void setCoord(int yy, int xx);
     string getCoord() const;
     string getInfo() const;
