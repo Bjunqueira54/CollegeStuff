@@ -13,7 +13,7 @@ class Ship
 {
     const int id; //Ship's id number
     const char type; //Ship's type
-    const int *maxwater, *maxcrew, *maxtons, *move /*, *price */; //implement price later;
+    const int *maxwater, *maxcrew, *maxtons, *move; //implement price later if needed (defines are already up there);
     int water, crew, load, fish;
     
     int x, y;

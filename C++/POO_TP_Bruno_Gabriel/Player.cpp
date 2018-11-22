@@ -8,9 +8,21 @@ Player::Player(string n)
 {
     name = new string(n);
     money = 1000;
+    fPorts = 0;
+    nShips = fleet.size();
+    MainHarbor = nullptr;
 }
 
-/*bool Player::NewShip(char t)    //Random ID
+Player::Player(const Player& orig)
+{
+    name = new string(orig.getName());
+    money = orig.money;
+    fPorts = orig.fPorts;
+    nShips = orig.nShips;
+    MainHarbor = orig.MainHarbor;
+}
+
+/*bool Player::NewShip(char t)    //New Ship is created with a random [1;99] id. DON'T LOOK AT THIS, IT'S SHAMEFUL!
 {
     mt19937 rng(time(NULL));
     uniform_int_distribution<int> rid(1, 99);
@@ -38,20 +50,20 @@ Player::Player(string n)
     }
 }*/
 
-bool Player::NewShip(char t)
+bool Player::newShip(char t)
 {
     int id;
     int yy, xx;
     istringstream is;
+    is.str(MainHarbor->getCoord());
+    is >> xx;
+    is >> yy;
     
     if(fleet.size() < 100)
     {
         if(fleet.empty())
         {
             fleet.push_back(Ship(1, t));
-            is.str(fleet.begin()->getCoord());
-            is >> xx;
-            is >> yy;
             fleet.begin()->setCoord(yy, xx);
             return true;
         }
@@ -62,9 +74,6 @@ bool Player::NewShip(char t)
                 if((id+1) != fleet[id].getId())
                 {
                     Ship a(id+1, t);
-                    is.str(a.getCoord());
-                    is >> xx;
-                    is >> yy;
                     a.setCoord(yy, xx);
                     auto it = fleet.begin();
                     it += id;
@@ -73,9 +82,6 @@ bool Player::NewShip(char t)
                 }
             }
             Ship a(id+1, t);
-            is.str(a.getCoord());
-            is >> xx;
-            is >> yy;
             a.setCoord(yy, xx);
             fleet.push_back(a);
             return true;
@@ -83,6 +89,41 @@ bool Player::NewShip(char t)
     }
     else
         return false;
+}
+
+bool Player::sellShip(int id)
+{
+    char t;
+    for(int i=0; i<fleet.size(); i++)
+    {
+        if(fleet[i].getId() == id)
+        {
+            auto it = fleet.begin() + i;
+            t = fleet[i].getType();
+            fleet.erase(it);
+            switch(t)
+            {
+                case 'V':
+                    money += PRICE_SAILBOAT;
+                    break;
+                case 'F':
+                    money += PRICE_FRIGATE;
+                    break;
+                case 'G':
+                    money += PRICE_GALEON;
+                    break;
+                case 'E':
+                    money += PRICE_SCHOONER;
+                    break;
+                default:
+                    money += PRICE_SPECIAL;
+                    break;
+            }
+            
+            return true;
+        }
+    }
+    return false;
 }
 
 string Player::getName() const
@@ -105,14 +146,27 @@ void Player::addMoney(int n)
     money += n;
 }
 
-/*void Player::setMainHarbor(const Harbor& main)
+void Player::setMainHarbor(const Harbor& main)
 {
-}*/
+    MainHarbor = &main;
+}
+
+Harbor Player::getMainHarbor() const
+{
+    return *MainHarbor;
+}
 
 Player& Player::operator =(const Player& orig)
 {
+    if(this == &orig)
+        return *this;
+    
     delete name;
     name = new string(orig.getName());
+    money = orig.money;
+    fPorts = orig.fPorts;
+    nShips = orig.nShips;
+    MainHarbor = orig.MainHarbor;
 }
 
 Player::~Player()

@@ -1,5 +1,6 @@
 #include "headers.h"
 #include "Functions.h"
+#include "Ship.h"   //included here for the ship price defines. If trouble occurs, delete this.
 
 using namespace std;
 
@@ -733,22 +734,72 @@ int parseCmd(string cmd)
                     return 2;
                     break;
                 }
-                case 3: //buyship <T>
+                case 3: //buyship <T>       //Finished first definition. REQUIRES TESTING
                 {
                     string type;
                     bool status;
                     is >> type;
 
                     if(type=="V" || type=="v")
-                        status = player.NewShip('V');
+                        if(player.getMoney() > PRICE_SAILBOAT)
+                            status = player.newShip('V');
+                        else    //Temporary error
+                        {
+                            mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Not enough money!");
+                            wclrtoeol(wcmd);
+                            mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                            wrefresh(wcmd);
+                            getch();
+                            return false;
+                        }
                     else if(type=="G" || type=="g")
-                        status = player.NewShip('G');
+                        if(player.getMoney() > PRICE_GALEON)
+                            status = player.newShip('G');
+                        else    //Temporary error
+                        {
+                            mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Not enough money!");
+                            wclrtoeol(wcmd);
+                            mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                            wrefresh(wcmd);
+                            getch();
+                            return false;
+                        }
                     else if(type=="E" || type=="e")
-                        status = player.NewShip('E');
+                        if(player.getMoney() > PRICE_SCHOONER)
+                            status = player.newShip('E');
+                        else    //Temporary error
+                        {
+                            mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Not enough money!");
+                            wclrtoeol(wcmd);
+                            mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                            wrefresh(wcmd);
+                            getch();
+                            return false;
+                        }
                     else if(type=="F" || type == "f")
-                        status = player.NewShip('F');
+                        if(player.getMoney() > PRICE_FRIGATE)
+                            status = player.newShip('F');
+                        else    //Temporary error
+                        {
+                            mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Not enough money!");
+                            wclrtoeol(wcmd);
+                            mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                            wrefresh(wcmd);
+                            getch();
+                            return false;
+                        }
                     else if(type=="S" || type=="s")
-                        status = player.NewShip('S');
+                        if(player.getMoney() > PRICE_SPECIAL)
+                            status = player.newShip('S');
+                        else    //Temporary error
+                        {
+                            mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Not enough money!");
+                            wclrtoeol(wcmd);
+                            mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                            wrefresh(wcmd);
+                            getch();
+                            return false;
+                        }
                     else
                         status = false;
  
@@ -761,18 +812,21 @@ int parseCmd(string cmd)
                     }
                     else
                     {
-                        mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "ERROR: Too many ships?");
+                        mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "ERROR: Too many ships?");  //Temporary Error
                         wclrtoeol(wcmd);
                         mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                         wrefresh(wcmd);
                     }
                     break;
                 }
-                case 4: //sellship <N>
+                case 4: //sellship <N>      //Finished first definition. REQUIRES TESTING
                 {
-                    int number;
-                    is >> number;
-                    /*Create delShip(int id) method to Player class*/
+                    int id;
+                    is >> id;
+                    if(player.sellShip(id))
+                        mvwaddstr(wlog, 1, 1, "Ship sold!");    //Temp. Strings, delete later.
+                    else
+                        mvwaddstr(wlog, 2, 1, "Error selling ship!");
                     break;
                 }
                 case 5: //list
@@ -844,11 +898,11 @@ int parseCmd(string cmd)
                     /*Create function eventShip(int type, int id) that interacts with class Player*/
                     break;
                 }
-                case 14:    //coins <N>
+                case 14:    //coins <N>     //Should be working as intended. READY FOR BETA TESTING
                 {
                     int n;
                     is >> n;
-                    //player.addMoney(n);
+                    player.addMoney(n);
                     break;
                 }
                 case 15:    //moveto <N> <x> <y> OR moveto <N> <P>

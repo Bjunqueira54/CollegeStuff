@@ -21,6 +21,7 @@ public:
     
     Player();
     Player(string n);
+    Player(const Player& orig);
     
     //Returns the player's name in "string" type
     string getName() const;
@@ -37,12 +38,19 @@ public:
     //Attemps to create a new Ship of type t and pushes it to
     //the back to the Ship vector.
     //Return "true" if the operator succeded, else "false" with no defined error
-    bool NewShip(char t);
+    bool newShip(char t);
+    
+    //Attemps to sell a ship by finding a matching ID in
+    //the fleet vector and erasing it. Restores PRICE_ship
+    //coins to the player's current balance.
+    bool sellShip(int id);
     
     //Gets all the current friendly harbors from the Map class
     //and randomly picks one of them to become the main harbor
     //where newly bought ships will spawn.
-    //void setMainHarbor();
+    void setMainHarbor(const Harbor& main);
+    
+    Harbor getMainHarbor() const;
 
     Player& operator=(const Player &orig);
     ~Player();
