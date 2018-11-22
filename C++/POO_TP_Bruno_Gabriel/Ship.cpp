@@ -49,11 +49,34 @@ Ship::Ship(int i, char t): id(i), type(t)
         default:
             delete this;  //Whatever t was, it doesn't exist, so delete this; How did you even get into default anyway?
     }
+    
+    crew = *maxcrew;
+    load = 0;
+    fish = 0;
+    water = *maxwater;
+}
+
+Ship::Ship(const Ship& orig): id(orig.getId()), type(orig.getType())
+{
+    move = new int(*orig.move);
+    maxcrew = new int(*orig.maxcrew);
+    maxtons = new int(*orig.maxtons);
+    maxwater = new int(*orig.maxwater);
+    
+    crew = *maxcrew;
+    load = 0;
+    fish = 0;
+    water = *maxwater;
 }
 
 int Ship::getId() const
 {
     return id;
+}
+
+char Ship::getType() const
+{
+    return type;
 }
 
 void Ship::setCoord(int yy, int xx)
