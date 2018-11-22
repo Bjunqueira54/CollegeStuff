@@ -55,9 +55,12 @@ bool Player::newShip(char t)
     int id;
     int yy, xx;
     istringstream is;
-    is.str(MainHarbor->getCoord());
+    /*is.str(MainHarbor->getCoord());
     is >> xx;
-    is >> yy;
+    is >> yy;*/
+    
+    xx=1;
+    yy=1;
     
     if(fleet.size() < 100)
     {
