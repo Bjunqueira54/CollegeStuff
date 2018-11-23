@@ -15,6 +15,13 @@ int main()
     
     cout << a.verificaPeixe(501) << endl;
     
+    p1->queroSair();
+    
+    cout << a << endl;
+    
+    Aquario b(a);
+    
+    cout << b << endl;
+    
     return 0;
 }
-

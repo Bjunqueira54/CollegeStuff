@@ -18,7 +18,18 @@ public:
     Peixe(const Peixe& orig);
     
     int getId() const;
+    
+    string getCor() const {
+        return cor;
+    }
+
+    string getNome() const {
+        return nome;
+    }
+    
     string getInfo() const;
+    void ligaAq(Aquario *a);
+    bool queroSair();
     
     virtual ~Peixe();
     

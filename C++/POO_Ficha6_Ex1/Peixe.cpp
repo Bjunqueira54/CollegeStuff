@@ -16,9 +16,28 @@ string Peixe::getInfo() const
 {
     ostringstream os;
     
-    os << "Nome: " << nome << " ID: " << id << " Peso: " << peso << " Cor: " << cor << endl;
+    os << "Nome: " << nome << " ID: " << id << " Peso: " << peso << " Cor: " << cor;
     
     return os.str();
+}
+
+void Peixe::ligaAq(Aquario* a)
+{
+    p = a;
+}
+
+bool Peixe::queroSair()
+{
+    if(p==nullptr)
+        return false;
+    
+    if(p->removePeixe(id) == true)
+    {
+        p = nullptr;
+        return true;
+    }
+    else
+        return false;
 }
 
 Peixe::~Peixe(){}

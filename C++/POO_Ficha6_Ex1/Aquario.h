@@ -17,6 +17,9 @@ public:
     void addPeixe(Peixe *p);
     bool verificaPeixe(int id) const;
     string getInfo() const;
+    bool removePeixe(int id);
+    
+    Aquario& operator=(const Aquario& orig) = delete;
     
     virtual ~Aquario();
     
