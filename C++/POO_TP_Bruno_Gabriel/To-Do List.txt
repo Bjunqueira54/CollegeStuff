@@ -31,8 +31,95 @@ Comandos que sao aceites:
     delg <Nome>
     sair
 
-Class Player:
+1. INTRODUÇÃO
+
+O jogo decorre nu mapa constituido por mar e terra, havendo também portos para os navios atracar
+Mapa tem assinalado zonas de mar, terra, portos e navios
+O jogo decorre por turnos:
+	- cada jogador decide as ações a realizar
+	- estas ações são dadas através da linha de comandos
+	- cada comando pode envolver mais que uma instrução
+O jogador dispõe de uma quantia inicial de moedas para comprar navios (frota inicial): 
+	- cada navio tem a sua tripulação
+	- os navios são usados para:
+		- pescar
+		- vender peixe em portos
+		- conquistar portos
+		- controlar rotas maritimas (navios de combate)
+	- receitas obtidas com venda de peixe e de mercadorias são usadas para comprar mais navios e soldados
+No jogo existem navios piratas, que não pertencem ao jogador
+	- se um navio pirata e o de um jogador se encontrarem adjacentes, haverá combate
+	- os combates podem durar varios turnos
+	- acabam quando um foge ou afunda
+	- navios adjacentes são os que se encontram no "neighbors 8"
+O jogo pode terminar de duas formas:
+	- gameover: o jogador fica sem navios e sem dinheiro
+	- quit
+
+2. O MAPA
+
+O mapa é representado por uma grelha
+Esta grelha simula um mundo esférico (loop dos lados)
+Os navios do jogador e os navios piratas existem apenas em celulas de mar ou porto
+Só pode estar um navio de cada vez numa célula de mar, mas varios na mesma célula de porto
+Não pode haver navios em terra, esta só serve para:
+	- servir de obstáculo à navegação
+	- suportar portos
+Uma célula de porto tem de ter pelo menos uma célula de mar e uma de terra adjacente
+Células de mar têm peixe que os navios de pesca podem pescar:
+	- cada célula de mar produz uma tonelada de peixe
+	- se o peixe for pescado numa célula, esta não produz peixe nos dois próximos turnos
+	- as células pescadas recuperam o peixe ao terceiro turno
+
+3. OS PORTOS
+
+Um porto é caraterizado por:
+	- um nome (letra maiúscula)
+	- numero de soldados que o denfendem
+	- relação de amizade com o jogador (amigo/inimigo)
+Os navios do jogador só podem entrar em portos amigos
+	- um porto não amigo ao jogador lutará com um navio que tente entrar
+	- se o navio ganhar o porto fica amigo
+	- se o navio perder, afunda-se
+Um navio pirata entra num porto:
+	- se este não for amigo do jogador, nada sucede
+	- se este for amigo do jogador, o navio pirata irá combater:
+		- se perder, afunda-se
+		- se ganhar, o jogador perde o porto
+Incialmente haverá pelo menos dois portos amigos do jogador
+Os restantes são amigos ou não (?)
+Portos diferentes poderam ter dificuldades diferentes (critério do programador)
+Todos os navios comprados pelo jogador aparecem no porto "principal":
+	- este porto é um dos dois iniciais
+	- caso o porto "principal" for conquistado por piratas, o principal fica o outro porto inicial
+Se o jogador não tiver nenhum porto amigo, não poderá comprar navios (tem de conquistar um com os que tem)
+
+4. A FROTA E A TRIULAÇÃO
 
 
-Class Ship:
+5. EVENTOS, COMBATES, COMPRAS E VENDAS
 
+6. JOGOS E TURNOS
+
+7. COMANDOS E INTERAÇÃO COM O UTILIZADOR
+
+8. CONFIGURAÇÃO
+
+9. VISUALIZAÇÃO
+
+
+METAS:
+
+META 1 - Prazo 25/11/18
+
+- configuração/leitura do mapa
+- visualização do mapa
+- interpretação de comandos
+- compra de navios
+- visualização do movimento dos navios (movimento aleatório nesta meta)
+
+Relatório
+
+META 2 - Prazo 01/01/19
+
+- programa completo com relatório
