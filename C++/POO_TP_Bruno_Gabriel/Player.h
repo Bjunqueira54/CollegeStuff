@@ -3,7 +3,6 @@
 
 #include "headers.h"
 #include "Ship.h"
-//#include "Harbor.h" //Temp.
 #include "Map.h"
 
 using namespace std;
@@ -48,7 +47,7 @@ public:
     //Gets all the current friendly harbors from the Map class
     //and randomly picks one of them to become the main harbor
     //where newly bought ships will spawn.
-    void setMainHarbor(const Harbor& main);
+    void setMainHarbor(const Harbor &main);
     
     Harbor getMainHarbor() const;
 

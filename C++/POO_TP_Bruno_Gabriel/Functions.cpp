@@ -2,6 +2,14 @@
 #include "Functions.h"
 #include "Ship.h"   //included here for the ship price defines. If trouble occurs, delete this.
 
+#define TERM_DEFAULT 11
+#define OCEAN_STORM 12
+#define OCEAN_CALM 13
+#define LAND_DARK 14
+#define LAND_LIGHT 15
+#define FRIENDLY 16
+#define UNFRIENDLY 17
+
 using namespace std;
 
 Settings settings;
@@ -474,72 +482,85 @@ void drawMainMenu()
 
 void drawMap()
 {
+    //Color Initialization
+    init_color(LAND_DARK, 0, 400, 0);
+    init_color(LAND_LIGHT, 200, 800, 200);
+    
+    init_color(FRIENDLY, 250, 1000, 250);
+    init_color(UNFRIENDLY, 500, 500, 500);
+    
+    //Pair creation
+    
+    //Dark Ocean Tiles
+    init_pair(1, COLOR_WHITE, COLOR_BLUE);
+    init_pair(2, COLOR_GREEN, COLOR_BLUE);
+    init_pair(3, COLOR_RED, COLOR_BLUE);
+    //Light Ocean Tiles
+    init_pair(4, COLOR_WHITE, COLOR_CYAN);
+    init_pair(5, COLOR_GREEN, COLOR_CYAN);
+    init_pair(6, COLOR_RED, COLOR_CYAN);
+    
+    //Land Tiles
+    init_pair(7, COLOR_WHITE, LAND_DARK);
+    init_pair(8, COLOR_WHITE, LAND_LIGHT);
+    
+    //Harbor Tiles
+    init_pair(9, COLOR_WHITE, FRIENDLY);
+    init_pair(10, COLOR_WHITE, UNFRIENDLY);
+    
+    init_pair(TERM_DEFAULT, COLOR_WHITE, COLOR_BLACK);
+    
+    wattron(wmap, COLOR_PAIR(TERM_DEFAULT));
+
     wclear(wmap);
     drawBox(wmap);
     
-    /* NAO IMPRIME NADA PARA O WMAP */
-    
-    vector <string> smap; //small map
-    vector <string> nmap;
-    string v;
-    smap = map.getMap();
+    bool cc=true;
 
-    nmap.clear();
-    for(int i=0; i<smap.size(); i++)
+    for(int i=0; i<map.getMap().size(); i++)
     {
-        v.clear();
-        for(int j=0; j<smap[i].size(); j++)
+        cc = !cc;
+        for(int j=0; j<map.getMap()[i].size(); j++)
         {
-            v += smap[i][j];
-            v += smap[i][j];
+            switch(map.getMap()[i][j])
+            {
+                case '.':
+                    if(cc==true)
+                    {
+                        wattron(wmap, COLOR_PAIR(1));
+                        cc = !cc;
+                    }
+                    else
+                    {
+                        wattron(wmap, COLOR_PAIR(4));
+                        cc = !cc;
+                    }
+                    break;
+                case '+':
+                    if(cc==true)
+                    {
+                        wattron(wmap, COLOR_PAIR(7));
+                        cc = !cc;
+                    }
+                    else
+                    {
+                        wattron(wmap, COLOR_PAIR(8));
+                        cc = !cc;
+                    }
+                    break;
+                default:
+                    wattron(wmap, COLOR_PAIR(10));
+                    cc = !cc;
+                    break;
+            }
+            mvwaddch(wmap, ((i+1)*2)-1, ((j+1)*2)-1, ' ');
+            mvwaddch(wmap, ((i+1)*2)-1, ((j+1)*2), ' ');
+            mvwaddch(wmap, ((i+1)*2), ((j+1)*2)-1, ' ');
+            mvwaddch(wmap, ((i+1)*2), ((j+1)*2), ' ');
+            wrefresh(wmap);
         }
-        nmap.push_back(v);
-        nmap.push_back(v);
-    }
-
-    for(int i=0; i<smap.size(); i++)
-    {
-        mvwaddstr(wmap, i+1, 1, nmap[i].c_str());
     }
     
-    
-    /*init_color usa a seguinte syntax
-    
-     init_pair(nº desejado para identificar a cor (Pode usar-se um #define NOME Nº),
-                montante de vermelho (1-1000),
-                montante de verde (1-1000),
-                montante de azul (1-1000));
-     
-     como na internet calcula-se valores para RGB em 1-255, tem-se de calcular
-     os montantes para init_pair() com (valor RGB)*3.9216 (arrendondado para baixo nas unidades)*/
-    
-    /*init_color(COLOR_LBROWN, 255, 222, 173);  //Isto está a usar valores 1-255, e esta errado
-    init_color(COLOR_DBROWN, 139, 69, 19);*/
-    
-    init_color(COLOR_DBROWN, 102*3.9216, 51*3.9216, 0);
-    init_color(COLOR_LBROWN, 1000, 153*3.9216, 51*3.9216);
-
-    /*Fazer init_pair para todas as combinações
-     de cores a serem usadas pelo jogo. Exemplos:
-     Foreground BRANCO e Background AZUL ESCURO
-     Foreground VERMELHO e Background AZUL CLARO
-     Foreground VERDE e Background CASTANHO ESCURO*/
-    
-    //Exemplo
-    
-    /*init_pair(4, COLOR_WHITE, COLOR_LBROWN);
-    init_pair(5, COLOR_WHITE, COLOR_DBROWN);
-    
-    wattron(wmap, COLOR_PAIR(4));
-    mvwaddch(wmap, 1, 1, ' ');
-    mvwaddch(wmap, 1, 2, ' ');
-    mvwaddch(wmap, 2, 1, ' ');
-    mvwaddch(wmap, 2, 2, ' ');
-    wattron(wmap, COLOR_PAIR(5));
-    mvwaddch(wmap, 1, 3, ' ');
-    mvwaddch(wmap, 1, 4, ' ');
-    mvwaddch(wmap, 2, 3, ' ');
-    mvwaddch(wmap, 2, 4, ' ');*/
     wrefresh(wmap);
 }
 
@@ -679,10 +700,12 @@ int parseCmd(string cmd)
                     wclrtoeol(wcmd);
                     mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                     
-                    Settings set(file);
+                    settings = Settings(file);
+                    file.close();
+                    Map map(filename);
                     
-                    settings = set;
-                    map = Map(file);
+                    map.CreateHarborVector();
+                    map.chooseMainHarbor(player);
                     
                     phase = 2;
                     mvwaddstr(wcmd, 1, 1, lang.getLine(11));
@@ -691,7 +714,6 @@ int parseCmd(string cmd)
                     mvwaddstr(wcmd, 1, strlen(lang.getLine(11)) + 1, "1");
                     wrefresh(wcmd);
                     drawBox(wlog);
-                    drawBox(wmap);
                     drawMap();
                     break;
                 }

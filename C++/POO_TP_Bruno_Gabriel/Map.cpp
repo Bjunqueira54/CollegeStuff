@@ -5,9 +5,10 @@ vector<Harbor> Map::ports;
 
 Map::Map() {}
 
-Map::Map(ifstream &file)
+Map::Map(string filename)
 {
-    file.seekg(ios::beg);
+    ifstream file;
+    file.open(filename, ios::in);
     string mapline;
     
     do
@@ -22,7 +23,11 @@ Map::Map(ifstream &file)
 
 Map& Map::operator =(const Map& orig)
 {
-    g_Map = orig.g_Map;
+    if(this == &orig)
+        return *this;
+    
+    for(int i=0; i<orig.g_Map.size(); i++)
+        g_Map.push_back(orig.g_Map[i]);
 }
 
 void Map::CreateHarborVector()
@@ -39,9 +44,10 @@ void Map::CreateHarborVector()
     }
 }
 
-vector<Harbor> Map::getFriendlyHarbors() const
+void Map::chooseMainHarbor(Player &player)
 {
     vector<Harbor> fPorts;
+    int j;
     
     for(int i=0; i<ports.size(); i++)
     {
@@ -50,7 +56,18 @@ vector<Harbor> Map::getFriendlyHarbors() const
             fPorts.push_back(ports[i]);
         }
     }
-    return fPorts;
+    
+    mt19937 rng(time(NULL));
+    uniform_int_distribution<int> mh(1, fPorts.size());
+    j = mh(rng);
+    fPorts[j].becomeMain(player);
+}
+
+string Map::getHarborCoord(char id) const
+{
+    for(int i=0; i<ports.size(); i++)
+        if(ports[i].getId() == id)
+            return ports[i].getCoord();
 }
 
 vector<string> Map::getMap() const

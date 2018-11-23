@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=Cygwin-Windows
-CND_DLIB_EXT=dll
+CND_PLATFORM=GNU-Linux
+CND_DLIB_EXT=so
 CND_CONF=Release
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -37,8 +37,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Consola.o \
 	${OBJECTDIR}/Functions.o \
+	${OBJECTDIR}/Harbor.o \
 	${OBJECTDIR}/Language.o \
+	${OBJECTDIR}/MainGame.o \
+	${OBJECTDIR}/Map.o \
 	${OBJECTDIR}/Player.o \
+	${OBJECTDIR}/Settings.o \
 	${OBJECTDIR}/Ship.o \
 	${OBJECTDIR}/main.o
 
@@ -61,11 +65,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/poo_tp_bruno_gabriel_portable.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/poo_tp_bruno_gabriel
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/poo_tp_bruno_gabriel_portable.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/poo_tp_bruno_gabriel: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/poo_tp_bruno_gabriel_portable ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/poo_tp_bruno_gabriel ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/Consola.o: Consola.cpp
 	${MKDIR} -p ${OBJECTDIR}
@@ -77,15 +81,35 @@ ${OBJECTDIR}/Functions.o: Functions.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Functions.o Functions.cpp
 
+${OBJECTDIR}/Harbor.o: Harbor.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Harbor.o Harbor.cpp
+
 ${OBJECTDIR}/Language.o: Language.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Language.o Language.cpp
 
+${OBJECTDIR}/MainGame.o: MainGame.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MainGame.o MainGame.cpp
+
+${OBJECTDIR}/Map.o: Map.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Map.o Map.cpp
+
 ${OBJECTDIR}/Player.o: Player.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Player.o Player.cpp
+
+${OBJECTDIR}/Settings.o: Settings.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Settings.o Settings.cpp
 
 ${OBJECTDIR}/Ship.o: Ship.cpp
 	${MKDIR} -p ${OBJECTDIR}

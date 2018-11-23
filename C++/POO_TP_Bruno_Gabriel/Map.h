@@ -12,13 +12,14 @@ class Map
     
 public:
     Map();
-    Map(ifstream &file);
+    Map(string filename);
+    Map(const Map& orig) = delete;
     Map& operator=(const Map &orig);
     
     void CreateHarborVector();
     
-    vector<Harbor> getFriendlyHarbors() const;
-    //string getHarborCoord() const;
+    void chooseMainHarbor(Player &player);
+    string getHarborCoord(char id) const;
     vector<string> getMap() const;
 };
 

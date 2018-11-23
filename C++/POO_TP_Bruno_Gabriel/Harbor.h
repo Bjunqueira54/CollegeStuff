@@ -3,17 +3,27 @@
 
 #include "headers.h"
 
+class Player;
+
 class Harbor
 {
     const int y, x;
-    char id;
+    const char id;
     bool PFriend;
     
 public:
     Harbor(int yy, int xx, char a);
-    
+    Harbor(const Harbor& other) :
+    y(other.y), x(other.x), id(other.id), PFriend(other.PFriend) {}
+
+    const char getId() const {
+        return id;
+    }
+
     string getCoord() const;
     bool isFriend() const;
+    void becomeMain(Player &player);
+    
     ~Harbor();
 };
 

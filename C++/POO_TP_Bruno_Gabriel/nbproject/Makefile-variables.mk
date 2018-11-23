@@ -15,13 +15,13 @@ CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux/package
 CND_PACKAGE_NAME_Debug=pootpbrunogabriel.tar
 CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux/package/pootpbrunogabriel.tar
 # Release configuration
-CND_PLATFORM_Release=Cygwin-Windows
-CND_ARTIFACT_DIR_Release=dist/Release/Cygwin-Windows
-CND_ARTIFACT_NAME_Release=poo_tp_bruno_gabriel_portable
-CND_ARTIFACT_PATH_Release=dist/Release/Cygwin-Windows/poo_tp_bruno_gabriel_portable
-CND_PACKAGE_DIR_Release=dist/Release/Cygwin-Windows/package
-CND_PACKAGE_NAME_Release=pootpbrunogabrielportable.tar
-CND_PACKAGE_PATH_Release=dist/Release/Cygwin-Windows/package/pootpbrunogabrielportable.tar
+CND_PLATFORM_Release=GNU-Linux
+CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux
+CND_ARTIFACT_NAME_Release=poo_tp_bruno_gabriel
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux/poo_tp_bruno_gabriel
+CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux/package
+CND_PACKAGE_NAME_Release=pootpbrunogabriel.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux/package/pootpbrunogabriel.tar
 #
 # include compiler specific variables
 #

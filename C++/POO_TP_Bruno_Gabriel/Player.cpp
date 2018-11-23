@@ -1,5 +1,3 @@
-#include <random>
-#include <ctime>
 #include "Player.h"
 
 Player::Player() {}
@@ -22,45 +20,15 @@ Player::Player(const Player& orig)
     MainHarbor = orig.MainHarbor;
 }
 
-/*bool Player::NewShip(char t)    //New Ship is created with a random [1;99] id. DON'T LOOK AT THIS, IT'S SHAMEFUL!
-{
-    mt19937 rng(time(NULL));
-    uniform_int_distribution<int> rid(1, 99);
-    int id, exists=0;
-    while(1)
-    {
-        id = rid(rng);
-        
-        for(int i=0; i<fleet.size(); i++)
-        {
-            if(id == fleet[i].getId())
-                exists = 1;
-        }
-        if(exists == 0)
-        {
-            fleet.push_back(Ship(id, t));
-            istringstream is;
-            int sy, sx;
-            is >> sy;
-            is >> sx;
-            is.str(MainHarbor->getCoord());
-            fleet[fleet.size()-1].setCoord(sy, sx);
-            return true;
-        }
-    }
-}*/
-
 bool Player::newShip(char t)
 {
     int id;
     int yy, xx;
     istringstream is;
-    /*is.str(MainHarbor->getCoord());
-    is >> xx;
-    is >> yy;*/
     
-    xx=1;
-    yy=1;
+    is.str(MainHarbor->getCoord());
+    is >> xx;
+    is >> yy;
     
     if(fleet.size() < 100)
     {
@@ -149,7 +117,7 @@ void Player::addMoney(int n)
     money += n;
 }
 
-void Player::setMainHarbor(const Harbor& main)
+void Player::setMainHarbor(const Harbor &main)
 {
     MainHarbor = &main;
 }
