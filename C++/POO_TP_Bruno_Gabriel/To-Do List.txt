@@ -192,6 +192,20 @@ Um navio que fique sem soldados fica à deriva
 			
 5. EVENTOS, COMBATES, COMPRAS E VENDAS
 
+Eventos:
+
+Combates:
+
+Compras e Vendas:
+	Quando um navio se encontra num porto, o jogador pode:
+		- comprar navios por 100 moedas cada um
+		- comprar soldados por 1 moeda cada um
+		- vender peixe e mercadoria
+		- comprar mercadoria nesse porto, que fica nesse navio
+		
+Vendas:
+
+
 6. JOGOS E TURNOS
 
 7. COMANDOS E INTERAÇÃO COM O UTILIZADOR
