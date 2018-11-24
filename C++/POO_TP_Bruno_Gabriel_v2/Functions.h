@@ -3,9 +3,10 @@
 
 #include "headers.h"
 #include "Language.h"
+#include "Settings.h"
 
 #define GAME_VERSION_MAJOR "0"
-#define GAME_VERSION_MINOR "16"
+#define GAME_VERSION_MINOR "17"
 
 #define MAP_MAXY 40     //Merchants and Pirates Max Height
 #define MAP_MAXX 120    //Merchants and Pirates Max Width
@@ -16,6 +17,7 @@ extern WINDOW *wmap, *wcmd, *wlog;
 extern int phase;
 
 extern Language lang;
+extern Settings *settings;
 
 ///Prototipos de funcoes
 

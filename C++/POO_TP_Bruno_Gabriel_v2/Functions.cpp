@@ -10,6 +10,8 @@
 
 using namespace std;
 
+Settings *settings;
+
 vector <string> userDrawCustomMap(const Language lang)
 {
     WINDOW *cmap;
@@ -652,7 +654,28 @@ int parseCmd(string cmd)
                     wclrtoeol(wcmd);
                     mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                     
-                    //CREATE SETTINGS HERE. CREATE MAP CLASS HERE.
+                    //READ FROM CONFIG FILE INTO 2 STRING VECTOR TO CONSTRUCT SETTINGS AND MAP!
+                    
+                    string input;
+                    vector<string> mapvals, setvals;
+                    
+                    do
+                    {
+                        getline(file, input);
+                        mapvals.push_back(input);
+                    }
+                    while(file.peek() != '\n');
+                    
+                    do
+                    {
+                        getline(file, input);
+                        setvals.push_back(input);
+                    }
+                    while(!file.eof());
+                    
+                    settings = new Settings(setvals);
+                    
+                    //MISSING MAP CLASS. HANDLE IT!
                     
                     phase = 2;
                     mvwaddstr(wcmd, 1, 1, lang.getLine(11));
