@@ -33,7 +33,7 @@ Comandos que sao aceites:
 
 1. INTRODUÇÃO
 
-O jogo decorre num mapa constituido por mar e terra, havendo também portos para os navios atracar
+O jogo decorre nu mapa constituido por mar e terra, havendo também portos para os navios atracar
 Mapa tem assinalado zonas de mar, terra, portos e navios
 O jogo decorre por turnos:
 	- cada jogador decide as ações a realizar
@@ -74,9 +74,9 @@ Células de mar têm peixe que os navios de pesca podem pescar:
 3. OS PORTOS
 
 Um porto é caraterizado por:
-	- um nome (letra maiúscula)     - letra minuscula tambem. DONE
-	- numero de soldados que o defendem - DONE
-	- relação de amizade com o jogador (amigo/inimigo) - Só com o jogador. DONE
+	- um nome (letra maiúscula)
+	- numero de soldados que o denfendem
+	- relação de amizade com o jogador (amigo/inimigo)
 Os navios do jogador só podem entrar em portos amigos
 	- um porto não amigo ao jogador lutará com um navio que tente entrar
 	- se o navio ganhar o porto fica amigo
@@ -94,10 +94,117 @@ Todos os navios comprados pelo jogador aparecem no porto "principal":
 	- caso o porto "principal" for conquistado por piratas, o principal fica o outro porto inicial
 Se o jogador não tiver nenhum porto amigo, não poderá comprar navios (tem de conquistar um com os que tem)
 
-4. A FROTA E A TRIPULAÇÃO
+4. A FROTA E A TRIULAÇÃO
 
+Os navios têm diversos atributos e comportamentos
+São identificados por um número
+Todos os navios podem ser comprados por um preço, constante para todos e configurável
+Exsitem vários tipos de navio ao dispor do jogador:
+	- todos os navios podem transportar soldados e água (à borla)
+	- alguns têm carateristicas relacionadas com a pesca e transporte de peixe
+	- alguns são mais focados em defesa e ataque
+O deslocamente corresponde em movê-lo para uma das 8 células adjacentes à posição atual
+O movimento acontece da seguintes formas:
+	- o utilizador especifica em cada turno para onde é que o navio se deve deslocar
+	- o navio navega sozinho, se estiver em modo autónomo (depende do tipo)
+	- o navio está a cumprir uma ordem, por exemplo:
+		- vai para o porto X e enquanto não chegar lá vai cumprindo essa ordem
+	- o navio perdeu a sua tripulação e então navega de forma aleatória
+Em nenhum caso um navio pode andar mais que o número máximo de células, definidas para esse tipo, por turno
+Alguns navios permitem tranportar mercadoria e peixe (toneladas)
+	- é indiferente o tipo de carga para a contabilização da mesma
+A tripulação necessita de água para sobreviver (convém não chegar a zero)
+Sempre que um navio entra num porto amigo pode vender peixe e mercadoria que tenha (os depositos de água enchem automáticamente)
+Sempre que um navio se encontra num porto pode comprar mercadoria
+O peixe não pode ser comprado, apenas pescado e vendido
+O preço de venda de mercadorias é configurável
 
+Neste jogo existem os seguintes tipos de navio:
+
+	Veleiro:
+		- muito rapido, mas fraco
+		- é bom para transportar mercadoria e peixe
+		- pode deslocar-se 1 ou 2 posições em cada turno
+		- consegue transportar até 20 soldados e 40 toneladas de peixe
+		- tem ainda capacidade para 200 litros de água
+		- se estiver numa célula adjacente a uma escuna, transfere para si o peixe dessa escuna (até encher)
+		- o veleiro é rápido e facilmente vende esse peixe num porto, deixando a escuna livre para pescar
+		- se estiver de forma autónoma, tenta manter-se aolado de uma escuna
+		- se for apanhado por uma tempestade tem:
+			- 35% de hipotese de se afundar com mais 50% de carga
+			- 20% com menos de 50% de carga
+	
+	Galeão:
+		- lento, mas enorme
+		- só pode andar uma posição em cada turno
+		- consegue transportar até 70 toneladas e 40 soldados
+		- tem capacidade para 400 litros de água
+		- este navio fica parado se estiver em navegação autónoma
+		- se estiver numa célula adjacente a uma escuna, transfere para si todo o peixe dessa escuna (até encher)
+		- numa tempestade perde sempre 10% dos soldados 
+		- tem 40% de hipotese de se afundar
+		
+	Escuna:
+		- consegue levar até 10 soldados
+		- tem capacidade para 100 litros de água
+		- pode deslocar-se 1 posição por turno
+		- consegue carregar até 20 toneladas de peixe
+		- se estiver numa posição no mapa com peixe, recolhe automaticamente 1 tonelada
+		- em modo automático:
+			- desloca-se para 1 posição com peixe, até 2 células de distântica
+			- se estiver com carga máxima desloca-se ao porto amigo mais perto
+			- o jogo deverá ter a informação acerca de quais os portos que são amigos de forma a que a escuna escolha
+			- se tiver 25% capacidade de água desloca-se para um porto
+		- se apanhar uma tempestade:
+			- tem 20% de hipoteses de perder a carga
+			- tem 35% de se afundar
+	
+	Fragata:
+		- muito rápida
+		- não transporta carga
+		- serve para combates
+		- pode deslocar-se 1 ou 2 posições por turno
+		- pode levar até 50 soldados
+		- tem capacidade para 500 litros de água
+		- quando em forma automática:
+			- tenta deslocar-se em direção a um inimigo, para o combater
+			- se não houver nenhum, tenta manter-se perto de outro navio, escuna ou galeão para o proteger (não mais de 2 células de distância)
+		- numa tempestade:
+			- perde sempre 15% dos soldados
+			- tem 20% de hipóteses de se afundar
+	
+	Especial:
+		- TBD
+
+Os navios do jogador podem ser todos os tipos acima
+Os piratas só podem ser apenas veleiros ou fragatas
+Os navios piratas aparecem aleatóriamente no mapa com uma determinada frequência
+Quando os navios surgem, piratas ou não:
+	- têm uma tripulação completa
+	- não têm carga nenhuma
+	- têm a capacidade de água no máximo
+Quando fora do porto, em cada turno cada soldado bebe 1 litro de água
+Se não houver água em casa turno 1 soldado morre
+Os soldados podem morrer em combate e em eventos
+Um navio que fique sem soldados fica à deriva
+	- este pode ser (re)conquistado por outro navio qualquer que lhe passe soldados e água (50/50 para cada navio, sem exceder a capacidade)
+	- os piratas só podem conquistar veleiros ou fragatas, caso contrário o navio afunda
+			
 5. EVENTOS, COMBATES, COMPRAS E VENDAS
+
+Eventos:
+
+Combates:
+
+Compras e Vendas:
+	Quando um navio se encontra num porto, o jogador pode:
+		- comprar navios por 100 moedas cada um
+		- comprar soldados por 1 moeda cada um
+		- vender peixe e mercadoria
+		- comprar mercadoria nesse porto, que fica nesse navio
+		
+Vendas:
+
 
 6. JOGOS E TURNOS
 
@@ -112,11 +219,11 @@ METAS:
 
 META 1 - Prazo 25/11/18
 
-- configuração/leitura do mapa  - DONE (?)
-- visualização do mapa          - Map and Harbors are done. Ships are not.
-- interpretação de comandos     - 7/20 Done
-- compra de navios              - Done?
-- visualização do movimento dos navios (movimento aleatório nesta meta) - Not started
+- configuração/leitura do mapa
+- visualização do mapa
+- interpretação de comandos
+- compra de navios
+- visualização do movimento dos navios (movimento aleatório nesta meta)
 
 Relatório
 
