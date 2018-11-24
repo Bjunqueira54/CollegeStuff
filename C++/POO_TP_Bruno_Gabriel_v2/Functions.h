@@ -4,6 +4,7 @@
 #include "headers.h"
 #include "Language.h"
 #include "Settings.h"
+#include "Player.h"
 
 #define GAME_VERSION_MAJOR "0"
 #define GAME_VERSION_MINOR "17"
@@ -18,6 +19,8 @@ extern int phase;
 
 extern Language lang;
 extern Settings *settings;
+extern Player *player;
+extern Player *pirates;
 
 ///Prototipos de funcoes
 

@@ -4,6 +4,8 @@
 using namespace std;
 
 WINDOW *wmap, *wcmd, *wlog;
+Player *player;
+Player *pirates;
 int phase;
 
 void MainGameLoop()
@@ -35,7 +37,8 @@ void MainGameLoop()
     }
     while(name.empty());
     
-    return;
+    player = new Player(name);
+    pirates = new Player("Pirates");
 
     clear();
 
