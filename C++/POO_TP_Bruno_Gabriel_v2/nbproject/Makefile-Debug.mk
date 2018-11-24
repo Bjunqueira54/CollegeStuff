@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/Functions.o \
 	${OBJECTDIR}/Language.o \
 	${OBJECTDIR}/MainGame.o \
+	${OBJECTDIR}/Settings.o \
 	${OBJECTDIR}/main.o
 
 
@@ -85,6 +86,11 @@ ${OBJECTDIR}/MainGame.o: MainGame.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/MainGame.o MainGame.cpp
+
+${OBJECTDIR}/Settings.o: Settings.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Settings.o Settings.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}

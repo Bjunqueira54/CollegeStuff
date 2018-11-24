@@ -1,5 +1,4 @@
 #include "Functions.h"
-#include "headers.h"
 #include "Language.h"
 
 using namespace std;

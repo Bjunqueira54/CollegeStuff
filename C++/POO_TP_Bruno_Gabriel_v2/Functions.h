@@ -12,18 +12,10 @@
 
 #define DEFAULT_CONFIG "config.ini"
 
-/*class Language;
-class Settings;
-class Map;*/
-
 extern WINDOW *wmap, *wcmd, *wlog;
 extern int phase;
 
 extern Language lang;
-/*extern Settings *settings;
-extern Map *map;
-extern Player *player;
-extern Player *pirates;*/
 
 ///Prototipos de funcoes
 
