@@ -32,6 +32,7 @@ public:
     //Sets
     
     void setHarbors();
+    void setMainHarbors();
     
     virtual ~Map();
 };

@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Harbor.h"
 
 Player::Player()
 {
@@ -33,9 +34,22 @@ Player& Player::operator=(const Player& orig)
     money = orig.GetMoney();
 }
 
+const string Player::getMainHarborCoord() const
+{
+    return MainHarbor->getCoord();
+}
+
 void Player::newShip(char t)
 {
     int id;
+    
+    if(fleet[0] == nullptr)
+    {
+        fleet[0] = new Ship(1, t, *this);
+        
+        return;
+    }
+    
     for(id=0; id<fleet.size(); id++)
     {
         if((id+1) != fleet[id]->GetId())

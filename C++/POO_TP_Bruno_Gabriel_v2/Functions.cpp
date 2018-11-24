@@ -750,6 +750,7 @@ int parseCmd(string cmd)
                     
                     settings = new Settings(setvals);
                     map = new Map(mapvals);
+                    map->setMainHarbors();
                     
                     phase = 2;
                     mvwaddstr(wcmd, 1, 1, lang.getLine(11));
@@ -802,11 +803,25 @@ int parseCmd(string cmd)
                 }
                 case 3: //buyship <T>       //Finished first definition. REQUIRES TESTING
                 {
-                    string type;
+                    if(settings->GetShipprice() > player->GetMoney())
+                        return -1;
+                    
+                    char type;
                     bool status;
                     is >> type;
 
-                    //Create addShip() here;
+                    if(type != 'E' && type != 'e' &&
+                            type != 'F' && type != 'f' &&
+                            type != 'V' && type != 'v' &&
+                            type != 'G' && type != 'g' &&
+                            type != 'S' && type != 's')
+                        return -1;
+                    else
+                    {
+                        player->newShip(type);
+                        player->addMoney(-settings->GetShipprice());
+                    }
+                    return i;
 
                     break;
                 }

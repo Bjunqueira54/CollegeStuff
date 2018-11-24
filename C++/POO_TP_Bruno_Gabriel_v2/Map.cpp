@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "Functions.h"
 
 Map::Map()
 {
@@ -79,6 +80,23 @@ void Map::setHarbors()
                 harbors.push_back(new Harbor(y+1, x+1, g_map[y][x]));
         }
     }
+}
+
+void Map::setMainHarbors()
+{
+    vector<Harbor*> fports;
+    
+    for(int i=0; i<harbors.size(); i++)
+    {
+        if(harbors[i]->getState() == true)
+            fports.push_back(harbors[i]);
+    }
+    
+    mt19937 rng(time(NULL));
+    uniform_int_distribution<int> mh(0, fports.size()-1);
+    
+    player->SetMainHarbor(fports[mh(rng)]);
+    pirates->SetMainHarbor(nullptr);
 }
 
 Map::~Map()

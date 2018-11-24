@@ -4,11 +4,14 @@
 #include "headers.h"
 #include "Ship.h"
 
+class Harbor;
+
 class Player
 {
     const string *name;
     int money;
     vector<Ship*> fleet;
+    Harbor *MainHarbor;
     
 public:
     
@@ -23,11 +26,13 @@ public:
     const string GetName() const {return *name;}
     int GetMoney() const {return money;}
     vector<Ship*> GetFleet() const {return fleet;}
+    const string getMainHarborCoord() const;
 
     //Set
     
-    void SetMoney(int money)
-    {this->money = money;}
+    void SetMoney(int money) {this->money = money;}
+    void addMoney(int n) {money += n;}
+    void SetMainHarbor(Harbor* main) {MainHarbor = main;}
     
     void newShip(char t);
     
