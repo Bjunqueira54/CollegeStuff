@@ -524,13 +524,15 @@ void drawMap()
         {
             switch(line[x])
             {
-                case'.':
+                case'.':    //Water
                     break;
-                case'+':
+                case'+':    //Land
                     break;
-                case 'PLAYER SYMBOL HERE':
+                case '^':   //Player Ship
                     break;
-                case 'PIRATE SYMBOL HERE':
+                case '*':   //Pirate Ship
+                    break;
+                case '?':      //Lost Ship
                     break;
                 default:    //Default == Harbors
                     break;
