@@ -4,11 +4,14 @@
 #include "headers.h"
 #include "Harbor.h"
 
+class Ship;
+
 class Map
 {
-    static vector<string> g_Map;
-    vector<vector<int>> pos_fish;
-    static vector<Harbor> ports;
+    vector<string> g_Map;    //This serves as aid for drawMap()
+    vector<vector<int>> pos_fish;   //This serves to store the fish amount in each position.
+    static vector<Harbor> ports;    //This only serves as a information holder.
+    vector<Ship> ships;            //This will hold information about every ship currently in the game.
     
 public:
     Map();
@@ -17,10 +20,13 @@ public:
     Map& operator=(const Map &orig);
     
     void CreateHarborVector();
-    
+    void readPlayerFleet(const Player &player);
     void chooseMainHarbor(Player &player);
-    string getHarborCoord(char id) const;
+    
+    const string getHarborCoord(char id) const;
+    const Harbor* getHarborByCoord(int y, int x) const;
     vector<string> getMap() const;
+    const vector<Ship> getShips() const;
 };
 
 #endif

@@ -1,8 +1,9 @@
 #include "Ship.h"
+#include "Player.h"
 
 using namespace std;
 
-Ship::Ship(int i, char t): id(i), type(t)
+Ship::Ship(int i, char t, const Player& player): id(i), type(t), owner(&player)
 {
     switch(t)
     {
@@ -85,11 +86,21 @@ void Ship::setCoord(int yy, int xx)
     x=xx;
 }
 
+void Ship::setOwner(const Player& player)
+{
+    owner = &player;
+}
+
 string Ship::getCoord() const
 {
     ostringstream os;
     os << x << " " << y;
     return os.str();
+}
+
+const string Ship::getOwnerName() const
+{
+    return owner->getName();
 }
 
 string Ship::getInfo() const

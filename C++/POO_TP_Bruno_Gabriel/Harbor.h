@@ -9,16 +9,16 @@ class Harbor
 {
     const int y, x;
     const char id;
+    int soldiers;
     bool PFriend;
     
 public:
     Harbor(int yy, int xx, char a);
     Harbor(const Harbor& other) :
-    y(other.y), x(other.x), id(other.id), PFriend(other.PFriend) {}
+    y(other.y), x(other.x), id(other.id), soldiers(other.soldiers), PFriend(other.PFriend) {}
 
-    const char getId() const {
-        return id;
-    }
+    const char getId() const
+    {return id;}
 
     string getCoord() const;
     bool isFriend() const;

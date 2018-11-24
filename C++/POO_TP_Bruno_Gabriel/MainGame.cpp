@@ -33,6 +33,8 @@ void MainGameLoop()
 
         if(name.empty())
             mvwaddstr(stdscr, 1, 2, lang.getLine(8));
+        else if(name == "Pirates")
+            mvwaddstr(stdscr, 1, 2, "RESERVED NAME!"); //Temp. Error Message
     }
     while(name.empty());
 
@@ -81,6 +83,9 @@ void MainGameLoop()
             sturn << turn;
             mvwaddstr(wcmd, 1, strlen(lang.getLine(11)) + 1, sturn.str().c_str());
             wrefresh(wcmd);
+            map.readPlayerFleet(player);
+            map.readPlayerFleet(pirates);
+            
         }
         
         do  //Phase 1: Command parsing and Processing

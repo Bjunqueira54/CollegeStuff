@@ -44,11 +44,15 @@ public:
     //coins to the player's current balance.
     bool sellShip(int id);
     
+    //Returns the player's fleet vector for analysis
+    const vector<Ship> getFleet() const;
+    
     //Gets all the current friendly harbors from the Map class
     //and randomly picks one of them to become the main harbor
     //where newly bought ships will spawn.
     void setMainHarbor(const Harbor &main);
     
+    //Returns a copy on the player's main harbor.
     Harbor getMainHarbor() const;
 
     Player& operator=(const Player &orig);

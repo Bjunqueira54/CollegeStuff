@@ -34,7 +34,7 @@ bool Player::newShip(char t)
     {
         if(fleet.empty())
         {
-            fleet.push_back(Ship(1, t));
+            fleet.push_back(Ship(1, t, *this));
             fleet.begin()->setCoord(yy, xx);
             return true;
         }
@@ -44,7 +44,7 @@ bool Player::newShip(char t)
             {
                 if((id+1) != fleet[id].getId())
                 {
-                    Ship a(id+1, t);
+                    Ship a(id+1, t, *this);
                     a.setCoord(yy, xx);
                     auto it = fleet.begin();
                     it += id;
@@ -52,7 +52,7 @@ bool Player::newShip(char t)
                     return true;
                 }
             }
-            Ship a(id+1, t);
+            Ship a(id+1, t, *this);
             a.setCoord(yy, xx);
             fleet.push_back(a);
             return true;
@@ -95,6 +95,11 @@ bool Player::sellShip(int id)
         }
     }
     return false;
+}
+
+const vector<Ship> Player::getFleet() const
+{
+    return fleet;
 }
 
 string Player::getName() const

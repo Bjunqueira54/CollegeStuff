@@ -1,7 +1,8 @@
 #include "Harbor.h"
 #include "Player.h"
+#include "Functions.h"
 
-Harbor::Harbor(int yy, int xx, char a): y(yy), x(xx), id(a)
+Harbor::Harbor(int yy, int xx, char a): y(yy), x(xx), id(a), soldiers(settings.harborCrew())
 {
     if(id>='A' && id <='Z')
         PFriend = true;

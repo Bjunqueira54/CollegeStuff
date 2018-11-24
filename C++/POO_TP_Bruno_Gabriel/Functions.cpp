@@ -483,10 +483,10 @@ void drawMainMenu()
 void drawMap()
 {
     //Color Initialization
-    init_color(LAND_DARK, 0, 400, 0);
-    init_color(LAND_LIGHT, 200, 800, 200);
+    init_color(LAND_DARK, 545, 270, 75);
+    init_color(LAND_LIGHT, 870, 720, 530);
     
-    init_color(FRIENDLY, 250, 1000, 250);
+    init_color(FRIENDLY, 100, 750, 100);
     init_color(UNFRIENDLY, 500, 500, 500);
     
     //Pair creation
@@ -505,8 +505,8 @@ void drawMap()
     init_pair(8, COLOR_WHITE, LAND_LIGHT);
     
     //Harbor Tiles
-    init_pair(9, COLOR_WHITE, FRIENDLY);
-    init_pair(10, COLOR_WHITE, UNFRIENDLY);
+    init_pair(9, COLOR_BLACK, FRIENDLY);
+    init_pair(10, COLOR_BLACK, UNFRIENDLY);
     
     init_pair(TERM_DEFAULT, COLOR_WHITE, COLOR_BLACK);
     
@@ -516,49 +516,108 @@ void drawMap()
     drawBox(wmap);
     
     bool cc=true;
-
+    char tl, tr, bl, br;
+    
     for(int i=0; i<map.getMap().size(); i++)
     {
         cc = !cc;
         for(int j=0; j<map.getMap()[i].size(); j++)
         {
+            tl = tr = bl = br = ' ';
+            
+            if(((i*j) % 2) == 0)
+                cc = true;
+            else
+                cc = false;
+            
             switch(map.getMap()[i][j])
             {
                 case '.':
                     if(cc==true)
-                    {
                         wattron(wmap, COLOR_PAIR(1));
-                        cc = !cc;
-                    }
                     else
-                    {
                         wattron(wmap, COLOR_PAIR(4));
-                        cc = !cc;
-                    }
                     break;
                 case '+':
                     if(cc==true)
-                    {
                         wattron(wmap, COLOR_PAIR(7));
-                        cc = !cc;
+                    else
+                        wattron(wmap, COLOR_PAIR(8));
+                    break;
+                default:
+                    tr = map.getHarborByCoord(i, j)->getId();
+                    if(map.getHarborByCoord(i, j)->isFriend() == true)
+                    {
+                        wattron(wmap, COLOR_PAIR(9));
+                        bl = 'F';
+                        br = 'R';
                     }
                     else
                     {
-                        wattron(wmap, COLOR_PAIR(8));
-                        cc = !cc;
+                        wattron(wmap, COLOR_PAIR(10));
+                        bl='U';
+                        br='N';
                     }
                     break;
-                default:
-                    wattron(wmap, COLOR_PAIR(10));
-                    cc = !cc;
-                    break;
             }
-            mvwaddch(wmap, ((i+1)*2)-1, ((j+1)*2)-1, ' ');
-            mvwaddch(wmap, ((i+1)*2)-1, ((j+1)*2), ' ');
-            mvwaddch(wmap, ((i+1)*2), ((j+1)*2)-1, ' ');
-            mvwaddch(wmap, ((i+1)*2), ((j+1)*2), ' ');
+            mvwaddch(wmap, ((i+1)*2)-1, ((j+1)*2)-1, tl);  //Top Left
+            mvwaddch(wmap, ((i+1)*2)-1, ((j+1)*2), tr);    //Top Right
+            mvwaddch(wmap, ((i+1)*2), ((j+1)*2)-1, bl);    //Bottom Left
+            mvwaddch(wmap, ((i+1)*2), ((j+1)*2), br);      //Bottom Right
+            
             wrefresh(wmap);
         }
+    }
+    
+    for(int i=0; i<map.getShips().size(); i++)
+    {
+        istringstream is;
+        int x, y;
+        is.str(map.getShips()[i].getCoord());
+        
+        tl = tr = bl = br = ' ';
+        
+        is >> x;
+        is >> y;
+        
+        if(((x*y) % 2) == 0)
+            cc = true;
+        else
+            cc = false;
+        
+        if(map.getShips()[i].getOwnerName() == player.getName())
+        {
+            if(cc == true)
+                wattron(wmap, COLOR_PAIR(2));
+            else
+                wattron(wmap, COLOR_PAIR(5));
+        }
+        else if(map.getShips()[i].getOwnerName() == pirates.getName())
+        {
+            if(cc == true)
+                wattron(wmap, COLOR_PAIR(3));
+            else
+                wattron(wmap, COLOR_PAIR(6));
+        }
+        else
+        {
+            if(cc == true)
+                wattron(wmap, COLOR_PAIR(1));
+            else
+                wattron(wmap, COLOR_PAIR(4));
+        }
+        
+        ostringstream os;
+        
+        os << '0' << map.getShips()[i].getId();
+        
+        tr = os.str()[os.str().size()-1];
+        tl = os.str()[os.str().size()-2];
+        
+        mvwaddch(wmap, ((y+1)*2)-1, ((x+1)*2)-1, tl);  //Top Left
+        mvwaddch(wmap, ((y+1)*2)-1, ((x+1)*2), tr);    //Top Right
+        mvwaddch(wmap, ((y+1)*2), ((x+1)*2)-1, bl);    //Bottom Left
+        mvwaddch(wmap, ((y+1)*2), ((x+1)*2), br);      //Bottom Right
     }
     
     wrefresh(wmap);
@@ -702,7 +761,7 @@ int parseCmd(string cmd)
                     
                     settings = Settings(file);
                     file.close();
-                    Map map(filename);
+                    map = Map(filename);
                     
                     map.CreateHarborVector();
                     map.chooseMainHarbor(player);
@@ -839,6 +898,7 @@ int parseCmd(string cmd)
                         mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                         wrefresh(wcmd);
                     }
+                    map.readPlayerFleet(player);    //Not working?
                     break;
                 }
                 case 4: //sellship <N>      //Finished first definition. REQUIRES TESTING

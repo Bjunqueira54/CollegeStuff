@@ -1,6 +1,6 @@
 #include "Map.h"
+#include "Player.h"
 
-vector<string> Map::g_Map;
 vector<Harbor> Map::ports;
 
 Map::Map() {}
@@ -38,10 +38,29 @@ void Map::CreateHarborVector()
         {
             if((g_Map[y][x] >= 'A' && g_Map[y][x] <= 'Z') || (g_Map[y][x] >= 'a' && g_Map[y][x] <= 'z'))
             {
-                ports.push_back(Harbor(y, x, g_Map[y][x]));
+                char c = g_Map[y][x];
+                ports.push_back(Harbor(y, x, c));
             }
         }
     }
+}
+
+void Map::readPlayerFleet(const Player& player)
+{
+    for(int i=0; i<player.getFleet().size(); i++)
+    {
+        for(int j=0; j<ships.size(); j++)
+        {
+            if(player.getFleet()[i].getId() == ships[j].getId())
+                break;
+        }
+        ships.push_back(player.getFleet()[i]);
+    }
+}
+
+const vector<Ship> Map::getShips() const
+{
+    return ships;
 }
 
 void Map::chooseMainHarbor(Player &player)
@@ -63,11 +82,25 @@ void Map::chooseMainHarbor(Player &player)
     fPorts[j].becomeMain(player);
 }
 
-string Map::getHarborCoord(char id) const
+const string Map::getHarborCoord(char id) const
 {
     for(int i=0; i<ports.size(); i++)
         if(ports[i].getId() == id)
             return ports[i].getCoord();
+}
+
+const Harbor* Map::getHarborByCoord(int y, int x) const
+{
+    ostringstream os;
+    os << x << " " << y;
+    
+    for(int i=0; i<ports.size(); i++)
+    {
+        if(os.str() == ports[i].getCoord())
+            return &ports[i];
+    }
+    
+    return nullptr;
 }
 
 vector<string> Map::getMap() const

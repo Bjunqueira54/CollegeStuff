@@ -1,19 +1,19 @@
 Funcoes Gerais:
-    Config por defeito (Default Map, default Var values, etc) (config.cfg)
-    Funcao de desenhar o interface (drawUI)
-    Funcao de Leitura, parsing e execucao de comandos (parseCmd)
-    Ciclo para processamento dos comandos executados
+    Config por defeito (Default Map, default Var values, etc) (config.cfg)  - Done (?)
+    Funcao de desenhar o interface (drawUI)                                 - Done (?)
+    Funcao de Leitura, parsing e execucao de comandos (parseCmd)            - Done
+    Ciclo para processamento dos comandos executados                        - Done
     Ciclo para Combate de todos os inimigos que estejam adjacentes(BattleLoop)
     Ciclo para calcular probabilidades para eventos no mapa(EventLoop)
     Ciclo para criar um barco de piratas dependente de probabilidade (PirateLoop)
 
 Comandos que sao aceites:
 
-    config <Nome_do_ficheiro>
-    exec <Nome_do_ficheiro>
-    prox
-    compranav <Tipo>
-    vendenav <Tipo>
+    config <Nome_do_ficheiro>   - DONE (?)
+    exec <Nome_do_ficheiro>     - DONE (?)
+    prox                        - DONE
+    compranav <Tipo>            - DONE (?)
+    vendenav <Tipo>             - DONE (?)
     lista
     compra <Id> <Toneladas_Mercadoria>
     vende <Id>
@@ -23,17 +23,17 @@ Comandos que sao aceites:
     pirata <x> <y> <tipo> //Tipo = F ou V
     evpos <Evento> <x> <y>
     evnav <Evento> <Id>
-    moedas <Montante>
+    moedas <Montante>           - DONE (?)
     vaipara <Id> <Porto>
     comprasold <Id> <Montante>
     saveg <Nome>
     loadg <Nome>
     delg <Nome>
-    sair
+    sair                        - DONE (?)
 
 1. INTRODUÇÃO
 
-O jogo decorre nu mapa constituido por mar e terra, havendo também portos para os navios atracar
+O jogo decorre num mapa constituido por mar e terra, havendo também portos para os navios atracar
 Mapa tem assinalado zonas de mar, terra, portos e navios
 O jogo decorre por turnos:
 	- cada jogador decide as ações a realizar
@@ -74,9 +74,9 @@ Células de mar têm peixe que os navios de pesca podem pescar:
 3. OS PORTOS
 
 Um porto é caraterizado por:
-	- um nome (letra maiúscula)
-	- numero de soldados que o denfendem
-	- relação de amizade com o jogador (amigo/inimigo)
+	- um nome (letra maiúscula)     - letra minuscula tambem. DONE
+	- numero de soldados que o defendem - DONE
+	- relação de amizade com o jogador (amigo/inimigo) - Só com o jogador. DONE
 Os navios do jogador só podem entrar em portos amigos
 	- um porto não amigo ao jogador lutará com um navio que tente entrar
 	- se o navio ganhar o porto fica amigo
@@ -94,7 +94,7 @@ Todos os navios comprados pelo jogador aparecem no porto "principal":
 	- caso o porto "principal" for conquistado por piratas, o principal fica o outro porto inicial
 Se o jogador não tiver nenhum porto amigo, não poderá comprar navios (tem de conquistar um com os que tem)
 
-4. A FROTA E A TRIULAÇÃO
+4. A FROTA E A TRIPULAÇÃO
 
 
 5. EVENTOS, COMBATES, COMPRAS E VENDAS
@@ -112,11 +112,11 @@ METAS:
 
 META 1 - Prazo 25/11/18
 
-- configuração/leitura do mapa
-- visualização do mapa
-- interpretação de comandos
-- compra de navios
-- visualização do movimento dos navios (movimento aleatório nesta meta)
+- configuração/leitura do mapa  - DONE (?)
+- visualização do mapa          - Map and Harbors are done. Ships are not.
+- interpretação de comandos     - 7/20 Done
+- compra de navios              - Done?
+- visualização do movimento dos navios (movimento aleatório nesta meta) - Not started
 
 Relatório
 
