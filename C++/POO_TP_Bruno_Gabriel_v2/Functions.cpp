@@ -11,6 +11,7 @@
 using namespace std;
 
 Settings *settings;
+Map *map;
 
 vector <string> userDrawCustomMap(const Language lang)
 {
@@ -514,6 +515,28 @@ void drawMap()
     
     bool cc=true;
     char tl, tr, bl, br;
+    string line;
+    
+    for(int y=0; y<map->getMap().size(); y++)
+    {
+        line = map->getMap()[y];
+        for(int x=0; x<line.size(); x++)
+        {
+            switch(line[x])
+            {
+                case'.':
+                    break;
+                case'+':
+                    break;
+                case 'PLAYER SYMBOL HERE':
+                    break;
+                case 'PIRATE SYMBOL HERE':
+                    break;
+                default:    //Default == Harbors
+                    break;
+            }
+        }
+    }
 
     wrefresh(wmap);
 }
@@ -674,8 +697,7 @@ int parseCmd(string cmd)
                     while(!file.eof());
                     
                     settings = new Settings(setvals);
-                    
-                    //MISSING MAP CLASS. HANDLE IT!
+                    map = new Map(mapvals);
                     
                     phase = 2;
                     mvwaddstr(wcmd, 1, 1, lang.getLine(11));

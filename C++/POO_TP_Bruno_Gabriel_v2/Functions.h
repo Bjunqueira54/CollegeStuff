@@ -4,10 +4,11 @@
 #include "headers.h"
 #include "Language.h"
 #include "Settings.h"
+#include "Map.h"
 #include "Player.h"
 
 #define GAME_VERSION_MAJOR "0"
-#define GAME_VERSION_MINOR "18"
+#define GAME_VERSION_MINOR "19"
 
 #define MAP_MAXY 40     //Merchants and Pirates Max Height
 #define MAP_MAXX 120    //Merchants and Pirates Max Width
@@ -19,6 +20,7 @@ extern int phase;
 
 extern Language lang;
 extern Settings *settings;
+extern Map *map;
 extern Player *player;
 extern Player *pirates;
 
