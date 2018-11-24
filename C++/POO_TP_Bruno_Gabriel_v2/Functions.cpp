@@ -539,7 +539,7 @@ void drawMap()
             }
         }
     }
-
+    
     wrefresh(wmap);
 }
 
