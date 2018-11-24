@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/Consola.o \
 	${OBJECTDIR}/Functions.o \
+	${OBJECTDIR}/Harbor.o \
 	${OBJECTDIR}/Language.o \
 	${OBJECTDIR}/MainGame.o \
 	${OBJECTDIR}/Map.o \
@@ -79,6 +80,11 @@ ${OBJECTDIR}/Functions.o: Functions.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Functions.o Functions.cpp
+
+${OBJECTDIR}/Harbor.o: Harbor.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Harbor.o Harbor.cpp
 
 ${OBJECTDIR}/Language.o: Language.cpp
 	${MKDIR} -p ${OBJECTDIR}

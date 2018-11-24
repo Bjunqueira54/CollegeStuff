@@ -488,7 +488,7 @@ void drawMap()
     init_color(LAND_LIGHT, 870, 720, 530);
     
     init_color(FRIENDLY, 100, 750, 100);
-    init_color(UNFRIENDLY, 500, 500, 500);
+    init_color(UNFRIENDLY, 1000, 0, 0);
     
     //Pair creation
     
@@ -569,9 +569,19 @@ void drawMap()
                     cc = !cc;
                     break;
                 default:    //Default == Harbors
-                    wattron(wmap, COLOR_PAIR(10));
-                    //Find if harbor is friendly on unfriendly
-                    //set characters here
+                    tr = map->getHarborId(y+1, x+1);
+                    if(map->getHarborState(y+1, x+1) == true)
+                    {
+                        wattron(wmap, COLOR_PAIR(9));
+                        bl = 'F';
+                        br = 'R';
+                    }
+                    else
+                    {
+                        wattron(wmap, COLOR_PAIR(10));
+                        bl = 'U';
+                        br = 'N';
+                    }
                     cc = !cc;
                     break;
             }
