@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "Functions.h"
 
-Harbor::Harbor(int yy, int xx, char a): y(yy), x(xx), id(a), soldiers(settings.harborCrew())
+Harbor::Harbor(int yy, int xx, char a): y(yy), x(xx), id(a), soldiers(settings->harborCrew())
 {
     if(id>='A' && id <='Z')
         PFriend = true;
@@ -22,9 +22,9 @@ string Harbor::getCoord() const
     return os.str();
 }
 
-void Harbor::becomeMain(Player& player)
+void Harbor::becomeMain(Player* player)
 {
-    player.setMainHarbor(*this);
+    player->setMainHarbor(*this);
 }
 
 Harbor::~Harbor() {

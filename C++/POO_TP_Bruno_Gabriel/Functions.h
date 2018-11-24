@@ -21,10 +21,10 @@ class Map;
 
 extern WINDOW *wmap, *wcmd, *wlog;
 extern Language lang;
-extern Settings settings;
-extern Map map;
-extern Player player;
-extern Player pirates;
+extern Settings *settings;
+extern Map *map;
+extern Player *player;
+extern Player *pirates;
 extern int phase;
 
 ///Prototipos de funcoes

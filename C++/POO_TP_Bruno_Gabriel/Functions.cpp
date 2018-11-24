@@ -12,8 +12,8 @@
 
 using namespace std;
 
-Settings settings;
-Map map;
+Settings *settings;
+Map *map;
 
 vector <string> userDrawCustomMap(const Language lang)
 {
@@ -518,35 +518,36 @@ void drawMap()
     bool cc=true;
     char tl, tr, bl, br;
     
-    for(int i=0; i<map.getMap().size(); i++)
+    for(int i=0; i<map->getMap().size(); i++)
     {
-        cc = !cc;
-        for(int j=0; j<map.getMap()[i].size(); j++)
+        if((i%2) == 0)
+            cc = true;
+        else
+            cc = false;
+        
+        for(int j=0; j<map->getMap()[i].size(); j++)
         {
             tl = tr = bl = br = ' ';
-            
-            if(((i*j) % 2) == 0)
-                cc = true;
-            else
-                cc = false;
-            
-            switch(map.getMap()[i][j])
+
+            switch(map->getMap()[i][j])
             {
                 case '.':
                     if(cc==true)
                         wattron(wmap, COLOR_PAIR(1));
                     else
                         wattron(wmap, COLOR_PAIR(4));
+                    cc=!cc;
                     break;
                 case '+':
                     if(cc==true)
                         wattron(wmap, COLOR_PAIR(7));
                     else
                         wattron(wmap, COLOR_PAIR(8));
+                    cc=!cc;
                     break;
                 default:
-                    tr = map.getHarborByCoord(i, j)->getId();
-                    if(map.getHarborByCoord(i, j)->isFriend() == true)
+                    tr = map->getHarborByCoord(i, j)->getId();
+                    if(map->getHarborByCoord(i, j)->isFriend() == true)
                     {
                         wattron(wmap, COLOR_PAIR(9));
                         bl = 'F';
@@ -558,6 +559,7 @@ void drawMap()
                         bl='U';
                         br='N';
                     }
+                    cc=!cc;
                     break;
             }
             mvwaddch(wmap, ((i+1)*2)-1, ((j+1)*2)-1, tl);  //Top Left
@@ -568,58 +570,7 @@ void drawMap()
             wrefresh(wmap);
         }
     }
-    
-    for(int i=0; i<map.getShips().size(); i++)
-    {
-        istringstream is;
-        int x, y;
-        is.str(map.getShips()[i].getCoord());
-        
-        tl = tr = bl = br = ' ';
-        
-        is >> x;
-        is >> y;
-        
-        if(((x*y) % 2) == 0)
-            cc = true;
-        else
-            cc = false;
-        
-        if(map.getShips()[i].getOwnerName() == player.getName())
-        {
-            if(cc == true)
-                wattron(wmap, COLOR_PAIR(2));
-            else
-                wattron(wmap, COLOR_PAIR(5));
-        }
-        else if(map.getShips()[i].getOwnerName() == pirates.getName())
-        {
-            if(cc == true)
-                wattron(wmap, COLOR_PAIR(3));
-            else
-                wattron(wmap, COLOR_PAIR(6));
-        }
-        else
-        {
-            if(cc == true)
-                wattron(wmap, COLOR_PAIR(1));
-            else
-                wattron(wmap, COLOR_PAIR(4));
-        }
-        
-        ostringstream os;
-        
-        os << '0' << map.getShips()[i].getId();
-        
-        tr = os.str()[os.str().size()-1];
-        tl = os.str()[os.str().size()-2];
-        
-        mvwaddch(wmap, ((y+1)*2)-1, ((x+1)*2)-1, tl);  //Top Left
-        mvwaddch(wmap, ((y+1)*2)-1, ((x+1)*2), tr);    //Top Right
-        mvwaddch(wmap, ((y+1)*2), ((x+1)*2)-1, bl);    //Bottom Left
-        mvwaddch(wmap, ((y+1)*2), ((x+1)*2), br);      //Bottom Right
-    }
-    
+
     wrefresh(wmap);
 }
 
@@ -759,12 +710,12 @@ int parseCmd(string cmd)
                     wclrtoeol(wcmd);
                     mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                     
-                    settings = Settings(file);
+                    settings = new Settings(file);
                     file.close();
-                    map = Map(filename);
+                    map = new Map(filename);
                     
-                    map.CreateHarborVector();
-                    map.chooseMainHarbor(player);
+                    map->CreateHarborVector();
+                    map->chooseMainHarbor(player);
                     
                     phase = 2;
                     mvwaddstr(wcmd, 1, 1, lang.getLine(11));
@@ -822,8 +773,8 @@ int parseCmd(string cmd)
                     is >> type;
 
                     if(type=="V" || type=="v")
-                        if(player.getMoney() > PRICE_SAILBOAT)
-                            status = player.newShip('V');
+                        if(player->getMoney() > PRICE_SAILBOAT)
+                            status = player->newShip('V');
                         else    //Temporary error
                         {
                             mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Not enough money!");
@@ -834,8 +785,8 @@ int parseCmd(string cmd)
                             return false;
                         }
                     else if(type=="G" || type=="g")
-                        if(player.getMoney() > PRICE_GALEON)
-                            status = player.newShip('G');
+                        if(player->getMoney() > PRICE_GALEON)
+                            status = player->newShip('G');
                         else    //Temporary error
                         {
                             mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Not enough money!");
@@ -846,8 +797,8 @@ int parseCmd(string cmd)
                             return false;
                         }
                     else if(type=="E" || type=="e")
-                        if(player.getMoney() > PRICE_SCHOONER)
-                            status = player.newShip('E');
+                        if(player->getMoney() > PRICE_SCHOONER)
+                            status = player->newShip('E');
                         else    //Temporary error
                         {
                             mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Not enough money!");
@@ -858,8 +809,8 @@ int parseCmd(string cmd)
                             return false;
                         }
                     else if(type=="F" || type == "f")
-                        if(player.getMoney() > PRICE_FRIGATE)
-                            status = player.newShip('F');
+                        if(player->getMoney() > PRICE_FRIGATE)
+                            status = player->newShip('F');
                         else    //Temporary error
                         {
                             mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Not enough money!");
@@ -870,8 +821,8 @@ int parseCmd(string cmd)
                             return false;
                         }
                     else if(type=="S" || type=="s")
-                        if(player.getMoney() > PRICE_SPECIAL)
-                            status = player.newShip('S');
+                        if(player->getMoney() > PRICE_SPECIAL)
+                            status = player->newShip('S');
                         else    //Temporary error
                         {
                             mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "Not enough money!");
@@ -898,14 +849,13 @@ int parseCmd(string cmd)
                         mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
                         wrefresh(wcmd);
                     }
-                    map.readPlayerFleet(player);    //Not working?
                     break;
                 }
                 case 4: //sellship <N>      //Finished first definition. REQUIRES TESTING
                 {
                     int id;
                     is >> id;
-                    if(player.sellShip(id))
+                    if(player->sellShip(id))
                         mvwaddstr(wlog, 1, 1, "Ship sold!");    //Temp. Strings, delete later.
                     else
                         mvwaddstr(wlog, 2, 1, "Error selling ship!");
@@ -984,7 +934,7 @@ int parseCmd(string cmd)
                 {
                     int n;
                     is >> n;
-                    player.addMoney(n);
+                    player->addMoney(n);
                     break;
                 }
                 case 15:    //moveto <N> <x> <y> OR moveto <N> <P>

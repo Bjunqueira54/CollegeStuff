@@ -38,8 +38,8 @@ void MainGameLoop()
     }
     while(name.empty());
 
-    player = Player(name);
-    pirates = Player("Pirates");
+    *player = new Player(name);
+    *pirates = new Player("Pirates");
 
     clear();
 

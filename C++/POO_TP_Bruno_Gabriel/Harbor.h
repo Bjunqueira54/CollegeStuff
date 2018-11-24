@@ -22,7 +22,7 @@ public:
 
     string getCoord() const;
     bool isFriend() const;
-    void becomeMain(Player &player);
+    void becomeMain(Player *player);
     
     ~Harbor();
 };

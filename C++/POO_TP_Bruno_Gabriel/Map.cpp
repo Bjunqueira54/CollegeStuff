@@ -45,25 +45,12 @@ void Map::CreateHarborVector()
     }
 }
 
-void Map::readPlayerFleet(const Player& player)
-{
-    for(int i=0; i<player.getFleet().size(); i++)
-    {
-        for(int j=0; j<ships.size(); j++)
-        {
-            if(player.getFleet()[i].getId() == ships[j].getId())
-                break;
-        }
-        ships.push_back(player.getFleet()[i]);
-    }
-}
-
 const vector<Ship> Map::getShips() const
 {
     return ships;
 }
 
-void Map::chooseMainHarbor(Player &player)
+void Map::chooseMainHarbor(Player *player)
 {
     vector<Harbor> fPorts;
     int j;

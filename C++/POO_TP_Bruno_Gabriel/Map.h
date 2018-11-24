@@ -20,8 +20,7 @@ public:
     Map& operator=(const Map &orig);
     
     void CreateHarborVector();
-    void readPlayerFleet(const Player &player);
-    void chooseMainHarbor(Player &player);
+    void chooseMainHarbor(Player *player);
     
     const string getHarborCoord(char id) const;
     const Harbor* getHarborByCoord(int y, int x) const;
