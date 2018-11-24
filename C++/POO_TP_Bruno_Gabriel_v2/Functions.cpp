@@ -809,7 +809,7 @@ int parseCmd(string cmd)
                     char type;
                     bool status;
                     is >> type;
-
+ 
                     if(type != 'E' && type != 'e' &&
                             type != 'F' && type != 'f' &&
                             type != 'V' && type != 'v' &&
