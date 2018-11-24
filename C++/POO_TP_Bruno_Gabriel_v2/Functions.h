@@ -7,7 +7,7 @@
 #include "Player.h"
 
 #define GAME_VERSION_MAJOR "0"
-#define GAME_VERSION_MINOR "17"
+#define GAME_VERSION_MINOR "18"
 
 #define MAP_MAXY 40     //Merchants and Pirates Max Height
 #define MAP_MAXX 120    //Merchants and Pirates Max Width
