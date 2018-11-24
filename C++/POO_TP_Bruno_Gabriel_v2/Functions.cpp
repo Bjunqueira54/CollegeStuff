@@ -480,6 +480,9 @@ void drawMainMenu()
 
 void drawMap()
 {
+    if(phase == 1)
+        return;
+    
     //Color Initialization
     init_color(LAND_DARK, 545, 270, 75);
     init_color(LAND_LIGHT, 870, 720, 530);
@@ -519,27 +522,66 @@ void drawMap()
     
     for(int y=0; y<map->getMap().size(); y++)
     {
+        cc = !cc;
         line = map->getMap()[y];
+        
         for(int x=0; x<line.size(); x++)
         {
+            tl = bl = tr = br = ' ';
             switch(line[x])
             {
                 case'.':    //Water
+                    if(cc == true)
+                        wattron(wmap, COLOR_PAIR(1));
+                    else
+                        wattron(wmap, COLOR_PAIR(4));
+                    cc = !cc;
                     break;
                 case'+':    //Land
+                    if(cc == true)
+                        wattron(wmap, COLOR_PAIR(7));
+                    else
+                        wattron(wmap, COLOR_PAIR(8));
+                    cc = !cc;
                     break;
                 case '^':   //Player Ship
+                    if(cc == true)
+                        wattron(wmap, COLOR_PAIR(2));
+                    else
+                        wattron(wmap, COLOR_PAIR(5));
+                    //set characters here
+                    cc = !cc;
                     break;
                 case '*':   //Pirate Ship
+                    if(cc == true)
+                        wattron(wmap, COLOR_PAIR(3));
+                    else
+                        wattron(wmap, COLOR_PAIR(6));
+                    //set characters here
+                    cc = !cc;
                     break;
                 case '?':      //Lost Ship
+                    if(cc == true)
+                        wattron(wmap, COLOR_PAIR(1));
+                    else
+                        wattron(wmap, COLOR_PAIR(4));
+                    //set characters here
+                    cc = !cc;
                     break;
                 default:    //Default == Harbors
+                    wattron(wmap, COLOR_PAIR(10));
+                    //Find if harbor is friendly on unfriendly
+                    //set characters here
+                    cc = !cc;
                     break;
             }
+            
+            mvwaddch(wmap, ((y+1)*2)-1, ((x+1)*2)-1, tl);
+            mvwaddch(wmap, ((y+1)*2)-1, ((x+1)*2), tr);
+            mvwaddch(wmap, ((y+1)*2), ((x+1)*2)-1, bl);
+            mvwaddch(wmap, ((y+1)*2), ((x+1)*2), br);
         }
     }
-    
     wrefresh(wmap);
 }
 
@@ -678,8 +720,6 @@ int parseCmd(string cmd)
                     mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, success.c_str());
                     wclrtoeol(wcmd);
                     mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
-                    
-                    //READ FROM CONFIG FILE INTO 2 STRING VECTOR TO CONSTRUCT SETTINGS AND MAP!
                     
                     string input;
                     vector<string> mapvals, setvals;

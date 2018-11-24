@@ -2,11 +2,13 @@
 #define PLAYER_H
 
 #include "headers.h"
+#include "Ship.h"
 
 class Player
 {
     const string *name;
     int money;
+    vector<Ship*> fleet;
     
 public:
     
@@ -16,15 +18,18 @@ public:
     
     Player& operator=(const Player& orig);
     
-    const string GetName() const
-    {return *name;}
+    //Get
     
-    int GetMoney() const
-    {return money;}
+    const string GetName() const {return *name;}
+    int GetMoney() const {return money;}
+    vector<Ship*> GetFleet() const {return fleet;}
 
+    //Set
+    
     void SetMoney(int money)
     {this->money = money;}
-
+    
+    void newShip(char t);
     
     virtual ~Player();
 };

@@ -122,4 +122,9 @@ void MainGameLoop()
     delwin(wmap);
     delwin(wcmd);
     delwin(wlog);
+    
+    delete settings;
+    delete player;
+    delete pirates;
+    delete map;
 }
