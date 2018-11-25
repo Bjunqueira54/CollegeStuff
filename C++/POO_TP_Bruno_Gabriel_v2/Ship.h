@@ -21,8 +21,12 @@ class Ship
     int crew;
     int fish;
     int cargo;
+    int movesl;
     
     int y, x;
+    int dy, dx;
+    
+    bool inHarbor;
     
 public:
     
@@ -36,6 +40,7 @@ public:
     int GetCargo() const {return cargo;}
     int GetCrew() const {return crew;}
     int GetFish() const {return fish;}
+    int GetMovesl() const {return movesl;}
     const int GetId() const {return *id;}
     const int GetMaxcrew() const {return *maxcrew;}
     const int GetMaxload() const {return *maxload;}
@@ -43,15 +48,18 @@ public:
     const int GetMoves() const {return *moves;}
     const char GetType() const {return *type;}
     int GetWater() const {return water;}
+    bool IsInHarbor() const {return inHarbor;}
+    Player* getOwner() const {return owner;}
     string GetCoord() const;
+    string GetDest() const;
     
     //SET
     
     void setOwner(const Player &player);
-    
-    
-    Player* getOwner() const {return owner;}
-    
+    void setDest(int yy, int xx);
+    void setMovesl(int n);
+    void turnSet();
+
     virtual ~Ship();
 };
 

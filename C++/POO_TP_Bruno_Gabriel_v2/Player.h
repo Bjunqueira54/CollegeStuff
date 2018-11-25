@@ -34,7 +34,9 @@ public:
     void addMoney(int n) {money += n;}
     void SetMainHarbor(Harbor* main) {MainHarbor = main;}
     
-    void newShip(char t);
+    Ship* newShip(char t);
+    bool sellShip(int id);
+    void turnSet();
     
     virtual ~Player();
 };

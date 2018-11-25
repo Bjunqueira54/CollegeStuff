@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "Harbor.h"
+#include "Functions.h"
 
 Player::Player()
 {
@@ -39,7 +39,7 @@ const string Player::getMainHarborCoord() const
     return MainHarbor->getCoord();
 }
 
-void Player::newShip(char t)
+Ship* Player::newShip(char t)
 {
     int id;
     
@@ -47,7 +47,7 @@ void Player::newShip(char t)
     {
         fleet[0] = new Ship(1, t, *this);
         
-        return;
+        return fleet[0];
     }
     
     for(id=0; id<fleet.size(); id++)
@@ -56,11 +56,31 @@ void Player::newShip(char t)
         {
             auto it = fleet.begin() + id;
             fleet.insert(it, new Ship(id, t, *this));
-            return;
+            return fleet[id];
         }
     }
     fleet.push_back(new Ship(id, t, *this));
-    return;
+    return fleet[id];
+}
+
+bool Player::sellShip(int id)
+{
+    for(int i=0; i<fleet.size(); i++)
+    {
+        if(fleet[i]->GetId() == id)
+        {
+            auto it = fleet.begin() + i;
+            fleet.erase(it);
+            return true;
+        }
+    }
+    return false;
+}
+
+void Player::turnSet()
+{
+    for(int i=0; i<fleet.size(); i++)
+        fleet[i]->turnSet();
 }
 
 Player::~Player()

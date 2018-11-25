@@ -63,7 +63,6 @@ void MainGameLoop()
         ostringstream sturn;
 
         {
-            drawBox(wmap);  //drawBox() already exists within drawMap(). Consider removing from here.
             drawMap();
             drawBox(wcmd);
             drawBox(wlog);
@@ -112,10 +111,9 @@ void MainGameLoop()
         if(status == 20)
             break;
         
-        //IMPLEMENT PHASE 2 HERE
-        /*
-         
-         */
+        //PHASE 2
+        
+        player->turnSet();
     }
     while(cmd != lang.getCmd(20));
     

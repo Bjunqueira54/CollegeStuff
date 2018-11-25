@@ -480,9 +480,6 @@ void drawMainMenu()
 
 void drawMap()
 {
-    if(phase == 1)
-        return;
-    
     //Color Initialization
     init_color(LAND_DARK, 545, 270, 75);
     init_color(LAND_LIGHT, 870, 720, 530);
@@ -515,6 +512,9 @@ void drawMap()
 
     wclear(wmap);
     drawBox(wmap);
+    
+    if(phase == 1)
+        return;
     
     bool cc=true;
     char tl, tr, bl, br;
@@ -550,6 +550,9 @@ void drawMap()
                     else
                         wattron(wmap, COLOR_PAIR(5));
                     //set characters here
+                    //Placeholder characters
+                    tl = bl = '<';
+                    tr = br = '>';
                     cc = !cc;
                     break;
                 case '*':   //Pirate Ship
@@ -558,6 +561,8 @@ void drawMap()
                     else
                         wattron(wmap, COLOR_PAIR(6));
                     //set characters here
+                    //Placeholder characters
+                    tl = tr = bl = br = '*';
                     cc = !cc;
                     break;
                 case '?':      //Lost Ship
@@ -566,11 +571,12 @@ void drawMap()
                     else
                         wattron(wmap, COLOR_PAIR(4));
                     //set characters here
+                    tl = tr = bl = br = '@';
                     cc = !cc;
                     break;
                 default:    //Default == Harbors
-                    tr = map->getHarborId(y+1, x+1);
-                    if(map->getHarborState(y+1, x+1) == true)
+                    tr = map->getHarborId(y, x);
+                    if(map->getHarborState(y, x) == true)
                     {
                         wattron(wmap, COLOR_PAIR(9));
                         bl = 'F';
@@ -749,6 +755,7 @@ int parseCmd(string cmd)
                     while(!file.eof());
                     
                     settings = new Settings(setvals);
+                    player->SetMoney(settings->GetStartmoney());
                     map = new Map(mapvals);
                     map->setMainHarbors();
                     
@@ -801,7 +808,7 @@ int parseCmd(string cmd)
                     return 2;
                     break;
                 }
-                case 3: //buyship <T>       //Finished first definition. REQUIRES TESTING
+                case 3: //buyship <T>       //Should be working as intended. REQUIRES STRINGS AND TESTING
                 {
                     if(settings->GetShipprice() > player->GetMoney())
                         return -1;
@@ -809,7 +816,7 @@ int parseCmd(string cmd)
                     char type;
                     bool status;
                     is >> type;
- 
+
                     if(type != 'E' && type != 'e' &&
                             type != 'F' && type != 'f' &&
                             type != 'V' && type != 'v' &&
@@ -818,8 +825,8 @@ int parseCmd(string cmd)
                         return -1;
                     else
                     {
-                        player->newShip(type);
-                        player->addMoney(-settings->GetShipprice());
+                        map->newShip(type);
+                        player->addMoney(0-settings->GetShipprice());
                     }
                     return i;
 
@@ -829,9 +836,13 @@ int parseCmd(string cmd)
                 {
                     int id;
                     is >> id;
+                    if(!is.good())
+                        return -1;
                     
-                    //create sellShip() here;
-                    
+                    if(map->sellShip(id) == true)
+                        player->addMoney(settings->GetShipprice());
+                    else
+                        return -1;
                     break;
                 }
                 case 5: //list
@@ -854,13 +865,18 @@ int parseCmd(string cmd)
                     /*Create sellCargo(int n) method to Ship class*/
                     break;
                 }
-                case 8: //move <N> <X>
+                case 8: //move <N> <X>      //Should be working as intended. READY FOR BETA TEST.
                 {
                     int n;
-                    char x;
+                    string x;
                     is >> n;
+                    if(!is.good())
+                        return -1;
+                    
                     is >> x;
-                    /*Create move(int x, char x) method to Ship Class*/
+                    
+                    map->move(n, x);
+                    
                     break;
                 }
                 case 9: //auto <N>
@@ -907,9 +923,10 @@ int parseCmd(string cmd)
                 {
                     int n;
                     is >> n;
-
-                    //create addMoney() here
-
+                    if(!is.good())
+                        return -1;
+                    
+                    player->SetMoney(n);
                     break;
                 }
                 case 15:    //moveto <N> <x> <y> OR moveto <N> <P>

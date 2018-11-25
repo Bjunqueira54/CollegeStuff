@@ -3,23 +3,13 @@
 
 Ship::Ship()
 {
-    id = new int(0);
+    id = maxwater = maxcrew = maxload = moves = new int(0);
     type = new char('\0');
-    
-    maxwater = new int(0);
-    maxcrew = new int(0);
-    maxload = new int(0);
-    moves = new int(0);
     
     owner = nullptr;
     
-    water = 0;
-    crew = 0;
-    fish = 0;
-    cargo = 0;
-    
-    y=0;
-    x=0;
+    water = crew = fish = cargo = movesl = y = dy = x = dx = 0;
+    inHarbor = false;
 }
 
 Ship::Ship(int i, char t, Player& p)
@@ -73,12 +63,16 @@ Ship::Ship(int i, char t, Player& p)
     crew = *maxcrew;
     fish = 0;
     cargo = 0;
+    movesl = *moves;
     
 
     istringstream is;
     is.str(owner->getMainHarborCoord());
     is >> y;
     is >> x;
+    dy = y;
+    dx = x;
+    inHarbor = true;
 }
 
 Ship::Ship(const Ship& orig)
@@ -103,11 +97,19 @@ Ship::Ship(const Ship& orig)
     crew = orig.GetCrew();
     fish = orig.GetFish();
     cargo = orig.GetCargo();
+    movesl = orig.GetMovesl();
     
     istringstream is;
     is.str(orig.GetCoord());
     is >> y;
     is >> x;
+    
+    istringstream ds;
+    ds.str(orig.GetDest());
+    is >> dy;
+    is >> dx;
+    
+    inHarbor = orig.IsInHarbor();
 }
 
 Ship& Ship::operator =(const Ship& orig)
@@ -135,6 +137,19 @@ Ship& Ship::operator =(const Ship& orig)
     crew = orig.GetCrew();
     fish = orig.GetFish();
     cargo = orig.GetCargo();
+    movesl = orig.GetMovesl();
+    
+    istringstream is;
+    is.str(orig.GetCoord());
+    is >> y;
+    is >> x;
+    
+    istringstream ds;
+    ds.str(orig.GetDest());
+    is >> dy;
+    is >> dx;
+    
+    inHarbor = orig.IsInHarbor();
 }
 
 string Ship::GetCoord() const
@@ -142,6 +157,33 @@ string Ship::GetCoord() const
     ostringstream os;
     os << y << " " << x;
     return os.str();
+}
+
+string Ship::GetDest() const
+{
+    ostringstream os;
+    os << dy << " " << dx;
+    return os.str();
+}
+
+void Ship::setDest(int yy, int xx)
+{
+    dy = yy;
+    dx = xx;
+}
+
+void Ship::setMovesl(int n)
+{
+    movesl = movesl - n;
+}
+
+void Ship::turnSet()
+{
+    y = dy;
+    x = dx;
+    movesl = *moves;
+    if(water > 0)
+        water -= crew;
 }
 
 Ship::~Ship()
