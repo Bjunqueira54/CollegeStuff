@@ -96,6 +96,9 @@ bool Player::sellShip(int id)
 
 void Player::turnSet()
 {
+    if(fleet.empty() || fleet[0] == nullptr)
+        return;
+    
     for(int i=0; i<fleet.size(); i++)
         fleet[i]->turnSet();
 }
