@@ -26,7 +26,7 @@ vector <string> userDrawCustomMap(const Language lang)
     int y=1, x=1;
     int w=0, l=0;
     int spaces=0;
-    vector<string>Map;
+    vector<string>g_map;
     
     mvwaddstr(wlog, 3, 1, lang.getLine(43));
     mvwaddstr(wlog, 4, 1, lang.getLine(45));
@@ -35,6 +35,7 @@ vector <string> userDrawCustomMap(const Language lang)
     keypad(stdscr, TRUE);
     curs_set(TRUE);
     wmove(cmap, 1, 1);
+    mvwaddch(cmap, 1, 1, ' ');
     wrefresh(cmap);
     
     do
@@ -124,17 +125,16 @@ vector <string> userDrawCustomMap(const Language lang)
                 break;
             }
         }
-        
-        Map.push_back(line);
+        g_map.push_back(line);
     }
     
     //Detect empty spaces here
     if(spaces == 1)
     {
-        for(int i=0; i<Map.size(); i++)
-            for(int j=0; j<Map[i].size(); j++)
-                if(Map[i][j] == ' ')
-                    Map[i][j] = '.';
+        for(int i=0; i<g_map.size(); i++)
+            for(int j=0; j<g_map[i].size(); j++)
+                if(g_map[i][j] == ' ')
+                    g_map[i][j] = '.';
     }
     
     curs_set(FALSE);
@@ -143,10 +143,10 @@ vector <string> userDrawCustomMap(const Language lang)
     wrefresh(cmap);
     delwin(cmap);
     
-    wmap = subwin(stdscr, 20, 40, 0, 0);
+    wmap = subwin(stdscr, 22, 42, 0, 0);
     drawBox(wmap);
     
-    return Map;
+    return g_map;
 }
 
 string getInput(WINDOW *win = stdscr, int str_size=20)
@@ -299,11 +299,11 @@ void createDefaultConfig(char opt, string &filename, const Language lang)
 
         if(opt=='Y' || opt=='y' || opt=='S' || opt=='s')
         {
-            vector<string> Map;
-            Map = userDrawCustomMap(lang);
+            vector<string> g_map;
+            g_map = userDrawCustomMap(lang);
             
-            for(int i=0; i<=Map.size(); i++)
-                file << Map[i] << endl;
+            for(int i=0; i<=g_map.size(); i++)
+                file << g_map[i] << endl;
         }
         else
         {
@@ -545,16 +545,21 @@ void drawMap()
                     cc = !cc;
                     break;
                 case '^':   //Player Ship
+                {
                     if(cc == true)
                         wattron(wmap, COLOR_PAIR(2));
                     else
                         wattron(wmap, COLOR_PAIR(5));
                     //set characters here
-                    //Placeholder characters
-                    tl = bl = '<';
-                    tr = br = '>';
+                    ostringstream ct;
+                    ct << "0" << map->getShipId(y, x);
+                    tr = ct.str()[ct.str().size()-1];
+                    tl = ct.str()[ct.str().size()-2];
+                    br = map->getShipType(y, x);
+                    bl = '<';
                     cc = !cc;
                     break;
+                }
                 case '*':   //Pirate Ship
                     if(cc == true)
                         wattron(wmap, COLOR_PAIR(3));
@@ -836,8 +841,6 @@ int parseCmd(string cmd)
                 {
                     int id;
                     is >> id;
-                    if(!is.good())
-                        return -1;
                     
                     if(map->sellShip(id) == true)
                         player->addMoney(settings->GetShipprice());
@@ -932,6 +935,25 @@ int parseCmd(string cmd)
                 case 15:    //moveto <N> <x> <y> OR moveto <N> <P>
                 {
                     /*No idea. Move N to (x,y) or move N to Harbor P*/
+                    int id, x, y;
+                    char h;
+                    
+                    is >> id;
+                    
+                    is >> x;
+                    
+                    if(!is.good())
+                    {
+                        is.clear();
+                        is >> h;
+                        //map->moveto(id, h);
+                    }
+                    else
+                    {
+                        is >> y;
+                        //map->moveto(id, y, x);
+                    }
+                    
                     break;
                 }
                 case 16:    //buycrew <N> <S>

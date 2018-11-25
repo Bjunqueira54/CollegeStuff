@@ -34,6 +34,8 @@ public:
     
     const bool getHarborState(int y, int x) const;
     const char getHarborId(int y, int x) const;
+    const int getShipId(int y, int x) const;
+    const char getShipType(int y, int x) const;
     
     //Sets
     

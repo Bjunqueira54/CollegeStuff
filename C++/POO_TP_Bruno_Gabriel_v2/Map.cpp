@@ -94,6 +94,28 @@ const char Map::getHarborId(int y, int x) const
     return ' ';
 }
 
+const int Map::getShipId(int y, int x) const
+{
+    ostringstream os;
+    os << y << " " << x;
+    for(int i=0; i<g_ships.size(); i++)
+    {
+        if(g_ships[i]->GetCoord() == os.str())
+            return g_ships[i]->GetId();
+    }
+    return 0;
+}
+
+const char Map::getShipType(int y, int x) const
+{
+    ostringstream os;
+    os << y << " " << x;
+    for(int i=0; i<g_ships.size(); i++)
+        if(g_ships[i]->GetCoord() == os.str())
+            return g_ships[i]->GetType();
+    return '\0';
+}
+
 void Map::setHarbors()
 {
     for(int y=0; y<g_map.size(); y++)
@@ -108,6 +130,9 @@ void Map::setHarbors()
 
 void Map::setMainHarbors()
 {
+    if(harbors.empty())
+        return;
+    
     vector<Harbor*> fports;
     
     for(int i=0; i<harbors.size(); i++)
@@ -233,9 +258,13 @@ bool Map::move(int id, char c)
     
     if(!((g_map[y][x]>='A' && g_map[y][x]<='Z') || (g_map[y][x]>='a' && g_map[y][x]<='z')))
         g_map[y][x] = '.';
+    else
+        g_ships[id]->toggleHarbor();
     
     if(!( (g_map[dy][dx]>='A' && g_map[dy][dx]<='Z') || (g_map[dy][dx]>='a' && g_map[dy][dx]<='z') ))
         g_map[dy][dx] = '^';
+    else
+        g_ships[id]->toggleHarbor();
     
     return true;
 }

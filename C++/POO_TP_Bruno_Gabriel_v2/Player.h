@@ -27,6 +27,7 @@ public:
     int GetMoney() const {return money;}
     vector<Ship*> GetFleet() const {return fleet;}
     const string getMainHarborCoord() const;
+    Harbor* getMainHarbor() const;
 
     //Set
     

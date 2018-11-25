@@ -18,7 +18,7 @@ Comandos que sao aceites:
     compra <Id> <Toneladas_Mercadoria>
     vende <Id>
     move <Id> <Dir> //Dir= D, E, C, B, CE, CD, BE, BD
-    auto <Id>
+    auto <Id>3
     stop <Id>
     pirata <x> <y> <tipo> //Tipo = F ou V
     evpos <Evento> <x> <y>
@@ -205,11 +205,11 @@ METAS:
 
 META 1 - Prazo 25/11/18
 
-- configuração/leitura do mapa
-- visualização do mapa
-- interpretação de comandos
-- compra de navios
-- visualização do movimento dos navios (movimento aleatório nesta meta)
+- configuração/leitura do mapa  - DONE
+- visualização do mapa          - DONE
+- interpretação de comandos     - COMMANDS RECOGNIZED BUT NOT ALL OF THEM ARE PROCESSED
+- compra de navios              - BUYS AT LEAST 1 SHIP, DONE.
+- visualização do movimento dos navios (movimento aleatório nesta meta) - DONE, COMMAND "move <n> <x>"
 
 Relatório
 

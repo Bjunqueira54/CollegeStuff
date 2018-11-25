@@ -9,7 +9,7 @@ Ship::Ship()
     owner = nullptr;
     
     water = crew = fish = cargo = movesl = y = dy = x = dx = 0;
-    inHarbor = false;
+    inHarbor = Moving = false;
 }
 
 Ship::Ship(int i, char t, Player& p)
@@ -73,6 +73,7 @@ Ship::Ship(int i, char t, Player& p)
     dy = y;
     dx = x;
     inHarbor = true;
+    Moving = false;
 }
 
 Ship::Ship(const Ship& orig)
@@ -110,6 +111,7 @@ Ship::Ship(const Ship& orig)
     is >> dx;
     
     inHarbor = orig.IsInHarbor();
+    Moving = orig.IsMoving();
 }
 
 Ship& Ship::operator =(const Ship& orig)
@@ -150,6 +152,7 @@ Ship& Ship::operator =(const Ship& orig)
     is >> dx;
     
     inHarbor = orig.IsInHarbor();
+    Moving = orig.IsMoving();
 }
 
 string Ship::GetCoord() const

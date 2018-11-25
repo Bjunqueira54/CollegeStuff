@@ -27,6 +27,7 @@ class Ship
     int dy, dx;
     
     bool inHarbor;
+    bool Moving;
     
 public:
     
@@ -49,12 +50,15 @@ public:
     const char GetType() const {return *type;}
     int GetWater() const {return water;}
     bool IsInHarbor() const {return inHarbor;}
+    bool IsMoving() const {return Moving;}
+
     Player* getOwner() const {return owner;}
     string GetCoord() const;
     string GetDest() const;
     
     //SET
     
+    void toggleHarbor() {inHarbor = !inHarbor;}
     void setOwner(const Player &player);
     void setDest(int yy, int xx);
     void setMovesl(int n);
