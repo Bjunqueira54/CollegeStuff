@@ -93,4 +93,5 @@ int main(int argc, char** argv)
     }
 
     while(ParseCommands(&params, options, f) == 1);
+    free(options);
 }
