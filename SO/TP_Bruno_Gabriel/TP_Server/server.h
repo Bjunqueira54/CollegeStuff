@@ -12,14 +12,22 @@ extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <signal.h>
 #include <ctype.h>
+#include <errno.h>
+
+#include <pthread.h>
+#include <sys/types.h>
+#include <sys/time.h>
+#include <sys/stat.h>
+#include <signal.h>
+#include <fcntl.h>
 #include <unistd.h>
+
 #include <ncurses.h>
 #include <curses.h>
 
-#include "structures.h"
 #include "../medit_defaults.h"
+#include "structures.h"
 
     //Protótipos de funções
 

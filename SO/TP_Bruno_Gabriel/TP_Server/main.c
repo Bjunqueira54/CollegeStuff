@@ -49,6 +49,7 @@ int main(int argc, char** argv)
 
     FILE *f;
     char c;
+    pthread_t cmd_thread, mpipe_thread;
 
     if(argc != 1)
     {
@@ -74,13 +75,13 @@ int main(int argc, char** argv)
         }
     }
 
-    Settings options;
+    Settings *options = malloc(sizeof(Settings));
 
-    ParseEnvVars(&options);
+    ParseEnvVars(options);
     
-    char line[options.lines][15+options.columns+1];
-    char curLine[15+options.columns+1];
-    char preLine[15+options.columns+1];
+    char line[options->lines][15+options->columns+1];
+    char curLine[15+options->columns+1];
+    char preLine[15+options->columns+1];
 
     if(params.f == 1)
     {
@@ -91,5 +92,5 @@ int main(int argc, char** argv)
         f = fopen(DEFAULT_DB_FILE, "a+t");
     }
 
-    while(ParseCommands(&params, &options, f) == 1);
+    while(ParseCommands(&params, options, f) == 1);
 }

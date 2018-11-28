@@ -2,12 +2,12 @@ MEDIT
 
 1. DESCRIÇÃO GERAL
 
-- cada utilizador tem um username (solicitado no inicio)
+- cada utilizador tem um username (solicitado no inicio) - DONE
 
 FORMATO DE TEXTO:
 
-    - edição de texto num unico ecra (15 linhas, 45 colunas) alteravel (MEDIT_MAXLINES e MEDIT_MAXCOLUMNS)
-    - a unidade de edição de texto em a linha do ecra (não o paragrafo)
+    - edição de texto num unico ecra (15 linhas, 45 colunas) alteravel (MEDIT_MAXLINES e MEDIT_MAXCOLUMNS) - DONE
+    - a unidade de edição de texto em a linha do ecra (não o paragrafo) - DONE
 
 VERIFICAÇÃO ORTOGRAFICA:
 
@@ -18,32 +18,32 @@ VERIFICAÇÃO ORTOGRAFICA:
 UTILIZAÇÃO EM PARALELO:
 
     - alterações são visiveis em real time a todos
-    - edição de uma linha de cada vez por utilizador
-    - movimento pelo texto com teclas de cursor
-    - inicio da edição: premir ENTER na linha (utilizador ganha posse dessa linha)
-    - final da edição: premir ENTER de novo
-    - cancelar a edição: premir ESC
-    - no ecra as linhas devem ser precedidas do seu número e do username responsável, ou sem nenhum caso não tenham sido editadas
+    - edição de uma linha de cada vez por utilizador - DONE (No cliente, falta o servidor confirmar)
+    - movimento pelo texto com teclas de cursor - DONE (No cliente, falta o servidor confirmar)
+    - inicio da edição: premir ENTER na linha (utilizador ganha posse dessa linha) - DONE (No cliente, falta o servidor confirmar)
+    - final da edição: premir ENTER de novo - DONE (No cliente, falta o servidor confirmar)
+    - cancelar a edição: premir ESC - DONE (No cliente, falta o servidor confirmar)
+    - no ecra as linhas devem ser precedidas do seu número e do username responsável, ou sem nenhum caso não tenham sido editadas - DONE (No cliente, falta o servidor confirmar)
 
 EDIÇÃO DE TEXTO:
 
     MODO DE NAVEGAÇÃO DE TEXTO:
-        - movimentar-se ao longo do texto com teclas de cursor
-        - pode se mover por linhas em branco ou com conteudo
-        - iniciar edição: premir ENTER numa linha
+        - movimentar-se ao longo do texto com teclas de cursor - DONE (No cliente, falta o servidor confirmar)
+        - pode se mover por linhas em branco ou com conteudo - DONE (No cliente, falta o servidor confirmar)
+        - iniciar edição: premir ENTER numa linha - DONE (No cliente, falta o servidor confirmar)
 
     MODO DE EDIÇÃO DE LINHA:
-        - movimentar-se na linha com teclas de cursor (não pode mudar de linha)
-        - inserir carateres (modo insert) (->texto)
-        - caso não exista espaço, não são permitidos mais carateres
-        - apagar carateres (modo insert) (<-texto)
-        - finalizar edição: premir ENTER (servidor verifica ortografia)
+        - movimentar-se na linha com teclas de cursor (não pode mudar de linha) - DONE (No cliente, falta o servidor confirmar)
+        - inserir carateres (modo insert) (->texto) - DONE (No cliente, falta o servidor confirmar)
+        - caso não exista espaço, não são permitidos mais carateres - DONE (No cliente, falta o servidor confirmar)
+        - apagar carateres (modo insert) (<-texto) - DONE (No cliente, falta o servidor confirmar)
+        - finalizar edição: premir ENTER (servidor verifica ortografia) - DONE (No cliente, falta o servidor confirmar)
             - recusa-se a finalizar a edição se houver erros 
             - alerta o utilizador para a existencia de erros 
             - mantem se aberto para ser corrigido
-        - cancelar a edição feita: ESC (volta para o MODO DE NAVEGAÇÃO DE TEXTO)
-            - o servidor restaura o conteudo da linha
-        - carateres introduzidos em real time
+        - cancelar a edição feita: ESC (volta para o MODO DE NAVEGAÇÃO DE TEXTO) - DONE (No cliente, falta o servidor confirmar)
+            - o servidor restaura o conteudo da linha - Done to cliente, não no servidor
+        - carateres introduzidos em real time - DONE (No cliente, falta o servidor)
 
 ASPETOS DE ARQUITETURA DE SISTEMA:
 

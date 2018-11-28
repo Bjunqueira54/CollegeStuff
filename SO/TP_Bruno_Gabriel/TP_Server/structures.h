@@ -8,7 +8,6 @@ extern "C" {
 #include "server.h"
     
 #define MAXLEN 15
-#define MAXNAME 9
     
     typedef struct parameters
     {
