@@ -18,6 +18,7 @@ public:
     bool verificaPeixe(int id) const;
     string getInfo() const;
     bool removePeixe(int id);
+    void alimenta(int n);
     
     Aquario& operator=(const Aquario& orig) = delete;
     

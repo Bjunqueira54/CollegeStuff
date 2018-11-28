@@ -54,6 +54,13 @@ bool Aquario::removePeixe(int id)
     return false;
 }
 
+void Aquario::alimenta(int n)
+{
+    for(int i=0; i<v.size(); i++)
+        v[i]->comer(n);
+
+}
+
 Aquario::~Aquario() {}
 
 ostream& operator<<(ostream& out, Aquario &a)

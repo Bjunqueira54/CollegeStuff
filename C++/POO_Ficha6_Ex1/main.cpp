@@ -4,7 +4,7 @@
 int main()
 {
     Peixe *p1 = new Peixe("Nemo", "Vermelho");
-    Peixe *p2 = new Peixe("Dora");
+    Peixe *p2 = new Piranha("Dora");
     
     Aquario a("ISEC");
     
@@ -20,6 +20,10 @@ int main()
     cout << a << endl;
     
     Aquario b(a);
+    
+    a.alimenta(45);
+    
+    cout << a << endl;
     
     cout << b << endl;
     
