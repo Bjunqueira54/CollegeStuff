@@ -1,6 +1,6 @@
 objects = main.o server_functions.o
 
-headers = server.h structures.h server_defaults.h
+headers = server.h structures.h ../medit_defaults.h
 
 tp_server: $(objects)
 	gcc -o tp_server $(objects) -I .

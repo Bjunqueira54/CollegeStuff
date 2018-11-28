@@ -18,7 +18,7 @@ extern "C" {
 #include <ncurses.h>
 #include <curses.h>
 
-#define MAXNAME 8
+#include "../medit_defaults.h"
 
 	//Protótipos de funções
 	int edModeLoop(int string_len);

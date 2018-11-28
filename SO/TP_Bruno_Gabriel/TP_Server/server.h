@@ -19,7 +19,7 @@ extern "C" {
 #include <curses.h>
 
 #include "structures.h"
-#include "server_defaults.h"
+#include "../medit_defaults.h"
 
     //Protótipos de funções
 
