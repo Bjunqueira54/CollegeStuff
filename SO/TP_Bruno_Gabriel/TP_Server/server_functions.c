@@ -128,7 +128,7 @@ int ParseCommands(Params *params, Settings *options, FILE *f)
     else if(strcmp(cmd, "shutdown") == 0)
     {
         fclose(f);
-
+        ExitVar = 1;
         return 2;
     }
     else if(strcmp(cmd, "statistics") == 0)

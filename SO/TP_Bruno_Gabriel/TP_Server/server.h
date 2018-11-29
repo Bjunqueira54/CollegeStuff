@@ -19,6 +19,7 @@ extern "C" {
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/stat.h>
+#include <sys/select.h>
 #include <signal.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -28,6 +29,9 @@ extern "C" {
 
 #include "../medit_defaults.h"
 #include "structures.h"
+    
+    extern Settings *options;
+    extern int ExitVar;
 
     //Protótipos de funções
 

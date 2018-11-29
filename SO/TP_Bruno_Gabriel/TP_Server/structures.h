@@ -28,6 +28,7 @@ extern "C" {
     typedef struct clients
     {
         char username[MAXNAME];
+        int acl;    //Active Current Line
     } Client;
 
 

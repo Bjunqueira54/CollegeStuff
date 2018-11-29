@@ -1,5 +1,7 @@
 #include "server.h"
 
+int ExitVar = 0;
+
 int main(int argc, char** argv)
 {
     char processid[19];
@@ -91,7 +93,9 @@ int main(int argc, char** argv)
     {
         f = fopen(DEFAULT_DB_FILE, "a+t");
     }
-
-    while(ParseCommands(&params, options, f) == 1);
+    
+    ParseCommands(&params, options, f) == 1
+    
+    while(ExitVar != 1);
     free(options);
 }

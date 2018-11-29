@@ -9,7 +9,7 @@ int main () {
         int fd1,nr=0;
         char buf [100];
 
-        fd1 = open ( "mypipe", O_RDONLY | O_NONBLOCK);
+        fd1 = open ( "mypipe", O_RDONLY);
         perror("open");
         nr=read ( fd1, buf, 100 );
         perror("read");
