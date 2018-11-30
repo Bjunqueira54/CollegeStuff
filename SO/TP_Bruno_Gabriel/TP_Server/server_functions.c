@@ -1,6 +1,7 @@
 #include "server.h"
 
-int mp;
+int mp;	//main pipe file descriptor
+Client cl_vec[options->maxusers];
 
 void SigHandler(int signal)
 {
@@ -71,9 +72,19 @@ void ParseEnvVars(Settings *a)
         a->maxusers = MEDIT_MAXUSERS;
 }
 
-void ValidateNewClient(const char* newuser)
+Client* ValidateNewClient(const char* newuser)
 {
     FILE *db = fopen(params->fname, "rt");
+	int i=0, newtam;
+	char fileuser[8];
+	
+	while(fgets() != NULL)
+	{
+		if(strcmp(fileuser, newuser) == 0)
+		{
+			
+		}
+	}
     
     fclose(db);
 }
@@ -180,5 +191,5 @@ void* MainPipeHandler(void* arg)
     if(username[bytesread-1] == '\n')
         username[bytesread-1] == '\0';
 
-    
+    ValidateNewClient(username);
 }

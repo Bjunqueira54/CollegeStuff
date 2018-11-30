@@ -36,7 +36,7 @@ extern "C" {
     extern int ExitVar;
     extern int mp;
     
-    extern pClient cl_vec;
+    extern Client cl_vec[];
 
     //Protótipos de funções
 
