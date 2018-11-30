@@ -5,7 +5,6 @@ int mp;
 void SigHandler(int signal)
 {
     close(mp);
-    fprintf(stdout, "mpipe_thread dying...\n");
     pthread_exit(NULL);
 }
 
