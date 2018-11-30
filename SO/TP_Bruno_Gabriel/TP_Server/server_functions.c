@@ -1,7 +1,8 @@
 #include "server.h"
 
 int mp;	//main pipe file descriptor
-Client cl_vec[options->maxusers];
+pClients cl_vec = NULL;
+int cl_vec_tam = 0;
 
 void SigHandler(int signal)
 {
@@ -72,20 +73,48 @@ void ParseEnvVars(Settings *a)
         a->maxusers = MEDIT_MAXUSERS;
 }
 
-Client* ValidateNewClient(const char* newuser)
+void ValidateNewClient(const char* newuser)
 {
     FILE *db = fopen(params->fname, "rt");
-	int i=0, newtam;
-	char fileuser[8];
-	
-	while(fgets() != NULL)
-	{
-		if(strcmp(fileuser, newuser) == 0)
-		{
-			
-		}
-	}
-    
+    int i;
+    char fileuser[8];
+    pClients newcl, aux;
+
+    while(fgets(fileuser, 8, db) != NULL)
+    {
+        if(strcmp(fileuser, newuser) == 0)
+        {
+            newcl = malloc(sizeof(Clients));
+            
+            if(newcl == NULL)
+            {
+                fprintf(stderr, "Error allocating memory for a new client\n");
+                return;
+            }
+            
+            strcpy(newcl->username, newuser);
+            newcl->acl = -1;
+            
+            if(cl_vec == NULL)
+            {
+                cl_vec = newcl;
+                newcl->prev = NULL;
+                newcl->prox = NULL;
+                newcl->id = 1;
+            }
+            else
+            {
+                aux = cl_vec;
+                while(aux->prox != NULL)
+                    aux = aux->prox;
+                
+                aux->prox = newcl;
+                newcl->prev = aux;
+            }
+                
+        }
+    }
+
     fclose(db);
 }
 
@@ -185,11 +214,13 @@ void* MainPipeHandler(void* arg)
     
     fprintf(stdout, "Opening pipe %s\n", pipename);
     mp = open(MEDIT_DEFAULT_MAIN_PIPE, O_RDONLY);
-    
-    bytesread = read(mp, username, 8*sizeof(char));
-    
-    if(username[bytesread-1] == '\n')
-        username[bytesread-1] == '\0';
+    while(1)
+    {
+        bytesread = read(mp, username, 8*sizeof(char));
 
-    ValidateNewClient(username);
+        if(username[bytesread-1] == '\n')
+            username[bytesread-1] == '\0';
+
+        ValidateNewClient(username);
+    }
 }

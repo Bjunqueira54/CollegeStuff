@@ -5,9 +5,11 @@
 extern "C" {
 #endif
 
-#include "server.h"
+//#include "server.h"
     
 #define MAXLEN 15
+    
+    typedef struct clients Clients, *pClients;
     
     typedef struct parameters
     {
@@ -25,11 +27,14 @@ extern "C" {
         int lines, columns, timeout, maxusers;
     } Settings;
     
-    typedef struct clients
+    struct clients
     {
         char username[MAXNAME];
+        int id;
         int acl;    //Active Current Line
-    } Client, *pClient;
+        pClients prev;
+        pClients next;
+    }
 
 
 #ifdef __cplusplus
