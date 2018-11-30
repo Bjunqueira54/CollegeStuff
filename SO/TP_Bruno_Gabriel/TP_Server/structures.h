@@ -33,7 +33,7 @@ extern "C" {
         int id;
         int acl;    //Active Current Line
         pClients prev;
-        pClients next;
+        pClients prox;
     };
 
 
