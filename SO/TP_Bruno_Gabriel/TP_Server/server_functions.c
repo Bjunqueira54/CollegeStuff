@@ -1,5 +1,14 @@
 #include "server.h"
 
+int mp;
+
+void SigHandler(int signal)
+{
+    close(mp);
+    fprintf(stdout, "mpipe_thread dying...\n");
+    pthread_exit(NULL);
+}
+
 void CheckArgs(Params *p)
 {
     if(p->f == 1)
@@ -100,13 +109,12 @@ Client* ValidateNewClient(FILE *f, Client *c_vec, int *vec_tam, char *newcli)
     return c_vec;
 }
 
-int ParseCommands(Params *params, Settings *options, FILE *f)
+void* ParseCommands()
 {
     char cmd[25];
     fprintf(stdout, "Command: ");
-    fflush(stdin);
-    fscanf(stdin, "%25[^\n]s", cmd);
-    getchar();
+    fgets(cmd, 25, stdin);
+    cmd[strlen(cmd)-1] = '\0';  //Replaces '\n' with '\0'
     int scount=0;
     
     for(int i=0; i<strlen(cmd); i++)
@@ -123,29 +131,15 @@ int ParseCommands(Params *params, Settings *options, FILE *f)
     {
         CheckArgs(params);
         CheckOptions(options);
-        return 1;
     }
     else if(strcmp(cmd, "shutdown") == 0)
-    {
-        fclose(f);
         ExitVar = 1;
-        return 2;
-    }
     else if(strcmp(cmd, "statistics") == 0)
-    {
         fprintf(stderr, "Coming soon...\n");
-        return 1;
-    }
     else if(strcmp(cmd, "users") == 0)
-    {
         fprintf(stderr, "Coming soon...\n");
-        return 1;
-    }
     else if(strcmp(cmd, "text") == 0)
-    {
         fprintf(stderr, "Coming soon...\n");
-        return 1;
-    }
     else if(scount > 0)
     {
         char argument[20];
@@ -164,15 +158,9 @@ int ParseCommands(Params *params, Settings *options, FILE *f)
             FILE *load = fopen(argument, "rt");
 
             if(load == NULL)
-            {
                 fprintf(stderr, "File either does not exist in directory or name too long\n");
-                return 1;
-            }
             else
-            {
                 fprintf(stdout, "If this command was working, file %s would be loaded\n", argument);
-                return 1;
-            }
         }
         else if(strcmp(cmd, "save") == 0)
         {
@@ -180,15 +168,9 @@ int ParseCommands(Params *params, Settings *options, FILE *f)
             FILE *save = fopen(argument, "rt");
 
             if(save == NULL)
-            {
                 fprintf(stderr, "File either does not exist in directory or name too long\n");
-                return 1;
-            }
             else
-            {
                 fprintf(stdout, "If this command was working, file %s would be saved\n", argument);
-                return 1;
-            }
         }
         else if(strcmp(cmd, "free") == 0)
         {
@@ -196,21 +178,29 @@ int ParseCommands(Params *params, Settings *options, FILE *f)
 
             int line;
             line = atoi(argument);
+            
             if(cmd <= 0)
-            {
                 fprintf(stderr, "Invaline line number.\n");
-                return 1;
-            }
             else
-            {
                 fprintf(stdout, "If this command was working, line %i would be forcefully free now.\n", line);
-                return 1;
-            }
         }
     }
     else
-    {
         fprintf(stderr, "Unknown command!\n");
-        return 1;
-    }
+        
+    return NULL;
+
+}
+
+void* MainPipeHandler()
+{
+    struct sigaction action;
+    
+    action.sa_handler = &SigHandler;
+    
+    sigaction(SIGINT, &action, NULL);
+    
+    fprintf(stdout, "I'm the first\n");
+    mkfifo(MEDIT_DEFAULT_MAIN_PIPE, S_IRUSR | S_IWUSR);
+    mp = open(MEDIT_DEFAULT_MAIN_PIPE, O_RDONLY);
 }

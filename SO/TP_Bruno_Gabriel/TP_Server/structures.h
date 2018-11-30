@@ -36,5 +36,4 @@ extern "C" {
 }
 #endif
 
-#endif /* PARAMSTRUCTS_H */
-
+#endif

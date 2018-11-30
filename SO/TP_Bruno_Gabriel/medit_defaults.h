@@ -32,7 +32,7 @@ extern "C" {
 
 #define MAXNAME 8
 
-#define MEDIT_DEFAULT_MAIN_PIPE "~/medit_main_pipe"
+#define MEDIT_DEFAULT_MAIN_PIPE "/tmp/medit_main_pipe"
 
 #ifdef __cplusplus
 }

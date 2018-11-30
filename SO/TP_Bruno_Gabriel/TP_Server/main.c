@@ -1,18 +1,40 @@
 #include "server.h"
 
+Params *params;
+Settings *options;
 int ExitVar = 0;
 
 int main(int argc, char** argv)
 {
+    int mp;
     char processid[19];
     char idnum[8];
+    pid_t pid, self;
+    pthread_t cmd_thread, mpipe_thread;
+    self = getpid();
+    
+    /////////////////////////////////////////////////////
+    ///Algoritmo para detetar se já existe um servidor///
+    /////////////////////////////////////////////////////
+    mp = open(MEDIT_DEFAULT_MAIN_PIPE, O_RDONLY | O_NONBLOCK);
+    
+    if(mp != -1)
+    {
+        fprintf(stderr, "Server already exists!\nEXITING!\n");
+        exit (EXIT_FAILURE);
+    }
+    else
+        pthread_create(&mpipe_thread, NULL, MainPipeHandler, NULL);
 
-    FILE *pExists = popen("pidof tp_server", "r");
+
+    ///////////////////////////////////////////////////////////////////
+    ///Algoritmo antigo de deteção do servidor. Keep it just because///
+    ///////////////////////////////////////////////////////////////////
+    
+    /*FILE *pExists = popen("pidof tp_server", "r");
     fgets(processid, 19, pExists);
     pclose(pExists);
     
-    pid_t pid, self;
-    self = getpid();
     int i, j=0;
     
     for(i=0; i<strlen(processid); i++)
@@ -42,16 +64,15 @@ int main(int argc, char** argv)
     {
         fprintf(stderr, "Process already exists\nEXITING!\n");
         return (EXIT_FAILURE);
-    }
+    }*/
 
-    Params params;
-    params.f = 0;
-    params.n = 0;
-    params.p = 0;
+    params = malloc(sizeof(Params));
+    params->f = 0;
+    params->n = 0;
+    params->p = 0;
 
-    FILE *f;
+    FILE *db;
     char c;
-    pthread_t cmd_thread, mpipe_thread;
 
     if(argc != 1)
     {
@@ -60,15 +81,15 @@ int main(int argc, char** argv)
             switch(c)
             {
                 case 'f':
-                    params.f = 1;
-                    params.fname = optarg;
+                    params->f = 1;
+                    params->fname = optarg;
                     break;
                 case 'n':
-                    params.n = 1;
+                    params->n = 1;
                     fprintf(stdout, "I still do not know how to use -%c\n", c);
                     break;
                 case 'p':
-                    params.p = 1;
+                    params->p = 1;
                     fprintf(stdout, "I still do not know how to use -%c\n", c);
                     break;
                 default:
@@ -77,7 +98,7 @@ int main(int argc, char** argv)
         }
     }
 
-    Settings *options = malloc(sizeof(Settings));
+    options = malloc(sizeof(Settings));
 
     ParseEnvVars(options);
     
@@ -85,18 +106,29 @@ int main(int argc, char** argv)
     char curLine[15+options->columns+1];
     char preLine[15+options->columns+1];
 
-    if(params.f == 1)
+    if(params->f == 1)
     {
-        f = fopen(params.fname, "a+t");
+        db = fopen(params->fname, "a+t");
     }
     else
     {
-        f = fopen(DEFAULT_DB_FILE, "a+t");
+        db = fopen(DEFAULT_DB_FILE, "a+t");
     }
-    
-    ParseCommands(&params, options, f) == 1
-    
+       
+    do
+    {
+        pthread_create(&cmd_thread, NULL, ParseCommands, NULL);
+        pthread_join(cmd_thread, NULL);
+    }
     while(ExitVar != 1);
     
+    fclose(db);
     free(options);
+    free(params);
+    
+    pthread_kill(mpipe_thread, SIGINT);
+    pthread_join(mpipe_thread, NULL);
+    execlp("rm", "rm", MEDIT_DEFAULT_MAIN_PIPE, NULL);
+    
+    return (EXIT_SUCCESS);
 }

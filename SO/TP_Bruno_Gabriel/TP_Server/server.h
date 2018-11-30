@@ -31,14 +31,18 @@ extern "C" {
 #include "structures.h"
     
     extern Settings *options;
+    extern Params *params;
+    extern char EditorLines[15][15+45+1];
     extern int ExitVar;
+    extern int mp;
 
     //Protótipos de funções
 
     void CheckArgs(Params *p);
     void CheckOptions(Settings *a);
     void ParseEnvVars(Settings *a);
-    int ParseCommands(Params *params, Settings *options, FILE *f);
+    void* ParseCommands();
+    void* MainPipeHandler();
     
     Client* ValidateNewClient(FILE *f, Client *c_vec, int *vec_tam, char *newcli);
 
