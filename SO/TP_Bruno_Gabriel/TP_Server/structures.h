@@ -34,7 +34,7 @@ extern "C" {
         int acl;    //Active Current Line
         pClients prev;
         pClients next;
-    }
+    };
 
 
 #ifdef __cplusplus
