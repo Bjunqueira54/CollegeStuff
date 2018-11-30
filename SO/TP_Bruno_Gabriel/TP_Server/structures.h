@@ -29,7 +29,7 @@ extern "C" {
     {
         char username[MAXNAME];
         int acl;    //Active Current Line
-    } Client;
+    } Client, *pClient;
 
 
 #ifdef __cplusplus

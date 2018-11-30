@@ -11,13 +11,14 @@ void SigHandler(int signal)
 void CheckArgs(Params *p)
 {
     if(p->f == 1)
-    {
         fprintf(stdout, "Database File: %s\n", p->fname);
-    }
     else
-    {
         fprintf(stdout, "Database File: %s\n", DEFAULT_DB_FILE);
-    }
+    
+    if(p->p == 1)
+        fprintf(stdout, "Main Named Pipe: %s\n", p->pname);
+    else
+        fprintf(stdout, "Main Named Pipe: %s\n", MEDIT_DEFAULT_MAIN_PIPE);
     
 }
 
@@ -70,42 +71,11 @@ void ParseEnvVars(Settings *a)
         a->maxusers = MEDIT_MAXUSERS;
 }
 
-Client* ValidateNewClient(FILE *f, Client *c_vec, int *vec_tam, char *newcli)
+void ValidateNewClient(const char* newuser)
 {
-    char username[MAXNAME];
+    FILE *db = fopen(params->fname, "rt");
     
-    while(fscanf(f, "%s", username) != EOF)
-    {
-        if(strcmp(newcli, username) == 0)
-        {
-            if((*vec_tam) == 0)
-            {
-                c_vec = malloc(sizeof(Client));
-                if(c_vec == NULL)
-                {
-                    fprintf(stderr, "Memory allocating error for a new client array\n");
-                    return NULL;
-                }
-                (*vec_tam) = 1;
-                strcpy(c_vec[0].username, newcli);
-                return c_vec;
-            }
-            else
-            {
-                c_vec = realloc(c_vec, ((*vec_tam) + 1) * sizeof(Client));
-                if(c_vec == NULL)
-                {
-                    fprintf(stderr, "Memory Re-Allocating error for a new resized client array\n");
-                    return c_vec;
-                }
-                strcpy(c_vec[(*vec_tam)].username, newcli);
-                return c_vec;
-            }
-        }
-    }
-    
-    fprintf(stderr, "Client does not exist on database\n");
-    return c_vec;
+    fclose(db);
 }
 
 void* ParseCommands()
@@ -191,15 +161,24 @@ void* ParseCommands()
 
 }
 
-void* MainPipeHandler()
+void* MainPipeHandler(void* arg)
 {
+    int bytesread;
+    char username[8];
+    char* pipename = (char*) arg;
     struct sigaction action;
     
     action.sa_handler = &SigHandler;
     
     sigaction(SIGINT, &action, NULL);
     
-    fprintf(stdout, "I'm the first\n");
-    mkfifo(MEDIT_DEFAULT_MAIN_PIPE, S_IRUSR | S_IWUSR);
+    fprintf(stdout, "Opening pipe %s\n", pipename);
     mp = open(MEDIT_DEFAULT_MAIN_PIPE, O_RDONLY);
+    
+    bytesread = read(mp, username, 8*sizeof(char));
+    
+    if(username[bytesread-1] == '\n')
+        username[bytesread-1] == '\0';
+
+    
 }

@@ -9,6 +9,7 @@ int main(int argc, char** argv)
     int mp;
     char processid[19];
     char idnum[8];
+    char mpn[25]; //Main Pipe Name
     pid_t pid, self;
     pthread_t cmd_thread, mpipe_thread;
     self = getpid();
@@ -24,54 +25,13 @@ int main(int argc, char** argv)
         exit (EXIT_FAILURE);
     }
     else
-        pthread_create(&mpipe_thread, NULL, MainPipeHandler, NULL);
-
-
-    ///////////////////////////////////////////////////////////////////
-    ///Algoritmo antigo de deteção do servidor. Keep it just because///
-    ///////////////////////////////////////////////////////////////////
-    
-    /*FILE *pExists = popen("pidof tp_server", "r");
-    fgets(processid, 19, pExists);
-    pclose(pExists);
-    
-    int i, j=0;
-    
-    for(i=0; i<strlen(processid); i++)
-    {
-        if(processid[i] == ' ')
-        {
-            idnum[j] = '\0';
-            j=0;
-            pid = strtoul(idnum, NULL, 10);
-
-            if(pid != self)
-            {
-                fprintf(stderr, "Process already exists\nEXITING!\n");
-                return (EXIT_FAILURE);
-            }
-        }
-        else
-        {
-            idnum[j] = processid[i];
-            j++;
-        }
-    }
-    
-    pid = strtoul(idnum, NULL, 10);
-    
-    if(pid != self)
-    {
-        fprintf(stderr, "Process already exists\nEXITING!\n");
-        return (EXIT_FAILURE);
-    }*/
+        mkfifo(MEDIT_DEFAULT_MAIN_PIPE, S_IRUSR | S_IWUSR);
 
     params = malloc(sizeof(Params));
     params->f = 0;
     params->n = 0;
     params->p = 0;
 
-    FILE *db;
     char c;
 
     if(argc != 1)
@@ -80,41 +40,38 @@ int main(int argc, char** argv)
         {
             switch(c)
             {
-                case 'f':
+                case 'f':   //Database file
                     params->f = 1;
                     params->fname = optarg;
                     break;
-                case 'n':
+                case 'n':   //Number of pipes
                     params->n = 1;
                     fprintf(stdout, "I still do not know how to use -%c\n", c);
                     break;
-                case 'p':
+                case 'p':   //Main Named Pipe
                     params->p = 1;
-                    fprintf(stdout, "I still do not know how to use -%c\n", c);
+                    params->pname = optarg;
+                    sprintf(mpn, "/tmp/%s", params->pname);
+                    mkfifo(mpn, S_IRUSR | S_IWUSR);
                     break;
                 default:
                     fprintf(stderr, "Unknown parameter -%c\n", c);
             }
         }
     }
+    
+    if(params->f != 1)
+        params->fname = DEFAULT_DB_FILE;
+    
+    if(params->p != 1)
+        strcpy(mpn, MEDIT_DEFAULT_MAIN_PIPE);
 
     options = malloc(sizeof(Settings));
 
     ParseEnvVars(options);
     
-    char line[options->lines][15+options->columns+1];
-    char curLine[15+options->columns+1];
-    char preLine[15+options->columns+1];
-
-    if(params->f == 1)
-    {
-        db = fopen(params->fname, "a+t");
-    }
-    else
-    {
-        db = fopen(DEFAULT_DB_FILE, "a+t");
-    }
-       
+    pthread_create(&mpipe_thread, NULL, MainPipeHandler, (void*) mpn);
+    
     do
     {
         pthread_create(&cmd_thread, NULL, ParseCommands, NULL);
@@ -122,13 +79,15 @@ int main(int argc, char** argv)
     }
     while(ExitVar != 1);
     
-    fclose(db);
     free(options);
     free(params);
     
     pthread_kill(mpipe_thread, SIGINT);
     pthread_join(mpipe_thread, NULL);
-    execlp("rm", "rm", MEDIT_DEFAULT_MAIN_PIPE, NULL);
+    execlp("rm", "rm", mpn, NULL);
+    
+    if(params->p == 1)
+        execlp("rm", "rm", MEDIT_DEFAULT_MAIN_PIPE, NULL);
     
     return (EXIT_SUCCESS);
 }
