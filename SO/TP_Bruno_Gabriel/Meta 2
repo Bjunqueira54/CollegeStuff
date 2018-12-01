@@ -1,0 +1,12 @@
+META 2: 
+
+	todos os requisitos da meta 1
+	comunicação através de named pipes a funcionar (cliente-servidor)
+	gestão de clientes:
+		- detetar se já existe
+		- avisar que o servidor encerrou
+	lançamento e comunicação com o dicionário
+		- incluindo para testes uma palavra que exista e outra que não
+	login do utilizador a funcionar 
+	
+pode se admitir, nesta meta, que só exista um cliente de cada vez
