@@ -73,16 +73,20 @@ void ParseEnvVars(Settings *a)
         a->maxusers = MEDIT_MAXUSERS;
 }
 
-void ValidateNewClient(const char* newuser)
+void ValidateNewClient(const char* newuser, pid_t cl_pid)
 {
     FILE *db = fopen(params->fname, "rt");
-    int i;
-    char fileuser[8];
+    char filestring[101], username[MAXNAME];
     pClients newcl, aux;
-
-    while(fgets(fileuser, 8, db) != NULL)
+    
+    while(fgets(filestring, 101, db) != NULL)
     {
-        if(strcmp(fileuser, newuser) == 0)
+        for(int i=0; i<MAXNAME; i++)
+            username[i] = filestring[i];
+        
+        username[MAXNAME] = '\0';
+        
+        if(strcmp(username, newuser) == 0)
         {
             newcl = malloc(sizeof(Clients));
             
@@ -92,8 +96,16 @@ void ValidateNewClient(const char* newuser)
                 return;
             }
             
-            strcpy(newcl->username, newuser);
+            strcpy(newcl->username, username);
             newcl->acl = -1;
+            newcl->cl_pid = cl_pid;
+            
+            if(params->n != 1)
+            {
+                char pipename[20];
+                sprintf(pipename, "/tmp/client%lu", (unsigned long) cl_pid);
+                mkfifo(pipename, S_IRUSR | S_IWUSR);
+            }
             
             if(cl_vec == NULL)
             {
@@ -105,16 +117,19 @@ void ValidateNewClient(const char* newuser)
             else
             {
                 aux = cl_vec;
-                while(aux->prox != NULL)
+                while(aux->prox != NULL || aux->id + 1 != aux->prox->id)
                     aux = aux->prox;
                 
+                newcl->prox = aux->prox;
                 aux->prox = newcl;
                 newcl->prev = aux;
+                newcl->id = newcl->prev->id + 1;
             }
-                
+            cl_vec_tam++;
+            fclose(db);
+            return;
         }
     }
-
     fclose(db);
 }
 
@@ -203,10 +218,12 @@ void* ParseCommands()
 
 void* MainPipeHandler(void* arg)
 {
-    int bytesread;
-    char username[8];
+    int bytesread, i;
+    char readstring[15], username[MAXNAME], cl_pid_string[6];
     char* pipename = (char*) arg;
     struct sigaction action;
+    fd_set mp_set, mp_set_temp;
+    pid_t cl_pid;
     
     action.sa_handler = &SigHandler;
     
@@ -214,13 +231,47 @@ void* MainPipeHandler(void* arg)
     
     fprintf(stdout, "Opening pipe %s\n", pipename);
     mp = open(MEDIT_DEFAULT_MAIN_PIPE, O_RDONLY);
+    
+    FD_ZERO(&mp_set);
+    FD_SET(mp, &mp_set);
+    
     while(1)
     {
-        bytesread = read(mp, username, 8*sizeof(char));
-
-        if(username[bytesread-1] == '\n')
-            username[bytesread-1] == '\0';
-
-        ValidateNewClient(username);
+        mp_set_temp = mp_set;
+        
+        switch(select(32, &mp_set_temp, NULL, NULL, NULL))
+        {
+            case -1:
+                if(errno == EINTR)
+                    continue;
+                else
+                {
+                    fprintf(stderr, "Something undefined occurred in MainPipeHandler() select()\n");
+                    break;
+                }
+            case 0:
+                continue;
+            default:
+                while((bytesread = read(mp, readstring, 15)))
+                {
+                    readstring[15] = '\0';
+                    
+                    for(i=0; i<MAXNAME || readstring[i] != ' '; i++)
+                        username[i] = readstring[i];
+                    
+                    i++;
+                    
+                    for(int j=0; i<15 || j<6; j++, i++)
+                        cl_pid_string[j] = readstring[i];
+                    
+                    sscanf(cl_pid_string, "%d", &cl_pid);
+                    
+                    if(cl_vec_tam <= 3)
+                        ValidateNewClient(username, cl_pid);
+                    else
+                        fprintf(stdout, "Cannot validate new client. Server Full!\n");
+                }
+                
+        }
     }
 }

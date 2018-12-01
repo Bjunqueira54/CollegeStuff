@@ -46,7 +46,7 @@ extern "C" {
     void* ParseCommands();
     void* MainPipeHandler(void* arg);
     
-    void ValidateNewClient(const char* newuser);
+    void ValidateNewClient(const char* newuser, pid_t cl_pid);
 
 #ifdef __cplusplus
 }

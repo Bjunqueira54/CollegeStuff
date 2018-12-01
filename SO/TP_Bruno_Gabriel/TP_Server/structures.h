@@ -32,6 +32,7 @@ extern "C" {
         char username[MAXNAME];
         int id;
         int acl;    //Active Current Line
+        pid_t cl_pid;
         pClients prev;
         pClients prox;
     };

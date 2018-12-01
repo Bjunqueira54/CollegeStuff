@@ -6,13 +6,10 @@ int ExitVar = 0;
 
 int main(int argc, char** argv)
 {
-    int mp;
-    char processid[19];
-    char idnum[8];
+    int mp; //Main Pipe file descriptor
     char mpn[25]; //Main Pipe Name
-    pid_t pid, self;
     pthread_t cmd_thread, mpipe_thread;
-    self = getpid();
+
     
     /////////////////////////////////////////////////////
     ///Algoritmo para detetar se já existe um servidor///
@@ -88,6 +85,23 @@ int main(int argc, char** argv)
     
     if(params->p == 1)
         execlp("rm", "rm", MEDIT_DEFAULT_MAIN_PIPE, NULL);
+    
+    pClients aux, aux2;
+    
+    while(aux->prox != NULL)
+    {
+        aux2 = aux;
+        
+        if(params->n != 1)
+        {
+            char clientpipe[20];
+            sprintf(clientpipe, "/tmp/client%lu", (unsigned long) aux2->cl_pid);
+            execlp("rm", "rm", clientpipe, NULL);
+        }
+        aux = aux->prox;
+        free(aux2);
+    }
+    free(aux);
     
     return (EXIT_SUCCESS);
 }
