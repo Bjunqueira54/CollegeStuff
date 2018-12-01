@@ -7,8 +7,8 @@ int main(int argc, char** argv)
 	////////////////////////////////////////
 
 	char username[MAXNAME];
-	int u=0;
-
+	int u=0; 
+        
 	if(argc != 1)
 	{
 		char c;
@@ -39,6 +39,14 @@ int main(int argc, char** argv)
 	int x, newx, y, newy;
 	int c;
 	int mode = 0; // Var. para determinar se estamos em modo de edição ou de seleção. 0=Seleção, 1=Edição, 2=Exit
+        
+        int cfd = open(MEDIT_DEFAULT_MAIN_PIPE, O_WRONLY); // client file descriptor 
+        pid_t cli_pid = getpid(); //client process id
+        char cstring[15]; //comunication string
+        
+        sprintf(cstring, "%s %lu", username, (unsigned long) cli_pid);
+        
+        write(cfd, cstring, strlen(cstring));
 
 	/////////////////////////////////////////////
 	///// Inicialização da string principal /////
