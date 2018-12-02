@@ -92,28 +92,44 @@ int main(int argc, char** argv)
     
     pthread_kill(mpipe_thread, SIGINT);
     pthread_join(mpipe_thread, NULL);
-    execlp("rm", "rm", mpn, NULL);
+    
+    pid_t remove;
+
+    if((remove = fork()) == 0)
+        execlp("rm", "rm", mpn, NULL);
+    else
+        waitpid(remove, NULL, 0);
     
     if(params->p == 1)
-        execlp("rm", "rm", MEDIT_DEFAULT_MAIN_PIPE, NULL);
+        if((remove = fork()) == 0)
+            execlp("rm", "rm", MEDIT_DEFAULT_MAIN_PIPE, NULL);
+        else
+            waitpid(remove, NULL, 0);
+    
+    /*if(params->n != 1)
+        if((remove = fork()) == 0)
+            execlp("rm", "rm", "/tmp/client*", NULL);
+        else
+            waitpid(remove, NULL, 0);*/
     
     pClients aux, aux2;
     
-    while(aux->prox != NULL)
+    aux = cl_vec;
+    
+    while(aux != NULL)
     {
         aux2 = aux;
         kill(aux->cl_pid, SIGUSR2);
-        if(params->n != 1)
-        {
-            char clientpipe[20];
-            sprintf(clientpipe, "/tmp/client%lu", (unsigned long) aux2->cl_pid);
-            execlp("rm", "rm", clientpipe, NULL);
-        }
+        
+        if((remove = fork()) == 0)
+            execlp("rm", "rm", aux->pipename, NULL);
+        else
+            waitpid(remove, NULL, 0);
+        
         aux = aux->prox;
         free(aux2->pipename);
         free(aux2);
     }
-    free(aux);
     
     return (EXIT_SUCCESS);
 }

@@ -12,42 +12,51 @@ void SigHandler(int signal)
 
 void ClientDisconnect(int signal, siginfo_t *info, void* extra)
 {
-    pid_t cl_pid;
+    pid_t cl_pid, remove;
     pClients aux = cl_vec;
 
     cl_pid = info->si_pid;
 
-    while(aux != NULL)
+    while(aux->prox != NULL)    //Este ciclo avança até não existir um próximo cliente na lista ligada
     {
-        if(aux->cl_pid == cl_pid)
-        {
-            if(aux->prev == NULL)
-            {
-                cl_vec = aux->prox;
-                free(aux->pipename);
-                free(aux);
-                cl_vec_tam--;
-                return;
-            }
-            else if(aux->prox == NULL)
-            {
-                aux->prev = NULL;
-                free(aux->pipename);
-                free(aux);
-                cl_vec_tam--;
-                return;
-            }
-            else
-            {
-                aux->prox->prev = aux->prev;
-                aux->prev->prox = aux->prox;
-                free(aux->pipename);
-                free(aux);
-                cl_vec_tam--;
-                return;
-            }
-        }
+        if(aux->cl_pid == cl_pid)   //Se encontrar um cliente cujo PID seja igual ao PID do processo que enviou o sinal, sai for do ciclo.
+            break;
+        
         aux = aux->prox;
+    }
+    
+    if(aux->cl_pid != cl_pid)   //Nunca deverá entrar aqui. Só para prevenir de um cliente ser apagado quando não devia.
+        return;
+    
+    if((remove = fork()) == 0)
+        execlp("rm", "rm", aux->pipename, NULL);
+    else
+        waitpid(remove, NULL, 0);
+    
+    if(aux->prev == NULL)   //Se for o 1º elemento da Lista
+    {
+        cl_vec = aux->prox; //No caso de ser o unico elemento, aux->prox deverá ser NULL, logo cl_vec ficará vazio.
+        free(aux->pipename);
+        free(aux);
+        cl_vec_tam--;
+        return;
+    }
+    else if(aux->prox == NULL)  //Se for o ultimo elemento da lista
+    {
+        aux->prev->prox = NULL;
+        free(aux->pipename);
+        free(aux);
+        cl_vec_tam--;
+        return;
+    }
+    else    //Se for um elemento no meio da lista
+    {
+        aux->prox->prev = aux->prev;
+        aux->prev->prox = aux->prox;
+        free(aux->pipename);
+        free(aux);
+        cl_vec_tam--;
+        return;
     }
 }
 
@@ -143,7 +152,6 @@ void ValidateNewClient(const char* newuser, pid_t cl_pid)
         for(int i=0; i<MAXNAME && i<strlen(filestring); i++)
             username[i] = filestring[i];
         
-        //username[MAXNAME] = '\0';
         username[strlen(username)] = '\0';
         
         aux = cl_vec;
@@ -151,8 +159,15 @@ void ValidateNewClient(const char* newuser, pid_t cl_pid)
         while(aux != NULL)
         {
             if(strcmp(newuser, aux->username) == 0) //If user already exists
+            {
                 kill(cl_pid, SIGINT);
+                fclose(db);
+                return;
+            }
+            aux = aux->prox;
         }
+        
+        aux = NULL;
         
         if(strcmp(username, newuser) == 0)
         {
@@ -229,6 +244,7 @@ void ValidateNewClient(const char* newuser, pid_t cl_pid)
             return;
         }
     }
+    
     kill(cl_pid, SIGINT);
     fclose(db);
 }
@@ -262,8 +278,9 @@ void* ParseCommands()
         fprintf(stderr, "Coming soon...\n");
     else if(strcmp(cmd, "users") == 0)
     {
-        fprintf(stderr, "Number of currently connected users: %i\n", cl_vec_tam);
+        fprintf(stderr, "\nNumber of currently connected users: %i\n\n", cl_vec_tam);
         pClients aux = cl_vec;
+        
         while(aux != NULL)
         {
             fprintf(stdout, "Username: %s\n", aux->username);

@@ -21,6 +21,7 @@ extern "C" {
 #include <sys/time.h>
 #include <sys/stat.h>
 #include <sys/select.h>
+#include <sys/wait.h>
 #include <signal.h>
 #include <fcntl.h>
 #include <unistd.h>
