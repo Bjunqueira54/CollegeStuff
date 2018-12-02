@@ -4,8 +4,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-//#include "server.h"
     
 #define MAXLEN 15
     
@@ -29,10 +27,13 @@ extern "C" {
     
     struct clients
     {
-        char username[MAXNAME];
-        int id;
-        int acl;    //Active Current Line
-        pid_t cl_pid;
+        char username[MAXNAME]; //Client Username
+        int id;                 //Client ID
+        
+        int acl;                //Active Current Line
+        pid_t cl_pid;           //Client Process ID
+        char *pipename;         //Client Named Pipe
+        
         pClients prev;
         pClients prox;
     };

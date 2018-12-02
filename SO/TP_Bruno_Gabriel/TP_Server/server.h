@@ -13,6 +13,7 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <inttypes.h>
 #include <errno.h>
 
 #include <pthread.h>
@@ -45,6 +46,7 @@ extern "C" {
     void ParseEnvVars(Settings *a);
     void* ParseCommands();
     void* MainPipeHandler(void* arg);
+    void ClientDisconnect(int signal, siginfo_t *info, void* extra);
     
     void ValidateNewClient(const char* newuser, pid_t cl_pid);
 

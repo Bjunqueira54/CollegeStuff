@@ -10,6 +10,47 @@ void SigHandler(int signal)
     pthread_exit(NULL);
 }
 
+void ClientDisconnect(int signal, siginfo_t *info, void* extra)
+{
+    pid_t cl_pid;
+    pClients aux = cl_vec;
+
+    cl_pid = info->si_pid;
+
+    while(aux != NULL)
+    {
+        if(aux->cl_pid == cl_pid)
+        {
+            if(aux->prev == NULL)
+            {
+                cl_vec = aux->prox;
+                free(aux->pipename);
+                free(aux);
+                cl_vec_tam--;
+                return;
+            }
+            else if(aux->prox == NULL)
+            {
+                aux->prev = NULL;
+                free(aux->pipename);
+                free(aux);
+                cl_vec_tam--;
+                return;
+            }
+            else
+            {
+                aux->prox->prev = aux->prev;
+                aux->prev->prox = aux->prox;
+                free(aux->pipename);
+                free(aux);
+                cl_vec_tam--;
+                return;
+            }
+        }
+        aux = aux->prox;
+    }
+}
+
 void CheckArgs(Params *p)
 {
     if(p->f == 1)
@@ -75,16 +116,43 @@ void ParseEnvVars(Settings *a)
 
 void ValidateNewClient(const char* newuser, pid_t cl_pid)
 {
-    FILE *db = fopen(params->fname, "rt");
-    char filestring[101], username[MAXNAME];
-    pClients newcl, aux;
+    char *dbname;
+    dbname = params->fname;
     
-    while(fgets(filestring, 101, db) != NULL)
+    FILE *db;
+    db = fopen(dbname, "r");
+    
+    if(db == NULL)
     {
-        for(int i=0; i<MAXNAME; i++)
+        fprintf(stderr, "Error opening database file");
+        ExitVar = 1;
+        return;
+    }
+    
+    while(1)
+    {
+        char filestring[101] = "", username[MAXNAME]="";
+        pClients newcl = NULL, aux = NULL;
+        
+        if(fscanf(db, "%[^\n]s", filestring) == EOF)
+            break;
+        fgetc(db);
+        
+        filestring[strlen(filestring)] = '\0';
+        
+        for(int i=0; i<MAXNAME && i<strlen(filestring); i++)
             username[i] = filestring[i];
         
-        username[MAXNAME] = '\0';
+        //username[MAXNAME] = '\0';
+        username[strlen(username)] = '\0';
+        
+        aux = cl_vec;
+        
+        while(aux != NULL)
+        {
+            if(strcmp(newuser, aux->username) == 0) //If user already exists
+                kill(cl_pid, SIGINT);
+        }
         
         if(strcmp(username, newuser) == 0)
         {
@@ -99,37 +167,69 @@ void ValidateNewClient(const char* newuser, pid_t cl_pid)
             strcpy(newcl->username, username);
             newcl->acl = -1;
             newcl->cl_pid = cl_pid;
+            newcl->prev = NULL;
+            newcl->prox = NULL;
             
             if(params->n != 1)
             {
                 char pipename[20];
                 sprintf(pipename, "/tmp/client%lu", (unsigned long) cl_pid);
                 mkfifo(pipename, S_IRUSR | S_IWUSR);
+                newcl->pipename = malloc(strlen(pipename)*sizeof(char));
+                strcpy(newcl->pipename, pipename);
             }
             
             if(cl_vec == NULL)
             {
                 cl_vec = newcl;
-                newcl->prev = NULL;
-                newcl->prox = NULL;
                 newcl->id = 1;
             }
             else
             {
                 aux = cl_vec;
-                while(aux->prox != NULL || aux->id + 1 != aux->prox->id)
-                    aux = aux->prox;
                 
-                newcl->prox = aux->prox;
-                aux->prox = newcl;
-                newcl->prev = aux;
-                newcl->id = newcl->prev->id + 1;
+                if(aux->id != 1)    //Se já tiver existido um cliente com id 1 mas entranto já saiu.
+                {
+                    aux->prev = newcl;
+                    newcl->prox = aux;
+                    cl_vec = newcl;
+                    newcl->id = 1;
+                }
+                else
+                {
+                    while(aux->prox != NULL)
+                    {
+                        if(aux->id + 1 != aux->prox->id)    //Se o próximo da lista não tiver o ID a seguir a aux atual, é porque existiu um cliente com este ID mas entretanto já saiu.
+                            break;
+                        
+                        aux = aux->prox;
+                    }
+                    
+                    if(aux->prox == NULL)
+                    {
+                        aux->prox = newcl;
+                        newcl->prev = aux;
+                        newcl->id = newcl->prev->id + 1;
+                    }
+                    else
+                    {
+                        newcl->prox = aux->prox;
+                        aux->prox = newcl;
+                        newcl->prev = aux;
+                        newcl->prox->prev = newcl;
+                        newcl->id = newcl->prev->id + 1;
+                    }
+                }
             }
             cl_vec_tam++;
+            
+            kill(cl_pid, SIGUSR1);
+            
             fclose(db);
             return;
         }
     }
+    kill(cl_pid, SIGINT);
     fclose(db);
 }
 
@@ -161,7 +261,22 @@ void* ParseCommands()
     else if(strcmp(cmd, "statistics") == 0)
         fprintf(stderr, "Coming soon...\n");
     else if(strcmp(cmd, "users") == 0)
-        fprintf(stderr, "Coming soon...\n");
+    {
+        fprintf(stderr, "Number of currently connected users: %i\n", cl_vec_tam);
+        pClients aux = cl_vec;
+        while(aux != NULL)
+        {
+            fprintf(stdout, "Username: %s\n", aux->username);
+            fprintf(stdout, "ID: %i\n", aux->id);
+            fprintf(stdout, "Active Pipe: %s\n", aux->pipename);
+            if(aux->acl != -1)
+                fprintf(stdout, "Current Editing Line: %i\n", aux->acl);
+            else
+                fprintf(stdout, "Current Editing Line: N/A\n");
+            putc('\n', stdout);
+            aux = aux->prox;
+        }
+    }
     else if(strcmp(cmd, "text") == 0)
         fprintf(stderr, "Coming soon...\n");
     else if(scount > 0)
@@ -218,19 +333,14 @@ void* ParseCommands()
 
 void* MainPipeHandler(void* arg)
 {
-    int bytesread, i;
-    char readstring[15], username[MAXNAME], cl_pid_string[6];
     char* pipename = (char*) arg;
     struct sigaction action;
     fd_set mp_set, mp_set_temp;
-    pid_t cl_pid;
     
     action.sa_handler = &SigHandler;
-    
     sigaction(SIGINT, &action, NULL);
     
-    fprintf(stdout, "Opening pipe %s\n", pipename);
-    mp = open(MEDIT_DEFAULT_MAIN_PIPE, O_RDONLY);
+    mp = open(pipename, O_RDONLY);
     
     FD_ZERO(&mp_set);
     FD_SET(mp, &mp_set);
@@ -252,26 +362,39 @@ void* MainPipeHandler(void* arg)
             case 0:
                 continue;
             default:
+            {
+                int bytesread, i;
+                char readstring[15] = "", username[MAXNAME] = "", cl_pid_string[6] = "";
+                pid_t cl_pid;
+                
                 while((bytesread = read(mp, readstring, 15)))
                 {
-                    readstring[15] = '\0';
+                    readstring[bytesread] = '\0';
                     
-                    for(i=0; i<MAXNAME || readstring[i] != ' '; i++)
+                    for(i=0; i<MAXNAME && readstring[i] != ' '; i++)
                         username[i] = readstring[i];
                     
-                    i++;
+                    for(;readstring[i] == ' '; i++);
                     
-                    for(int j=0; i<15 || j<6; j++, i++)
+                    for(int j=0; i<15 && j<6; j++, i++)
                         cl_pid_string[j] = readstring[i];
                     
-                    sscanf(cl_pid_string, "%d", &cl_pid);
+                    intmax_t num;
+                    char *tmp;
+                    
+                    num = strtoimax(cl_pid_string, &tmp, 10);
+                    
+                    cl_pid = (pid_t) num;
                     
                     if(cl_vec_tam <= 3)
                         ValidateNewClient(username, cl_pid);
                     else
+                    {
                         fprintf(stdout, "Cannot validate new client. Server Full!\n");
+                        kill(cl_pid, SIGINT);
+                    }
                 }
-                
+            }
         }
     }
 }

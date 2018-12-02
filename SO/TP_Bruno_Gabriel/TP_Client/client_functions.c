@@ -1,5 +1,32 @@
 #include "client.h"
 
+pid_t sv_pid;
+
+void inv_user(int sig)
+{
+    clear();
+    mvaddstr(0, 0, "Invalid username or username already autheticated!");
+    refresh();
+    getch();
+    endwin();
+    exit (EXIT_SUCCESS);
+}
+
+void sv_disconnect(int sig)
+{
+    clear();
+    mvwaddstr(stdscr, 1, 1, "Server has been shutdown!");
+    refresh();
+    getch();
+    endwin();
+    exit (EXIT_SUCCESS);
+}
+
+void sv_connect(int sig, siginfo_t *info, void *extra)
+{
+    sv_pid = info->si_pid;
+}
+
 int edModeLoop(int string_len)
 {
 	int c, x, y;

@@ -9,8 +9,13 @@ int main(int argc, char** argv)
     int mp; //Main Pipe file descriptor
     char mpn[25]; //Main Pipe Name
     pthread_t cmd_thread, mpipe_thread;
+    struct sigaction cl_disc;
 
-    
+    cl_disc.sa_flags = SA_SIGINFO;
+    cl_disc.sa_sigaction = &ClientDisconnect;
+
+    sigaction(SIGUSR1, &cl_disc, NULL);
+
     /////////////////////////////////////////////////////
     ///Algoritmo para detetar se já existe um servidor///
     /////////////////////////////////////////////////////
@@ -58,7 +63,13 @@ int main(int argc, char** argv)
     }
     
     if(params->f != 1)
+    {
         params->fname = DEFAULT_DB_FILE;
+        FILE *db = fopen(params->fname, "rt");
+        if(db == NULL)
+            db = fopen(params->fname, "wt");
+        fclose(db);
+    }
     
     if(params->p != 1)
         strcpy(mpn, MEDIT_DEFAULT_MAIN_PIPE);
@@ -91,7 +102,7 @@ int main(int argc, char** argv)
     while(aux->prox != NULL)
     {
         aux2 = aux;
-        
+        kill(aux->cl_pid, SIGUSR2);
         if(params->n != 1)
         {
             char clientpipe[20];
@@ -99,6 +110,7 @@ int main(int argc, char** argv)
             execlp("rm", "rm", clientpipe, NULL);
         }
         aux = aux->prox;
+        free(aux2->pipename);
         free(aux2);
     }
     free(aux);
