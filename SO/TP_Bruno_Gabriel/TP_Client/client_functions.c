@@ -2,10 +2,16 @@
 
 pid_t sv_pid;
 
-void inv_user(int sig)
+void inv_user(int sig, siginfo_t *info, void *extra)
 {
     clear();
-    mvaddstr(0, 0, "Invalid username or username already autheticated!");
+    
+    if(info->si_value.sival_int == 1)
+        mvaddstr(0, 0, "Invalid username!");
+    else if(info->si_value.sival_int == 2)
+        mvaddstr(0, 0, "Username already authenticated!");
+    else if(info->si_value.sival_int == 3)
+        mvaddstr(0, 0, "Server is full!");
     refresh();
     getch();
     endwin();
@@ -24,7 +30,11 @@ void sv_disconnect(int sig)
 
 void sv_connect(int sig, siginfo_t *info, void *extra)
 {
-    sv_pid = info->si_pid;
+    if(info->si_value.sival_int == 1)
+        sv_pid = info->si_pid;
+    else if(info->si_value.sival_int == 2)
+        //Code a way to exit line editor mode;
+        fprintf(stdout, "Placeholder\n");
 }
 
 int edModeLoop(int string_len)

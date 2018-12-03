@@ -31,7 +31,7 @@ extern "C" {
     void invertString(char* userstring);
     void printLine(char** line, char* curline);
 
-    void inv_user(int sig);
+    void inv_user(int sig, siginfo_t *info, void *extra);
     void sv_connect(int sig, siginfo_t *info, void *extra);
     void sv_disconnect(int sig);
 

@@ -1,26 +1,26 @@
 Client SIGUSR1:
-    sival_int = 1: Client Connected, Save Server PID;
+    sival_int = 1: Client Connected, Save Server PID; (DONE, Test)
     sival_int = 2: Server wants to free the line.
 
 Client SIGINT:
-    sival_int = 1: Invalid username
-    sival_int = 2: Username already authenticated
-    sival_int = 3: Server full
+    sival_int = 1: Invalid username (DONE, Test)
+    sival_int = 2: Username already authenticated (DONE, Test)
+    sival_int = 3: Server full (DONE, Test)
 
 Client SIGUSR2:
-    Server Shutdown.
+    Server Shutdown. (Done)
 
 
 Server SIGINT:
     Only the server sends this signal to itself. Serves to kill threads for the
-    server to end.
+    server to end. (Done)
 
 Server SIGUSR1:
-    Client disconnected.
+    Client disconnected. (Done)
 
 Server SIGUSR2:
     Does not exist in current server version. Perhaps make use of it?
 
-Check server_functions.c in "void ClientDisconnect()", something in the first "while" cycle doesn't feel right.
+Check server_functions.c in "void ClientDisconnect()", something in the first "while" cycle doesn't feel right.(DONE, TEST)
 
-Code all relevant server->client signal from kill to sigqueue() with the sig_value union.
+Code all relevant server->client signal from kill to sigqueue() with the sig_value union. (DONE, Test)
