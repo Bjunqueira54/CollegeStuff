@@ -4,8 +4,8 @@
 #include "algoritmo.h"
 #include "utils.h"
 
-// Preenche uma estrutura com os progenitores da próxima geração, de acordo com o resultados do torneio binario (tamanho de torneio: 2)
-// Parâmetros de entrada: população actual (pop), estrutura com parâmetros (d) e população de pais a encher
+// Preenche uma estrutura com os progenitores da proxima geracao, de acordo com o resultados do torneio binario (tamanho de torneio: 2)
+// Parametros de entrada: populacao actual (pop), estrutura com parametros (d) e populacao de pais a encher
 void tournament(pchrom pop, struct info d, pchrom parents)
 {
 	int i, x1, x2;
@@ -24,8 +24,8 @@ void tournament(pchrom pop, struct info d, pchrom parents)
 	}
 }
 
-// Preenche uma estrutura com os progenitores da próxima geração, de acordo com o resultados do torneio binario (tamanho de torneio: 2)
-// Parâmetros de entrada: população actual (pop), estrutura com parâmetros (d) e população de pais a encher
+// Preenche uma estrutura com os progenitores da proxima geracao, de acordo com o resultados do torneio binario (tamanho de torneio: 2)
+// Parametros de entrada: populacao actual (pop), estrutura com parametros (d) e populacao de pais a encher
 void tournament_geral(pchrom pop, struct info d, pchrom parents)
 {
 	int i, j, k, sair, best, *pos;
@@ -34,13 +34,13 @@ void tournament_geral(pchrom pop, struct info d, pchrom parents)
 	// Realiza popsize torneios
 	for(i=0; i<d.popsize;i++)
 	{
-	    // Seleciona tsize soluções diferentes para entrarem em torneio de seleção
+	    // Seleciona tsize solucoes diferentes para entrarem em torneio de selecao
 		for(j=0; j<d.tsize; j++)
         {
             do
             {
                 pos[j] = random_l_h(0, d.popsize-1);
-                // Verifica se a nova posição escolhida é igual a alguma das outras posições escolhidas
+                // Verifica se a nova posicao escolhida e igual a alguma das outras posicoes escolhidas
                 sair = 0;
                 for (k=0; k<j; k++)
                 {
@@ -49,7 +49,7 @@ void tournament_geral(pchrom pop, struct info d, pchrom parents)
                 }
             }
             while (sair);
-            // Guarda a posição da melhor solução de todas as que entraram em torneio
+            // Guarda a posicao da melhor solucao de todas as que entraram em torneio
             if (j==0 || pop[pos[j]].fitness > pop[pos[best]].fitness)		// Problema de maximizacao
                 best = j;
         }
@@ -58,27 +58,27 @@ void tournament_geral(pchrom pop, struct info d, pchrom parents)
 	free(pos);
 }
 
-// Operadores geneticos a usar na geração dos filhos
-// Parâmetros de entrada: estrutura com os pais (parents), estrutura com parâmetros (d), estrutura que guardará os descendentes (offspring)
+// Operadores geneticos a usar na geracao dos filhos
+// Parametros de entrada: estrutura com os pais (parents), estrutura com parametros (d), estrutura que guarda os descendentes (offspring)
 void genetic_operators(pchrom parents, struct info d, pchrom offspring)
 {
-    // Recombinação com um ponto de corte
+    // Recombinacao com um ponto de corte
 	crossover(parents, d, offspring);
-	// Recombinação com dois pontos de corte
-    // Exercício 4.4(a)
+	// Recombinacao com dois pontos de corte
+    // Exercicio 4.4(a)
 //	recombinacao_dois_pontos_corte(parents, d, offspring);
-	// Recombinação uniforme
-    // Exercício 4.4(b)
+	// Recombinacao uniforme
+    // Exercicio 4.4(b)
 //	recombinacao_uniforme(parents, d, offspring);
-	// Mutação binária
+	// Mutacao binaria
 	mutation(offspring, d);
-    // Mutação por troca
-    // Exercício 4.3
+    // Mutacao por troca
+    // Exercicio 4.3
 //	mutacao_por_troca(offspring, d);
 }
 
-// Preenche o vector descendentes com o resultado da operação de recombinação com um ponto de corte
-// Parâmetros de entrada: estrutura com os pais (parents), estrutura com parâmetros (d), estrutura que guardará os descendentes (offspring)
+// Preenche o vector descendentes com o resultado da operacao de recombinacao com um ponto de corte
+// Parametros de entrada: estrutura com os pais (parents), estrutura com parametros (d), estrutura que guarda os descendentes (offspring)
 void crossover(pchrom parents, struct info d, pchrom offspring)
 {
 	int i, j, point;
@@ -107,8 +107,8 @@ void crossover(pchrom parents, struct info d, pchrom offspring)
 	}
 }
 
-// Preenche o vector descendentes com o resultado da operação de recombinação com dois pontos de corte
-// Parâmetros de entrada: estrutura com os pais (parents), estrutura com parâmetros (d), estrutura que guardará os descendentes (offspring)
+// Preenche o vector descendentes com o resultado da operacao de recombinacao com dois pontos de corte
+// Parametros de entrada: estrutura com os pais (parents), estrutura com parametros (d), estrutura que guarda os descendentes (offspring)
 void recombinacao_dois_pontos_corte(pchrom parents, struct info d, pchrom offspring)
 {
 	int i, j, point1, point2;
@@ -143,8 +143,8 @@ void recombinacao_dois_pontos_corte(pchrom parents, struct info d, pchrom offspr
 	}
 }
 
-// Preenche o vector descendentes com o resultado da operação de recombinação uniforme
-// Parâmetros de entrada: estrutura com os pais (parents), estrutura com parâmetros (d), estrutura que guardará os descendentes (offspring)
+// Preenche o vector descendentes com o resultado da operacao de recombinacao uniforme
+// Parametros de entrada: estrutura com os pais (parents), estrutura com parametros (d), estrutura que guarda os descendentes (offspring)
 void recombinacao_uniforme(pchrom parents, struct info d, pchrom offspring)
 {
 	int i, j;
@@ -175,8 +175,8 @@ void recombinacao_uniforme(pchrom parents, struct info d, pchrom offspring)
 	}
 }
 
-// Mutação binária com vários pontos de mutação
-// Parâmetros de entrada: estrutura com os descendentes (offspring) e estrutura com parâmetros (d)
+// Mutacao binaria com varios pontos de mutacao
+// Parametros de entrada: estrutura com os descendentes (offspring) e estrutura com parametros (d)
 void mutation(pchrom offspring, struct info d)
 {
 	int i, j;
@@ -187,8 +187,8 @@ void mutation(pchrom offspring, struct info d)
 				offspring[i].p[j] = !(offspring[i].p[j]);
 }
 
-// Mutação por troca
-// Parâmetros de entrada: estrutura com os descendentes (offspring) e estrutura com parâmetros (d)
+// Mutacao por troca
+// Parametros de entrada: estrutura com os descendentes (offspring) e estrutura com parametros (d)
 void mutacao_por_troca(pchrom offspring, struct info d)
 {
 	int i, pos1, pos2, aux;

@@ -3,34 +3,34 @@
 // EStrutura para armazenar parametros
 struct info
 {
-    // Tamanho da população
+    // Tamanho da populacao
     int     popsize;
-    // Probabilidade de mutação
+    // Probabilidade de mutacao
     float   pm;
-    // Probabilidade de recombinação
+    // Probabilidade de recombinacao
     float   pr;
-    // Tamanho do torneio para seleção do pai da próxima geração
+    // Tamanho do torneio para selecao do pai da proxima geracao
 	int     tsize;
-	// Constante para avaliação com penalização
+	// Constante para avaliacao com penalizacao
 	float   ro;
-	// Número de objetos que se podem colocar na mochila
+	// Numero de objetos que se podem colocar na mochila
     int     numGenes;
 	// Capacidade da mochila
 	int     capacity;
-	// Número de gerações
+	// Numero de geracoes
     int     numGenerations;
 };
 
-// Individuo (solução)
+// Individuo (solucao)
 typedef struct individual chrom, *pchrom;
 
 struct individual
 {
-    // Solução (objetos que estão dentro da mochila)
+    // Solucao (objetos que estao dentro da mochila)
     int     p[MAX_OBJ];
-    // Valor da qualidade da solução
+    // Valor da qualidade da solucao
 	float   fitness;
-    // 1 se for uma solução válida e 0 se não for
+    // 1 se for uma solucao valida e 0 se nao for
 	int     valido;
 };
 

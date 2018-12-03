@@ -6,9 +6,9 @@
 #define GENERATIONS_TC  100
 #define PROBGERAVIZ     1.0
 
-// Calcula a qualidade de uma solução
-// Parâmetros de entrada: solução (sol), capacidade da mochila (d), matriz com dados do problema (mat) e numero de objectos (v)
-// Parâmetros de saída: qualidade da solução (se a capacidade for excedida devolve 0)
+// Calcula a qualidade de uma solucao
+// Parametros de entrada: solucao (sol), capacidade da mochila (d), matriz com dados do problema (mat) e numero de objectos (v)
+// Parametros de saida: qualidade da solucao (se a capacidade for excedida devolve 0)
 float eval_individual(int sol[], struct info d, int mat[][2], int *v)
 {
 	int     i;
@@ -29,21 +29,21 @@ float eval_individual(int sol[], struct info d, int mat[][2], int *v)
 	}
 	if (sum_weight > d.capacity)
 	{
-        // Solução inválida
+        // Solucao invalida
 		*v = 0;
 		return 0;
 	}
 	else
 	{
-        // Solução válida
+        // Solucao valida
 		*v = 1;
 		return sum_profit;
 	}
 }
 
-// Calcula a qualidade de uma solução com penalização
-// Parâmetros de entrada: solução (sol), capacidade da mochila (d), matriz com dados do problema (mat) e numero de objectos (v)
-// Parâmetros de saída: qualidade da solução (se a capacidade for excedida devolve 0)
+// Calcula a qualidade de uma soluca com penalizacao
+// Parametros de entrada: solucao (sol), capacidade da mochila (d), matriz com dados do problema (mat) e numero de objectos (v)
+// Parametros de saida: qualidade da solucao (se a capacidade for excedida devolve 0)
 float eval_individual_penalizado(int sol[], struct info d, int mat[][2], int *v)
 {
 	int     i;
@@ -67,21 +67,21 @@ float eval_individual_penalizado(int sol[], struct info d, int mat[][2], int *v)
 	}
 	if (sum_weight > d.capacity)
 	{
-        // Solução inválida
+        // Solucao invalida
 		*v = 0;
-		return sum_profit-(sum_weight-d.capacity)*d.ro; // Solucao com penalização
+		return sum_profit-(sum_weight-d.capacity)*d.ro; // Solucao com penalizacao
 	}
 	else
 	{
-        // Solução válida
+        // Solucao valida
 		*v = 1;
 		return sum_profit;
 	}
 }
 
-// Calcula a qualidade de uma solução com reparação aleatória
-// Parâmetros de entrada: solução (sol), capacidade da mochila (d), matriz com dados do problema (mat) e numero de objectos (v)
-// Parâmetros de saída: qualidade da solução (se a capacidade for excedida devolve 0)
+// Calcula a qualidade de uma solucao com reparacao aleatoria
+// Parametros de entrada: solucao (sol), capacidade da mochila (d), matriz com dados do problema (mat) e numero de objectos (v)
+// Parametros de saida: qualidade da solucao (se a capacidade for excedida devolve 0)
 float eval_individual_reparado1(int sol[], struct info d, int mat[][2], int *v)
 {
 	int     i;
@@ -105,7 +105,7 @@ float eval_individual_reparado1(int sol[], struct info d, int mat[][2], int *v)
     {
         // escolhe um objeto aleatoriamente
         i = random_l_h(0, d.numGenes-1);
-        // Se esse objeto estiver na mochila, retira-o e ajusta os somatórios do peso e lucro
+        // Se esse objeto estiver na mochila, retira-o e ajusta os somatorios do peso e lucro
         if (sol[i] == 1)
         {
             sol[i] = 0;
@@ -117,9 +117,9 @@ float eval_individual_reparado1(int sol[], struct info d, int mat[][2], int *v)
 	return sum_profit;
 }
 
-// Calcula a qualidade de uma solução com reparação de acordo com uma heirística sofrega
-// Parâmetros de entrada: solução (sol), capacidade da mochila (d), matriz com dados do problema (mat) e numero de objectos (v)
-// Parâmetros de saída: qualidade da solução (se a capacidade for excedida devolve 0)
+// Calcula a qualidade de uma solucao com reparacao de acordo com uma heuristica sofrega
+// Parametros de entrada: solucao (sol), capacidade da mochila (d), matriz com dados do problema (mat) e numero de objectos (v)
+// Parametros de saida: qualidade da solucao (se a capacidade for excedida devolve 0)
 float eval_individual_reparado2(int sol[], struct info d, int mat[][2], int *v)
 {
 	int     i, mv, pos;
@@ -161,19 +161,19 @@ float eval_individual_reparado2(int sol[], struct info d, int mat[][2], int *v)
 	return sum_profit;
 }
 
-// Avaliacao da população
-// Parâmetros de entrada: populacao (pop), estrutura com parametros (d) e matriz com dados do problema (mat)
-// Parâmetros de saída: Preenche pop com os valores de fitness e de validade para cada solução
+// Avaliacao da populacao
+// Parametros de entrada: populacao (pop), estrutura com parametros (d) e matriz com dados do problema (mat)
+// Parametros de saida: Preenche pop com os valores de fitness e de validade para cada solucao
 void evaluate(pchrom pop, struct info d, int mat[][2])
 {
 	int i;
 
 	for (i=0; i<d.popsize; i++)
 		pop[i].fitness = eval_individual(pop[i].p, d, mat, &pop[i].valido);
-        // Exercício 4.2(a)
+        // Exercicio 4.2(a)
 //		pop[i].fitness = eval_individual_penalizado(pop[i].p, d, mat, &pop[i].valido);
-        // Exercício 4.2(b)
+        // Exercicio 4.2(b)
 //		pop[i].fitness = eval_individual_reparado1(pop[i].p, d, mat, &pop[i].valido);
-        // Exercício 4.2(c)
+        // Exercicio 4.2(c)
 //		pop[i].fitness = eval_individual_reparado2(pop[i].p, d, mat, &pop[i].valido);
 }
