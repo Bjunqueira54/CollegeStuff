@@ -1,0 +1,234 @@
+//Guião ====================================================================================
+//
+//
+// - Compilar o código com a linha de comando inscrita no início do ficheiro ex6.1.1.c
+//    cc -g ex6.1.1.c -pthread -o ex6.1.1
+//
+// - Iniciar a sessão GDB:
+//   gdb ex6.1.1 => Iniciar a sessão GDB
+//
+//   b main   => Pedir para travar a execução logo no arranque da aplicação.
+//
+//   r        => Há comandos GDB que apenas são aceites com o executável lançado.
+//            => Chamar a atenção para o facto de imediatamente o GDB perceber que se 
+//               trata de um executável com suporte para multithreading usando a
+//               "POSIX threads library" (opção de compilação -pthread).
+//               Nesta situação o GDB usa uma biblioteca específica para apoio à
+//               depuração "thread debugging library".
+//            => Mensagem do GDB: [Thread debugging using libthread_db enabled]
+//
+//   info threads  => Apenas a thread principal é mostrada neste momento. Ver abaixo na 
+//                    secção da documentação avulsa como interpretar a informação
+//                    apresentada. O mais importante a reter é o ID numérico que o GDB
+//                    atribui a cada thread.
+//
+//   list 1   => Começar por recordar o source code e encontrar uma linha interessante
+//               na função por onde se inicia a execução das threads a criar.
+//
+//   <CR>     => Avançar na listagem. O <Enter> repete sempre o último comando GDB.
+//
+//   <CR>
+//
+//   b 29     => Instala um breakpoint no início do ciclo principal das threds a criar:
+//               Linha de código: while (!exit_threads){
+//               Este breakpoint faz com que as threads que por ele passem parem.
+//               A parte curiosa é que se for primeiro a thread 2 e depois a 3 a pararem
+//               então a sessão GDB fica a tomar conta da thread 3. Ou seja, da última que 
+//               passou no breakpoint.
+//
+//   c        => Continua a execução até se encontrado um breakpoint no seu decurso.
+//               Analisar o output do GDB até a execução chegar ao breakpoint:
+//                 -  é anuncida a criação de novas threads
+//                 -  Estes eventos são reportados por omissão mas podemos desativar
+//					  [show print thread-events]
+//					  [set print thread-events on|off]
+//					  
+//  info threads  => Agora são reportadas 3 threads. 
+//                   Ver a numeração das mesmas feita pelo GDB.
+//                  Conforme esclarecido nos detalhes abaixo o "*" mostra a thread currente.
+//
+//  n             => Vamos avançar passo-a-passo com o comando next
+//                   Vão começar a surgir "." atrás do log do GDB.
+//  n                Não sendo a thread presa pelo GDB a produzir esse output
+//                   rápido se torna concluir que é a outra thread criada.
+//                   Será a primeira a parar no breakpoint pois o GDB liberta-a assim
+//                   que outra thread chegar a este breakpoint. Estranho?
+//  n                Porém não se regista qualquer output quando o prompt do GDB
+//                   está presente. 
+//
+//  n             =>  CONCLUSÃO 1 desta experiência: o GDB para todas as threads
+//                   quando encontra um breakpoint.
+//                   Explicar aqui que se trata do comportamento por omissão,
+//                   designado de [all-stop mode]. Ver a explicação mais abaixo e falar
+//                   do modo alternativo [non-stop mode].
+//
+// show non-stop  => Com este comando podemos ver qual dos modos se encontra ativo.
+//                   Conforme é explicado abaixo apenas podemos definir este modo no
+//                   início da sessão de depuração e não o podemos alterar no decurso 
+//                   da mesma.
+//
+//                => CONCLUSÃO 2 desta experiência: entre comandos "next" consecutivos as 
+//                   demais threads avançam de forma concorrente, ainda que a que se encontre
+//                   presa ao GDB avance apenas uma linha de código de cada vez.
+//                   Normalamente quando estamos a fazer depuração pretendemos determinismo
+//                   e uma forma de o conseguir pode passar por "forçarmos" a que o 
+//                   escalonador do sistema operativo não coloque em marcha as restantes 
+//                   threads.
+//
+//                => CONCLUSÃO 3
+// p *character   => consultar o carater que a thread presente (sob controle do GDB) imprime.
+//                   Isto ilustra que os símbolos acessíveis no GDB mostram apenas o que a  
+//                   própria thread sob seu controle vê.
+//
+// show scheduler-locking  => Com este comando podemos ver o modo atual de interação com o
+//                            escalonador do sistema operativo. Esta interação será melhor 
+//                            explorada adiante.
+//
+// list 29       => Recordar o source code da função principal da thread.
+//
+// clear 29      => Remover o breakpoint instalado inicialmente.
+//
+//
+// b 32 thread 2 => Instalar um breakpoint para uma thread específica.
+//                  Usar como thread number o 2 ou o 3. Não é relevante.
+//
+// c             => Fazer sucessivamente "continue" para ver que apenas a thread mencionada
+//                  no breakpoint é parada ainda que quer a 2 quer a 3 passem pela linha 32.
+// c
+// c
+// c
+//
+// clear 32      => Apagar o breakpoint 32.
+//
+// c             => Fazer seguir a execução normalmente.
+//
+// ^C            => Um Ctrl+C no GDB provoca um breakpoint assíncrono.
+//
+// c             => Um "continue" retoma a execução normal.
+//
+// exit          => Introduzir a string "exit" que leva a que a thread principal sinalize às 
+//                  restantes que devem terminar.
+//                  No final o GDB reporta: [Inferior 1 (process 20711) exited normally]
+//                  Na terminologia GDB o nome do processo base é "inferior", o que ajuda a 
+//                  perceber melhor as manpages.
+//
+// quit          => Terminar a sessão de depuração
+//
+//
+// - Iniciar nova sessão GDB:
+//   gdb ex6.1.1 => Iniciar a sessão GDB
+//
+// show scheduler-locking     => Mode for locking scheduler during execution is "replay". 
+//                               Como se referiu atrás neste modo as threads evoluem todas
+//                               assim que o controlo de execução é retirado ao GDB ainda que
+//                               temporariamente  (entre dois "next" consecutivos, por exemplo)
+//
+// set scheduler-locking step => Target 'exec' cannot support this command.
+//                               Este erro surge porque a execução do programa ainda não iniciou.
+// b main
+//
+// r                          => Dar início à execução do programa.
+//
+// set scheduler-locking step => Para tornar a depuração mais determinística o GDB pode interagir
+//                               com o escalonador do sistema operativo e parar todas as threads
+// 	        					 enquanto a thread a que se encontra preso executar passo-a-passo.
+//
+// b 29
+//
+// c 
+//
+// n          => Executar passo-a-passo
+//
+// <CR>
+//
+// <CR>
+//
+// <CR>
+//
+// <CR>
+//
+// <CR>       => Confirmar que desta vez a thread currente é a única que avança.
+//               Ou seja agora não surgem "." que não os que a presente thread escreve.
+//
+// c          => Avançar até a outra thread cair no breakpoint
+//
+// n          => Executar passo-a-passo. confirmar que apenas a thread que está sob controle
+//               do GDB executa.
+//
+// <CR>
+//
+// <CR>
+//
+// <CR>
+//
+// clear 29  => Eliminar o breakpoint
+//
+// c         => Continuar a execução normal sem breakpoints.
+//
+// exit      => Introduzir a string "exit" que leva a que a thread principal sinalize às 
+//              restantes que devem terminar.
+//
+//Documentação avulsa ======================================================================
+Sources:
+ . https://sourceware.org/gdb/current/onlinedocs/gdb/Thread-Stops.html
+ . https://sourceware.org/gdb/current/onlinedocs/gdb/Threads.html#Threads
+ . https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/4/html/Debugging_with_gdb/threads.html
+ . Manpages diveras
+
+There are two modes of controlling execution of your program within the debugger:
+
+ => [all-stop mode]: (the default mode) 
+    . when any thread in your program stops (for example, at a breakpoint or while being 
+	  stepped), all other threads in the program are also stopped by GDB.
+    . This allows you to examine the overall state of the program, including switching between 
+	  threads, without worrying that things may change underfoot.
+    . Conversely, whenever you restart the program, all threads start executing. This is true
+  	  even when single-stepping with commands like step or next.
+	
+ => [non-stop mode]:(just supported on some targets) 
+    . other threads can continue to run freely while you examine the stopped thread in the 
+	  debugger.
+	  [set pagination off] :If using the CLI, pagination breaks non-stop.
+	  [set non-stop on]    :Finally, turn it on!
+    . In non-stop mode, all execution commands apply only to the current thread by default. 
+	   That is, continue only continues one thread. To continue all threads, issue continue
+ 	   -a or c -a.
+	
+[show non-stop]
+    . In particular, the set non-stop preference is only consulted when GDB starts or connects
+  	  to the target program, and it is generally not possible to switch modes once debugging
+	  has started.
+	
+[Debugging programs with multiple threads]
+ - Whenever gdb takes control, one thread in particular is always the focus of debugging. 
+   This thread is called the current thread.
+ - Debugging commands show program information from the perspective of the current thread.
+ 
+[info threads] command
+ - An asterisk * to the left of the gdb thread number indicates the current thread.
+ - The thread number assigned by gdb 
+ - The target system's thread identifier (systag)
+ - The current stack frame summary for that thread
+ 
+[thread threadno] command
+ - Make thread number threadno the current thread so you can inspect its context
+ 
+[thread apply [threadno] [all] args] command
+ - The thread apply command allows you to apply a gdb command to one or more threads
+  Nota: Este comanado não funcionou bem quando especifiquei o threadno. QQ thread que 
+  passe pelo breakpoint para!
+
+[break linespec thread threadno] command
+[break linespec thread threadno if … ]
+ - Whenever your program stops under gdb for any reason, all threads of execution stop, not just the current thread. 
+ - This allows you to examine the overall state of the program, including switching between threads, without worrying that things may change underfoot.
+ - Conversely, whenever you restart the program, all threads start executing. This is true even when single-stepping with commands like step or next.
+ 
+[show scheduler-locking]
+[help set scheduler-locking]
+[set scheduler-locking [off, on, step, replay]]
+ - Note: the program must be already running so put a breakpoint in main, then run, then issue the command
+ - Set the scheduler locking mode. 
+   . If it is off, then there is no locking and any thread may run at any time. 
+   . If on, then only the current thread may run when the inferior is resumed.
+   . The step mode optimizes for single-stepping. It stops other threads from "seizing the prompt" by preempting the current thread while you are stepping. Other threads will only rarely (or never) get a chance to run when you step. They are more likely to run when you `next' over a function call, and they are completely free to run when you use commands like `continue', `until', or `finish'. However, unless another thread hits a breakpoint during its timeslice, they will never steal the GDB prompt away from the thread that you are debugging.
