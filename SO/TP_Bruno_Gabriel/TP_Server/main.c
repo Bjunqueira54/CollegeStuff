@@ -3,18 +3,23 @@
 Params *params;
 Settings *options;
 int ExitVar = 0;
+char** EditorLines;
 
 int main(int argc, char** argv)
 {
     int mp; //Main Pipe file descriptor
     char mpn[25]; //Main Pipe Name
     pthread_t cmd_thread, mpipe_thread;
-    struct sigaction cl_disc;
+    struct sigaction cl_disc, cl_sig;
 
     cl_disc.sa_flags = SA_SIGINFO;
     cl_disc.sa_sigaction = &ClientDisconnect;
+    
+    cl_sig.sa_flags = SA_SIGINFO;
+    cl_sig.sa_sigaction = &ClientSignals;
 
     sigaction(SIGUSR1, &cl_disc, NULL);
+    sigaction(SIGUSR2, &cl_sig, NULL);
 
     /////////////////////////////////////////////////////
     ///Algoritmo para detetar se já existe um servidor///
@@ -77,6 +82,14 @@ int main(int argc, char** argv)
     options = malloc(sizeof(Settings));
 
     ParseEnvVars(options);
+    
+    char creatinglines[options->lines][15+options->columns+1];
+    char* tmplines[options->lines];
+    
+    for(int i=0; i<options->lines; i++)
+        tmplines[i] = creatinglines[i];
+    
+    EditorLines = tmplines;
     
     pthread_create(&mpipe_thread, NULL, MainPipeHandler, (void*) mpn);
     

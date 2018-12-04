@@ -20,6 +20,8 @@ Server SIGUSR1:
 
 Server SIGUSR2:
     Does not exist in current server version. Perhaps make use of it?
+    si_pid = Signal Sending client ID
+    sival_int = x: line which client intends to edit;
 
 Check server_functions.c in "void ClientDisconnect()", something in the first "while" cycle doesn't feel right.(DONE, TEST)
 

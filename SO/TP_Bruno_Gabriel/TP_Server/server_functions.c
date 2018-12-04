@@ -1,6 +1,7 @@
 #include "server.h"
 
-int mp;	//main pipe file descriptor
+int mp;	//Main Pipe File Descriptor
+int cp; //Client Pipe File Descriptor
 pClients cl_vec = NULL;
 int cl_vec_tam = 0;
 
@@ -8,6 +9,101 @@ void SigHandler(int signal)
 {
     close(mp);
     pthread_exit(NULL);
+}
+
+void DeactivateLine()
+{
+    
+}
+
+void* ActivateLine(void* arg)
+{
+    pClients client = (pClients) arg;
+    struct sigaction thr_cancel;
+    fd_set cl_pipe_fd, cl_temp_fd;
+    int bread, cl_fd;
+    
+    cl_fd = open(client->piperead, O_RDONLY);
+    
+    thr_cancel.sa_handler = &DeactivateLine;
+    sigaction(SIGINT, &thr_cancel, NULL);
+    
+    FD_ZERO(&cl_pipe_fd);
+    FD_SET(cl_fd, &cl_pipe_fd);
+    
+    while(1)
+    {
+        cl_temp_fd = cl_pipe_fd;
+        
+        switch(select(32, &cl_temp_fd, NULL, NULL, NULL))
+        {
+            case -1:
+                if(errno == EINTR)
+                    continue;
+                else
+                {
+                    fprintf(stderr, "Error on select(). Client ID: %i, ERROR %i\n", client->id, errno);
+                    pthread_exit(NULL);
+                }
+                break;
+            case 0:
+                fprintf(stderr, "Client ID %i select() timeout...\n", client->id);
+                break;
+            default:
+                memset((char*) EditorLines[client->acl]+15, 0, 45*sizeof(char));
+                while((bread = read(cl_fd, (char*) EditorLines[client->acl], 45)))
+                {
+                    EditorLines[client->acl][bread] = '\0';
+                }
+        }
+    }
+    
+    //Write code that locks a line mutex
+    //create array of n size where n = number of lines(Maybe number of clients)
+    //Everytime a line is activated, mutex lock it if free, else signal client that 
+    //line is currently occupied.
+    
+    //If client successfully got line control, start reading from client.piperead
+    //For every char value in numerical number, attempt to correctly mimic what the client
+    //sees.
+    //Use FD_* set of functions to help determine if pipe is ready to be read.
+    //Every time a character is validated and the array line is changed, write the character
+    //to every client's pipewrite and signal them the line changed.
+    
+    //Alternative: extra thread that completelly writes the whole editor array to clients,
+    //possibly eliminating multi-threads writting to the same pipe and too many signals
+    //been send between processes.
+}
+
+void ClientSignals(int signal, siginfo_t *info, void* extra)
+{
+    pClients aux;
+    
+    aux = cl_vec;
+    
+    while(aux != NULL)
+    {
+        if(aux->cl_pid == info->si_pid)
+            break;
+        
+        aux = aux->prox;
+    }
+    
+    if(aux == NULL)
+        return;     //How did you get here? Only Validated Clients can send SIGUSR2, right?
+    
+    if(info->si_value.sival_int == -1)
+    {
+        int exline = aux->acl;
+        //Call for function to spell Aspell.
+        aux->acl == -1;
+        pthread_kill(aux->cl_thread, SIGINT);
+    }
+    else
+    {
+        aux->acl = info->si_value.sival_int;
+        pthread_create(&aux->cl_thread, NULL, ActivateLine, (void*) aux);
+    }
 }
 
 void ClientDisconnect(int signal, siginfo_t *info, void* extra)
@@ -45,7 +141,7 @@ void ClientDisconnect(int signal, siginfo_t *info, void* extra)
             cl_vec = NULL;
         
         free(aux->piperead);
-        free(aux->pipewrite)
+        free(aux->pipewrite);
         free(aux);
         cl_vec_tam--;
     }
@@ -53,7 +149,7 @@ void ClientDisconnect(int signal, siginfo_t *info, void* extra)
     {
         aux->prev->prox = NULL;
         free(aux->piperead);
-        free(aux->pipewrite)
+        free(aux->pipewrite);
         free(aux);
         cl_vec_tam--;
     }

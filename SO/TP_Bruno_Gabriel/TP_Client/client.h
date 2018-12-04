@@ -21,6 +21,7 @@ extern "C" {
 #include "../medit_defaults.h"
     
     extern pid_t sv_pid;
+    extern int mode;
 
     //Protótipos de funções
     int edModeLoop(int string_len);

@@ -1,5 +1,7 @@
 #include "client.h"
 
+ int mode = 0; // Var. para determinar se estamos em modo de edição ou de seleção. 0=Seleção, 1=Edição, 2=Exit
+
 int main(int argc, char** argv)
 {
     ////////////////////////////////////////
@@ -41,7 +43,6 @@ int main(int argc, char** argv)
     char preline[15+45+1]; // Linha antes de entrar no modo de edição
     int x, newx, y, newy;
     int c;
-    int mode = 0; // Var. para determinar se estamos em modo de edição ou de seleção. 0=Seleção, 1=Edição, 2=Exit
 
     /////////////////////////////////////////////
     ///// Inicialização da string principal /////

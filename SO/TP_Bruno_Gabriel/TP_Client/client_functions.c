@@ -33,8 +33,16 @@ void sv_connect(int sig, siginfo_t *info, void *extra)
     if(info->si_value.sival_int == 1)
         sv_pid = info->si_pid;
     else if(info->si_value.sival_int == 2)
-        //Code a way to exit line editor mode;
-        fprintf(stdout, "Placeholder\n");
+    {
+        int y, x;
+        getyx(stdscr, y, x);
+        move(y, 15);
+        mode = 0;
+        return;
+    }
+    else if(info->si_value.sival_int == 3)
+        //Code a way to exit the line
+        fprintf(stdout, "Placeholder Text\n");
 }
 
 int edModeLoop(int string_len)
@@ -73,6 +81,9 @@ int edModeLoop(int string_len)
 
 		case 27: //keyboard escape
 			move(y, 15);
+                        union sigval line_exit;
+                        line_exit.sival_int = -1;
+                        sigqueue(sv_pid, SIGUSR2, line_exit);
 			return 5;
 			break;
 

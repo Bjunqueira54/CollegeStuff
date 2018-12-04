@@ -29,9 +29,11 @@ extern "C" {
     {
         char username[MAXNAME]; //Client Username
         int id;                 //Client ID
-        
         int acl;                //Active Current Line
+        
         pid_t cl_pid;           //Client Process ID
+        pthread_t cl_thread;    //Client Line Editing Thread
+        
         char *piperead;         //Client Named Pipe for Reading (Server <-- Client)
         char *pipewrite;        //Client Named Pipe for Writting (Server --> Client)
         
