@@ -122,12 +122,13 @@ int main(int argc, char** argv)
         kill(aux->cl_pid, SIGUSR2);
         
         if((remove = fork()) == 0)
-            execlp("rm", "rm", aux->pipename, NULL);
+            execlp("rm", "rm", aux->piperead, aux->pipewrite, NULL);
         else
             waitpid(remove, NULL, 0);
         
         aux = aux->prox;
-        free(aux2->pipename);
+        free(aux2->piperead);
+        free(aux2->pipewrite);
         free(aux2);
     }
     

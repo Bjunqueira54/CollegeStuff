@@ -16,48 +16,59 @@ void ClientDisconnect(int signal, siginfo_t *info, void* extra)
     pClients aux = cl_vec;
 
     cl_pid = info->si_pid;
-
-    while(aux->prox != NULL)    //Este ciclo avança até não existir um próximo cliente na lista ligada
+    
+    while(aux != NULL)  //Este ciclo avança até ao fim da lista ligada.
     {
-        if(aux->cl_pid == cl_pid)   //Se encontrar um cliente cujo PID seja igual ao PID do processo que enviou o sinal, sai for do ciclo.
+        if(aux->cl_pid == cl_pid)   //Se encontrar um cliente cujo PID seja igual ao PID do processo que enviou o sinal, sai fora do ciclo.
             break;
         
         aux = aux->prox;
     }
     
-    if(aux->cl_pid != cl_pid)   //Nunca deverá entrar aqui. Só para prevenir de um cliente ser apagado quando não devia.
+    if(aux == NULL) //Nunca deverá entrar aqui. Só para prevenir de um cliente ser apagado quando não devia.
         return;
     
     if((remove = fork()) == 0)
-        execlp("rm", "rm", aux->pipename, NULL);
+        
+        execlp("rm", "rm", aux->piperead, aux->pipewrite, NULL);
     else
         waitpid(remove, NULL, 0);
     
     if(aux->prev == NULL)   //Se for o 1º elemento da Lista
     {
-        cl_vec = aux->prox; //No caso de ser o unico elemento, aux->prox deverá ser NULL, logo cl_vec ficará vazio.
-        free(aux->pipename);
+        if(aux->prox != NULL)
+        {
+            cl_vec = aux->prox;
+            aux->prox->prev = NULL;
+        }
+        else    //No caso de ser o unico elemento, aux->prox deverá ser NULL, logo cl_vec ficará vazio.
+            cl_vec = NULL;
+        
+        free(aux->piperead);
+        free(aux->pipewrite)
         free(aux);
         cl_vec_tam--;
-        return;
     }
     else if(aux->prox == NULL)  //Se for o ultimo elemento da lista
     {
         aux->prev->prox = NULL;
-        free(aux->pipename);
+        free(aux->piperead);
+        free(aux->pipewrite)
         free(aux);
         cl_vec_tam--;
-        return;
     }
     else    //Se for um elemento no meio da lista
     {
         aux->prox->prev = aux->prev;
         aux->prev->prox = aux->prox;
-        free(aux->pipename);
+        free(aux->piperead);
+        free(aux->pipewrite);
         free(aux);
         cl_vec_tam--;
-        return;
     }
+    
+    if(cl_vec_tam == 0)
+        cl_vec = NULL;
 }
 
 void CheckArgs(Params *p)
@@ -160,7 +171,11 @@ void ValidateNewClient(const char* newuser, pid_t cl_pid)
         {
             if(strcmp(newuser, aux->username) == 0) //If user already exists
             {
-                kill(cl_pid, SIGINT);
+                union sigval user_exists;
+                user_exists.sival_int = 2;
+                if( sigqueue(cl_pid, SIGINT, user_exists) == -1)
+                    fprintf(stderr, "sigqueue() error in ValidateNewClient() USER EXISTS\n");
+
                 fclose(db);
                 return;
             }
@@ -188,10 +203,16 @@ void ValidateNewClient(const char* newuser, pid_t cl_pid)
             if(params->n != 1)
             {
                 char pipename[20];
-                sprintf(pipename, "/tmp/client%lu", (unsigned long) cl_pid);
+                sprintf(pipename, "/tmp/client%lur", (unsigned long) cl_pid);
                 mkfifo(pipename, S_IRUSR | S_IWUSR);
-                newcl->pipename = malloc(strlen(pipename)*sizeof(char));
-                strcpy(newcl->pipename, pipename);
+                newcl->piperead = malloc(strlen(pipename)*sizeof(char));
+                strcpy(newcl->piperead, pipename);
+                
+                memset((char*) pipename, 0, sizeof(pipename));
+                sprintf(pipename, "/tmp/client%luw", (unsigned long) cl_pid);
+                //mkfifo(pipename, S_IRUSR | S_IWUSR);
+                newcl->pipewrite = malloc(strlen(pipename)*sizeof(char));
+                strcpy(newcl->pipewrite, pipename);
             }
             
             if(cl_vec == NULL)
@@ -238,14 +259,21 @@ void ValidateNewClient(const char* newuser, pid_t cl_pid)
             }
             cl_vec_tam++;
             
-            kill(cl_pid, SIGUSR1);
+            union sigval cl_connected;
+            cl_connected.sival_int = 1;
+            if(sigqueue(cl_pid, SIGUSR1, cl_connected) == -1)
+                fprintf(stderr, "sigqueue() error in ValidateNewClient() CLIENT CONNECTED");
             
             fclose(db);
             return;
         }
     }
     
-    kill(cl_pid, SIGINT);
+    union sigval invalid_user;
+    invalid_user.sival_int = 1;
+    if(sigqueue(cl_pid, SIGINT, invalid_user) == -1)
+        fprintf(stderr, "sigqueue() error in ValidateNewClient() INVALID USER\n");
+    
     fclose(db);
 }
 
@@ -285,7 +313,8 @@ void* ParseCommands()
         {
             fprintf(stdout, "Username: %s\n", aux->username);
             fprintf(stdout, "ID: %i\n", aux->id);
-            fprintf(stdout, "Active Pipe: %s\n", aux->pipename);
+            fprintf(stdout, "Active Reading Pipe: %s\n", aux->piperead);
+            fprintf(stdout, "Active Writting Pipe: %s\n", aux->pipewrite);
             if(aux->acl != -1)
                 fprintf(stdout, "Current Editing Line: %i\n", aux->acl);
             else
@@ -407,8 +436,10 @@ void* MainPipeHandler(void* arg)
                         ValidateNewClient(username, cl_pid);
                     else
                     {
-                        fprintf(stdout, "Cannot validate new client. Server Full!\n");
-                        kill(cl_pid, SIGINT);
+                        union sigval sv_full;
+                        sv_full.sival_int = 3;
+                        if(sigqueue(cl_pid, SIGINT, sv_full) == -1)
+                            fprintf(stderr, "sigqueue() error in MainPipeHandler SERVER FULL\n");
                     }
                 }
             }

@@ -32,7 +32,8 @@ extern "C" {
         
         int acl;                //Active Current Line
         pid_t cl_pid;           //Client Process ID
-        char *pipename;         //Client Named Pipe
+        char *piperead;         //Client Named Pipe for Reading (Server <-- Client)
+        char *pipewrite;        //Client Named Pipe for Writting (Server --> Client)
         
         pClients prev;
         pClients prox;

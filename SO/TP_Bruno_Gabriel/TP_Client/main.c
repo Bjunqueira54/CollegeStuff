@@ -80,7 +80,8 @@ int main(int argc, char** argv)
     int cfd;
     struct sigaction invalid_username, sv_con, sv_disc;
 
-    invalid_username.sa_handler = &inv_user;
+    invalid_username.sa_flags = SA_SIGINFO;
+    invalid_username.sa_sigaction = &inv_user;
     
     sv_con.sa_flags = SA_SIGINFO;
     sv_con.sa_sigaction = &sv_connect;
