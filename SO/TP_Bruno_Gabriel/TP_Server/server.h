@@ -53,6 +53,7 @@ extern "C" {
     
     void ValidateNewClient(const char* newuser, pid_t cl_pid);
     void* ActivateLine(void* arg);
+    void DeleteClient(pClients client);
 
 #ifdef __cplusplus
 }

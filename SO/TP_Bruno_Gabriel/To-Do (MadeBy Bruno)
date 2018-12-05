@@ -19,10 +19,25 @@ Server SIGUSR1:
     Client disconnected. (Done)
 
 Server SIGUSR2:
-    Does not exist in current server version. Perhaps make use of it?
     si_pid = Signal Sending client ID
     sival_int = x: line which client intends to edit;
 
 Check server_functions.c in "void ClientDisconnect()", something in the first "while" cycle doesn't feel right.(DONE, TEST)
 
 Code all relevant server->client signal from kill to sigqueue() with the sig_value union. (DONE, Test)
+
+
+
+
+December 5th
+
+All server code looks ok up until ClientSignals();
+Resume review from ClientSignals()::else{pthread_create()}
+Functions Left: ActivateLine()
+
+Add Responsibilities to Client.
+Code signal catching functions in client.
+
+Code Aspell communication pipe in server.
+
+Test Server <-> Server NPComm

@@ -34,8 +34,9 @@ extern "C" {
         pid_t cl_pid;           //Client Process ID
         pthread_t cl_thread;    //Client Line Editing Thread
         
-        char *piperead;         //Client Named Pipe for Reading (Server <-- Client)
-        char *pipewrite;        //Client Named Pipe for Writting (Server --> Client)
+        char *piperead;         //Client Named Pipe for Reading (Server reads from Client)
+        char *pipewrite;        //Client Named Pipe for Writting (Server writes to Client)
+        int pipefd;             //Client Pipe File Descriptor (for ease of access)
         
         pClients prev;
         pClients prox;

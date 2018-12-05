@@ -9,7 +9,7 @@ int main(int argc, char** argv)
 {
     int mp; //Main Pipe file descriptor
     char mpn[25]; //Main Pipe Name
-    pthread_t cmd_thread, mpipe_thread;
+    pthread_t cmd_thread, mpipe_thread, cl_writer_thread;
     struct sigaction cl_disc, cl_sig;
 
     cl_disc.sa_flags = SA_SIGINFO;
@@ -87,7 +87,10 @@ int main(int argc, char** argv)
     char* tmplines[options->lines];
     
     for(int i=0; i<options->lines; i++)
+    {
         tmplines[i] = creatinglines[i];
+        tmplines[i] = "";
+    }
     
     EditorLines = tmplines;
     
@@ -103,6 +106,7 @@ int main(int argc, char** argv)
     free(options);
     free(params);
     
+    close(mp);
     pthread_kill(mpipe_thread, SIGINT);
     pthread_join(mpipe_thread, NULL);
     
@@ -132,16 +136,20 @@ int main(int argc, char** argv)
     while(aux != NULL)
     {
         aux2 = aux;
-        kill(aux->cl_pid, SIGUSR2);
+        
+        /*kill(aux->cl_pid, SIGUSR2);
         
         if((remove = fork()) == 0)
             execlp("rm", "rm", aux->piperead, aux->pipewrite, NULL);
         else
-            waitpid(remove, NULL, 0);
+            waitpid(remove, NULL, 0);*/
+        
+        DeleteClient(aux);
         
         aux = aux->prox;
-        free(aux2->piperead);
-        free(aux2->pipewrite);
+        /*free(aux2->piperead);
+        free(aux2->pipewrite);*/
+        
         free(aux2);
     }
     

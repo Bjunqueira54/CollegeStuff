@@ -7,13 +7,29 @@ int cl_vec_tam = 0;
 
 void SigHandler(int signal)
 {
-    close(mp);
     pthread_exit(NULL);
 }
 
-void DeactivateLine()
+void DeleteClient(pClients client)
 {
+    pid_t remove;
     
+    if(client->pipefd != 0)
+        if(close(client->pipefd) != EBADF)
+            fprintf(stderr, "Error on client %i close(). ERROR %i\n", client->id, errno);
+    
+    kill(client->cl_pid, SIGUSR2);
+    
+    pthread_kill(client->cl_thread, SIGINT);
+    pthread_join(client->cl_thread, NULL);
+    
+    if((remove = fork()) == 0)
+        execlp("rm", "rm", client->piperead, client->pipewrite, NULL);  //consider deleting client->pipewrite to be client's responsibility
+    else
+        waitpid(remove, NULL, 0);
+    
+    free(client->piperead);
+    free(client->pipewrite);
 }
 
 void* ActivateLine(void* arg)
@@ -23,10 +39,10 @@ void* ActivateLine(void* arg)
     fd_set cl_pipe_fd, cl_temp_fd;
     int bread, cl_fd;
     
-    cl_fd = open(client->piperead, O_RDONLY);
+    client->pipefd = open(client->piperead, O_RDONLY);
     
-    thr_cancel.sa_handler = &DeactivateLine;
-    sigaction(SIGINT, &thr_cancel, NULL);
+    /*thr_cancel.sa_handler = &DeleteClient;  //THE CORRECT FUNCTION IS NOT DeleteClient() THIS IS JUST PLACEHOLDER SO IT COMPILES
+    sigaction(SIGINT, &thr_cancel, NULL);*/
     
     FD_ZERO(&cl_pipe_fd);
     FD_SET(cl_fd, &cl_pipe_fd);
@@ -57,22 +73,6 @@ void* ActivateLine(void* arg)
                 }
         }
     }
-    
-    //Write code that locks a line mutex
-    //create array of n size where n = number of lines(Maybe number of clients)
-    //Everytime a line is activated, mutex lock it if free, else signal client that 
-    //line is currently occupied.
-    
-    //If client successfully got line control, start reading from client.piperead
-    //For every char value in numerical number, attempt to correctly mimic what the client
-    //sees.
-    //Use FD_* set of functions to help determine if pipe is ready to be read.
-    //Every time a character is validated and the array line is changed, write the character
-    //to every client's pipewrite and signal them the line changed.
-    
-    //Alternative: extra thread that completelly writes the whole editor array to clients,
-    //possibly eliminating multi-threads writting to the same pipe and too many signals
-    //been send between processes.
 }
 
 void ClientSignals(int signal, siginfo_t *info, void* extra)
@@ -94,7 +94,7 @@ void ClientSignals(int signal, siginfo_t *info, void* extra)
     
     if(info->si_value.sival_int == -1)
     {
-        int exline = aux->acl;
+        //int exline = aux->acl;
         //Call for function to spell Aspell.
         aux->acl == -1;
         pthread_kill(aux->cl_thread, SIGINT);
@@ -125,8 +125,7 @@ void ClientDisconnect(int signal, siginfo_t *info, void* extra)
         return;
     
     if((remove = fork()) == 0)
-        
-        execlp("rm", "rm", aux->piperead, aux->pipewrite, NULL);
+        execlp("rm", "rm", aux->piperead, aux->pipewrite, NULL);    //aux->pipewrite should be the client's responsibility
     else
         waitpid(remove, NULL, 0);
     
@@ -233,6 +232,27 @@ void ParseEnvVars(Settings *a)
 void ValidateNewClient(const char* newuser, pid_t cl_pid)
 {
     char *dbname;
+    pClients aux = NULL;
+    
+    aux = cl_vec;
+        
+    while(aux != NULL)
+    {
+        if(strcmp(newuser, aux->username) == 0) //If user already exists
+        {
+            union sigval user_exists;
+            user_exists.sival_int = 2;
+
+            if( sigqueue(cl_pid, SIGINT, user_exists) == -1)
+                fprintf(stderr, "sigqueue() error in ValidateNewClient() USER EXISTS\n");
+
+            return;
+        }
+        aux = aux->prox;
+    }
+
+    aux = NULL;
+    
     dbname = params->fname;
     
     FILE *db;
@@ -260,26 +280,7 @@ void ValidateNewClient(const char* newuser, pid_t cl_pid)
             username[i] = filestring[i];
         
         username[strlen(username)] = '\0';
-        
-        aux = cl_vec;
-        
-        while(aux != NULL)
-        {
-            if(strcmp(newuser, aux->username) == 0) //If user already exists
-            {
-                union sigval user_exists;
-                user_exists.sival_int = 2;
-                if( sigqueue(cl_pid, SIGINT, user_exists) == -1)
-                    fprintf(stderr, "sigqueue() error in ValidateNewClient() USER EXISTS\n");
 
-                fclose(db);
-                return;
-            }
-            aux = aux->prox;
-        }
-        
-        aux = NULL;
-        
         if(strcmp(username, newuser) == 0)
         {
             newcl = malloc(sizeof(Clients));
@@ -306,7 +307,6 @@ void ValidateNewClient(const char* newuser, pid_t cl_pid)
                 
                 memset((char*) pipename, 0, sizeof(pipename));
                 sprintf(pipename, "/tmp/client%luw", (unsigned long) cl_pid);
-                //mkfifo(pipename, S_IRUSR | S_IWUSR);
                 newcl->pipewrite = malloc(strlen(pipename)*sizeof(char));
                 strcpy(newcl->pipewrite, pipename);
             }
@@ -528,7 +528,7 @@ void* MainPipeHandler(void* arg)
                     
                     cl_pid = (pid_t) num;
                     
-                    if(cl_vec_tam <= 3)
+                    if(cl_vec_tam <= options->maxusers)
                         ValidateNewClient(username, cl_pid);
                     else
                     {

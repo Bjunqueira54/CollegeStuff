@@ -31,7 +31,12 @@ void sv_disconnect(int sig)
 void sv_connect(int sig, siginfo_t *info, void *extra)
 {
     if(info->si_value.sival_int == 1)
+    {
         sv_pid = info->si_pid;
+        char pipename[25];
+        sprintf(pipename, "/tmp/client%luw", (unsigned long) getpid());
+        mkfifo(pipename, S_IRUSR | S_IWUSR);
+    }
     else if(info->si_value.sival_int == 2)
     {
         int y, x;
