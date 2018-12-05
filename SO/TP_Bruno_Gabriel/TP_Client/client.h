@@ -22,6 +22,7 @@ extern "C" {
     
     extern pid_t sv_pid;
     extern int mode;
+    extern char** EditorLines;
 
     //Protótipos de funções
     int edModeLoop(int string_len);

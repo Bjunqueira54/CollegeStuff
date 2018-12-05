@@ -1,6 +1,7 @@
 #include "client.h"
 
- int mode = 0; // Var. para determinar se estamos em modo de edição ou de seleção. 0=Seleção, 1=Edição, 2=Exit
+int mode = 0; // Var. para determinar se estamos em modo de edição ou de seleção. 0=Seleção, 1=Edição, 2=Exit
+char** EditorLines; 
 
 int main(int argc, char** argv)
 {
@@ -39,10 +40,14 @@ int main(int argc, char** argv)
 
     char line[15][15+45+1]; // 15 linhas, 15 caracters de precedencia + 45 colunas + \0. Valores por defeito até ser implementada comunicação
     char* curline; // Linha atual, 15 caracters de precedencia + 45 colunas + \0.
+
     curline = malloc((15+45+1)*sizeof(char));
     char preline[15+45+1]; // Linha antes de entrar no modo de edição
     int x, newx, y, newy;
     int c;
+    pthread_t sv_send_thread;
+    
+    
 
     /////////////////////////////////////////////
     ///// Inicialização da string principal /////
