@@ -83,18 +83,27 @@ int main(int argc, char** argv)
 
     ParseEnvVars(options);
     
-    char creatinglines[options->lines][15+options->columns+1];
-    char* tmplines[options->lines];
+    EditorLines = malloc(options->lines*sizeof(char*));
+    
+    if(EditorLines == NULL)
+    {
+        fprintf(stderr, "Error allocating memory for global 2D array\n");
+        return (EXIT_FAILURE);
+    }
     
     for(int i=0; i<options->lines; i++)
     {
-        tmplines[i] = creatinglines[i];
-        tmplines[i] = "";
+        EditorLines[i] = malloc(options->columns*sizeof(char));
+        
+        if(EditorLines[i] == NULL)
+        {
+            fprintf(stderr, "Error allocating line for global 2D array\n");
+            return (EXIT_FAILURE);
+        }
     }
     
-    EditorLines = tmplines;
-    
     pthread_create(&mpipe_thread, NULL, MainPipeHandler, (void*) mpn);
+    pthread_create(&cl_writer_thread, NULL, WriteToClients, NULL);
     
     do
     {
@@ -103,12 +112,20 @@ int main(int argc, char** argv)
     }
     while(ExitVar != 1);
     
+    for(int i=0; i<options->lines; i++)
+        free(EditorLines[i]);
+    free(EditorLines);
+
+    
     free(options);
     free(params);
     
     close(mp);
     pthread_kill(mpipe_thread, SIGINT);
     pthread_join(mpipe_thread, NULL);
+    
+    pthread_kill(cl_writer_thread, SIGINT);
+    pthread_join(cl_writer_thread, NULL);
     
     pid_t remove;
 
@@ -122,13 +139,7 @@ int main(int argc, char** argv)
             execlp("rm", "rm", MEDIT_DEFAULT_MAIN_PIPE, NULL);
         else
             waitpid(remove, NULL, 0);
-    
-    /*if(params->n != 1)
-        if((remove = fork()) == 0)
-            execlp("rm", "rm", "/tmp/client*", NULL);
-        else
-            waitpid(remove, NULL, 0);*/
-    
+
     pClients aux, aux2;
     
     aux = cl_vec;
@@ -137,18 +148,9 @@ int main(int argc, char** argv)
     {
         aux2 = aux;
         
-        /*kill(aux->cl_pid, SIGUSR2);
-        
-        if((remove = fork()) == 0)
-            execlp("rm", "rm", aux->piperead, aux->pipewrite, NULL);
-        else
-            waitpid(remove, NULL, 0);*/
-        
+        kill(aux->cl_pid, SIGUSR2);
         DeleteClient(aux);
-        
         aux = aux->prox;
-        /*free(aux2->piperead);
-        free(aux2->pipewrite);*/
         
         free(aux2);
     }

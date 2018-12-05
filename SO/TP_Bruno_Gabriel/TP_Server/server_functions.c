@@ -10,18 +10,55 @@ void SigHandler(int signal)
     pthread_exit(NULL);
 }
 
+void* WriteToClients(void* arg)
+{
+    struct sigaction kt;
+    pClients aux;
+    
+    kt.sa_handler = &SigHandler;
+    sigaction(SIGINT, &kt, NULL);
+    
+    while(1)
+    {
+        aux = cl_vec;
+
+        while(aux != NULL)
+        {
+            aux->writefd = open(aux->pipewrite, O_WRONLY);
+
+            for(int i=0; i<options->lines; i++)
+            {
+                if(aux->writefd != -1)
+                {
+                    write(aux->writefd, EditorLines[i], options->columns-1);
+                    write(aux->writefd, "\n", sizeof(char));
+                }
+            }
+
+            aux = aux->prox;
+        }
+
+        aux = NULL;
+    }
+}
+
 void DeleteClient(pClients client)
 {
     pid_t remove;
     
-    if(client->pipefd != 0)
-        if(close(client->pipefd) != EBADF)
+    if(client->readfd != 0)
+        if(close(client->readfd) != EBADF)
             fprintf(stderr, "Error on client %i close(). ERROR %i\n", client->id, errno);
     
-    kill(client->cl_pid, SIGUSR2);
+    /*if(client->writefd != 0)
+        if(close(client->writefd) != EBADF)
+            fprintf(stderr, "Error on client %i close(). ERROR %i\n", client->id, errno);*/ //Clients take care of this part
     
-    pthread_kill(client->cl_thread, SIGINT);
-    pthread_join(client->cl_thread, NULL);
+    if(client->active_thread == 1)
+    {
+        pthread_kill(client->cl_thread, SIGINT);
+        pthread_join(client->cl_thread, NULL);
+    }
     
     if((remove = fork()) == 0)
         execlp("rm", "rm", client->piperead, client->pipewrite, NULL);  //consider deleting client->pipewrite to be client's responsibility
@@ -32,17 +69,21 @@ void DeleteClient(pClients client)
     free(client->pipewrite);
 }
 
+
 void* ActivateLine(void* arg)
 {
     pClients client = (pClients) arg;
     struct sigaction thr_cancel;
     fd_set cl_pipe_fd, cl_temp_fd;
-    int bread, cl_fd;
+    int bread, cl_fd, i;
     
-    client->pipefd = open(client->piperead, O_RDONLY);
+    client->active_thread = 1;
     
-    /*thr_cancel.sa_handler = &DeleteClient;  //THE CORRECT FUNCTION IS NOT DeleteClient() THIS IS JUST PLACEHOLDER SO IT COMPILES
-    sigaction(SIGINT, &thr_cancel, NULL);*/
+    client->readfd = open(client->piperead, O_RDONLY);
+    
+    thr_cancel.sa_handler = &SigHandler;
+    
+    sigaction(SIGINT, &thr_cancel, NULL);
     
     FD_ZERO(&cl_pipe_fd);
     FD_SET(cl_fd, &cl_pipe_fd);
@@ -50,6 +91,8 @@ void* ActivateLine(void* arg)
     while(1)
     {
         cl_temp_fd = cl_pipe_fd;
+        
+        memset((char*) EditorLines[client->acl], 0, options->columns*sizeof(char));
         
         switch(select(32, &cl_temp_fd, NULL, NULL, NULL))
         {
@@ -66,9 +109,19 @@ void* ActivateLine(void* arg)
                 fprintf(stderr, "Client ID %i select() timeout...\n", client->id);
                 break;
             default:
-                memset((char*) EditorLines[client->acl]+15, 0, 45*sizeof(char));
-                while((bread = read(cl_fd, (char*) EditorLines[client->acl], 45)))
+                if(client->acl == -1)
+                    continue;
+                
+                while((bread = read(cl_fd, (char*) EditorLines[client->acl], sizeof(char))))
                 {
+                    if(EditorLines[client->acl][bread-1] == '\n')
+                    {
+                        EditorLines[client->acl][bread] = '\0';
+                        break;
+                    }
+                    else if(EditorLines[client->acl][bread-1] == '\b')
+                        bread = bread - 1;
+                    
                     EditorLines[client->acl][bread] = '\0';
                 }
         }
@@ -95,21 +148,30 @@ void ClientSignals(int signal, siginfo_t *info, void* extra)
     if(info->si_value.sival_int == -1)
     {
         //int exline = aux->acl;
-        //Call for function to spell Aspell.
+        //Call for function to Aspell.
         aux->acl == -1;
-        pthread_kill(aux->cl_thread, SIGINT);
+        if(aux->active_thread == 1)
+        {
+            aux->active_thread = 0;
+            pthread_kill(aux->cl_thread, SIGINT);
+        }
+        else
+            fprintf(stderr, "How is the client sending a '-1' sival_int when he's already out of a line?\n");
     }
     else
     {
         aux->acl = info->si_value.sival_int;
-        pthread_create(&aux->cl_thread, NULL, ActivateLine, (void*) aux);
+        if(aux->active_thread == 0)
+            pthread_create(&aux->cl_thread, NULL, ActivateLine, (void*) aux);
+        else
+            fprintf(stderr, "How did you get here? Anyway, client tried to create a new thread without exiting the old one\n");
     }
 }
 
 void ClientDisconnect(int signal, siginfo_t *info, void* extra)
 {
     pid_t cl_pid, remove;
-    pClients aux = cl_vec;
+    pClients aux = cl_vec, aux2;
 
     cl_pid = info->si_pid;
     
@@ -124,46 +186,43 @@ void ClientDisconnect(int signal, siginfo_t *info, void* extra)
     if(aux == NULL) //Nunca deverá entrar aqui. Só para prevenir de um cliente ser apagado quando não devia.
         return;
     
-    if((remove = fork()) == 0)
+    /*if((remove = fork()) == 0)
         execlp("rm", "rm", aux->piperead, aux->pipewrite, NULL);    //aux->pipewrite should be the client's responsibility
     else
-        waitpid(remove, NULL, 0);
+        waitpid(remove, NULL, 0);*/
     
-    if(aux->prev == NULL)   //Se for o 1º elemento da Lista
+    aux->writefd = -1;
+    aux2 = aux;
+    
+    
+    if(aux2->prev == NULL)   //Se for o 1º elemento da Lista
     {
-        if(aux->prox != NULL)
+        if(aux2->prox != NULL)
         {
-            cl_vec = aux->prox;
-            aux->prox->prev = NULL;
+            cl_vec = aux2->prox;
+            aux2->prox->prev = NULL;
         }
         else    //No caso de ser o unico elemento, aux->prox deverá ser NULL, logo cl_vec ficará vazio.
             cl_vec = NULL;
-        
-        free(aux->piperead);
-        free(aux->pipewrite);
-        free(aux);
-        cl_vec_tam--;
     }
-    else if(aux->prox == NULL)  //Se for o ultimo elemento da lista
-    {
-        aux->prev->prox = NULL;
-        free(aux->piperead);
-        free(aux->pipewrite);
-        free(aux);
-        cl_vec_tam--;
-    }
+    else if(aux2->prox == NULL)  //Se for o ultimo elemento da lista
+        aux2->prev->prox = NULL;
     else    //Se for um elemento no meio da lista
     {
-        aux->prox->prev = aux->prev;
-        aux->prev->prox = aux->prox;
-        free(aux->piperead);
-        free(aux->pipewrite);
-        free(aux);
-        cl_vec_tam--;
+        aux2->prox->prev = aux2->prev;
+        aux2->prev->prox = aux2->prox;
     }
     
-    if(cl_vec_tam == 0)
+    DeleteClient(aux);
+    
+    free(aux);
+    cl_vec_tam--;
+    
+    if(cl_vec_tam <= 0)
+    {
+        cl_vec_tam = 0;
         cl_vec = NULL;
+    }
 }
 
 void CheckArgs(Params *p)
@@ -373,7 +432,7 @@ void ValidateNewClient(const char* newuser, pid_t cl_pid)
     fclose(db);
 }
 
-void* ParseCommands()
+void* ParseCommands(void* arg)
 {
     char cmd[25];
     fprintf(stdout, "Command: ");
@@ -470,7 +529,6 @@ void* ParseCommands()
         fprintf(stderr, "Unknown command!\n");
         
     return NULL;
-
 }
 
 void* MainPipeHandler(void* arg)

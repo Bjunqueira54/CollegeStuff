@@ -20,9 +20,14 @@ extern "C" {
 
 #include "../medit_defaults.h"
     
+#define BUFFERSIZE 1024
+    
     extern pid_t sv_pid;
-    extern int mode;
-    extern char** EditorLines;
+    extern pthread_t sv_recv_thread;
+    extern int mode, sv_fd;
+    extern char** line;
+    
+    static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
     //Protótipos de funções
     int edModeLoop(int string_len);
@@ -36,6 +41,8 @@ extern "C" {
     void inv_user(int sig, siginfo_t *info, void *extra);
     void sv_connect(int sig, siginfo_t *info, void *extra);
     void sv_disconnect(int sig);
+    
+    void* GetPageFromServer(void* arg);
 
 #ifdef __cplusplus
 }

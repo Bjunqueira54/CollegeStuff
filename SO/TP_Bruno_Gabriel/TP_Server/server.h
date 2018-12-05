@@ -46,7 +46,7 @@ extern "C" {
     void CheckArgs(Params *p);
     void CheckOptions(Settings *a);
     void ParseEnvVars(Settings *a);
-    void* ParseCommands();
+    void* ParseCommands(void* arg);
     void* MainPipeHandler(void* arg);
     void ClientDisconnect(int signal, siginfo_t *info, void* extra);
     void ClientSignals(int signal, siginfo_t *info, void* extra);
@@ -54,6 +54,8 @@ extern "C" {
     void ValidateNewClient(const char* newuser, pid_t cl_pid);
     void* ActivateLine(void* arg);
     void DeleteClient(pClients client);
+    void ClientDisconnect(int signal, siginfo_t *info, void* extra);
+    void* WriteToClients(void* arg);
 
 #ifdef __cplusplus
 }

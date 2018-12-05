@@ -1,7 +1,7 @@
 #include "client.h"
 
 int mode = 0; // Var. para determinar se estamos em modo de edição ou de seleção. 0=Seleção, 1=Edição, 2=Exit
-char** EditorLines; 
+char** line; 
 
 int main(int argc, char** argv)
 {
@@ -38,16 +38,30 @@ int main(int argc, char** argv)
     ///// Preparação das variáveis necessárias para a edição de texto /////
     ///////////////////////////////////////////////////////////////////////
 
-    char line[15][15+45+1]; // 15 linhas, 15 caracters de precedencia + 45 colunas + \0. Valores por defeito até ser implementada comunicação
+    //char line[15][15+45+1]; // 15 linhas, 15 caracters de precedencia + 45 colunas + \0. Valores por defeito até ser implementada comunicação
+    //char* tmp[15];
     char* curline; // Linha atual, 15 caracters de precedencia + 45 colunas + \0.
-
     curline = malloc((15+45+1)*sizeof(char));
     char preline[15+45+1]; // Linha antes de entrar no modo de edição
     int x, newx, y, newy;
     int c;
-    pthread_t sv_send_thread;
     
+    /*for(int i=0; i<15; i++)
+        tmp[i] = line[i];
+    EditorLines = tmp;*/
     
+    line = malloc(15*sizeof(char*));
+    
+    if(line == NULL)
+        exit (EXIT_FAILURE);
+    
+    for(int i=0; i<15; i++)
+    {
+        line[i] = malloc((15+45)*sizeof(char));
+        
+        if(line[i] == NULL)
+            exit (EXIT_FAILURE);
+    }
 
     /////////////////////////////////////////////
     ///// Inicialização da string principal /////
@@ -192,7 +206,7 @@ int main(int argc, char** argv)
                 getyx(stdscr, y, x); // busca posição (x,y) do standard screen
                 newx = x;
                 newy = y;
-
+                
                 if(line[y][15+45-1] == ' ')
                 {
                     for(x=(15+45-1); x>newx; x--)
@@ -201,8 +215,10 @@ int main(int argc, char** argv)
                     }
 
                     line[y][newx] = mode;
+                    write(sv_fd, (char*) &mode, sizeof(char));
                     move(newy, newx+1);
                 }
+
                 mode = 1;
             }
             if(mode == 3)
@@ -210,6 +226,7 @@ int main(int argc, char** argv)
                 getyx(stdscr, y, x); //busca posição (x,y) do standard screen
                 newx=x; //guarda a pos atual
                 newy=y;
+                
                 line[y][15+45] = ' '; //A pos onde estava o '\0' passa a ser um espaço
 
                 for(;x<=15+45; x++) //Ciclo para mover...
@@ -218,6 +235,8 @@ int main(int argc, char** argv)
                 }
 
                 line[y][15+45] = '\0';  //repõe o '\0' no final da linha;
+                
+                write(sv_fd, "\b", sizeof(char));
                 move(newy, newx-1); //move o cursor uma pos. a esquerda
                 mode = 1; //continua no modo de edição
             }
@@ -228,14 +247,17 @@ int main(int argc, char** argv)
                 {
                         line[y][x] = preline[x];
                 }
+                write(sv_fd, "\r", sizeof(char));
                 mode = 0;
             }
             else if(mode == 6)
             {
                 getyx(stdscr, y, x);
+                
                 for(x=4; x<14; x++)
                     line[y][x] = ' ';
-
+                
+                write(sv_fd, "\n", sizeof(char));
                 mode = 0;
             }
 
@@ -257,8 +279,17 @@ int main(int argc, char** argv)
     while(mode != 2); // Enquanto a tecla premida não for ESC
 
     free(curline);
+
     kill(sv_pid, SIGUSR1);
+    pthread_kill(sv_recv_thread, SIGINT);
+    pthread_join(sv_recv_thread, NULL);
+    
+    for(int i=0; i<15; i++)
+        free(line[i]);
+    free(line);
+    
     endwin(); // fecha a janela do ncurses e devolve o controlo ao terminal original
+    close(sv_fd);
 
     return (EXIT_SUCCESS);
 }
