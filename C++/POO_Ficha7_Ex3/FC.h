@@ -11,6 +11,7 @@
 
 using namespace std;
 
+//Ficcao Cientifica
 class FC: public Livro
 {
     string planeta;
