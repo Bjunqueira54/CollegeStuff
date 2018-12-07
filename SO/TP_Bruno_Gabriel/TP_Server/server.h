@@ -34,9 +34,10 @@ extern "C" {
     
     extern Settings *options;
     extern Params *params;
-    extern char EditorLines[15][15+45+1];
+    //extern char EditorLines[15][15+45+1];
+    extern char** EditorLines;
     extern int ExitVar;
-    extern int mp;
+    extern int mp, cp;  //File Descriptors: Main Pipe, Client Pipes
     
     extern pClients cl_vec;
 
@@ -45,11 +46,16 @@ extern "C" {
     void CheckArgs(Params *p);
     void CheckOptions(Settings *a);
     void ParseEnvVars(Settings *a);
-    void* ParseCommands();
+    void* ParseCommands(void* arg);
     void* MainPipeHandler(void* arg);
     void ClientDisconnect(int signal, siginfo_t *info, void* extra);
+    void ClientSignals(int signal, siginfo_t *info, void* extra);
     
     void ValidateNewClient(const char* newuser, pid_t cl_pid);
+    void* ActivateLine(void* arg);
+    void DeleteClient(pClients client);
+    void ClientDisconnect(int signal, siginfo_t *info, void* extra);
+    void* WriteToClients(void* arg);
 
 #ifdef __cplusplus
 }

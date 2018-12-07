@@ -18,7 +18,7 @@ void Abort(char * message){
 	exit(EXIT_FAILURE);
 }
 
-//These variables iare global so that the main thread and the created ones 
+//These variables are global so that the main thread and the created ones 
 //can access them concurrently.
 int exit_threads;
 int mypid;
