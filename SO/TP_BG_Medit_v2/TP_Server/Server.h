@@ -33,6 +33,14 @@ extern "C" {
     extern int ExitVar;
     extern char** EditLines;
     extern pClient cl_vec;
+    
+    //Function Prototypes
+    
+    void ClientDisconnect();
+    void ClientSignals();
+    void ParseEnvVars(Options *a);
+    
+    void* ParseCommands();
 
 #ifdef __cplusplus
 }
