@@ -90,6 +90,25 @@ NECESSARY THREADS
 	Statistics Thread:
 		Recieves strings (?) from server and writes contents to the statistics window (Position and aesthetics to be determined later);
 
+NECESSARY SIGNALS
+
+    SIGINT (Multi-values)
+        0   ->  Client Doesn't exist;
+        1   ->  Client already Authenticated;
+        2   ->  Server is full;
+        3   ->  You've been timedout (I may or may not be able to implement this one)
+        4   ->  Server has been terminated;
+        More TBD...
+
+    SIGUSR1 (Multi-Values)
+        0   ->  Save server PID and create a named pipe to read\write from (Format: client[CLIENT_PID_HERE]r\w);
+                Create Update and statistics threads;
+        1   ->  Server has forcefully freed your line. Go back to MoveModeLoop() (Consider global Mode flag);
+        More TBD...
+
+    SIGUSR2 (TBD Later)
+
+
 Ending the Client (FOLLOW THIS ORDER OR RISK SEGVFAULT ERRORS)
 
 	Signal server with relevant "client quitting" signal (Stops the server from sending more information);

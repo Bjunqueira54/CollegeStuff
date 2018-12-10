@@ -2,7 +2,7 @@
 
 Params *params;
 Options *options;
-int ExitVar = 1;
+int ExitVar = 0;
 char** EditLines;
 
 int main(int argc, char** argv)
@@ -32,12 +32,13 @@ int main(int argc, char** argv)
     sigaction(SIGUSR1, &cl_disc, NULL);
     sigaction(SIGUSR2, &cl_sig, NULL);
     
+    params = malloc(sizeof(Params));
+    params->f = 0;
+    params->n = 0;
+    params->p = 0;
+    
     if(argc != 1)
     {
-        params = malloc(sizeof(Params));
-        params->f = 0;
-        params->n = 0;
-        params->p = 0;
         char c;
         while( (c = getopt(argc, argv, "f:n:p:")) != -1 )
         {
@@ -104,6 +105,71 @@ int main(int argc, char** argv)
         pthread_join(cmd_thread, NULL);
     }
     while(ExitVar != 1);
+    
+    pClient aux, aux2;
+    pid_t remove;
+    union sigval exit_val;
+    
+    if((remove = fork()) == 0)
+        execlp("rm", "rm", main_pipe, NULL);
+    else
+        waitpid(remove, NULL, 0);
+    
+    if(params->p == 1)
+        if((remove = fork()) == 0)
+            execlp("rm", "rm", MEDIT_DEFAULT_MAIN_PIPE, NULL);
+        else
+            waitpid(remove, NULL, 0);
+    
+    exit_val.sival_int = 4;
+    
+    aux = cl_vec;
+    
+    while(aux != NULL)
+    {
+        sigqueue(aux->cl_pid, SIGINT, exit_val);
+        aux = aux->next;
+    }
+    
+    //Kill all active threads
+    
+    /*pthread_kill();
+    pthread_join();
+     aux = cl_vec;
+    
+    while(aux != NULL)
+    {
+        pthread_kill(aux->cl_pidthread, SIGINT);
+        aux = aux->next;
+    }*/
+    
+    aux = cl_vec;
+    
+    while(aux != NULL)
+    {
+        aux2 = aux;
+        aux = aux->next;
+        
+        close(aux2->read);
+        close(aux2->write);
+        
+        /*
+         * add file rm here
+         */
+        
+        free(aux2->piperead);
+        free(aux2->pipewrite);
+        
+        free(aux2);
+    }
+    
+    for(int i=0; i<options->lines; i++)
+        free(EditLines[i]);
+    
+    free(EditLines);
+    
+    free(options);
+    free(params);
     
     return (EXIT_SUCCESS);
 }

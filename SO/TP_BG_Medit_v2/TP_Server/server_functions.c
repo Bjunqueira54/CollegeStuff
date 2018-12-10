@@ -86,7 +86,7 @@ void CheckParams()
         fprintf(stdout, "Database File: %s\n", DEFAULT_DB_FILE);
     
     if(params->p == 1)
-        fprintf(stdout, "Main Named Pipe: %s\n", params->pname);
+        fprintf(stdout, "Main Named Pipe: %s\n", params->pipename);
     else
         fprintf(stdout, "Main Named Pipe: %s\n", MEDIT_DEFAULT_MAIN_PIPE);
 }
@@ -132,7 +132,51 @@ void* ParseCommands()
         fprintf(stderr, "Soon(tm)...\n");
     else if(spaces > 0)
     {
+        char argument[25];
+        int i=0;
         
+        for(; i<strlen(cmd); i++)
+            if(cmd[i] == ' ')
+                break;
+        i++;
+        for(int j=0; i<strlen(cmd); i++, j++)
+            argument[j] = cmd[i];
+        argument[strlen(argument)] = '\0';
+        
+        cmd[4] = 0;
+        
+        if(strcmp(cmd, "save") == 0)
+        {
+            FILE *save = fopen(argument, "wt");
+            if(save == NULL)
+                fprintf(stderr, "What is this error?\n");
+            else
+            {
+                fprintf(stdout, "If this was working, file %s would be open to be saved now\n", argument);
+                fclose(save);
+            }
+        }
+        else if(strcmp(cmd, "load") == 0)
+        {
+            FILE *load = fopen(argument, "rt");
+            if(load == NULL)
+                fprintf(stderr, "File not found\n");
+            else
+            {
+                fprintf(stdout, "If this was working, file %s would be open for loading now\n", argument);
+                fclose(load);
+            }
+        }
+        else if(strcmp(cmd, "free") == 0)
+        {
+            int li = atoi(argument);
+            if(li != 0)
+                fprintf(stdout, "If this was working, line %i would be free now\n", li);
+            else
+                fprintf(stderr, "Invalid line number\n");
+        }
+        else
+            fprintf(stderr, "Invalid command!\n");
     }
     else
         fprintf(stderr, "Unknown command!\n");
