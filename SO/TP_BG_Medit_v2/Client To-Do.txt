@@ -52,6 +52,7 @@ NECESSARY VARIABLES (Insert more if needed)
 	Create 2 windows:
 		Text Editor (max 15 lines starting at position (0,0) );
 		Statistics (Determine dimensions at a later date, will be positioned right below the editor window);
+		Use C++ assignment as reference to multi-window ncurses;
 	
 	Create 2 threads to handle Server-->Client communication:
 		Update Threads;
@@ -68,7 +69,9 @@ NECESSARY VARIABLES (Insert more if needed)
 		Any other key simply redirects the user back to MoveModeLoop();
 		When Escape is pressed, end the client (more on that later);
 		When one of the arrows is pressed, use wmove(stdscr, y, x) (multiple windows will be created, more on that later);
-		If one of the enters is pressed, start EditorModeLoop();
+		If one of the enters is pressed, signal the server (TBD) with the intention to start EditorModeLoop();
+		If the server signals back OK! (TBD) start EditorModeLoop();
+		Else redirect back to MoveModeLoop() with no changes;
 		
 	EditorModeLoop():
 		User and input any character in the ASCII range of (decimal) [32;127], both Enter Keys, Right\Left Arrows and the Escape key;
