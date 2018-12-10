@@ -1,0 +1,97 @@
+Client Code Organization
+
+NECESSARY VARIABLES (Insert more if needed)
+
+	2D dynamically allocated character array (Example: char** 2d_array);
+	1D dynamically allocated character array (Example: char* 1d_array);
+	2 pthread_t Variables for 2D Array update and statistics (Example: pthread_t update, stats);
+	1 Fixed size array for username (Example: char username[MEDIT_MAXNAME]);
+	1 Fixed size array for main pipe name (Example: char mainpipe[25]);
+	1 Structure for command line argument parameters (Example: typedef struct parameters Params);
+	1 Structure for environment variables (Example: typedef struct envvars Options);
+	X number of (int) vars to be used as flags;
+	4 Coordinates variables: int y, x, newy, newx (Consider making them global to possibly save of headaches);
+	1 Auxiliary character variable for ncurses getch();
+	X number of (int) variables to be used as pipe File Descriptors;
+
+1º Step
+
+	Start the client with all the first necessary variables;
+	Find out if a server is running (look for medit default named pipe first);
+	If file doesn't exist, server doesn't exist, exit the client;
+	
+2º Step
+
+	Prepare all necessary signal catching functions (SIGINT, SIGUSR1, SIGUSR2);
+	Prepare signal catching structures for SIGINT and SIGUSR with sa_flags = SA_SIGINFO for multi-value handling;
+	
+3º Step
+
+	Get console parameter arguments with getopt();
+	Get environment variables as needed;
+	Else use values from medit defaults header;
+	Ask for username (no ncurses needed yet);
+	Send username and PID to server through name pipe and wait for server signal (SIGINT for invalid, SIGUSR1 for valid) (String format for named pipe: USERNAME PID)
+	If SIGINT is recieved, print error to screen, exit client;
+	Else open a named pipe for reading and another one for writing (Format will be: [READING] client[CLIENT_PID_HERE]r, [WRITING] client[CLIENT_PID_HERE]w);
+	Save server PID sent from the valid user signal;
+
+4º Step
+
+	Start all the necessary variables and structures;
+	Initialize the necessary variables right away (Params structure, Options structure);
+	Use malloc as much as possible (saves trouble later on);
+	Consider making Params and Options Structure objects global (Saves trouble passing them as arguments to other functions);
+
+	Start by initializing the ncurses library will all needed atributes:
+		initscr();
+		start_color(); (optional, not needed)
+		keypad(); (May be needed)
+		etc; (use v1 as reference to what may be needed)
+		
+	Create 2 windows:
+		Text Editor (max 15 lines starting at position (0,0) );
+		Statistics (Determine dimensions at a later date, will be positioned right below the editor window);
+	
+	Create 2 threads to handle Server-->Client communication:
+		Update Threads;
+		Statistics Thread;
+	
+5º Step
+
+	Create 2 Functions:
+		EditorModeLoop();
+		MoveModeLoop();
+		
+	MoveModeLoop():
+		User can only use Up\Down Arrows, both Enter Keys (should both be consider key 10 I think) and the Escape key (should be key 27);
+		Any other key simply redirects the user back to MoveModeLoop();
+		When Escape is pressed, end the client (more on that later);
+		When one of the arrows is pressed, use wmove(stdscr, y, x) (multiple windows will be created, more on that later);
+		If one of the enters is pressed, start EditorModeLoop();
+		
+	EditorModeLoop():
+		User and input any character in the ASCII range of (decimal) [32;127], both Enter Keys, Right\Left Arrows and the Escape key;
+		Any other key simply redirects the user back to EditorModeLoop() with no changes to the current line;
+		When Escape is pressed, signal the server (TO_BE_DEFINED) and return to MoveModeLoop();
+		When one the the enters is pressed, signal the server (TO_BE_DEFINED) and return to MoveModeLoop();
+		When a valid character key is pressed, insert char into current array position and pipe the current line to the server;
+		The line piped to the server is the 1d global dynamically allocated array, and NOT the global 2d array;
+		
+NECESSARY THREADS
+
+	Update Thread:
+		Recieves lines from the assigned reading named pipe file descriptor and writes everything the the global 2d array;
+		Mutex locks the 2d array (Probably not necessary, evaluate);
+
+	Statistics Thread:
+		Recieves strings (?) from server and writes contents to the statistics window (Position and aesthetics to be determined later);
+
+Ending the Client (FOLLOW THIS ORDER OR RISK SEGVFAULT ERRORS)
+
+	Signal server with relevant "client quitting" signal (Stops the server from sending more information);
+	Kill all previously created threads (So that there's nothing else modifying variables and the file descriptors);
+	Close all previously opened file descriptors;
+	Free all previously dynamically allocated variables and objects;
+	endwin();
+	exit (EXIT_SUCCESS);
