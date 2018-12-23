@@ -39,8 +39,8 @@ int main(int argc, char** argv)
     
     /* VARIAVEIS NECESSARIAS PARA EDICAO DE TEXTO */
     
-    char* curline = malloc((STRING_FORM+1) * sizeof(char)); // Linha atual - 15 char iniciais + 45 colunas + \0
-    char preline[STRING_FORM+1];
+    char* curline = malloc((STRING_FORM + 1) * sizeof(char)); // Linha atual - 15 char iniciais + 45 colunas + \0
+    char preline[STRING_FORM + 1];
     int x, newx, y, newy;
     
     /* INICIALIZACAO DA STRING PRINCIPAL */
