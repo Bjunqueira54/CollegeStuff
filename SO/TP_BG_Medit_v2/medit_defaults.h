@@ -18,6 +18,7 @@ extern "C" {
 #include <signal.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <getopt.h>
 
 #include <ncurses.h>
 #include <curses.h>
