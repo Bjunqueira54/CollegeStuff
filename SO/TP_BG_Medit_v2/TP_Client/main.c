@@ -58,7 +58,7 @@ int main(int argc, char** argv)
             {
                 free(line[i]);
             }
-            free(line);
+            //free(line);
             exit(EXIT_FAILURE);
         }
     }

@@ -45,7 +45,7 @@
         <linkerTool>
           <linkerLibItems>
             <linkerOptionItem>-lncurses</linkerOptionItem>
-            <linkerOptionItem>-pthreads</linkerOptionItem>
+            <linkerOptionItem>-pthread</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
