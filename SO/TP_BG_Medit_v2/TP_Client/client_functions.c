@@ -26,7 +26,7 @@ void serverConnect(int sig)
     
 }
 
-void inv_user(int sig, siginfo_t *info, void *extra)
+/*void inv_user(int sig, siginfo_t *info, void *extra)
 {
     clear();
     
@@ -40,17 +40,17 @@ void inv_user(int sig, siginfo_t *info, void *extra)
     getch();
     endwin();
     exit (EXIT_SUCCESS);
-}
+}*/
 
 /* EDIT MODE LOOP */
-int edModeLoop(int string_len)
+/*int edModeLoop(int string_len)
 {
     int c, x, y;
     getyx(stdscr, y, x);
     c = getch();
 
-    union sigval line_exit;
-    line_exit.sival_int = -1;
+    //union sigval line_exit;
+    //line_exit.sival_int = -1;
 
     switch(c)
     {
@@ -72,19 +72,19 @@ int edModeLoop(int string_len)
 
         case 10:                //keyboard enter
             move(y, 15);
-            sigqueue(sv_pid, SIGUSR2, line_exit);
+            //sigqueue(sv_pid, SIGUSR2, line_exit);
             return 6;
             break;
 
         case KEY_ENTER:         //keypad enter
             move(y, 15);
-            sigqueue(sv_pid, SIGUSR2, line_exit);
+            //sigqueue(sv_pid, SIGUSR2, line_exit);
             return 6;
             break;
 
         case 27:                //keyboard escape
             move(y, 15);
-            sigqueue(sv_pid, SIGUSR2, line_exit);
+            //sigqueue(sv_pid, SIGUSR2, line_exit);
             return 5;
             break;
 
@@ -122,13 +122,13 @@ int edModeLoop(int string_len)
                     sprintf(whatis, "%i", c);
                     mvwaddstr(stdscr, 17, 2, whatis);
                     move(newy, newx);
-            }*/
+            }
             return 1;
     }
-}
+}*/
 
 /* MOVE MODE LOOP */
-int mvModeLoop() //redo
+/*int mvModeLoop() //redo
 {
     int c, x, y;
     getyx(stdscr, y, x);
@@ -172,7 +172,7 @@ int mvModeLoop() //redo
         default:
             return 0;
     }
-}
+}*/
 
 /* PRE LINE PREPARATIONS */
 char* preLinePrep(char* string, int stringlen, int curind)

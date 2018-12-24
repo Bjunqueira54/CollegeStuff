@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     /* PROCESSAMENTO DE ARGUMENTOS */
     
     char username[MEDIT_MAXNAME];
-    char pipename[15];
+    char pipename[MEDIT_MAXLINES];
     int u=0, p=0;
     
     if(argc != 1)
@@ -39,9 +39,29 @@ int main(int argc, char** argv)
     
     /* VARIAVEIS NECESSARIAS PARA EDICAO DE TEXTO */
     
-    char* curline = malloc((STRING_FORM + 1) * sizeof(char)); // Linha atual - 15 char iniciais + 45 colunas + \0
+    char* curline = malloc((STRING_FORM + 1) * sizeof(char)); //Linha atual - 15 char iniciais + 45 colunas + \0
     char preline[STRING_FORM + 1];
     int x, newx, y, newy;
+    
+    /* ALOCAR MEMORIA PARA ESCRITA */
+    
+    line = malloc(MEDIT_MAXLINES * sizeof(char));
+    if(line == NULL)
+        exit(EXIT_FAILURE);
+    
+    for(int i=0; i<MEDIT_MAXLINES; i++)
+    {
+        line[i] = malloc(STRING_FORM * sizeof(char));
+        if(line[i] == NULL)
+        {
+            for( ; i>=0; i--)
+            {
+                free(line[i]);
+            }
+            free(line);
+            exit(EXIT_FAILURE);
+        }
+    }
     
     /* INICIALIZACAO DA STRING PRINCIPAL */
     
