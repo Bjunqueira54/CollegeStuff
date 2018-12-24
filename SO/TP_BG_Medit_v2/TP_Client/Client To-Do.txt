@@ -2,22 +2,23 @@ Client Code Organization
 
 NECESSARY VARIABLES (Insert more if needed)
 
-	2D dynamically allocated character array (Example: char** 2d_array);
-	1D dynamically allocated character array (Example: char* 1d_array);
-	2 pthread_t Variables for 2D Array update and statistics (Example: pthread_t update, stats);
-	1 Fixed size array for username (Example: char username[MEDIT_MAXNAME]);
-	1 Fixed size array for main pipe name (Example: char mainpipe[25]);
-	1 Structure for command line argument parameters (Example: typedef struct parameters Params);
-	1 Structure for environment variables (Example: typedef struct envvars Options);
-	X number of (int) vars to be used as flags;
-	4 Coordinates variables: int y, x, newy, newx (Consider making them global to possibly save of headaches);
-	1 Auxiliary character variable for ncurses getch();
+	2D dynamically allocated character array (Example: char** 2d_array);                                        DONE
+	1D dynamically allocated character array (Example: char* 1d_array);                                         DONE
+	2 pthread_t Variables for 2D Array update and statistics (Example: pthread_t update, stats);                DONE
+	1 Fixed size array for username (Example: char username[MEDIT_MAXNAME]);                                    DONE
+	1 Fixed size array for main pipe name (Example: char mainpipe[25]);                                         DONE
+	1 Structure for command line argument parameters (Example: typedef struct parameters Params);               DONE
+	1 Structure for environment variables (Example: typedef struct envvars Options);                            DONE
+	4 Coordinates variables: int y, x, newy, newx (Consider making them global to possibly save of headaches);  DONE
+	1 Auxiliary character variable for ncurses getch();                                                         DONE
 	X number of (int) variables to be used as pipe File Descriptors;
+        X number of (int) vars to be used as flags;
+
 
 1º Step
 
-	Start the client with all the first necessary variables;
-	Find out if a server is running (look for medit default named pipe first);
+	Start the client with all the first necessary variables;                    DONE
+	Find out if a server is running (look for medit default named pipe first);  //como descobri se o server está a correr - sinais
 	If file doesn't exist, server doesn't exist, exit the client;
 	
 2º Step

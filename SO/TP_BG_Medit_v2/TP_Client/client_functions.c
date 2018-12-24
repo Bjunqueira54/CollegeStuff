@@ -4,10 +4,10 @@
 pid_t sv_pid;
 int sv_fd;
 
-/* KILL THREAD  */
-void KT()
+/* SERVER CONNECT */
+void serverConnect()
 {
-    pthread_exit(NULL);
+    //testar se o servidor existe e se tem espaço
 }
 
 /* SERVER DISCONNECT */
@@ -20,13 +20,15 @@ void serverDisconnect(int sig)
     endwin();
     exit (EXIT_SUCCESS);
 }
-/* SERVER CONNECT */
-void serverConnect(int sig)
+
+/* KILL THREAD  */
+void kThread() //falta receber thread para matar
 {
-    
+    pthread_exit(NULL);
 }
 
-/*void inv_user(int sig, siginfo_t *info, void *extra)
+/* INVESTIGATE USER */
+void inv_user(int sig, siginfo_t *info, void *extra) //extra=flag
 {
     clear();
     
@@ -40,7 +42,7 @@ void serverConnect(int sig)
     getch();
     endwin();
     exit (EXIT_SUCCESS);
-}*/
+}
 
 /* EDIT MODE LOOP */
 /*int edModeLoop(int string_len)
@@ -175,7 +177,7 @@ void serverConnect(int sig)
 }*/
 
 /* PRE LINE PREPARATIONS */
-char* preLinePrep(char* string, int stringlen, int curind)
+    char* preLinePrep(char* string, int stringlen, int curind)
 {
 	if(curind < 10)
 		sprintf(string, "(0%i)", curind);
@@ -244,7 +246,7 @@ void getUsername(char* userString) //redo
 	}
 }
 
-/* INVERT USERNAME */
+/* INVERT USERNAME STRING */
 void invertString(char* userString)
 {
 	int scount=0, i;

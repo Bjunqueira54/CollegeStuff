@@ -10,10 +10,12 @@ char** line;
 
 int main(int argc, char** argv)
 {
-    /* PROCESSAMENTO DE ARGUMENTOS */
-    
     char username[MEDIT_MAXNAME];
     char pipename[MEDIT_MAXLINES];
+    char mainpipe[MEDIT_PIPE_SIZE];
+    
+    /* PROCESSAMENTO DE ARGUMENTOS */
+    
     int u=0, p=0;
     
     if(argc != 1)
@@ -25,7 +27,7 @@ int main(int argc, char** argv)
             {
                 case 'u':
                     u=1;
-                    memcpy(username, optarg, MEDIT_MAXNAME*sizeof(char));
+                    memcpy(username, optarg, MEDIT_MAXNAME * sizeof(char));
                     break;
                 case 'p':
                     p=1;
@@ -35,12 +37,13 @@ int main(int argc, char** argv)
                     fprintf(stderr, "Unknown parameters -%c\n", c);
             }
         }
-    }
+    }   
     
     /* VARIAVEIS NECESSARIAS PARA EDICAO DE TEXTO */
     
     char* curline = malloc((STRING_FORM + 1) * sizeof(char)); //Linha atual - 15 char iniciais + 45 colunas + \0
     char preline[STRING_FORM + 1];
+    pthread_t update, stats;
     int x, newx, y, newy;
     
     /* ALOCAR MEMORIA PARA ESCRITA */
@@ -74,10 +77,11 @@ int main(int argc, char** argv)
     }
     
     /* INICIO DAS NCURSES */
-    
-    initscr();
-    noecho();
-    keypad(stdscr,TRUE);
+    {
+        initscr();
+        noecho();
+        keypad(stdscr,TRUE);
+    }
     
     /* TERMINA NCURSES */
     

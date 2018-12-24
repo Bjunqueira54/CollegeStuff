@@ -12,6 +12,26 @@ extern "C" {
     
 extern char** line;
 
+struct parameters
+{
+    
+};
+
+struct envvars
+{
+    
+};
+
+/*typedef parameters Params, *param;
+typedef envvars Options, *opt;*/
+
+void serverConnect();
+void serverDisconnect(int sig);
+void kThread();
+
+void invertString(char* userString);
+char* preLinePrep(char* string, int stringlen, int curind);
+
 #ifdef __cplusplus
 }
 #endif
