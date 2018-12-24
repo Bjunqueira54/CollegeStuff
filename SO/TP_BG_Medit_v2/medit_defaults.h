@@ -32,6 +32,8 @@ extern "C" {
 #define MEDIT_MAXUSERS 3
 
 #define MEDIT_MAXNAME 8
+    
+#define MEDIT_PIPE_SIZE 25
 
 #define MEDIT_DEFAULT_MAIN_PIPE "/tmp/medit_main_pipe"
 
