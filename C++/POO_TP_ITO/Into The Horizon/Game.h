@@ -12,7 +12,7 @@ class Game
     static Player* pirate;
     static Settings* settings;
     static Map* map;
-    static turn = 0;
+    static int turn;
     
 public:
     
