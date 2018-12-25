@@ -1,6 +1,8 @@
 #ifndef SAILBOAT_H
 #define SAILBOAT_H
 
+#include "Ship.h"
+
 class Sailboat: public Ship
 {
     

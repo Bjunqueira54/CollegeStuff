@@ -1,6 +1,8 @@
 #ifndef OCEAN_H
 #define OCEAN_H
 
+#include "Tile.h"
+
 class Ocean: public Tile
 {
     

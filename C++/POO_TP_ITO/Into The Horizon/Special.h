@@ -1,6 +1,8 @@
 #ifndef SPECIAL_H
 #define SPECIAL_H
 
+#include "Ship.h"
+
 class Special: public Ship
 {
 public:
