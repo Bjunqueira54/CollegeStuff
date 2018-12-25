@@ -79,8 +79,11 @@ int main(int argc, char** argv)
     }
     
     /* ENVIAR PARA O MAINPIPE */
-        
+    
     int cfd;
+    
+    /* PREPARACAO DE SINAIS */
+    
     struct sigaction invalid_username, sv_con, sv_disc;
 
     invalid_username.sa_flags = SA_SIGINFO;
