@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>Consola.h</itemPath>
+      <itemPath>Frigate.h</itemPath>
+      <itemPath>Galeon.h</itemPath>
+      <itemPath>Game.h</itemPath>
+      <itemPath>Harbor.h</itemPath>
+      <itemPath>Interface.h</itemPath>
+      <itemPath>Language.h</itemPath>
+      <itemPath>Map.h</itemPath>
+      <itemPath>Ocean.h</itemPath>
+      <itemPath>Player.h</itemPath>
+      <itemPath>Sailboat.h</itemPath>
+      <itemPath>Schooner.h</itemPath>
+      <itemPath>Settings.h</itemPath>
+      <itemPath>Ship.h</itemPath>
+      <itemPath>Special.h</itemPath>
+      <itemPath>Tile.h</itemPath>
+      <itemPath>headers.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>Consola.cpp</itemPath>
+      <itemPath>Frigate.cpp</itemPath>
+      <itemPath>Galeon.cpp</itemPath>
+      <itemPath>Game.cpp</itemPath>
+      <itemPath>Harbor.cpp</itemPath>
+      <itemPath>Interface.cpp</itemPath>
+      <itemPath>Language.cpp</itemPath>
+      <itemPath>Map.cpp</itemPath>
+      <itemPath>Ocean.cpp</itemPath>
+      <itemPath>Player.cpp</itemPath>
+      <itemPath>Sailboat.cpp</itemPath>
+      <itemPath>Schooner.cpp</itemPath>
+      <itemPath>Settings.cpp</itemPath>
+      <itemPath>Ship.cpp</itemPath>
+      <itemPath>Special.cpp</itemPath>
+      <itemPath>Tile.cpp</itemPath>
+      <itemPath>main.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <standard>8</standard>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerOptionItem>-lncurses</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </compileType>
+      <item path="Consola.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Consola.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Frigate.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Frigate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Galeon.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Galeon.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Game.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Harbor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Harbor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Interface.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Interface.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Language.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Language.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Map.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Map.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Ocean.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Ocean.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Sailboat.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Sailboat.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Schooner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Schooner.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Settings.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Settings.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Ship.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Ship.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Special.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Special.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Tile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Tile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+          <standard>8</standard>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="Consola.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Consola.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Frigate.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Frigate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Galeon.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Galeon.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Game.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Game.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Harbor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Harbor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Interface.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Interface.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Language.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Language.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Map.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Map.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Ocean.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Ocean.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Sailboat.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Sailboat.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Schooner.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Schooner.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Settings.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Settings.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Ship.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Ship.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Special.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Special.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Tile.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Tile.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="headers.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
