@@ -4,6 +4,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
+#ifndef _DEFAULT_SOURCE
+#define _DEFAULT_SOURCE
+#endif
 
 #include "../medit_defaults.h"
     
@@ -14,23 +18,22 @@ extern char** line;
 
 struct parameters
 {
-    
+    int a;
 };
 
 struct envvars
 {
-    
+    int a;
 };
 
-/*typedef parameters Params, *param;
-typedef envvars Options, *opt;*/
+typedef struct parameters Params, *param;
+typedef struct envvars Options, *opt;
 
-void serverConnect();
+void serverConnect(int sig);
 void serverDisconnect(int sig);
+void invUser();
 void kThread();
 
-void invertString(char* userString);
-char* preLinePrep(char* string, int stringlen, int curind);
 
 #ifdef __cplusplus
 }

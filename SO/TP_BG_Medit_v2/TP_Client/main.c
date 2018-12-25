@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "../medit_defaults.h"
 #include "client.h"  
 
 /* VARIAVEIS GLOBAIS */
@@ -11,7 +7,6 @@ char** line;
 int main(int argc, char** argv)
 {
     char username[MEDIT_MAXNAME];
-    char pipename[MEDIT_MAXLINES];
     char mainpipe[MEDIT_PIPE_SIZE];
     
     /* PROCESSAMENTO DE ARGUMENTOS */
@@ -31,7 +26,7 @@ int main(int argc, char** argv)
                     break;
                 case 'p':
                     p=1;
-                    sprintf(pipename, "/tmp/%s", optarg);
+                    sprintf(mainpipe, "/tmp/%s", optarg);
                     break;
                 default:
                     fprintf(stderr, "Unknown parameters -%c\n", c);
@@ -41,7 +36,7 @@ int main(int argc, char** argv)
     
     /* VARIAVEIS NECESSARIAS PARA EDICAO DE TEXTO */
     
-    char* curline = malloc((STRING_FORM + 1) * sizeof(char)); //Linha atual - 15 char iniciais + 45 colunas + \0
+    char* curline = malloc((STRING_FORM + 1) * sizeof(char));
     char preline[STRING_FORM + 1];
     pthread_t update, stats;
     int x, newx, y, newy;
@@ -61,7 +56,7 @@ int main(int argc, char** argv)
             {
                 free(line[i]);
             }
-            //free(line);
+            free(line);
             exit(EXIT_FAILURE);
         }
     }
@@ -82,6 +77,23 @@ int main(int argc, char** argv)
         noecho();
         keypad(stdscr,TRUE);
     }
+    
+    /* ENVIAR PARA O MAINPIPE */
+        
+    int cfd;
+    struct sigaction invalid_username, sv_con, sv_disc;
+
+    invalid_username.sa_flags = SA_SIGINFO;
+    invalid_username.sa_sigaction = &invUser;
+    
+    sv_con.sa_flags = SA_SIGINFO;
+    sv_con.sa_sigaction = &serverConnect;
+    
+    sv_disc.sa_handler = &serverDisconnect;
+    
+    sigaction(SIGINT, &invalid_username, NULL);
+    sigaction(SIGUSR1, &sv_con, NULL);
+    sigaction(SIGUSR2, &sv_disc, NULL);
     
     /* TERMINA NCURSES */
     

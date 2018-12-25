@@ -15,20 +15,20 @@ NECESSARY VARIABLES (Insert more if needed)
         X number of (int) vars to be used as flags;
 
 
-1º Step
+1º Step - DONE
 
 	Start the client with all the first necessary variables;                    DONE
-	Find out if a server is running (look for medit default named pipe first);  //como descobri se o server está a correr - sinais
-	If file doesn't exist, server doesn't exist, exit the client;
+	Find out if a server is running (look for medit default named pipe first);  DONE
+	If file doesn't exist, server doesn't exist, exit the client;               DONE
 	
 2º Step
 
-	Prepare all necessary signal catching functions (SIGINT, SIGUSR1, SIGUSR2);
+	Prepare all necessary signal catching functions (SIGINT, SIGUSR1, SIGUSR2); 
 	Prepare signal catching structures for SIGINT and SIGUSR with sa_flags = SA_SIGINFO for multi-value handling;
 	
 3º Step
 
-	Get console parameter arguments with getopt();
+	Get console parameter arguments with getopt();                              DONE
 	Get environment variables as needed;
 	Else use values from medit defaults header;
 	Ask for username (no ncurses needed yet);

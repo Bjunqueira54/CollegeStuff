@@ -3,46 +3,97 @@
 /* VARIVAIS GLOBAIS */
 pid_t sv_pid;
 int sv_fd;
+pthread_t sv_recv_thread;
 
 /* SERVER CONNECT */
-void serverConnect()
+void serverConnect(int sig)
 {
-    //testar se o servidor existe e se tem espaço
+    if(open(MEDIT_DEFAULT_MAIN_PIPE, O_WRONLY) == -1)
+    {
+        fprintf(stdout, "Server not running!\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
 /* SERVER DISCONNECT */
 void serverDisconnect(int sig)
 {
     clear();
-    mvwaddstr(stdscr, 1, 1, "Server has been shutdown!");
+    mvwaddstr(stdscr, 1, 1, "Server has been shutdown!\n");
     refresh();
     getch();
     endwin();
     exit (EXIT_SUCCESS);
 }
 
-/* KILL THREAD  */
-void kThread() //falta receber thread para matar
+/* KILL THREAD */
+void kThread()
 {
     pthread_exit(NULL);
 }
 
 /* INVESTIGATE USER */
-void inv_user()
+void invUser()
 {
     
 }
 
 /* EDIT MODE LOOP */
-int edModeLoop()
+int edModeLoop(int str_len)
 {
+    int c, x, y;
+    c = getch();
     
+    union sigval line_exit;
+    line_exit.sival_int = -1;
+    
+    switch(c)
+    {
+        case KEY_RIGHT:            
+            
+        case KEY_LEFT:
+       
+        case KEY_BACKSPACE:
+            
+        case KEY_ENTER: //keypad enter
+            
+        case KEY_DC: //delete
+            
+        case 10: //keyboard enter
+            
+        case 27: //escape
+            
+        default:
+            break;
+            
+    }
 }
 
 /* MOVE MODE LOOP */
 int mvModeLoop()
 {
+    int c, x, y;
+    c = getch();
     
+    union sigval line_exit;
+    line_exit.sival_int = -1;
+    
+    switch(c)
+    {
+        case KEY_UP:
+            
+        case KEY_DOWN:
+            
+        case KEY_ENTER: //keypad enter
+            
+        case 10: //keyboard enter
+            
+        case 27: //escape
+            
+        default:
+            break;
+
+    }
 }
 
 /* PRE LINE PREPARATIONS */
