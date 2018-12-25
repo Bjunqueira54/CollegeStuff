@@ -10,7 +10,6 @@
       <itemPath>Game.h</itemPath>
       <itemPath>Harbor.h</itemPath>
       <itemPath>Interface.h</itemPath>
-      <itemPath>Language.h</itemPath>
       <itemPath>Map.h</itemPath>
       <itemPath>Ocean.h</itemPath>
       <itemPath>Player.h</itemPath>
@@ -35,7 +34,6 @@
       <itemPath>Game.cpp</itemPath>
       <itemPath>Harbor.cpp</itemPath>
       <itemPath>Interface.cpp</itemPath>
-      <itemPath>Language.cpp</itemPath>
       <itemPath>Map.cpp</itemPath>
       <itemPath>Ocean.cpp</itemPath>
       <itemPath>Player.cpp</itemPath>
@@ -100,10 +98,6 @@
       <item path="Interface.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Interface.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Language.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Language.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Map.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -190,10 +184,6 @@
       <item path="Interface.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Interface.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Language.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Language.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Map.cpp" ex="false" tool="1" flavor2="0">
       </item>

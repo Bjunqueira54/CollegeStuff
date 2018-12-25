@@ -3,9 +3,57 @@
 
 int main(int argc, char** argv)
 {
-    Interface test;
+    SetScreenSize(MAX_Y,MAX_X);
     
-    test.SetScreenSize(35, 120);
+    /* INICIAR NCURSES */
+    initscr();
+    start_color();
+    noecho();
+    curs_set(FALSE);
+    
+    char opt;
+    int r, flag;
+    
+    /* PEDE E VERIFICA A LINGUAGEM */
+    while(opt != '1' && opt != '2')
+    {
+        clear();
+        mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, flag) - 1, getCenter("1 - Português"), "1 - Português");
+        mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, flag) + 1, getCenter("2 - English") - 1, "2 - English");
+        refresh();
+        opt = getch();
+    }
+    
+    Interface game(opt);
+    
+    clear();
+    mvwaddstr(stdscr, ((getVertCenter(stdscr, 1, r, flag)) + r) - 1, getCenter(game.getLine(1)), game.getLine(1));
+    mvwaddstr(stdscr, ((getVertCenter(stdscr, 1, r, flag)) + r) + 1, getCenter(game.getLine(0)), game.getLine(0));
+    refresh();
+    getch();
+    
+    do
+    {
+        opt = getch();
+
+        switch(opt)
+        {
+            case '1':
+                break;
+            case '2':
+                break;
+            case '3':
+                break;
+            case '4':
+                break;
+            default:
+                break;
+        }                
+    }
+    while(opt != '4');
+    
+    /* TERMINAR NCURSES */
+    endwin();
     
     return 0;
 }

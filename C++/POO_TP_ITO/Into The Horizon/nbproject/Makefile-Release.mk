@@ -41,7 +41,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/Game.o \
 	${OBJECTDIR}/Harbor.o \
 	${OBJECTDIR}/Interface.o \
-	${OBJECTDIR}/Language.o \
 	${OBJECTDIR}/Map.o \
 	${OBJECTDIR}/Ocean.o \
 	${OBJECTDIR}/Player.o \
@@ -107,11 +106,6 @@ ${OBJECTDIR}/Interface.o: Interface.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Interface.o Interface.cpp
-
-${OBJECTDIR}/Language.o: Language.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Language.o Language.cpp
 
 ${OBJECTDIR}/Map.o: Map.cpp
 	${MKDIR} -p ${OBJECTDIR}
