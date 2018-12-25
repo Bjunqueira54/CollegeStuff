@@ -10,6 +10,9 @@ public:
     
     Schooner();
     Schooner(const Schooner& orig);
+    Schooner(int x, int y);
+    
+    
     virtual ~Schooner();
 };
 

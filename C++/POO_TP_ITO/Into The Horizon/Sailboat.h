@@ -10,6 +10,8 @@ public:
     
     Sailboat();
     Sailboat(const Sailboat& orig);
+    Sailboat(int x, int y);
+    
     virtual ~Sailboat();
 };
 

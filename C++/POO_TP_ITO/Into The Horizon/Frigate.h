@@ -10,6 +10,10 @@ public:
     
     Frigate();
     Frigate(const Frigate& orig);
+    Frigate(int x, int y);
+    
+    
+    
     virtual ~Frigate();
 };
 

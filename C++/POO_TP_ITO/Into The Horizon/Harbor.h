@@ -5,11 +5,14 @@
 
 class Harbor: public Tile
 {
-    
+    const int x, y;
 public:
     
     Harbor();
     Harbor(const Harbor& orig);
+    
+    const string getCoord() const;
+    
     virtual ~Harbor();
 };
 
