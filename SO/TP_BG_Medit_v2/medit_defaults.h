@@ -4,6 +4,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,10 +19,10 @@ extern "C" {
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/stat.h>
-#include <signal.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <signal.h>
 
 #include <ncurses.h>
 #include <curses.h>
