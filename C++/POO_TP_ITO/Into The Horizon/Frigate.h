@@ -10,7 +10,7 @@ public:
     
     Frigate();
     Frigate(const Frigate& orig);
-    Frigate(int x, int y);
+    Frigate(Player &o, int x, int y);
     
     
     

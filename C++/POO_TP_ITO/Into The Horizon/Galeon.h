@@ -10,7 +10,7 @@ public:
     
     Galeon();
     Galeon(const Galeon& orig);
-    Galeon(int x, int y);
+    Galeon(Player &o, int x, int y);
     
     virtual ~Galeon();
 };

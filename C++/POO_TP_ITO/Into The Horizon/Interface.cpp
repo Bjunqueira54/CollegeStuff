@@ -385,7 +385,7 @@ int getVertCenter(WINDOW *win, int n, int &r, int &flag)
     }
 }
 
-void SetScreenSize(int lines, int columns)
+/*void SetScreenSize(int lines, int columns)
 {
     #ifdef __linux__
 
@@ -406,4 +406,4 @@ void SetScreenSize(int lines, int columns)
     Consola::setScreenSize(lines, columns);
 
     #endif
-}
+}*/

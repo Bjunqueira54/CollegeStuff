@@ -3,6 +3,8 @@
 
 #include "headers.h"
 
+class Player;
+
 class Ship
 {
     int x, y;
@@ -17,7 +19,7 @@ public:
     Ship(const Ship& orig);
     
     //Derivative Constructor
-    Ship(int x, int y, int mm, int mc, int mw, int ml);
+    Ship(Player &o, int x, int y, int mm, int mc, int mw, int ml);
     
     void move(string dir);
     void moveto(int x, int y);

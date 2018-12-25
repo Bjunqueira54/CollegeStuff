@@ -6,10 +6,12 @@
 class Harbor: public Tile
 {
     const int x, y;
+    
 public:
     
-    Harbor();
-    Harbor(const Harbor& orig);
+    /*Harbor();
+    Harbor(const Harbor& orig);*/
+    Harbor(int xx, int yy);
     
     const string getCoord() const;
     

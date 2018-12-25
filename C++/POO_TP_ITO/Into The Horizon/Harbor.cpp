@@ -1,9 +1,10 @@
 #include "Harbor.h"
 
-Harbor::Harbor() {}
+/*Harbor::Harbor() {}
 
-Harbor::Harbor(const Harbor& orig) {
-}
+Harbor::Harbor(const Harbor& orig) {}*/
+
+Harbor::Harbor(int xx, int yy): x(xx), y(yy) {}
 
 const string Harbor::getCoord() const
 {

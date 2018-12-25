@@ -28,6 +28,5 @@ public:
 int getCenter(const char* a);
 int getCenter(string a);
 int getVertCenter(WINDOW *win, int n, int &r, int &flag);
-void SetScreenSize(int lines, int columns);
 
 #endif

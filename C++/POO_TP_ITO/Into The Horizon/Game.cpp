@@ -8,6 +8,7 @@ Game::Game(string n, int m)
 {
     player = new Player(n, m);
     pirate = new Player("Pirates", 0);
+    turn = 0;
 }
 
 Game::~Game()
