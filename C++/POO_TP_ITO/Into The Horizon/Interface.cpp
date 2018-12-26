@@ -40,12 +40,12 @@ Interface::Interface(char lang)
         //lines
         { 
             line.push_back("(Prima qualquer tecla para continuar)");    //0
-            line.push_back("Bem vindo a Into the Horizon!");        //1
+            line.push_back("Bem vindo a Into the Horizon!");		//1
             line.push_back("1 - Novo Jogo");                            //2
             line.push_back("2 - Tutorial");                             //3
             line.push_back("3 - Creditos");                             //4
             line.push_back("4 - Sair do Jogo");                         //5
-            line.push_back("Introduza o seu nome (20 chars.): ");       //6
+            line.push_back("Introduza o seu nome (20 chars.)");		//6
             line.push_back("Nome: ");                                   //7
             line.push_back("Nome invalido!");                           //8
             line.push_back("Bem vindo ");                               //9
@@ -382,6 +382,88 @@ void Interface::credPage()
     mvwaddstr(stdscr, ++++l, i, "Cassandra Dimas");
     refresh();
     getch();
+}
+
+void Interface::startgame()
+{
+    int r, flag, y;
+    string name;
+    clear();
+    drawBox(stdscr);
+    y = getVertCenter(stdscr, 2, r, flag);
+    
+    if(y != 0)
+    {
+	if(flag == 0)
+	    mvwaddstr(stdscr, r+y, getCenter(getLine(6)), getLine(6));
+	else
+	    mvwaddstr(stdscr, r+y+1, getCenter(getLine(6)), getLine(6));
+    }
+    else
+	mvwaddstr(stdscr, r, getCenter(getLine(6)), getLine(6));
+    
+    if(y != 0)
+    {
+	if(flag == 0)
+	    mvwaddstr(stdscr, r+y+2, getCenter(getLine(7)) - 10, getLine(7));
+	else
+	    mvwaddstr(stdscr, r+y+2, getCenter(getLine(7)) - 10, getLine(7));
+    }
+    else
+	mvwaddstr(stdscr, r+y+2, getCenter(getLine(7)) - 10, getLine(7));
+    
+    name = getInput(15);
+}
+
+string Interface::getInput(int lim = 0)
+{
+    string input;
+    char c;
+    int y,x;
+    
+    getyx(stdscr, y, x);
+    
+    do
+    {
+	c = getch();
+	
+	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))
+	    if(input.size() <= lim)
+		input.push_back(c);
+	else if((c == 127 || c == KEY_BACKSPACE) && !(input.empty()))
+	    input.pop_back();
+	
+	mvwaddstr(stdscr, y, x, input.c_str());
+	wclrtoeol(stdscr);
+	mvwaddch(stdscr, y, getmaxx(stdscr) - 1, '|');
+	wmove(stdscr, y, x + input.size());
+	refresh();
+    }
+    while(c != KEY_ENTER);
+
+    return input;
+}
+
+int Interface::getNumber()
+{
+    string num;
+    istringstream is;
+    char c;
+    int n;
+    
+    do
+    {
+	if(c >= '0' && c <= '9')
+	    num.push_back(c);
+	else if((c == KEY_BACKSPACE) && !(num.empty()))
+	    num.pop_back();
+    }
+    while(c != KEY_ENTER);
+    
+    is.str(num);
+    is >> n;
+    
+    return n;
 }
 
 int Interface::getCenter(const char* a)

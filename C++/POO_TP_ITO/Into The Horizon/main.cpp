@@ -9,7 +9,8 @@ int main(int argc, char** argv)
     initscr();
     start_color();
     noecho();
-    curs_set(FALSE);
+    curs_set(0);
+    keypad(stdscr, TRUE);
     
     char opt;
     int r, flag;
@@ -42,8 +43,8 @@ int main(int argc, char** argv)
         switch(opt)
         {
             case '1':
-                //game.drawBox(stdscr);
-                //Game
+                game.drawBox(stdscr);
+		game.startgame();
                 break;
             case '2':
                 game.drawBox(stdscr);
