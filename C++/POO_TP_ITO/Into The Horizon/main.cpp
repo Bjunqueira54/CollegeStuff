@@ -35,17 +35,28 @@ int main(int argc, char** argv)
     
     do
     {
+        game.drawBox(stdscr);
+        game.drawMainMenu();
         opt = getch();
 
         switch(opt)
         {
             case '1':
+                //game.drawBox(stdscr);
+                //Game
                 break;
             case '2':
+                game.drawBox(stdscr);
+                game.tutPage();
                 break;
             case '3':
+                game.drawBox(stdscr);
+                game.credPage();
                 break;
             case '4':
+                mvwaddstr(stdscr, ((game.getVertCenter(stdscr, 1 ,r, flag)) + r), game.getCenter(game.getLine(46)), game.getLine(46));
+                refresh();
+                getch();
                 break;
             default:
                 break;

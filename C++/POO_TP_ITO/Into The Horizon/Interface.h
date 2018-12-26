@@ -6,6 +6,9 @@
 #define MAX_X 120
 #define MAX_Y 40
 
+#define GAME_VERSION_MAJOR 1
+#define GAME_VERSION_MINOR 1
+
 class Interface
 {
     static vector <string> cmd;
@@ -17,8 +20,12 @@ public:
     Interface(const Interface& orig);
     Interface(char lang);
     
+    static void drawBox(WINDOW *win);
+    static void drawMainMenu();
+    
     const char* getCmd(int i);
     const char* getLine(int i);
+    
     static void tutPage();
     static void credPage();
     

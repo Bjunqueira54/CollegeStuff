@@ -40,7 +40,7 @@ Interface::Interface(char lang)
         //lines
         { 
             line.push_back("(Prima qualquer tecla para continuar)");    //0
-            line.push_back("Bem vindo a Piratas e Mercadores!");        //1
+            line.push_back("Bem vindo a Into the Horizon!");        //1
             line.push_back("1 - Novo Jogo");                            //2
             line.push_back("2 - Tutorial");                             //3
             line.push_back("3 - Creditos");                             //4
@@ -85,6 +85,7 @@ Interface::Interface(char lang)
             line.push_back("(Se escolher 'N' será criado um por si)");  //43
             line.push_back("Dimensões: 10 Linha / 20 Colunas");         //44
             line.push_back("Janela do mapa. Enter para terminar");      //45
+            line.push_back("Obrigado por Jogar!");                      //46
         }
         
         //tutorial
@@ -152,7 +153,7 @@ Interface::Interface(char lang)
         //lines
         {
             line.push_back("(Press any key to continue)");
-            line.push_back("Welcome to Merchants and Pirates!");
+            line.push_back("Welcome to Into the Horizon!");
             line.push_back("1 - New Game");
             line.push_back("2 - Tutorial");
             line.push_back("3 - Credits");
@@ -197,6 +198,7 @@ Interface::Interface(char lang)
             line.push_back("(If you choose 'N' we'll use the default)");
             line.push_back("Dimensions: 10 Lines / 20 Columns");
             line.push_back("Map window. Enter to terminate");
+            line.push_back("Thanks for Playing!");
         }
         
         //tutorial
@@ -239,6 +241,53 @@ Interface::Interface(char lang)
 
 Interface::Interface(const Interface& orig) {}
 
+void Interface::drawBox(WINDOW *win)
+{
+    wclear(win);
+    int y, x;
+    
+    getmaxyx(win, y, x);
+    
+    for(int i=0; i<y; i++)
+    {
+        mvwaddch(win, i, 0, '|');
+        mvwaddch(win, i, x-1, '|');
+    }
+    for(int i=0; i<x; i++)
+    {
+        mvwaddch(win, 0, i, '=');
+        mvwaddch(win, y-1, i, '=');
+    }
+    
+    mvwaddch(win, 0, 0, 'x');
+    mvwaddch(win, 0, x-1, 'x');
+    mvwaddch(win, y-1, 0, 'x');
+    mvwaddch(win, y-1, x-1, 'x');
+
+    wrefresh(win);
+}
+
+void Interface::drawMainMenu()
+{
+    int y=0, esp, r, extra, i=10;
+    esp = Interface::getVertCenter(stdscr, 4, r, extra);
+    
+    y+=(esp+r);
+    mvwaddstr(stdscr, ++y, i, line[2].c_str());
+    y+=esp;
+    mvwaddstr(stdscr, ++y, i, line[3].c_str());
+    y+=esp;
+    mvwaddstr(stdscr, ++y, i, line[4].c_str());
+    y+=esp;
+    mvwaddstr(stdscr, ++y, i, line[5].c_str());
+    
+    //just for fun
+    ostringstream con;
+    con << "Beta: " << GAME_VERSION_MAJOR << "." << GAME_VERSION_MINOR;
+    mvwaddstr(stdscr, getmaxy(stdscr) - 2, getmaxx(stdscr) - strlen(con.str().c_str()) - 1, con.str().c_str());
+    refresh();
+}
+
 const char* Interface::getCmd(int i)
 {
     return cmd[i].c_str();
@@ -270,7 +319,7 @@ void Interface::tutPage()
     //page 2
     { 
         l=5;
-        //drawBox(stdscr);
+        drawBox(stdscr);
         mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
         mvwaddstr(stdscr, 4, 3, tutorial[2].c_str());
         mvwaddstr(stdscr, ++++l, i, tutorial[4].c_str());
@@ -290,7 +339,7 @@ void Interface::tutPage()
     //page 3
     {
         l=5;
-        //drawBox(stdscr);
+        drawBox(stdscr);
         mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
         mvwaddstr(stdscr, 4, 3, tutorial[2].c_str());     
         mvwaddstr(stdscr, ++++l, i, tutorial[14].c_str());
@@ -309,7 +358,7 @@ void Interface::tutPage()
     //page 4 (incomplete)
     {
         l=5;
-        //drawBox(stdscr);
+        drawBox(stdscr);
         mvwaddstr(stdscr, 2, 3, tutorial[0].c_str());
         mvwaddstr(stdscr, 4, 3, tutorial[3].c_str());
         mvwaddstr(stdscr, getmaxy(stdscr)-2, getmaxx(stdscr)-10, tutorial[29].c_str());
