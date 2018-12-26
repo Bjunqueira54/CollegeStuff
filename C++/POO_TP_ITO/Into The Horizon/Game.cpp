@@ -1,5 +1,9 @@
 #include "Game.h"
 
+int Game::turn;
+Player* Game::pirate;
+Player* Game::player;
+
 Game::Game() {}
 
 Game::Game(const Game& orig) {}

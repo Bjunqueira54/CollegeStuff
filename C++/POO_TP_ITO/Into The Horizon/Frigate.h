@@ -8,9 +8,9 @@ class Frigate: public Ship
     
 public:
     
-    Frigate();
-    Frigate(const Frigate& orig);
-    Frigate(Player &o, int x, int y);
+    /*Frigate();
+    Frigate(const Frigate& orig);*/
+    Frigate(Player* o, int x, int y);
     
     
     

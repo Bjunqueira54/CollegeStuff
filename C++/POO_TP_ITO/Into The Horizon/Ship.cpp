@@ -1,17 +1,17 @@
 #include "Ship.h"
 #include "Player.h"
 
-Ship::Ship() {}
+/*Ship::Ship() {}
 
-Ship::Ship(const Ship& orig) {}
+Ship::Ship(const Ship& orig) {}*/
 
-Ship::Ship(Player &o, int xx, int yy, int mm, int mc, int mw, int ml): x(xx), y(yy), maxmoves(mm), maxcrew(mc), maxwater(mw), maxload(ml)
+Ship::Ship(Player* o, int xx, int yy, int mm, int mc, int mw, int ml): x(xx), y(yy), maxmoves(mm), maxcrew(mc), maxwater(mw), maxload(ml)
 {
-    owner = &o;
+    owner = o;
     moves = maxmoves;
     crew = maxcrew;
     water = maxwater;
-    fish = load = 0;
+    fish = cargo = 0;
 }
 
 Ship::~Ship() {}

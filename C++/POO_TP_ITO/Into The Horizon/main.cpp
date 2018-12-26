@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv)
 {
-    SetScreenSize(MAX_Y,MAX_X);
+    Interface::SetScreenSize(MAX_Y, MAX_X);
     
     /* INICIAR NCURSES */
     initscr();
@@ -18,8 +18,8 @@ int main(int argc, char** argv)
     while(opt != '1' && opt != '2')
     {
         clear();
-        mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, flag) - 1, getCenter("1 - Português"), "1 - Português");
-        mvwaddstr(stdscr, getVertCenter(stdscr, 1, r, flag) + 1, getCenter("2 - English") - 1, "2 - English");
+        mvwaddstr(stdscr, Interface::getVertCenter(stdscr, 1, r, flag) - 1, Interface::getCenter("1 - Português"), "1 - Portugues");
+        mvwaddstr(stdscr, Interface::getVertCenter(stdscr, 1, r, flag) + 1, Interface::getCenter("2 - English") - 1, "2 - English");
         refresh();
         opt = getch();
     }
@@ -27,10 +27,11 @@ int main(int argc, char** argv)
     Interface game(opt);
     
     clear();
-    mvwaddstr(stdscr, ((getVertCenter(stdscr, 1, r, flag)) + r) - 1, getCenter(game.getLine(1)), game.getLine(1));
-    mvwaddstr(stdscr, ((getVertCenter(stdscr, 1, r, flag)) + r) + 1, getCenter(game.getLine(0)), game.getLine(0));
+    mvwaddstr(stdscr, ((game.getVertCenter(stdscr, 1, r, flag)) + r) - 1, game.getCenter(game.getLine(1)), game.getLine(1));
+    mvwaddstr(stdscr, ((game.getVertCenter(stdscr, 1, r, flag)) + r) + 1, game.getCenter(game.getLine(0)), game.getLine(0));
     refresh();
     getch();
+    clear();
     
     do
     {

@@ -4,13 +4,13 @@ Player::Player() {}
 
 Player::Player(const Player& orig) {}
 
-Player::Player(string n, int m):name(n), money(n) {}
+Player::Player(string n, int m):name(n), money(m) {}
 
 int Player::buyShip(int type)
 {
     int x, y;
     istringstream is;
-    is(mainharbor.getCoord());
+    is.str(mainharbor->getCoord());
     is >> x;
     is >> y;
     

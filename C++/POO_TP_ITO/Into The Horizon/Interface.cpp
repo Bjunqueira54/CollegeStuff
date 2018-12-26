@@ -1,12 +1,16 @@
 #include "Interface.h"
 
+#if (defined _WIN32 || defined __unix__) && !(defined __linux__)
+#include "Consola.h"
+#endif
+
 vector <string> Interface::cmd;
 vector <string> Interface::line;
 vector <string> Interface::tutorial;
 
 Interface::Interface(char lang) 
 {
-    if(lang == 1)
+    if(lang == '1')
     {
         //commands
         {
@@ -118,7 +122,7 @@ Interface::Interface(char lang)
         //falta terceira pagina
         }
     }
-    else if(lang == 2)
+    else if(lang == '2')
     {
         //commands
         {
@@ -229,6 +233,8 @@ Interface::Interface(char lang)
             tutorial.push_back("Page 4/4");
         }
     }
+    else
+	exit (EXIT_FAILURE);
 }
 
 Interface::Interface(const Interface& orig) {}
@@ -329,9 +335,7 @@ void Interface::credPage()
     getch();
 }
 
-Interface::~Interface() {}
-
-int getCenter(const char* a)
+int Interface::getCenter(const char* a)
 {
     int x;
     
@@ -345,7 +349,7 @@ int getCenter(const char* a)
     return x;
 }
 
-int getCenter(string a)
+int Interface::getCenter(string a)
 {
     int x;
     
@@ -354,7 +358,7 @@ int getCenter(string a)
     return x;
 }
 
-int getVertCenter(WINDOW *win, int n, int &r, int &flag)
+int Interface::getVertCenter(WINDOW *win, int n, int &r, int &flag)
 {
     int y, esp;
     
@@ -385,7 +389,7 @@ int getVertCenter(WINDOW *win, int n, int &r, int &flag)
     }
 }
 
-/*void SetScreenSize(int lines, int columns)
+/*void Interface::SetScreenSize(int lines, int columns)
 {
     #ifdef __linux__
 
@@ -407,3 +411,21 @@ int getVertCenter(WINDOW *win, int n, int &r, int &flag)
 
     #endif
 }*/
+
+
+void Interface::SetScreenSize(int lines, int columns)
+{
+#if !(defined _WIN32 || defined __unix__) && (defined __linux__)
+    
+    std::ostringstream syscmd;
+    syscmd << "\e[8;" << lines << ";" << columns << "t";
+    std::cout << syscmd.str();
+    
+#elif (defined _WIN32 || defined __unix__) && !(defined __linux__)
+
+    Consola::setScreenSize(lines, columns);
+    
+#endif
+}
+
+Interface::~Interface() {}

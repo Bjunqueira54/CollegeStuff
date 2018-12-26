@@ -1,12 +1,10 @@
-build/Debug/Cygwin-Windows/Game.o: Game.cpp Game.h headers.h Player.h \
+build/Debug/Cygwin-Windows/Player.o: Player.cpp Player.h headers.h \
  Harbor.h Tile.h Sailboat.h Ship.h Galeon.h Schooner.h Frigate.h \
- Special.h Settings.h Map.h
-
-Game.h:
-
-headers.h:
+ Special.h
 
 Player.h:
+
+headers.h:
 
 Harbor.h:
 
@@ -23,7 +21,3 @@ Schooner.h:
 Frigate.h:
 
 Special.h:
-
-Settings.h:
-
-Map.h:

@@ -10,9 +10,9 @@ class Special: public Ship
     
     
 public:
-    Special();
-    Special(const Special& orig);
-    Special(int x, int y);
+    /*Special();
+    Special(const Special& orig);*/
+    Special(Player* o, int x, int y);
     
     
     

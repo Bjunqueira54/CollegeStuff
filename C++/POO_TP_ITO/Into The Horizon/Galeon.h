@@ -8,9 +8,9 @@ class Galeon: public Ship
     
 public:
     
-    Galeon();
-    Galeon(const Galeon& orig);
-    Galeon(Player &o, int x, int y);
+    /*Galeon();
+    Galeon(const Galeon& orig);*/
+    Galeon(Player* o, int x, int y);
     
     virtual ~Galeon();
 };

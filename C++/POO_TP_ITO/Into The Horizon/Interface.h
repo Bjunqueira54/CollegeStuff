@@ -14,19 +14,21 @@ class Interface
     
 public:
     
-    Interface(char lang);
     Interface(const Interface& orig);
+    Interface(char lang);
     
     const char* getCmd(int i);
     const char* getLine(int i);
     static void tutPage();
     static void credPage();
     
+    static int getCenter(const char* a);
+    static int getCenter(string a);
+    static int getVertCenter(WINDOW *win, int n, int &r, int &flag);
+    
+    static void SetScreenSize(int lines, int columns);
+    
     virtual ~Interface();
 };
-
-int getCenter(const char* a);
-int getCenter(string a);
-int getVertCenter(WINDOW *win, int n, int &r, int &flag);
 
 #endif

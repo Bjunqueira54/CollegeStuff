@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include <cstring>
+
 #include <ncurses.h>
 #include <curses.h>
 
