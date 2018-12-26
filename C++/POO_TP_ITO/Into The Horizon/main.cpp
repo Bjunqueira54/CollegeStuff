@@ -54,7 +54,8 @@ int main(int argc, char** argv)
                 game.credPage();
                 break;
             case '4':
-                mvwaddstr(stdscr, ((game.getVertCenter(stdscr, 1 ,r, flag)) + r), game.getCenter(game.getLine(46)), game.getLine(46));
+                game.drawBox(stdscr);
+                mvwaddstr(stdscr, ((game.getVertCenter(stdscr, 1 ,r, flag)) + r) + 1, game.getCenter(game.getLine(46)), game.getLine(46));
                 refresh();
                 getch();
                 break;
