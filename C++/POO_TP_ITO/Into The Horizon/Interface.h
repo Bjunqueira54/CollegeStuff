@@ -12,6 +12,9 @@
 
 class Interface
 {
+    //Consider static?
+    WINDOW* wcmd, wmap, wlog, wstats;
+    
     static vector <string> cmd;
     static vector <string> line;
     static vector <string> tutorial;
@@ -58,6 +61,10 @@ public:
     static void SetScreenSize(int lines, int columns);
     
     virtual ~Interface();
+    
+private:
+    
+    void drawGameArea();
 };
 
 #endif

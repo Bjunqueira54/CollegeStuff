@@ -4,7 +4,7 @@
 
 Harbor::Harbor(const Harbor& orig) {}*/
 
-Harbor::Harbor(int xx, int yy): x(xx), y(yy) {}
+Harbor::Harbor(char i, int xx, int yy): id(i), y(yy), x(xx) {}
 
 const string Harbor::getCoord() const
 {

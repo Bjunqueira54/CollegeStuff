@@ -412,7 +412,16 @@ void Interface::startgame()
     else
 	mvwaddstr(stdscr, r+y+2, getCenter(getLine(7)) - 10, getLine(7));
     
-    name = getInput(15);
+    do
+    {
+	name = getInput(15);
+    }
+    while(name.empty());
+    
+    drawGameArea();
+    game = new Game(name);
+    
+    drawGameArea();
 }
 
 string Interface::getInput(int lim = 0)
@@ -439,7 +448,7 @@ string Interface::getInput(int lim = 0)
 	wmove(stdscr, y, x + input.size());
 	refresh();
     }
-    while(c != KEY_ENTER);
+    while(c != '\n' || c != KEY_ENTER);
 
     return input;
 }
@@ -450,15 +459,24 @@ int Interface::getNumber()
     istringstream is;
     char c;
     int n;
+    int y,x;
+    
+    getyx(stdscr, y, x);
     
     do
     {
 	if(c >= '0' && c <= '9')
 	    num.push_back(c);
-	else if((c == KEY_BACKSPACE) && !(num.empty()))
+	else if((c == 127 || c == KEY_BACKSPACE) && !(num.empty()))
 	    num.pop_back();
+	
+	mvwaddstr(stdscr, y, x, num.c_str());
+	wclrtoeol(stdscr);
+	mvwaddch(stdscr, y, getmaxx(stdscr) - 1, '|');
+	wmove(stdscr, y, x + num.size());
+	refresh();
     }
-    while(c != KEY_ENTER);
+    while(c != '\n' || c != KEY_ENTER);
     
     is.str(num);
     is >> n;
@@ -519,7 +537,6 @@ int Interface::getVertCenter(WINDOW *win, int n, int &r, int &flag)
         return esp;
     }
 }
-
 /*void Interface::SetScreenSize(int lines, int columns)
 {
     #ifdef __linux__
@@ -544,6 +561,11 @@ int Interface::getVertCenter(WINDOW *win, int n, int &r, int &flag)
 }*/
 
 
+void Interface::drawGameArea()
+{
+    
+}
+
 void Interface::SetScreenSize(int lines, int columns)
 {
 #if !(defined _WIN32 || defined __unix__) && (defined __linux__)
@@ -559,4 +581,7 @@ void Interface::SetScreenSize(int lines, int columns)
 #endif
 }
 
-Interface::~Interface() {}
+Interface::~Interface()
+{
+    delete game;
+}
