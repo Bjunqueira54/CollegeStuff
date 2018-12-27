@@ -180,7 +180,7 @@ Settings::Settings(const string filename)
 	else
 	{
 	    map.push_back(input);
-	    for(int i=1; i<lines; i++)
+	    for(int i=1; i<(*lines); i++)
 	    {
 		getline(file, input);
 		map.push_back(input);

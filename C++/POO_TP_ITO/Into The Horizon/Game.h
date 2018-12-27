@@ -22,7 +22,7 @@ public:
     Game(const Game& orig);
     Game(string n);
     
-    void configPhase();
+    void configPhase(string filename);
     void startGame();
     
     virtual ~Game();

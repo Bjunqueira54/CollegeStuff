@@ -3,6 +3,8 @@
 int Game::turn;
 Player* Game::pirate;
 Player* Game::player;
+Settings* Game::settings;
+Map* Game::map;
 
 Game::Game() {}
 
@@ -25,7 +27,7 @@ void Game::configPhase(string filename)
 	return;
     
     settings = new Settings(filename);
-    map = new Map(settings.getMap());
+    map = new Map(settings->getMap());
     phase = 1;
 }
 
