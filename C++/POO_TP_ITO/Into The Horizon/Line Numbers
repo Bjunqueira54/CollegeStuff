@@ -1,0 +1,69 @@
+config      //0
+exec        //1
+prox        //2
+compranav   //3
+vendenav    //4
+lista       //5
+compra      //6
+vende       //7
+move        //8
+auto        //9
+stop        //10
+pirata      //11
+evpos       //12
+evnav       //13
+moedas      //14
+vaipara     //15
+comprasold  //16
+saveg       //17
+loadg       //18
+delg        //19
+sair        //20
+
+(Prima qualquer tecla para continuar)   //0
+Bem vindo a Into the Horizon!           //1
+1 - Novo Jogo                           //2
+2 - Tutorial                            //3
+3 - Creditos                            //4
+4 - Sair do Jogo                        //5
+Introduza o seu nome (20 chars.)        //6
+Nome:                                   //7
+Nome invalido!				//8
+Bem vindo				//9
+Boa Sorte Capitao			//10
+Turno	                                //11
+Comando:				//12
+Comando não especificado		//13
+Comando Reconhecido			//14
+Tutorial				//15
+Creditos				//16
+Obrigado por jogar!			//17
+Programadores:				//18
+Equipa de Controlo de Qualidade:	//19
+Comando não existe			//20
+Ficheiro não existe                     //21
+Abrir o ficheiro de defeito?(S/N)       //22
+Criar um ficheiro de config?(S/N)       //23
+Valores por defeito/Seus valores?(D/C)  //24
+Comando inválido	                //25
+Ficheiro aberto:                      	//26
+Fase:	                                //27
+Nome do ficheiro:                       //28
+Deseja desenhar o mapa?(S/N)            //29
+Moedas iniciais:                        //30
+Probabilidade de Piratas por turno:     //31
+Preço por Navio:                        //32
+Preço por Soldado:                      //33
+Preço do peixe:                         //34
+Preço de compra da mercadoria:          //35
+Preço de venda da mercadoria:           //36
+Soldados por porto:                     //37
+Probabilidade de evento:                //38
+Probabilidade de Tempestade:            //39
+Probabilidade de Sereias:               //40
+Probabilidade de Calmaria:              //41
+Probabilidade de Motim:                 //42
+(Se escolher 'N' será criado um por si) //43
+Dimensões: 10 Linha / 20 Colunas        //44
+Janela do mapa. Enter para terminar     //45
+Obrigado por Jogar!                     //46

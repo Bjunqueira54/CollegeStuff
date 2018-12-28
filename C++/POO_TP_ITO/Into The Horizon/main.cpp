@@ -10,7 +10,6 @@ int main(int argc, char** argv)
     start_color();
     noecho();
     curs_set(0);
-    keypad(stdscr, TRUE);
     
     char opt;
     int r, flag;
@@ -45,6 +44,8 @@ int main(int argc, char** argv)
             case '1':
                 game.drawBox(stdscr);
 		game.startgame();
+                game.MainGameLoop();
+                game.endgame();
                 break;
             case '2':
                 game.drawBox(stdscr);

@@ -27,7 +27,7 @@ public:
     
     Settings();
     Settings(const Settings& orig);
-    Settings(const string filename);
+    Settings(ifstream& file);
     
     //Getter Functions
     

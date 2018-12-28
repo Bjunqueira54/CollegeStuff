@@ -22,8 +22,11 @@ public:
     Game(const Game& orig);
     Game(string n);
     
-    void configPhase(string filename);
+    void configPhase(ifstream& file);
     void startGame();
+    
+    const int getPhase() const { return phase; }
+    const string getMapDim() const { return map->getDim(); }
     
     virtual ~Game();
 };

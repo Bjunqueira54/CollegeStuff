@@ -65,6 +65,7 @@
                    displayName="Important Files"
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Line Numbers</itemPath>
       <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>

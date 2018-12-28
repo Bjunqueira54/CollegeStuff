@@ -19,12 +19,10 @@ Settings::Settings()
 
 Settings::Settings(const Settings& orig) {}
 
-Settings::Settings(const string filename)
+Settings::Settings(ifstream& file)
 {
-    ifstream file;
     string input, parse;
     int l, c, n;
-    file.open(filename, ios::in);
     
     do
     {

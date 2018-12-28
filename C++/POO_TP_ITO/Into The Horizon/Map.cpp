@@ -1,10 +1,10 @@
 #include "Map.h"
 
-Map::Map() {}
+/*Map::Map() {}
 
-Map::Map(const Map& orig) {}
+Map::Map(const Map& orig) {}*/
 
-Map::Map(vector<string> vmap)
+Map::Map(vector<string> vmap): height(vmap.size()), width(vmap[0].size())
 {
     int y, x;
     
@@ -18,6 +18,15 @@ Map::Map(vector<string> vmap)
 		harbors.push_back(new Harbor(vmap[y-1][x-1], y, x));
 	}
     }
+}
+
+const string Map::getDim() const
+{
+    ostringstream os;
+    
+    os << height << " " << width;
+    
+    return os.str();
 }
 
 Map::~Map() {}

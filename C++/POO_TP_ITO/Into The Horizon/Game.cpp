@@ -21,12 +21,12 @@ void Game::startGame()
     pirate = new Player("Pirates", 0);
 }
 
-void Game::configPhase(string filename)
+void Game::configPhase(ifstream& file)
 {
     if(phase != 0)
 	return;
     
-    settings = new Settings(filename);
+    settings = new Settings(file);
     map = new Map(settings->getMap());
     phase = 1;
 }

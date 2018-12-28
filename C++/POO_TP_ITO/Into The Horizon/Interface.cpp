@@ -367,7 +367,6 @@ void Interface::tutPage()
     }
 }
     
-
 void Interface::credPage()
 {
     int i=6, l=2;
@@ -391,69 +390,326 @@ void Interface::startgame()
     clear();
     drawBox(stdscr);
     y = getVertCenter(stdscr, 2, r, flag);
-    
-    if(y != 0)
-    {
-	if(flag == 0)
-	    mvwaddstr(stdscr, r+y, getCenter(getLine(6)), getLine(6));
-	else
-	    mvwaddstr(stdscr, r+y+1, getCenter(getLine(6)), getLine(6));
-    }
-    else
-	mvwaddstr(stdscr, r, getCenter(getLine(6)), getLine(6));
-    
-    if(y != 0)
-    {
-	if(flag == 0)
-	    mvwaddstr(stdscr, r+y+2, getCenter(getLine(7)) - 10, getLine(7));
-	else
-	    mvwaddstr(stdscr, r+y+2, getCenter(getLine(7)) - 10, getLine(7));
-    }
-    else
-	mvwaddstr(stdscr, r+y+2, getCenter(getLine(7)) - 10, getLine(7));
-    
     do
     {
-	name = getInput(15);
+        if(y != 0)
+        {
+            if(flag == 0)
+                mvwaddstr(stdscr, r+y, getCenter(getLine(6)), getLine(6));
+            else
+                mvwaddstr(stdscr, r+y+1, getCenter(getLine(6)), getLine(6));
+        }
+        else
+            mvwaddstr(stdscr, r, getCenter(getLine(6)), getLine(6));
+
+        if(y != 0)
+        {
+            if(flag == 0)
+                mvwaddstr(stdscr, r+y+2, getCenter(getLine(7)) - 10, getLine(7));
+            else
+                mvwaddstr(stdscr, r+y+2, getCenter(getLine(7)) - 10, getLine(7));
+        }
+        else
+            mvwaddstr(stdscr, r+y+2, getCenter(getLine(7)) - 10, getLine(7));
+    
+	name = getInput(stdscr, 15);
     }
     while(name.empty());
     
     drawGameArea();
     game = new Game(name);
-    
-    drawGameArea();
 }
 
-string Interface::getInput(int lim = 0)
+void Interface::MainGameLoop()
+{
+    string cmdstring, parse;
+    ifstream file;
+    int cmdval;
+    int inv=0;
+    char c;
+
+    do
+    {
+        istringstream is;
+        drawBox(wcmd);
+        
+        if(inv == 1)
+            mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(25));
+        
+        inv = 0;
+        
+        do
+        {
+            mvwaddstr(wcmd, getmaxy(wcmd)-3, 1, getLine(12));
+            wrefresh(wcmd);
+            cmdstring = getInput(wcmd, 25);
+        }
+        while(cmdstring.empty());
+
+        is.str(cmdstring);
+        is >> parse;
+        
+        if(parse != getCmd(0) && parse != getCmd(20))
+        {
+            inv = 1;
+            continue;
+        }
+        
+        if(parse == getCmd(0))
+        {
+            parse.clear();
+            is >> parse;
+            
+            if(!parse.empty() || !is.bad())
+            {
+                file.open(parse, ios::in);
+                
+                if(!file.is_open())
+                {
+                    mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(21));
+                    wclrtoeol(wcmd);
+                    mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                    wrefresh(wcmd);
+                    
+                    getch();
+                    mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(22));
+                    wclrtoeol(wcmd);
+                    mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                    wrefresh(wcmd);
+                    do
+                    {
+                        c = getch();
+                    }
+                    while(c!='S' && c!='s' && c!='N' && c!='n' && c!='Y' && c!='y');
+                    
+                    if(c=='S'||c=='s'||c=='Y'||c=='y')
+                    {
+                        file.open("config.ini");
+                        
+                        if(!file.is_open())
+                        {
+                            mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(21));
+                            wclrtoeol(wcmd);
+                            mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                            wrefresh(wcmd);
+                            getch();
+                            
+                            mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(23));
+                            wclrtoeol(wcmd);
+                            mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                            wrefresh(wcmd);
+                            
+                            do
+                            {
+                                c = getch();
+                            }
+                            while(c!='S' && c!='s' && c!='N' && c!='n' && c!='Y' && c!='y');
+                            
+                            if(c=='S'||c=='s'||c=='Y'||c=='y')
+                                createDefaultConfig();
+                            else
+                                return;
+                        }
+                    }
+                    else
+                    {
+                        mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(23));
+                        wclrtoeol(wcmd);
+                        mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+                        wrefresh(wcmd);
+                        
+                        do
+                        {
+                            c = getch();
+                        }
+                        while(c!='S' && c!='s' && c!='N' && c!='n' && c!='Y' && c!='y');
+                        
+                        if(c=='S'||c=='s'||c=='Y'||c=='y')
+                            createDefaultConfig();
+                        else
+                            return;
+                    }
+                }
+
+                game->configPhase(file);
+                file.close();
+            }
+            
+            break;
+        }
+        else if(parse == getCmd(20))
+            return;
+    }
+    while(parse != getCmd(0));
+    
+    game->startGame();
+    
+    do
+    {
+        drawMap();
+        getch();
+    }
+    while(cmdval != 20);
+}
+
+int Interface::parseCmd(string c)
+{
+    int i;
+    istringstream is;
+    string parse;
+    is.str(c);
+
+    is >> parse;
+
+    for(i = 0; i<cmd.size(); i++)
+        if(parse == cmd[i])
+            break;
+    
+    switch(i)
+    {
+        case 0:
+            mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(25));
+            return -1;
+        case 1:
+        {
+            parse.clear();
+            
+            is >> parse;
+            if(is.good())
+                openExecFile(parse);
+            else
+                return -1;
+            
+            return 0;
+        }
+    }
+}
+
+void Interface::openExecFile(string filename)
+{
+    string input;
+    ifstream file;
+    file.open(filename, ios::in);
+    
+    while(!file.eof())
+    {
+        getline(file, input);
+        
+        parseCmd(input);
+    }
+}
+
+int Interface::drawMap()
+{
+    //Color Initialization
+    init_color(LAND_DARK, 545, 270, 75);
+    init_color(LAND_LIGHT, 870, 720, 530);
+    
+    init_color(FRIENDLY, 100, 750, 100);
+    init_color(UNFRIENDLY, 1000, 0, 0);
+    
+    //Pair creation
+    
+    //Dark Ocean Tiles
+    init_pair(1, COLOR_WHITE, COLOR_BLUE);
+    init_pair(2, COLOR_GREEN, COLOR_BLUE);
+    init_pair(3, COLOR_RED, COLOR_BLUE);
+    //Light Ocean Tiles
+    init_pair(4, COLOR_WHITE, COLOR_CYAN);
+    init_pair(5, COLOR_GREEN, COLOR_CYAN);
+    init_pair(6, COLOR_RED, COLOR_CYAN);
+    
+    //Land Tiles
+    init_pair(7, COLOR_WHITE, LAND_DARK);
+    init_pair(8, COLOR_WHITE, LAND_LIGHT);
+    
+    //Harbor Tiles
+    init_pair(9, COLOR_BLACK, FRIENDLY);
+    init_pair(10, COLOR_BLACK, UNFRIENDLY);
+    
+    init_pair(TERM_DEFAULT, COLOR_WHITE, COLOR_BLACK);
+    
+    wattron(wmap, COLOR_PAIR(TERM_DEFAULT));
+
+    wclear(wmap);
+    drawBox(wmap);
+    
+    if(game->getPhase() != 1)
+        return -1;
+    
+    bool toggler = false;
+    int maxx, maxy;
+    istringstream is;
+    
+    is.str(game->getMapDim());
+    is >> maxy;
+    is >> maxx;
+    
+    if((maxy * 2) > getmaxy(wmap))
+        return -1;
+    if((maxx * 2) > getmaxx(wmap))
+        return -1;
+    
+    for(int y=1; y<maxy+1; y++)
+    {
+        for(int x=1; x<maxx+1; x++)
+        {
+            if(toggler == false)
+            {
+                wattron(wmap, COLOR_PAIR(7));
+                toggler = !toggler;
+            }
+            else
+            {
+                wattron(wmap, COLOR_PAIR(8));
+                toggler = !toggler;
+            }
+            mvwaddch(wmap, y, x, ' ');
+            mvwaddch(wmap, y, x+1, ' ');
+            mvwaddch(wmap, y+1, x, ' ');
+            mvwaddch(wmap, y+1, x+1, ' ');
+        }
+    }
+    
+    return 0;
+}
+
+string Interface::getInput(WINDOW *win, int lim = 0)
 {
     string input;
     char c;
     int y,x;
     
-    getyx(stdscr, y, x);
+    getyx(win, y, x);
     
     do
     {
 	c = getch();
 	
-	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))
-	    if(input.size() <= lim)
+	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' ' || c == '.'))
+        {
+	    if(input.size() <= lim && lim > 0)
 		input.push_back(c);
-	else if((c == 127 || c == KEY_BACKSPACE) && !(input.empty()))
+        }
+	else if((c == 127 || c == 8) && !(input.empty()))
+        {
 	    input.pop_back();
+            wclrtoeol(win);
+        }
 	
-	mvwaddstr(stdscr, y, x, input.c_str());
-	wclrtoeol(stdscr);
-	mvwaddch(stdscr, y, getmaxx(stdscr) - 1, '|');
-	wmove(stdscr, y, x + input.size());
-	refresh();
+	mvwaddstr(win, y, x, input.c_str());
+        mvwaddch(win, y, x + input.size(), '_');
+	wclrtoeol(win);
+	mvwaddch(win, y, getmaxx(win) - 1, '|');
+	wmove(win, y, x + input.size() + 1);
+	wrefresh(win);
     }
-    while(c != '\n' || c != KEY_ENTER);
+    while(c != '\n');
 
     return input;
 }
 
-int Interface::getNumber()
+int Interface::getNumber(WINDOW *win)
 {
     string num;
     istringstream is;
@@ -461,22 +717,23 @@ int Interface::getNumber()
     int n;
     int y,x;
     
-    getyx(stdscr, y, x);
+    getyx(win, y, x);
     
     do
     {
 	if(c >= '0' && c <= '9')
 	    num.push_back(c);
-	else if((c == 127 || c == KEY_BACKSPACE) && !(num.empty()))
+	else if((c == 127) && !(num.empty()))
 	    num.pop_back();
 	
-	mvwaddstr(stdscr, y, x, num.c_str());
-	wclrtoeol(stdscr);
-	mvwaddch(stdscr, y, getmaxx(stdscr) - 1, '|');
-	wmove(stdscr, y, x + num.size());
-	refresh();
+	mvwaddstr(win, y, x, num.c_str());
+        mvwaddch(win, y, x + num.size(), '_');
+	wclrtoeol(win);
+	mvwaddch(win, y, getmaxx(win) - 1, '|');
+	wmove(win, y, x + num.size());
+	wrefresh(win);
     }
-    while(c != '\n' || c != KEY_ENTER);
+    while(c != '\n');
     
     is.str(num);
     is >> n;
@@ -537,6 +794,7 @@ int Interface::getVertCenter(WINDOW *win, int n, int &r, int &flag)
         return esp;
     }
 }
+
 /*void Interface::SetScreenSize(int lines, int columns)
 {
     #ifdef __linux__
@@ -560,15 +818,19 @@ int Interface::getVertCenter(WINDOW *win, int n, int &r, int &flag)
     #endif
 }*/
 
-
 void Interface::drawGameArea()
 {
-    
+    wmap = subwin(stdscr, 22, 42, 0, 0);
+    wcmd = subwin(stdscr, 18, 42, getmaxy(wmap), 0);
+    wlog = subwin(stdscr, MAX_Y, MAX_X-getmaxx(wmap), 0, getmaxx(wmap));
+    drawBox(wmap);
+    drawBox(wcmd);
+    drawBox(wlog);
 }
 
 void Interface::SetScreenSize(int lines, int columns)
 {
-#if !(defined _WIN32 || defined __unix__) && (defined __linux__)
+#if (defined __linux__) && !(defined _WIN32)
     
     std::ostringstream syscmd;
     syscmd << "\e[8;" << lines << ";" << columns << "t";
@@ -581,7 +843,253 @@ void Interface::SetScreenSize(int lines, int columns)
 #endif
 }
 
-Interface::~Interface()
+void Interface::endgame()
 {
     delete game;
+    delwin(wcmd);
+    delwin(wlog);
+    delwin(wmap);
+    delwin(wstats);
+    clear();
+    mvwaddstr(stdscr, getmaxy(stdscr) / 2, getCenter(getLine(17)), getLine(17));
+    wrefresh(stdscr);
+    getch();
 }
+
+void Interface::createDefaultConfig()
+{
+    char c;
+    ofstream file;
+    string filename;
+    
+    mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(24));
+    wclrtoeol(wcmd);
+    mvwaddch(wcmd, getmaxy(wcmd)-2, getmaxx(wcmd)-1, '|');
+    wrefresh(wcmd);
+    
+    do
+    {
+        c = getch();
+    }
+    while(c!='D' && c!='d' && c!='C' && c!='c');
+    
+    if(c == 'D' || c == 'd')
+    {
+        file.open("config.ini", ios::out | ios::trunc);
+        
+        if(!file.is_open())
+            return;
+        
+        file << "lines 20" << endl;
+        file << "columns 10" << endl;
+        file << "...............+++++" << endl;
+        file << "..........++++++++++" << endl;
+        file << "..........A+++++++++" << endl;
+        file << ".............+++++++" << endl;
+        file << "..............++++++" << endl;
+        file << "....+a...........B++" << endl;
+        file << "...++++..........+++" << endl;
+        file << "....++............++" << endl;
+        file << "...................b" << endl;
+        file << "...................." << endl;
+        file << "money 1000" << endl;
+        file << "pirateprob 20" << endl;
+        file << "shipprice 100" << endl;
+        file << "crewprice 1" << endl;
+        file << "fishprice 1" << endl;
+        file << "cargobuy 2" << endl;
+        file << "cargosell 3" << endl;
+        file << "harborcrew 100" << endl;
+        file << "eventprob 30" << endl;
+        file << "stormprob 30" << endl;
+        file << "sirenprob 30" << endl;
+        file << "calmprob 20" << endl;
+        file << "riotprob 20" << endl;
+    }
+    else if(c == 'C' || c == 'c')
+    {
+        mvwaddstr(wlog, 1, 1, getLine(28));
+        wrefresh(wlog);
+        do
+        {
+            filename = getInput(wlog, 15);
+        }
+        while(filename.empty());
+        
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        
+        file.open(filename, ios::out | ios::trunc);
+        
+        mvwaddstr(wlog, 2, 1, getLine(29));
+        mvwaddstr(wlog, 3, 1, getLine(43));
+        wrefresh(wlog);
+        
+        do
+        {
+            c = getch();
+        }
+        while(c!='Y' && c!='y' && c!='S' && c!='s' && c!='N' && c!='n');
+
+        if(c=='Y' || c=='y' || c=='S' || c=='s')
+        {
+            vector<string> g_map;
+            g_map = userDrawCustomMap();
+            
+            for(int i=0; i<=g_map.size(); i++)
+                file << g_map[i] << endl;
+        }
+        else
+        {
+            file << "lines 20" << endl;
+            file << "columns 10" << endl;
+            file << "...............+++++" << endl;
+            file << "..........++++++++++" << endl;
+            file << "..........A+++++++++" << endl;
+            file << ".............+++++++" << endl;
+            file << "..............++++++" << endl;
+            file << "....+a...........B++" << endl;
+            file << "...++++..........+++" << endl;
+            file << "....++............++" << endl;
+            file << "...................b" << endl;
+            file << "...................." << endl;
+        }
+    }
+}
+
+vector<string> Interface::userDrawCustomMap()
+{
+    WINDOW *cmap;
+    cmap = subwin(stdscr, 12, 22, 0, 0);
+    wclear(wmap);
+    wrefresh(wmap);
+    delwin(wmap);
+    drawBox(cmap);
+    
+    int opt;
+    int y=1, x=1;
+    int w=0, l=0;
+    int spaces=0;
+    vector<string>g_map;
+    
+    mvwaddstr(wlog, 3, 1, getLine(43));
+    mvwaddstr(wlog, 4, 1, getLine(45));
+    wrefresh(wlog);
+    
+    keypad(stdscr, TRUE);
+    curs_set(TRUE);
+    wmove(cmap, 1, 1);
+    mvwaddch(cmap, 1, 1, ' ');
+    wrefresh(cmap);
+    
+    do
+    {
+        opt = getch();
+        
+        if(opt == '.' || opt == '+')
+        {
+            mvwaddch(cmap, y, x, opt);
+            wmove(cmap, y, x);
+        }
+        else if((opt >='A' && opt <='Z') || (opt >= 'a' && opt <= 'z'))
+        {
+            int cury, curx;
+            vector<char> pos;
+            
+            getyx(cmap, cury, curx);
+            
+            pos.push_back(mvwinch(cmap, cury-1, curx-1));
+            pos.push_back(mvwinch(cmap, cury-1, curx));
+            pos.push_back(mvwinch(cmap, cury-1, curx+1));
+            pos.push_back(mvwinch(cmap, cury, curx-1));
+            pos.push_back(mvwinch(cmap, cury, curx+1));
+            pos.push_back(mvwinch(cmap, cury+1, curx-1));
+            pos.push_back(mvwinch(cmap, cury+1, curx));
+            pos.push_back(mvwinch(cmap, cury+1, curx+1));
+            
+            for(int i=0; i<pos.size(); i++)
+            {
+                if(pos[i] == '.')
+                    w=1;
+                else if(pos[i] == '+')
+                    l=1;
+            }
+            
+            if(w==1 && l==1)
+                mvwaddch(cmap, cury, curx, opt);
+            wmove(cmap, cury, curx);
+            w=l=0;
+        }
+        else if(opt>=KEY_DOWN && opt<=KEY_RIGHT)
+        {
+            int begy=1, begx=1, maxy, maxx;
+            maxy = getmaxy(cmap)-2;
+            maxx = getmaxx(cmap)-2;
+            switch(opt)
+            {
+                case KEY_RIGHT:
+                    if(x<maxx)
+                        x++;
+                    break;
+                    
+                case KEY_DOWN:
+                    if(y<maxy)
+                        y++;
+                    break;
+                    
+                case KEY_UP:
+                    if(y>begy)
+                        y--;
+                    break;
+                    
+                case KEY_LEFT:
+                    if(x>begx)
+                        x--;
+                    break;
+                    
+                default:
+                    break;
+            }
+            wmove(cmap, y, x);
+        }
+        wrefresh(cmap);
+    }
+    while(opt != 10);
+    
+    for(int i=1; i<getmaxy(cmap)-1; i++)
+    {
+        char line[20];
+        mvwinnstr(cmap, i, 1, line, 20);
+        
+        for(int j=0; j<20; j++)
+        {
+            if(line[j] == ' ')
+            {
+                spaces = 1;
+                break;
+            }
+        }
+        g_map.push_back(line);
+    }
+    
+    //Detect empty spaces here
+    if(spaces == 1)
+    {
+        for(int i=0; i<g_map.size(); i++)
+            for(int j=0; j<g_map[i].size(); j++)
+                if(g_map[i][j] == ' ')
+                    g_map[i][j] = '.';
+    }
+    
+    curs_set(FALSE);
+    keypad(stdscr, FALSE);
+    wclear(cmap);
+    wrefresh(cmap);
+    delwin(cmap);
+    
+    wmap = subwin(stdscr, 22, 42, 0, 0);
+    drawBox(wmap);
+    
+    return g_map;
+}
+
+Interface::~Interface() {}

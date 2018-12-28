@@ -8,12 +8,20 @@
 #define MAX_Y 40
 
 #define GAME_VERSION_MAJOR 1
-#define GAME_VERSION_MINOR 1
+#define GAME_VERSION_MINOR 3
+
+#define TERM_DEFAULT 11
+#define OCEAN_STORM 12
+#define OCEAN_CALM 13
+#define LAND_DARK 14
+#define LAND_LIGHT 15
+#define FRIENDLY 16
+#define UNFRIENDLY 17
 
 class Interface
 {
     //Consider static?
-    WINDOW* wcmd, wmap, wlog, wstats;
+    WINDOW *wcmd, *wmap, *wlog, *wstats;
     
     static vector <string> cmd;
     static vector <string> line;
@@ -27,12 +35,14 @@ public:
 
     const char* getCmd(int i);
     const char* getLine(int i);
-    string getInput(int lim);
-    int getNumber();
+    string getInput(WINDOW *win, int lim);
+    int getNumber(WINDOW *win);
     
     void tutPage();
     void credPage();
     void startgame();
+    void MainGameLoop();
+    void endgame();
     
     //Writes and centers all needed menu strings to stdscr and
     //draws a neat box for it.
@@ -65,6 +75,11 @@ public:
 private:
     
     void drawGameArea();
+    int parseCmd(string c);
+    void openExecFile(string filename);
+    int drawMap();
+    void createDefaultConfig();
+    vector<string> userDrawCustomMap();
 };
 
 #endif
