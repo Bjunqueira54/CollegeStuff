@@ -195,18 +195,33 @@ Settings::Settings(ifstream& file)
 Settings::~Settings()
 {
     delete lines;
+    lines = nullptr;
     delete columns;
+    columns = nullptr;
     delete startmoney;
+    startmoney = nullptr;
     delete pirateprob;
+    pirateprob = nullptr;
     delete shipprice;
+    shipprice = nullptr;
     delete crewprice;
+    crewprice = nullptr;
     delete fishprice;
+    fishprice = nullptr;
     delete cargobuy;
+    cargobuy = nullptr;
     delete cargosell;
+    cargosell = nullptr;
     delete harborcrew;
+    harborcrew = nullptr;
     delete eventprob;
+    eventprob = nullptr;
     delete storm;
+    storm = nullptr;
     delete sirens;
+    sirens = nullptr;
     delete calm;
+    calm = nullptr;
     delete riot;
+    riot = nullptr;
 }

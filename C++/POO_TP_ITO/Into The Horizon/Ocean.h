@@ -9,8 +9,6 @@ class Ocean: public Tile
 
 public:
     
-    /*Ocean();
-    Ocean(const Ocean& orig);*/
     Ocean(int yy, int xx);
     
     

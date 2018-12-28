@@ -1,9 +1,5 @@
 #include "Map.h"
 
-/*Map::Map() {}
-
-Map::Map(const Map& orig) {}*/
-
 Map::Map(vector<string> vmap): height(vmap.size()), width(vmap[0].size())
 {
     int y, x;
@@ -29,4 +25,17 @@ const string Map::getDim() const
     return os.str();
 }
 
-Map::~Map() {}
+Map::~Map()
+{
+    for(auto& it: ocean)
+    {
+        delete it;
+        it = nullptr;
+    }
+    
+    for(auto& it: harbors)
+    {
+        delete it;
+        it = nullptr;
+    }
+}

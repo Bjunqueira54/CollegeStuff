@@ -9,9 +9,7 @@ class Harbor: public Tile
     bool friendly;
     
 public:
-    
-    /*Harbor();
-    Harbor(const Harbor& orig);*/
+
     Harbor(char i, int yy, int xx);
     
     const bool isFriendly() const { return friendly; }

@@ -117,4 +117,49 @@ const int Player::getFish(int id) const
     }
 }
 
-Player::~Player() {}
+const string Player::getShipCoord(int i) const
+{
+    if(i < fleet.size())
+        return fleet[i]->getCoord();
+}
+
+const bool Player::getShipInHarbor(int i) const
+{
+    if(i < fleet.size())
+        return fleet[i]->isInHarbor();
+}
+
+const int Player::getShipType(int i) const
+{
+    if(i < fleet.size())
+        return fleet[i]->getType();
+}
+
+const string Player::getShipID(int i) const
+{
+    if(i < fleet.size())
+    {
+        int id;
+        ostringstream os;
+        
+        id = fleet[i]->getID();
+        
+        if(id < 10)
+        {
+            os << "0" << id;
+        }
+        else
+            os << id;
+        
+        return os.str();
+    }
+}
+
+Player::~Player()
+{
+    for(auto& it: fleet)
+    {
+        delete it;
+        it = nullptr;
+    }
+}

@@ -7,10 +7,10 @@ class Schooner: public Ship
 {
     
 public:
-    
-    /*Schooner();
-    Schooner(const Schooner& orig);*/
+
     Schooner(Player* o, int id, int x, int y);
+    
+    const int getType() const { return 3; }
     
     
     virtual ~Schooner();

@@ -9,8 +9,7 @@ class Tile
     
 public:
     
-    /*Tile();
-    Tile(const Tile& orig);*/
+    Tile() = delete;
     Tile(int yy, int xx);
     
     const string getCoord() const;

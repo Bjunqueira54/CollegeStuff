@@ -40,6 +40,11 @@ public:
     const string getPlayerName() const { return player->getName(); }
     const int getPlayerFleetSize() const { return player->getNships(); }
     const int getShipPrice(char t) const { return settings->GetShipprice(); }
+    const string getPlayerShipCoord(int i) const { return player->getShipCoord(i); }
+    const bool getPlayerShipInHarbor(int i) const { return player->getShipInHarbor(i); }
+    const int getPlayerShipType(int i) const { return player->getShipType(i); }
+    const string getPlayerShipID(int i) const { return player->getShipID(i);}
+    const Harbor* getPlayerMainHarbor() const { return player->getMainHarbor(); }
     
     int PlayerBuyShip(char t);
     int PlayerSellShip(int id);

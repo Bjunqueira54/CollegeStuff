@@ -81,7 +81,11 @@ int Game::PlayerSellShip(int id)
 Game::~Game()
 {
     delete player;
+    player = nullptr;
     delete pirate;
+    pirate = nullptr;
     delete settings;
+    settings = nullptr;
     delete map;
+    map = nullptr;
 }

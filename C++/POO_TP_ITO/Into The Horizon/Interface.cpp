@@ -788,30 +788,39 @@ int Interface::openExecFile(ifstream& file)
 int Interface::drawMap()
 {
     //Color Initialization
-    init_color(LAND_DARK, 545, 270, 75);
-    init_color(LAND_LIGHT, 870, 720, 530);
+    init_color(LAND_DARK, COLOR_CONVERTER(135), COLOR_CONVERTER(65), COLOR_CONVERTER(15));
+    init_color(LAND_LIGHT, COLOR_CONVERTER(220), COLOR_CONVERTER(180), COLOR_CONVERTER(135));
     
-    init_color(FRIENDLY, 100, 750, 100);
-    init_color(UNFRIENDLY, 1000, 0, 0);
+    init_color(FRIENDLY, COLOR_CONVERTER(0), COLOR_CONVERTER(255), COLOR_CONVERTER(0));
+    init_color(UNFRIENDLY, COLOR_CONVERTER(255), COLOR_CONVERTER(0), COLOR_CONVERTER(0));
+    
+    init_color(COLOR_SAILBOAT, COLOR_CONVERTER(255), COLOR_CONVERTER(255), COLOR_CONVERTER(255));
+    init_color(COLOR_GALEON, COLOR_CONVERTER(255), COLOR_CONVERTER(255), COLOR_CONVERTER(0));
+    init_color(COLOR_SCHOONER, COLOR_CONVERTER(165), COLOR_CONVERTER(165), COLOR_CONVERTER(165));
+    init_color(COLOR_FRIGATE, COLOR_CONVERTER(255), COLOR_CONVERTER(102), COLOR_CONVERTER(0));
+    init_color(COLOR_SPECIAL, COLOR_CONVERTER(153), COLOR_CONVERTER(0), COLOR_CONVERTER(204));
+    
     
     //Pair creation
     
-    //Dark Ocean Tiles
+    //Ocean Tiles
     init_pair(1, COLOR_WHITE, COLOR_BLUE);
-    init_pair(2, COLOR_GREEN, COLOR_BLUE);
-    init_pair(3, COLOR_RED, COLOR_BLUE);
-    //Light Ocean Tiles
-    init_pair(4, COLOR_WHITE, COLOR_CYAN);
-    init_pair(5, COLOR_GREEN, COLOR_CYAN);
-    init_pair(6, COLOR_RED, COLOR_CYAN);
-    
+    init_pair(2, COLOR_WHITE, COLOR_CYAN);
+
     //Land Tiles
-    init_pair(7, COLOR_WHITE, LAND_DARK);
-    init_pair(8, COLOR_WHITE, LAND_LIGHT);
+    init_pair(3, COLOR_WHITE, LAND_DARK);
+    init_pair(4, COLOR_WHITE, LAND_LIGHT);
     
     //Harbor Tiles
-    init_pair(9, COLOR_BLACK, FRIENDLY);
-    init_pair(10, COLOR_WHITE, UNFRIENDLY);
+    init_pair(5, COLOR_BLACK, FRIENDLY);
+    init_pair(6, COLOR_WHITE, UNFRIENDLY);
+    
+    //Ship Colors
+    init_pair(7, COLOR_BLACK, COLOR_SAILBOAT);
+    init_pair(8, COLOR_BLACK, COLOR_GALEON);
+    init_pair(9, COLOR_BLACK, COLOR_SCHOONER);
+    init_pair(10, COLOR_BLACK, COLOR_FRIGATE);
+    init_pair(11, COLOR_WHITE, COLOR_SPECIAL);
     
     init_pair(TERM_DEFAULT, COLOR_WHITE, COLOR_BLACK);
     
@@ -831,11 +840,13 @@ int Interface::drawMap()
     is >> maxy;
     is >> maxx;
     
+    //Quick verification if map dimensions go over the map window's dimensions.
     if((maxy * 2) > getmaxy(wmap))
         return -1;
     if((maxx * 2) > getmaxx(wmap))
         return -1;
     
+    //Step 1: Draw land tiles in every position on the map with a checkered color patern.
     for(int y=1; y<maxy+1; y++)
     {
         ls = toggler;
@@ -844,12 +855,12 @@ int Interface::drawMap()
         {
             if(toggler == false)
             {
-                wattron(wmap, COLOR_PAIR(7));
+                wattron(wmap, COLOR_PAIR(3));
                 toggler = !toggler;
             }
             else
             {
-                wattron(wmap, COLOR_PAIR(8));
+                wattron(wmap, COLOR_PAIR(4));
                 toggler = !toggler;
             }
             
@@ -863,6 +874,7 @@ int Interface::drawMap()
             toggler = !toggler;
     }
 
+    //Step 2: Draw all of the existant ocean tiles given by the Game class.
     int y, x, prevy;
     for(int i=0; i<game->getTotalOceanTiles(); i++)
     {
@@ -888,7 +900,7 @@ int Interface::drawMap()
         }
         else
         {
-            wattron(wmap, COLOR_PAIR(4));
+            wattron(wmap, COLOR_PAIR(2));
             toggler = !toggler;
         }
         
@@ -898,6 +910,7 @@ int Interface::drawMap()
         mvwaddch(wmap, y*2-1, x*2-1, ' ');
     }
     
+    //Step 3: Draw all of the existing harbors, colored correctly depending on their "friendliness".
     for(int i=0; i<game->getTotalHarborTiles(); i++)
     {
         is.clear();
@@ -908,11 +921,11 @@ int Interface::drawMap()
         
         if(game->harborIsFriendly(i) == true)
         {
-            wattron(wmap, COLOR_PAIR(9));
+            wattron(wmap, COLOR_PAIR(5));
         }
         else
         {
-            wattron(wmap, COLOR_PAIR(10));
+            wattron(wmap, COLOR_PAIR(6));
         }
 
         mvwaddch(wmap, y*2-1, x*2-1, game->getHarborID(i));
@@ -920,6 +933,55 @@ int Interface::drawMap()
         mvwaddch(wmap, y*2, x*2, ' ');
         mvwaddch(wmap, y*2, x*2-1, ' ');
     }
+    
+    //Step 4: Draw all the existing player fleet, along with marking which of the existing harbors
+    //          is his main harbor.
+    for(int i=0; i<game->getPlayerFleetSize(); i++)
+    {
+        if(game->getPlayerShipInHarbor(i))
+            continue;
+        
+        string id;
+        
+        is.clear();
+        is.str(game->getPlayerShipCoord(i));
+        
+        is >> y;
+        is >> x;
+        
+        switch(game->getPlayerShipType(i))
+        {
+            case 1:
+                wattron(wmap, COLOR_PAIR(7));
+                break;
+            case 2:
+                wattron(wmap, COLOR_PAIR(8));
+                break;
+            case 3:
+                wattron(wmap, COLOR_PAIR(9));
+                break;
+            case 4:
+                wattron(wmap, COLOR_PAIR(10));
+                break;
+            case 5:
+                wattron(wmap, COLOR_PAIR(11));
+                break;
+        }
+        
+        id = game->getPlayerShipID(i);
+        
+        mvwaddch(wmap, y*2-1, x*2-1, id[0]);
+        mvwaddch(wmap, y*2-1, x*2, id[1]);
+        mvwaddch(wmap, y*2, x*2-1, '+');
+        mvwaddch(wmap, y*2, x*2, '+');
+    }
+    
+    is.clear();
+    is.str(game->getPlayerMainHarbor()->getCoord());
+    is >> y;
+    is >> x;
+    wattron(wmap, COLOR_PAIR(5));
+    mvwaddch(wmap, y*2-1, x*2, '*');
     
     wrefresh(wmap);
     return 0;

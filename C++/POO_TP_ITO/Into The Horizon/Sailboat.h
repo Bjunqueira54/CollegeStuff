@@ -8,9 +8,9 @@ class Sailboat: public Ship
     
 public:
     
-    /*Sailboat();
-    Sailboat(const Sailboat& orig);*/
     Sailboat(Player* o, int id, int x, int y);
+    
+    const int getType() const { return 1; }
     
     virtual ~Sailboat();
 };

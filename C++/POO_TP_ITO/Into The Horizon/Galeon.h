@@ -12,6 +12,8 @@ public:
     Galeon(const Galeon& orig);*/
     Galeon(Player* o, int id, int x, int y);
     
+    const int getType() const { return 2; }
+    
     virtual ~Galeon();
 };
 

@@ -67,6 +67,12 @@ public:
     const int getCrew(int id) const;
     const int getFish(int id) const;
     const int getCargo(int id) const;
+    const string getShipCoord(int i) const;
+    const bool getShipInHarbor(int i) const;
+    const int getShipType(int i) const;
+    const string getShipID(int i) const;
+    
+    const Harbor* getMainHarbor() const { return mainharbor; }
     
     virtual ~Player();
 };

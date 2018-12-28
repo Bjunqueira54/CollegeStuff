@@ -11,12 +11,19 @@
 #define GAME_VERSION_MINOR 3
 
 #define TERM_DEFAULT 11
+
 #define OCEAN_STORM 12
 #define OCEAN_CALM 13
 #define LAND_DARK 14
 #define LAND_LIGHT 15
 #define FRIENDLY 16
 #define UNFRIENDLY 17
+
+#define COLOR_SAILBOAT 18
+#define COLOR_GALEON 19
+#define COLOR_SCHOONER 20
+#define COLOR_FRIGATE 21
+#define COLOR_SPECIAL 22
 
 class Interface
 {
@@ -122,6 +129,10 @@ private:
     //Prints multiple starts to the "wstats" window, like player name, money,
     //number of ships in his fleet, etc.
     void printStats();
+    
+private:
+    
+    int COLOR_CONVERTER(int n) { return (n * (1000/255)); }
 };
 
 #endif

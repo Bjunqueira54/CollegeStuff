@@ -12,9 +12,7 @@ class Map
     const int height, width;
     
 public:
-    
-    //Map();
-    //Map(const Map& orig);
+
     Map(vector<string> vmap);
     
     const string getDim() const;
