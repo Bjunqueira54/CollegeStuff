@@ -12,7 +12,7 @@ Game::Game(const Game& orig) {}
 
 Game::Game(string n): playername(n)
 {
-    turn = 0;
+    turn = 1;
 }
 
 void Game::startGame()
@@ -29,6 +29,16 @@ void Game::configPhase(ifstream& file)
     settings = new Settings(file);
     map = new Map(settings->getMap());
     phase = 1;
+}
+
+void Game::nextTurn()
+{
+    turn++;
+}
+
+int Game::PlayerBuyShip(char t)
+{
+
 }
 
 Game::~Game()

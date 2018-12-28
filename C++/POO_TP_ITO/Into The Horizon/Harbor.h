@@ -15,6 +15,7 @@ public:
     Harbor(char i, int yy, int xx);
     
     const bool isFriendly() const { return friendly; }
+    const char getID() const { return id; }
     
     virtual ~Harbor();
 };

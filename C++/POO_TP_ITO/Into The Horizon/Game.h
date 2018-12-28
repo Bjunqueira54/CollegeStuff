@@ -24,13 +24,24 @@ public:
     
     void configPhase(ifstream& file);
     void startGame();
+    void nextTurn();
     
     const int getPhase() const { return phase; }
+    const int getTurn() const { return turn; }
     const string getMapDim() const { return map->getDim(); }
-    const string getTileCoord() const { return map->getTileCoord(); }
     const int getTotalOceanTiles() const { return map->getTotalOceanTiles(); }
+    const string getOceanCoord(int i) const { return map->getOceanCoord(i); }
     const int getTotalHarborTiles() const { return map->getTotalHarborTiles(); }
-    const bool harborIsFriendly(int yy, int xx) const { return map->harborIsFriendly(yy, xx); }
+    const string getHarborCoord(int i) const { return map->getHarborCoord(i); }
+    const bool harborIsFriendly(int i) const { return map->harborIsFriendly(i); }
+    const char getHarborID(int i) const { return map->getHarborID(i); }
+    
+    const int getPlayerMoney() const { return player->getMoney(); }
+    const string getPlayerName() const { return player->getName(); }
+    const int getPlayerFleetSize() const { return player->getNships(); }
+    const int getShipPrice(char t) const { return settings->GetShipprice(); }
+    
+    int PlayerBuyShip(char t);
     
     virtual ~Game();
 };
