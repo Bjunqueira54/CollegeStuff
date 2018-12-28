@@ -1,5 +1,7 @@
 #include "Map.h"
 
+int Map::coordcall = 0;
+
 /*Map::Map() {}
 
 Map::Map(const Map& orig) {}*/
@@ -27,6 +29,42 @@ const string Map::getDim() const
     os << height << " " << width;
     
     return os.str();
+}
+
+const string Map::getTileCoord() const
+{
+    ostringstream os;
+    int i;
+    
+    i = coordcall;
+    coordcall++;
+    
+    if(i < ocean.size())
+    {
+        return ocean[i]->getCoord();
+    }
+    else if(i >= ocean.size())
+    {
+        if(i - ocean.size() < harbors.size())
+        {
+            return harbors[i - ocean.size()]->getCoord();
+        }
+        else
+            coordcall = 0;
+    }
+}
+
+const bool Map::harborIsFriendly(int yy, int xx) const
+{
+    string coord;
+    
+    coord = yy + " " + xx;
+    
+    for(int i=0; i<harbors.size(); i++)
+    {
+        if(coord == harbors[i]->getCoord())
+            return harbors[i]->isFriendly();
+    }
 }
 
 Map::~Map() {}

@@ -44,7 +44,7 @@ public:
     const int GetSirens() const { return *sirens; }
     const int GetStartmoney() const { return *startmoney; }
     const int GetStorm() const { return *storm; }
-    const vector<string> getMap() const { return map;}
+    const vector<string> getMap() const { return map; }
     
     virtual ~Settings();
 };

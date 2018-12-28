@@ -24,11 +24,16 @@ Settings::Settings(ifstream& file)
     string input, parse;
     int l, c, n;
     
-    do
+    c = file.peek();
+    
+    if((char) c == '\n')
     {
-        getline(file, input);
+        do
+        {
+            getline(file, input);
+        }
+        while(input == "\n");
     }
-    while(input != "");
     
     while(!file.eof())
     {

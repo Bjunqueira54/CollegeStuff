@@ -27,6 +27,10 @@ public:
     
     const int getPhase() const { return phase; }
     const string getMapDim() const { return map->getDim(); }
+    const string getTileCoord() const { return map->getTileCoord(); }
+    const int getTotalOceanTiles() const { return map->getTotalOceanTiles(); }
+    const int getTotalHarborTiles() const { return map->getTotalHarborTiles(); }
+    const bool harborIsFriendly(int yy, int xx) const { return map->harborIsFriendly(yy, xx); }
     
     virtual ~Game();
 };

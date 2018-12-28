@@ -422,7 +422,7 @@ void Interface::startgame()
 
 void Interface::MainGameLoop()
 {
-    string cmdstring, parse;
+    string cmdstring, parse, filename;
     ifstream file;
     int cmdval;
     int inv=0;
@@ -484,7 +484,8 @@ void Interface::MainGameLoop()
                     
                     if(c=='S'||c=='s'||c=='Y'||c=='y')
                     {
-                        file.open("config.ini");
+                        filename = "config.ini";
+                        file.open(filename);
                         
                         if(!file.is_open())
                         {
@@ -506,7 +507,16 @@ void Interface::MainGameLoop()
                             while(c!='S' && c!='s' && c!='N' && c!='n' && c!='Y' && c!='y');
                             
                             if(c=='S'||c=='s'||c=='Y'||c=='y')
-                                createDefaultConfig();
+                            {
+                                filename = createDefaultConfig();
+                                file.open(filename);
+                                
+                                if(!file.is_open())
+                                {
+                                    mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "PLACEHOLDER! UNDEFINED ERROR!");
+                                    return;
+                                }
+                            }
                             else
                                 return;
                         }
@@ -525,7 +535,17 @@ void Interface::MainGameLoop()
                         while(c!='S' && c!='s' && c!='N' && c!='n' && c!='Y' && c!='y');
                         
                         if(c=='S'||c=='s'||c=='Y'||c=='y')
-                            createDefaultConfig();
+                        {
+                            filename = createDefaultConfig();
+                            
+                            file.open(filename);
+                                
+                            if(!file.is_open())
+                            {
+                                mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, "PLACEHOLDER! UNDEFINED ERROR!");
+                                return;
+                            }
+                        }
                         else
                             return;
                     }
@@ -637,7 +657,7 @@ int Interface::drawMap()
     if(game->getPhase() != 1)
         return -1;
     
-    bool toggler = false;
+    bool ls, toggler = false;
     int maxx, maxy;
     istringstream is;
     
@@ -652,6 +672,8 @@ int Interface::drawMap()
     
     for(int y=1; y<maxy+1; y++)
     {
+        ls = toggler;
+        
         for(int x=1; x<maxx+1; x++)
         {
             if(toggler == false)
@@ -664,13 +686,87 @@ int Interface::drawMap()
                 wattron(wmap, COLOR_PAIR(8));
                 toggler = !toggler;
             }
-            mvwaddch(wmap, y, x, ' ');
-            mvwaddch(wmap, y, x+1, ' ');
-            mvwaddch(wmap, y+1, x, ' ');
-            mvwaddch(wmap, y+1, x+1, ' ');
+            
+            mvwaddch(wmap, y*2, x*2, ' ');
+            mvwaddch(wmap, y*2, x*2-1, ' ');
+            mvwaddch(wmap, y*2-1, x*2, ' ');
+            mvwaddch(wmap, y*2-1, x*2-1, ' ');
         }
+
+        if(toggler == ls)
+            toggler = !toggler;
+    }
+
+    int y, x, prevy;
+    for(int i=0; i<game->getTotalOceanTiles(); i++)
+    {
+        is.clear();
+        is.str(game->getTileCoord());
+        
+        is >> y;
+        is >> x;
+        
+        if(y != prevy)
+        {
+            if(toggler == ls)
+                toggler = !toggler;
+            
+            ls = toggler;
+            prevy = y;
+        }
+        
+        if(toggler == false)
+        {
+            wattron(wmap, COLOR_PAIR(1));
+            toggler = !toggler;
+        }
+        else
+        {
+            wattron(wmap, COLOR_PAIR(4));
+            toggler = !toggler;
+        }
+        
+        mvwaddch(wmap, y*2, x*2, ' ');
+        mvwaddch(wmap, y*2, x*2-1, ' ');
+        mvwaddch(wmap, y*2-1, x*2, ' ');
+        mvwaddch(wmap, y*2-1, x*2-1, ' ');
     }
     
+    for(int i=0; i<game->getTotalHarborTiles(); i++)
+    {
+        is.clear();
+        is.str(game->getTileCoord());
+        
+        is >> y;
+        is >> x;
+        
+        if(y != prevy)
+        {
+            if(toggler == ls)
+                toggler = !toggler;
+            
+            ls = toggler;
+            prevy = y;
+        }
+        
+        if(game->harborIsFriendly(y, x) == true)
+        {
+            wattron(wmap, COLOR_PAIR(9));
+            toggler = !toggler;
+        }
+        else
+        {
+            wattron(wmap, COLOR_PAIR(10));
+            toggler = !toggler;
+        }
+        
+        mvwaddch(wmap, y*2, x*2, ' ');
+        mvwaddch(wmap, y*2, x*2-1, ' ');
+        mvwaddch(wmap, y*2-1, x*2, ' ');
+        mvwaddch(wmap, y*2-1, x*2-1, ' ');
+    }
+    
+    wrefresh(wmap);
     return 0;
 }
 
@@ -709,7 +805,7 @@ string Interface::getInput(WINDOW *win, int lim = 0)
     return input;
 }
 
-int Interface::getNumber(WINDOW *win)
+int Interface::getNumber(WINDOW *win, int lim = 0)
 {
     string num;
     istringstream is;
@@ -722,7 +818,8 @@ int Interface::getNumber(WINDOW *win)
     do
     {
 	if(c >= '0' && c <= '9')
-	    num.push_back(c);
+            if(num.size() <= lim && lim > 0)
+                num.push_back(c);
 	else if((c == 127) && !(num.empty()))
 	    num.pop_back();
 	
@@ -795,29 +892,6 @@ int Interface::getVertCenter(WINDOW *win, int n, int &r, int &flag)
     }
 }
 
-/*void Interface::SetScreenSize(int lines, int columns)
-{
-    #ifdef __linux__
-
-    std::ostringstream syscmd;
-    syscmd << "\e[8;" << lines << ";" << columns << "t";
-    std::cout << syscmd.str();
-
-    #elif _WIN32
-
-    #include "Consola.h"
-
-    Consola::setScreenSize(lines, columns);
-
-    #elif __unix__
-
-    #include "Consola.h"
-
-    Consola::setScreenSize(lines, columns);
-
-    #endif
-}*/
-
 void Interface::drawGameArea()
 {
     wmap = subwin(stdscr, 22, 42, 0, 0);
@@ -830,13 +904,13 @@ void Interface::drawGameArea()
 
 void Interface::SetScreenSize(int lines, int columns)
 {
-#if (defined __linux__) && !(defined _WIN32)
+#if (defined __linux__ || defined __unix__) && !(defined _WIN32)
     
     std::ostringstream syscmd;
     syscmd << "\e[8;" << lines << ";" << columns << "t";
     std::cout << syscmd.str();
     
-#elif (defined _WIN32 || defined __unix__) && !(defined __linux__)
+#elif (defined _WIN32) && !(defined __linux__ || defined __unix__)
 
     Consola::setScreenSize(lines, columns);
     
@@ -856,11 +930,11 @@ void Interface::endgame()
     getch();
 }
 
-void Interface::createDefaultConfig()
+string Interface::createDefaultConfig()
 {
     char c;
     ofstream file;
-    string filename;
+    string filename, input;
     
     mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(24));
     wclrtoeol(wcmd);
@@ -875,13 +949,15 @@ void Interface::createDefaultConfig()
     
     if(c == 'D' || c == 'd')
     {
-        file.open("config.ini", ios::out | ios::trunc);
+        filename = "config.ini";
+        
+        file.open(filename, ios::out | ios::trunc);
         
         if(!file.is_open())
-            return;
+            return "";
         
-        file << "lines 20" << endl;
-        file << "columns 10" << endl;
+        file << "lines 10" << endl;
+        file << "columns 20" << endl;
         file << "...............+++++" << endl;
         file << "..........++++++++++" << endl;
         file << "..........A+++++++++" << endl;
@@ -892,7 +968,7 @@ void Interface::createDefaultConfig()
         file << "....++............++" << endl;
         file << "...................b" << endl;
         file << "...................." << endl;
-        file << "money 1000" << endl;
+        file << "startmoney 1000" << endl;
         file << "pirateprob 20" << endl;
         file << "shipprice 100" << endl;
         file << "crewprice 1" << endl;
@@ -905,6 +981,10 @@ void Interface::createDefaultConfig()
         file << "sirenprob 30" << endl;
         file << "calmprob 20" << endl;
         file << "riotprob 20" << endl;
+        
+        file.close();
+        
+        return filename;
     }
     else if(c == 'C' || c == 'c')
     {
@@ -935,13 +1015,16 @@ void Interface::createDefaultConfig()
             vector<string> g_map;
             g_map = userDrawCustomMap();
             
+            file << "lines 10" << endl;
+            file << "columns 20" << endl;
+            
             for(int i=0; i<=g_map.size(); i++)
                 file << g_map[i] << endl;
         }
         else
         {
-            file << "lines 20" << endl;
-            file << "columns 10" << endl;
+            file << "lines 10" << endl;
+            file << "columns 20" << endl;
             file << "...............+++++" << endl;
             file << "..........++++++++++" << endl;
             file << "..........A+++++++++" << endl;
@@ -953,6 +1036,143 @@ void Interface::createDefaultConfig()
             file << "...................b" << endl;
             file << "...................." << endl;
         }
+        
+        wmove(wlog, 4, 1);
+        wclrtoeol(wlog);
+        mvwaddch(wlog, 4, getmaxx(wlog)-1, '|');
+        mvwaddstr(wlog, 4, 1, getLine(30));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 10);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "startmoney " << input << endl;
+        
+        mvwaddstr(wlog, 5, 1, getLine(31));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 3);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "pirateprob  " << input << endl;
+        
+        mvwaddstr(wlog, 6, 1, getLine(32));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 5);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "shipprice " << input << endl;
+        
+        mvwaddstr(wlog, 7, 1, getLine(33));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 5);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "crewprice " << input << endl;
+        
+        mvwaddstr(wlog, 8, 1, getLine(34));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 10);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "fishprice " << input << endl;
+        
+        mvwaddstr(wlog, 9, 1, getLine(35));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 10);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "cargobuy " << input << endl;
+        
+        mvwaddstr(wlog, 10, 1, getLine(36));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 10);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "cargosell " << endl;
+        
+        mvwaddstr(wlog, 11, 1, getLine(37));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 10);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "harborcrew " << input << endl;
+        
+        mvwaddstr(wlog, 12, 1, getLine(38));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 10);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "eventprob " << input << endl;
+        
+        mvwaddstr(wlog, 13, 1, getLine(39));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 10);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "stormprob " << input << endl;
+        
+        mvwaddstr(wlog, 14, 1, getLine(40));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 10);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "sirenprob " << input << endl;
+        
+        mvwaddstr(wlog, 15, 1, getLine(41));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 10);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "calmprob " << input << endl;
+        
+        mvwaddstr(wlog, 16, 1, getLine(42));
+        wrefresh(wlog);
+        do
+        {
+            input = getNumber(wlog, 10);
+        }
+        while(input.empty());
+        mvwaddch(wlog, getcury(wlog), getcurx(wlog)-1, ' ');
+        file << "riotprob " << input << endl;
+        
+        file.close();
+        
+        return filename;
     }
 }
 

@@ -36,7 +36,7 @@ public:
     const char* getCmd(int i);
     const char* getLine(int i);
     string getInput(WINDOW *win, int lim);
-    int getNumber(WINDOW *win);
+    int getNumber(WINDOW *win, int lim);
     
     void tutPage();
     void credPage();
@@ -78,7 +78,7 @@ private:
     int parseCmd(string c);
     void openExecFile(string filename);
     int drawMap();
-    void createDefaultConfig();
+    string createDefaultConfig();
     vector<string> userDrawCustomMap();
 };
 

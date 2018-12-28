@@ -5,12 +5,12 @@
 
 class Ocean: public Tile
 {
-    int y, x, tleft, fish;
+    int tleft, fish;
 
 public:
     
-    Ocean();
-    Ocean(const Ocean& orig);
+    /*Ocean();
+    Ocean(const Ocean& orig);*/
     Ocean(int yy, int xx);
     
     
