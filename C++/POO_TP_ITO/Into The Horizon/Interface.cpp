@@ -681,10 +681,19 @@ int Interface::parseCmd(string c, bool exec)
                 return -2;
         }
         case 4:
+        {
             if(exec == false)
                 return 0;
             
+            int id;
+            
+            is >> id;
+            
+            if(id != 0)
+                game->PlayerSellShip(id);
+            
             return 0;
+        }
         case 5:
             if(exec == false)
                 return 0;

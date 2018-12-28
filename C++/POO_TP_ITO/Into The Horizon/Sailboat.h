@@ -10,7 +10,7 @@ public:
     
     /*Sailboat();
     Sailboat(const Sailboat& orig);*/
-    Sailboat(Player* o, int x, int y);
+    Sailboat(Player* o, int id, int x, int y);
     
     virtual ~Sailboat();
 };

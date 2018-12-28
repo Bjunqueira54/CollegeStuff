@@ -42,6 +42,7 @@ public:
     const int getShipPrice(char t) const { return settings->GetShipprice(); }
     
     int PlayerBuyShip(char t);
+    int PlayerSellShip(int id);
     
     virtual ~Game();
 };

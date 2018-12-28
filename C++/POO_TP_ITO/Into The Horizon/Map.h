@@ -25,6 +25,8 @@ public:
     const bool harborIsFriendly(int i) const { return harbors[i]->isFriendly(); }
     const char getHarborID(int i) const { return harbors[i]->getID(); }
     
+    Harbor* getHarbor(int i) const { return harbors[i]; }
+    
     virtual ~Map();
 };
 

@@ -10,7 +10,7 @@ public:
     
     /*Schooner();
     Schooner(const Schooner& orig);*/
-    Schooner(Player* o, int x, int y);
+    Schooner(Player* o, int id, int x, int y);
     
     
     virtual ~Schooner();

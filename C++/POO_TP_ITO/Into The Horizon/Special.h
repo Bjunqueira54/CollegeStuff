@@ -12,7 +12,7 @@ class Special: public Ship
 public:
     /*Special();
     Special(const Special& orig);*/
-    Special(Player* o, int x, int y);
+    Special(Player* o, int id, int x, int y);
     
     
     

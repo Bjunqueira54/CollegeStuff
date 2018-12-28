@@ -28,11 +28,15 @@ public:
     
     Player();
     Player(const Player& orig);
-    Player(string n, int m);
+    Player(string n, int m, Harbor* h);
     
     //For the player: buys a ship of type <type> and spawns it in the
     //player's main harbor.
     int buyShip(int type);
+    
+    //For the player: sells a ship with the id <id>, along side all of
+    //it's cargo, fish and crew.
+    void sellShip(int id);
     
     //For the pirates: spawns a ship of type <type> to the coordinates
     //x and y (make sure it's not on a land/harbor tile.
@@ -51,11 +55,18 @@ public:
     //Moves ship <id> to the harbor with the ID <hid>.
     void moveto(int id, char hid);
     
+    void setMoney(int n) { money += n; }
+    
     /*Self-Explanatory 'getter' functions*/
     
     const int getMoney() const { return money; }
     const string getName() const { return name; }
     const int getNships() const { return fleet.size(); }
+    
+    //Get values from ships
+    const int getCrew(int id) const;
+    const int getFish(int id) const;
+    const int getCargo(int id) const;
     
     virtual ~Player();
 };
