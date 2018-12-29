@@ -12,6 +12,9 @@ class Ship
     const int maxmoves, maxcrew, maxwater, maxload;
     int moves, crew, water, cargo, fish;
     bool inHarbor = true;
+	bool Auto = false;
+	bool Stopped = true;
+	bool DestHarbor = false;
     
     Player* owner;
     
@@ -23,8 +26,8 @@ public:
     //Derivative Constructor
     Ship(Player* o, int id, int x, int y, int mm, int mc, int mw, int ml);
     
-    void move(string dir);
-    void moveto(int x, int y);
+    int setDestination(int dy, int dx, bool idh);
+	void move(int newy, int newx);
     
     const int getID() const { return id; }
     const int getCargo() const { return cargo; }
@@ -34,7 +37,11 @@ public:
     const int getMoves() const { return moves; }
     const int getWater() const { return water; }
     const string getCoord() const;
+	const string getDestCoord() const;
     const bool isInHarbor() const { return inHarbor; }
+	bool isAuto() const { return Auto; }
+	bool isDestHarbor() const { return DestHarbor; }
+	bool isStopped() const { return Stopped; }
     
     virtual const int getType() const = 0;
     
@@ -44,7 +51,7 @@ public:
     
 private:
     
-    int whatdir(char d);
+    void whatdir();
 };
 
 #endif

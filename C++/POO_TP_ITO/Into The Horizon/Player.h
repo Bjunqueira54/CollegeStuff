@@ -53,17 +53,18 @@ public:
     const int getCrew(int id) const;
     const int getFish(int id) const;
     const int getCargo(int id) const;
-    const int getShipType(int i) const;
-    const bool getShipInHarbor(int i) const;
-    const string getShipCoord(int i) const;
-    const string getShipCoordByID(int id) const;
-    const string getShipID(int i) const;
+    const int getShipType(int id) const;
+	const int getShipID(int i) const;
+    const bool getShipInHarbor(int id) const;
+    const string getShipCoord(int id) const;
+	const string getShipDestCoord(int id) const;
+    
     
                 ////////////////////
                 ///Ship Functions///
                 ////////////////////
     //Moves ship <id> in the direction of <dir>. Uses 1 move.
-    int ShipMove(int id, string dir);
+    int ShipMove(int id, string destCoord, bool isDestHarbor);
     
     //Use this to capture a ship with no crew floating in the ocean.
     //NOTE: Pirates need to check if the ship is a sailboat or a frigate.

@@ -21,4 +21,38 @@ const string Ship::getCoord() const
     return os.str();
 }
 
+const string Ship::getDestCoord() const
+{
+    ostringstream os;
+    
+    os << desty << " " << destx;
+    
+    return os.str();
+}
+
+int Ship::setDestination(int dy, int dx, bool idh)
+{
+    desty = dy;
+    destx = dx;
+    DestHarbor = idh;
+    
+    if(Auto)
+        Auto = false;
+}
+
+void Ship::move(int newy, int newx)
+{
+    x = newx;
+    y = newy;
+    
+    if(x == destx && y == desty)
+    {
+        if(DestHarbor == true)
+        {
+            inHarbor = true;
+        }
+        Stopped = true;
+    }
+}
+
 Ship::~Ship() {}

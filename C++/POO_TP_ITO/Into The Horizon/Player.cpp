@@ -62,7 +62,7 @@ int Player::sellShip(int id)
             return 0;
         }
     }
-    
+
     return -1;
 }
 
@@ -98,85 +98,97 @@ int Player::spawnship(int type, int x, int y)
 
 const int Player::getCrew(int id) const
 {
-    for(int i=0; i<fleet.size(); i++)
-    {
-        if(id == fleet[i]->getID())
-            return fleet[i]->getCrew();
-    }
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->getCrew();
+
+    return -1;
 }
 
 const int Player::getCargo(int id) const
 {
-    for(int i=0; i<fleet.size(); i++)
-    {
-        if(id == fleet[i]->getID())
-            return fleet[i]->getCargo();
-    }
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->getCargo();
+
+    return -1;
 }
 
 const int Player::getFish(int id) const
 {
-    for(int i=0; i<fleet.size(); i++)
-    {
-        if(id == fleet[i]->getID())
-            return fleet[i]->getFish();
-    }
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->getFish();
+
+    return -1;
 }
 
-const string Player::getShipCoord(int i) const
-{
-    if(i < fleet.size())
-        return fleet[i]->getCoord();
-}
-
-const string Player::getShipCoordByID(int id) const
+const string Player::getShipCoord(int id) const
 {
     for(auto& it: fleet)
     {
         if(it->getID() == id)
             return it->getCoord();
     }
+    
+    return "";
 }
 
-const bool Player::getShipInHarbor(int i) const
-{
-    if(i < fleet.size())
-        return fleet[i]->isInHarbor();
-}
-
-const int Player::getShipType(int i) const
-{
-    if(i < fleet.size())
-        return fleet[i]->getType();
-}
-
-const string Player::getShipID(int i) const
-{
-    if(i < fleet.size())
-    {
-        int id;
-        ostringstream os;
-        
-        id = fleet[i]->getID();
-        
-        if(id < 10)
-        {
-            os << "0" << id;
-        }
-        else
-            os << id;
-        
-        return os.str();
-    }
-}
-
-int Player::ShipMove(int id, string dir)
+const string Player::getShipDestCoord(int id) const
 {
     for(auto& it: fleet)
     {
         if(it->getID() == id)
         {
-            it->move(dir);
+            return it->getDestCoord();
+        }
+    }
+    
+    return "";
+}
+
+const bool Player::getShipInHarbor(int id) const
+{
+    //Iterator to look for a ship with matching ID numbers. If found, returns it's state.
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->isInHarbor();
+    
+    //Even if no ship exists with that ID, we don't want the map to draw non-existant data, so just give back "true"
+    return true;    
+}
+
+const int Player::getShipType(int id) const
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->getType();
+    
+    //If a ship with that ID number doesn't exist, return the general error value of -1
+    return -1;        
+}
+
+const int Player::getShipID(int i) const
+{
+    if(i < fleet.size())
+        return fleet[i]->getID();
+}
+
+int Player::ShipMove(int id, string destCoord, bool isDestHarbor)
+{
+    for(auto& it: fleet)
+    {
+        if(it->getID() == id)
+        {
+            istringstream is;
+            int y, x;
+            
+            is.str(destCoord);
+            
+            is >> y;
+            is >> x;
+            
+            it->setDestination(y, x, isDestHarbor);
         }
     }
 }

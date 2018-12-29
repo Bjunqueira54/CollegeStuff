@@ -44,6 +44,28 @@ void Game::configPhase(ifstream& file)
 
 void Game::nextTurn()
 {
+    for(int i=0; i<player->getNships(); i++)
+    {
+        string destCoord, curCoord, sid;
+        int y, x, desty, destx, newy, newx;
+        int id;
+        istringstream is;
+        ostringstream os;
+        
+        sid = player->getShipID(i);
+        is.str(sid);
+        is >> id;
+        if(id == 0)
+            continue;
+        
+        curCoord = player->getShipCoord(id);
+        destCoord = player->getShipDestCoord(id);
+    }
+    
+    for(int i=0; i<pirate->getNships(); i++)
+    {
+        
+    }
     turn++;
 }
 
@@ -116,6 +138,27 @@ string Game::getDestCoord(string curCoord, string dir)
     os << y << " " << x;
     
     return os.str();
+}
+
+int Game::PlayerShipMove(int id, string dir)
+{
+    string destCoord;
+    bool isDestHarbor = false;
+    destCoord = getDestCoord(player->getShipCoord(id), dir);
+    
+    if(destCoord == "")
+        return -1;
+    
+    for(int i=0; i<map->getTotalHarborTiles(); i++)
+    {
+        if(map->getHarborCoord(i) == destCoord)
+        {
+            isDestHarbor = true;
+            break;
+        }
+    }
+    
+    return player->ShipMove(id, destCoord, isDestHarbor);
 }
 
 Game::~Game()

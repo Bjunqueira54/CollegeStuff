@@ -717,8 +717,7 @@ int Interface::parseCmd(string c, bool exec)
             wrefresh(wstats);
             
             getch();
-            
-            drawBox(wstats);
+
             printStats();
             
             return 0;
@@ -982,18 +981,22 @@ int Interface::drawMap()
     //          is his main harbor.
     for(int i=0; i<game->getPlayerFleetSize(); i++)
     {
-        if(game->getPlayerShipInHarbor(i))
+        int id = game->getPlayerShipID(i);
+        
+        if(game->getPlayerShipInHarbor(id))
             continue;
         
-        string id;
+        ostringstream sid;
+        
+        sid << id;
         
         is.clear();
-        is.str(game->getPlayerShipCoord(i));
+        is.str(game->getPlayerShipCoord(id));
         
         is >> y;
         is >> x;
         
-        switch(game->getPlayerShipType(i))
+        switch(game->getPlayerShipType(id))
         {
             case 1:
                 wattron(wmap, COLOR_PAIR(7));
@@ -1011,11 +1014,9 @@ int Interface::drawMap()
                 wattron(wmap, COLOR_PAIR(11));
                 break;
         }
-        
-        id = game->getPlayerShipID(i);
-        
-        mvwaddch(wmap, y*2-1, x*2-1, id[0]);
-        mvwaddch(wmap, y*2-1, x*2, id[1]);
+
+        mvwaddch(wmap, y*2-1, x*2-1, sid.str()[0]);
+        mvwaddch(wmap, y*2-1, x*2, sid.str()[1]);
         mvwaddch(wmap, y*2, x*2-1, '+');
         mvwaddch(wmap, y*2, x*2, '+');
     }
@@ -1194,6 +1195,7 @@ void Interface::endgame()
 
 void Interface::printStats()
 {
+    drawBox(wstats);
     int i=1;
     
     ostringstream os;
