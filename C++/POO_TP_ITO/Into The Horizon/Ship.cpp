@@ -8,6 +8,8 @@ Ship::Ship(Player* o, int i, int xx, int yy, int mm, int mc, int mw, int ml): id
     crew = maxcrew;
     water = maxwater;
     fish = cargo = 0;
+    destx = x;
+    desty = y;
 }
 
 const string Ship::getCoord() const

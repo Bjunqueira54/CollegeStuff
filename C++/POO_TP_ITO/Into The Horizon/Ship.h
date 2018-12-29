@@ -7,8 +7,9 @@ class Player;
 
 class Ship
 {
-    int x, y;
-    const int id, maxmoves, maxcrew, maxwater, maxload;
+    int x, y, id;
+    int destx, desty;
+    const int maxmoves, maxcrew, maxwater, maxload;
     int moves, crew, water, cargo, fish;
     bool inHarbor = true;
     
@@ -40,6 +41,10 @@ public:
     const Player& getOwner() { return *owner; }
     
     virtual ~Ship();
+    
+private:
+    
+    int whatdir(char d);
 };
 
 #endif

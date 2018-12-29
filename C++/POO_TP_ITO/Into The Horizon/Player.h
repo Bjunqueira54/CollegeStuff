@@ -30,17 +30,40 @@ public:
     Player(const Player& orig);
     Player(string n, int m, Harbor* h);
     
-    //For the player: buys a ship of type <type> and spawns it in the
-    //player's main harbor.
-    int buyShip(int type);
+                //////////////////////
+                ///Player Functions///
+                //////////////////////
     
-    //For the player: sells a ship with the id <id>, along side all of
-    //it's cargo, fish and crew.
-    void sellShip(int id);
+    //Adds (or subtracts) <n> to (or from) the player's total balance.
+    void setMoney(int n) { money += n; }
     
-    //For the pirates: spawns a ship of type <type> to the coordinates
-    //x and y (make sure it's not on a land/harbor tile.
-    int spawnship(int type, int x, int y);
+                //////////////////////
+                ///Getter Functions///
+                //////////////////////
+    
+    const int getMoney() const { return money; }
+    const string getName() const { return name; }
+    const int getNships() const { return fleet.size(); }
+    const Harbor* getMainHarbor() const { return mainharbor; }
+    
+                //////////////////////////
+                //Ship Getter Functions///
+                //////////////////////////
+    
+    const int getCrew(int id) const;
+    const int getFish(int id) const;
+    const int getCargo(int id) const;
+    const int getShipType(int i) const;
+    const bool getShipInHarbor(int i) const;
+    const string getShipCoord(int i) const;
+    const string getShipCoordByID(int id) const;
+    const string getShipID(int i) const;
+    
+                ////////////////////
+                ///Ship Functions///
+                ////////////////////
+    //Moves ship <id> in the direction of <dir>. Uses 1 move.
+    int ShipMove(int id, string dir);
     
     //Use this to capture a ship with no crew floating in the ocean.
     //NOTE: Pirates need to check if the ship is a sailboat or a frigate.
@@ -55,24 +78,19 @@ public:
     //Moves ship <id> to the harbor with the ID <hid>.
     void moveto(int id, char hid);
     
-    void setMoney(int n) { money += n; }
+    //For the player: buys a ship of type <type> and spawns it in the
+    //player's main harbor.
+    int buyShip(int type);
     
-    /*Self-Explanatory 'getter' functions*/
+    //Completelly destroys a ship for Player::fleet vector by calling delete
+    //on it's memory pointer and then erasing it from the vector.
+    //Note: Do NOT use this to remove ships from Player's ownership, use
+    //the abandonShip(int i) function.
+    int sellShip(int id);
     
-    const int getMoney() const { return money; }
-    const string getName() const { return name; }
-    const int getNships() const { return fleet.size(); }
-    
-    //Get values from ships
-    const int getCrew(int id) const;
-    const int getFish(int id) const;
-    const int getCargo(int id) const;
-    const string getShipCoord(int i) const;
-    const bool getShipInHarbor(int i) const;
-    const int getShipType(int i) const;
-    const string getShipID(int i) const;
-    
-    const Harbor* getMainHarbor() const { return mainharbor; }
+    //For the pirates: spawns a ship of type <type> to the coordinates
+    //x and y (make sure it's not on a land/harbor tile.
+    int spawnship(int type, int x, int y);
     
     virtual ~Player();
 };

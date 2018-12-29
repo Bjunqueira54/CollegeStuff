@@ -31,23 +31,18 @@ int Player::buyShip(int type)
     switch(type)
     {
 	case 1:
-	    //fleet.push_back(new Sailboat(this, id, x, y));
             fleet.insert(it, new Sailboat(this, id, x, y));
 	    return 0;
 	case 2:
-	    //fleet.push_back(new Galeon(this, id, x, y));
             fleet.insert(it, new Galeon(this, id, x, y));
 	    return 0;
 	case 3:
-	    //fleet.push_back(new Schooner(this, id, x, y));
             fleet.insert(it, new Schooner(this, id, x, y));
 	    return 0;
 	case 4:
-	    //fleet.push_back(new Frigate(this, id, x, y));
             fleet.insert(it, new Frigate(this, id, x, y));
 	    return 0;
 	case 5:
-	    //fleet.push_back(new Special(this, id, x, y));
             fleet.insert(it, new Special(this, id, x, y));
 	    return 0;
 	default:
@@ -55,9 +50,20 @@ int Player::buyShip(int type)
     }
 }
 
-void Player::sellShip(int id)
+int Player::sellShip(int id)
 {
+    for(int i=0; i<fleet.size(); i++)
+    {
+        if(fleet[i]->getID() == id)
+        {
+            auto it = fleet.begin() + i;
+            delete fleet[i];
+            fleet.erase(it);
+            return 0;
+        }
+    }
     
+    return -1;
 }
 
 int Player::spawnship(int type, int x, int y)
@@ -123,6 +129,15 @@ const string Player::getShipCoord(int i) const
         return fleet[i]->getCoord();
 }
 
+const string Player::getShipCoordByID(int id) const
+{
+    for(auto& it: fleet)
+    {
+        if(it->getID() == id)
+            return it->getCoord();
+    }
+}
+
 const bool Player::getShipInHarbor(int i) const
 {
     if(i < fleet.size())
@@ -152,6 +167,17 @@ const string Player::getShipID(int i) const
             os << id;
         
         return os.str();
+    }
+}
+
+int Player::ShipMove(int id, string dir)
+{
+    for(auto& it: fleet)
+    {
+        if(it->getID() == id)
+        {
+            it->move(dir);
+        }
     }
 }
 

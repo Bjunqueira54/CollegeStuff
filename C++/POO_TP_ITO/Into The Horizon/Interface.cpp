@@ -633,7 +633,7 @@ void Interface::MainGameLoop()
 
 int Interface::parseCmd(string c, bool exec)
 {
-    int i;
+    int i, retval;
     istringstream is;
     string parse;
     is.str(c);
@@ -672,33 +672,57 @@ int Interface::parseCmd(string c, bool exec)
             
             is >> t;
             
-            if(game->getPlayerMoney() > game->getShipPrice(t))
-            {
-                game->PlayerBuyShip(t);
-                return 0;
-            }
-            else
-                return -2;
+            if(game->getPlayerMoney() > game->getShipPrice())
+                retval = game->PlayerBuyShip(t);
+            
+            return retval;
         }
         case 4:
         {
             if(exec == false)
                 return 0;
             
-            int id;
+            int id, retval;
             
             is >> id;
             
             if(id != 0)
-                game->PlayerSellShip(id);
+                retval = game->PlayerSellShip(id);
+            
+            return retval;
+        }
+        case 5:
+        {
+            int wi = 1;
+            ostringstream os;
+            drawBox(wstats);
+            os << getLine(32) << game->getShipPrice();
+            mvwaddstr(wstats, wi++, 1, os.str().c_str());
+            os.str("");
+            os.clear();
+            os << getLine(33) << game->getCrewPrice();
+            mvwaddstr(wstats, wi++, 1, os.str().c_str());
+            os.str("");
+            os.clear();
+            os << getLine(34) << game->getFishPrice();
+            mvwaddstr(wstats, wi++, 1, os.str().c_str());
+            os.str("");
+            os.clear();
+            os << getLine(35) << game->getCargoBuyPrice();
+            mvwaddstr(wstats, wi++, 1, os.str().c_str());
+            os.str("");
+            os.clear();
+            os << getLine(36) << game->getCargoSellPrice();
+            mvwaddstr(wstats, wi++, 1, os.str().c_str());
+            wrefresh(wstats);
+            
+            getch();
+            
+            drawBox(wstats);
+            printStats();
             
             return 0;
         }
-        case 5:
-            if(exec == false)
-                return 0;
-            
-            return 0;
         case 6:
             if(exec == false)
                 return 0;
@@ -710,10 +734,23 @@ int Interface::parseCmd(string c, bool exec)
             
             return 0;
         case 8:
+        {
             if(exec == false)
                 return 0;
             
-            return 0;
+            int id;
+            string dir;
+            
+            is >> id;
+            is >> dir;
+            
+            if(id == 0 || dir == "")
+                return -1;
+            
+            retval = game->PlayerShipMove(id, dir);
+            
+            return retval;
+        }
         case 9:
             if(exec == false)
                 return 0;
@@ -742,6 +779,13 @@ int Interface::parseCmd(string c, bool exec)
         case 14:
             if(exec == false)
                 return 0;
+            
+            int m;
+            
+            is >> m;
+            
+            if(m != 0)
+                game->PlayerAddMoney(m);
             
             return 0;
         case 15:
@@ -1113,7 +1157,7 @@ void Interface::drawGameArea()
 {
     wmap = subwin(stdscr, 22, 42, 0, 0);
     wcmd = subwin(stdscr, 18, 42, getmaxy(wmap), 0);
-    //wlog = subwin(stdscr, MAX_Y, MAX_X-getmaxx(wmap), 0, getmaxx(wmap));
+    wlog = subwin(stdscr, MAX_Y, MAX_X-getmaxx(wmap), 0, getmaxx(wmap));
     wstats = subwin(stdscr, MAX_Y, MAX_X-getmaxx(wmap), 0, getmaxx(wmap));
     drawBox(wmap);
     drawBox(wcmd);

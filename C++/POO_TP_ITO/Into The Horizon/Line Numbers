@@ -1,24 +1,25 @@
-config      //0
-exec        //1
-prox        //2
-compranav   //3
-vendenav    //4
-lista       //5
-compra      //6
-vende       //7
-move        //8
-auto        //9
-stop        //10
-pirata      //11
-evpos       //12
-evnav       //13
-moedas      //14
-vaipara     //15
-comprasold  //16
-saveg       //17
-loadg       //18
-delg        //19
-sair        //20
+config <file>       //0
+exec <file>         //1
+prox                //2
+compranav <type>    //3
+vendenav <id>       //4
+lista               //5
+compra <id> <m>     //6
+vende <id>          //7
+move <id> <dir>     //8
+auto <id>           //9
+stop <id>           //10
+pirata <x> <y> <t>  //11
+evpos <E> <x> <y>   //12
+evnav <E> <id>      //13
+moedas <n>          //14
+vaipara <id> <H>    //15
+(vaipara <id> <x> <y>)
+comprasold <id> <S> //16
+saveg <file>        //17
+loadg <file>        //18
+delg <file>         //19
+sair                //20
 
 (Prima qualquer tecla para continuar)   //0
 Bem vindo a Into the Horizon!           //1
