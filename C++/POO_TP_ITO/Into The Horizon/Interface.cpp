@@ -617,9 +617,14 @@ void Interface::MainGameLoop()
             
             if(cmdval == -1)
                 mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(25));
-            else
+            else if(cmdval == 0)
             {
                 turncmd.push_back(cmd);
+            }
+            else if(cmdval < -1)
+            {
+                //ALL ERROR CHECKING HAPPENS HERE!
+                //PS: Consider class wide "int errno" variable for simplicity
             }
             
             for(int i=turncmd.size()-1, j=(getmaxy(wcmd) - 4); i >= 0 && j >= 2; i--, j--)
@@ -724,6 +729,7 @@ int Interface::parseCmd(string c, bool exec)
             os.clear();
             os << getLine(36) << game->getCargoSellPrice();
             mvwaddstr(wstats, wi++, 1, os.str().c_str());
+            mvwaddstr(wstats, wi++, 1, getLine(0));
             wrefresh(wstats);
             
             getch();
@@ -879,7 +885,6 @@ int Interface::drawMap()
     
     wattron(wmap, COLOR_PAIR(TERM_DEFAULT));
 
-    wclear(wmap);
     drawBox(wmap);
     
     if(game->getPhase() != 1)
@@ -998,7 +1003,10 @@ int Interface::drawMap()
         
         ostringstream sid;
         
-        sid << id;
+        if(id < 10)
+            sid << "0" << id;
+        else
+            sid << id;
         
         is.clear();
         is.str(game->getPlayerShipCoord(id));

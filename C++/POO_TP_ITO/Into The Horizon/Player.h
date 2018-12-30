@@ -56,7 +56,31 @@ public:
 	//Use this for stats printing.
 	//Format: id typeNum Y X Crew maxCrew Water maxWater Fish Cargo maxLoad
 	const string getShipInfo(int id) const;
+	//Returns if the ship is moving to a specific location (eg.: a harbor).
+	//In case <id> does not exist, returns true.
+	//Note: Check if all other booleans are also true. If they are,
+	//then something went wrong.
+	const bool getShipSpecMoving(int id) const;
+	//Returns if the ship is currently in a harbor.
+	//In case <id> does not exist, returns true.
+	//Note: Check if all other booleans are also true. If they are,
+	//then something went wrong.
 	const bool getShipInHarbor(int id) const;
+	//Returns if a ship is currently stopped.
+	//In case <id> does not exist, returns true.
+	//Note: Check if all other booleans are also true. If they are,
+	//then something went wrong.
+	const bool getShipStopped(int id) const;
+	//Returns if a ship is currently in auto mode.
+	//In case <id> does not exist, returns true.
+	//Note: Check if all other booleans are also true. If they are,
+	//then something went wrong.
+	const bool getShipAuto(int id) const;
+	//Returns the amount of moves available for the ship with <id>.
+	//Returns -1 if an error occurred.
+	const int getShipMoves(int id) const;
+	//Returns the (int) value of a ship as commented at the top of this header file.
+	//Returns -1 if an error occurred.
 	const int getShipType(int id) const;
 	const int getShipID(int i) const;
 	const int getCargo(int id) const;
@@ -70,6 +94,16 @@ public:
     //Use this to capture a ship with no crew floating in the ocean.
     //NOTE: Pirates need to check if the ship is a sailboat or a frigate.
     void captureShip();
+	
+	//Sets the boolean variable "SpecMoving" to it's inverted state.
+	//Check it's state before using this function to be sure you're
+	//getting what you desire.
+	void toggleShipSpecMoving(int id);
+	
+	//Sets the boolean variable "InHarbor" to it's inverted state.
+	//Check it's state before using this function to be sure you're
+	//getting what you desire.
+	void toggleShipInHarbor(int id);
 	
 	//For the pirates: spawns a ship of type <type> to the coordinates
     //x and y (make sure it's not on a land/harbor tile.

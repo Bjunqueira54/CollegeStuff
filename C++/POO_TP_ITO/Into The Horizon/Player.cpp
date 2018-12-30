@@ -4,10 +4,7 @@ Player::Player() {}
 
 Player::Player(const Player& orig) {}
 
-Player::Player(string n, int m, Harbor* h):name(n), money(m)
-{
-    mainharbor = h;
-}
+Player::Player(string n, int m, Harbor* h):name(n), money(m) { mainharbor = h; }
 
 int Player::buyShip(int type)
 {
@@ -154,6 +151,19 @@ const string Player::getShipInfo(int id) const
     }
 }
 
+const bool Player::getShipSpecMoving(int id) const
+{
+    //Iterator to look for a ship with matching ID numbers. If found, returns it's state.
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->isSpecMoving();
+    
+    //In case a ship with <id> doesn't exist, returns true. Troubleshooting for wrong id number in
+    //the case of the ship's bool vars would be for them to be all true.
+    //In other words, if all of the bool vars of a certain ship <id> are true, then something is wrong.
+    return true;   
+}
+
 const bool Player::getShipInHarbor(int id) const
 {
     //Iterator to look for a ship with matching ID numbers. If found, returns it's state.
@@ -163,6 +173,42 @@ const bool Player::getShipInHarbor(int id) const
     
     //Even if no ship exists with that ID, we don't want the map to draw non-existant data, so just give back "true"
     return true;    
+}
+
+const bool Player::getShipStopped(int id) const
+{
+    //Iterator to look for a ship with matching ID numbers. If found, returns it's state.
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->isStopped();
+    
+    //In case a ship with <id> doesn't exist, returns true. Troubleshooting for wrong id number in
+    //the case of the ship's bool vars would be for them to be all true.
+    //In other words, if all of the bool vars of a certain ship <id> are true, then something is wrong.
+    return true;   
+}
+
+const bool Player::getShipAuto(int id) const
+{
+    //Iterator to look for a ship with matching ID numbers. If found, returns it's state.
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->isAuto();
+    
+    //In case a ship with <id> doesn't exist, returns true. Troubleshooting for wrong id number in
+    //the case of the ship's bool vars would be for them to be all true.
+    //In other words, if all of the bool vars of a certain ship <id> are true, then something is wrong.
+    return true;   
+}
+
+const int Player::getShipMoves(int id) const
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->getMoves();
+    
+    //If a ship with that ID number doesn't exist, return the general error value of -1
+    return -1;  
 }
 
 const int Player::getShipType(int id) const
@@ -212,6 +258,24 @@ int Player::ShipMove(int id, int yy, int xx)
     }
     
     return -1;
+}
+
+void Player::toggleShipSpecMoving(int id)
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+        {
+            it->toggleSpecMoving();
+        }
+}
+
+void Player::toggleShipInHarbor(int id)
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+        {
+            it->toggleInHarbor();
+        }
 }
 
 Player::~Player()

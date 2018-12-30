@@ -1,10 +1,9 @@
 #include "Ship.h"
 #include "Player.h"
 
-Ship::Ship(Player* o, int i, int yy, int xx, int mm, int mc, int mw, int ml): id(i), y(yy), x(xx), maxmoves(mm), maxcrew(mc), maxwater(mw), maxload(ml)
+Ship::Ship(Player* o, int i, int yy, int xx, int mm, int mc, int mw, int ml): id(i), y(yy), x(xx), moves(mm), maxcrew(mc), maxwater(mw), maxload(ml)
 {
     owner = o;
-    moves = maxmoves;
     crew = maxcrew;
     water = maxwater;
     fish = cargo = 0;
@@ -51,6 +50,11 @@ void Ship::move(int newy, int newx)
         {
             inHarbor = true;
         }
+        else
+        {
+            inHarbor = false;
+        }
+        
         Stopped = true;
     }
 }

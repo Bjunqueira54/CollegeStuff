@@ -1,9 +1,9 @@
-config <file>       //0
+config <file>       //0 (done)
 exec <file>         //1
-prox                //2
-compranav <type>    //3
-vendenav <id>       //4
-lista               //5
+prox                //2 (done)
+compranav <type>    //3 (done)
+vendenav <id>       //4 (done)
+lista               //5 (done)
 compra <id> <m>     //6
 vende <id>          //7
 move <id> <dir>     //8

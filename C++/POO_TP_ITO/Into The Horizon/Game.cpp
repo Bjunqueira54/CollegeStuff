@@ -50,39 +50,48 @@ void Game::nextTurn()
     
     for(int i=0; i<player->getNships(); i++)
     {
-        nextCoord = nextTurnMoveShip(i);
+        int id = player->getShipID(i);
+        int moves = player->getShipMoves(id);
         
-        if(nextCoord == "")
-        {
-            faultruns++;
-            
-            if(faultruns >= 3)
-                break;
+        if(player->getShipCoord(id) == player->getShipDestCoord(id))
             continue;
-        }
         
-        is.clear();
-        is.str(nextCoord);
-        
-        is >> y;
-        is >> x;
-        
-        if(y == 0 || x == 0)
+        for(int j=0; j < moves; j++);
         {
-            faultruns++;
-            
-            if(faultruns >= 3)
-                break;
-            continue;
-        }
-        
-        if(player->ShipMove(player->getShipID(i), y, x) == -1)
-        {
-            faultruns++;
-            
-            if(faultruns >= 3)
-                break;
-            continue;
+            nextCoord = nextTurnMoveShip(id);
+
+            if(nextCoord == "")
+            {
+                faultruns++;
+
+                if(faultruns >= 3)
+                    break;
+                continue;
+            }
+
+            is.clear();
+            is.str(nextCoord);
+
+            is >> y;
+            is >> x;
+
+            if(y == 0 || x == 0)
+            {
+                faultruns++;
+
+                if(faultruns >= 3)
+                    break;
+                continue;
+            }
+
+            if(player->ShipMove(player->getShipID(i), y, x) == -1)
+            {
+                faultruns++;
+
+                if(faultruns >= 3)
+                    break;
+                continue;
+            }
         }
     }
     
@@ -170,12 +179,16 @@ string Game::getDestCoord(string curCoord, string dir)
         {
             case 'c':
                 desty = desty - 1;
+                break;
             case 'e':
                 destx = destx - 1;
+                break;
             case 'b':
                 desty = desty + 1;
+                break;
             case 'd':
                 destx = destx + 1;
+                break;
             default:
                 break;
         }
@@ -190,27 +203,54 @@ int Game::PlayerShipMove(int id, string dir)
 {
     string destCoord;
     bool isDestHarbor = false;
-    destCoord = getDestCoord(player->getShipCoord(id), dir);
+    bool valid = false;
+    
+    if(player->getShipSpecMoving(id))
+    {
+        destCoord = getDestCoord(player->getShipCoord(id), dir);
+        player->toggleShipSpecMoving(id);
+    }
+    else
+    {
+        destCoord = getDestCoord(player->getShipDestCoord(id), dir);
+    }
+        
     
     if(destCoord == "")
         return -1;
     
-    for(int i=0; i<map->getTotalHarborTiles(); i++)
+    for(int i=0; i<map->getTotalOceanTiles(); i++)
     {
-        if(map->getHarborCoord(i) == destCoord)
+        if(map->getOceanCoord(i) == destCoord)
         {
-            isDestHarbor = true;
+            isDestHarbor = false;
+            valid = true;
             break;
         }
     }
     
-    return player->ShipSetDestination(id, destCoord, isDestHarbor);
+    if(!valid)
+    {
+        for(int i=0; i<map->getTotalHarborTiles(); i++)
+        {
+            if(map->getHarborCoord(i) == destCoord)
+            {
+                isDestHarbor = true;
+                valid = true;
+                break;
+            }
+        }
+    }
+    
+    if(!valid)
+        return -1;
+    else
+        return player->ShipSetDestination(id, destCoord, isDestHarbor);
 }
 
-string Game::nextTurnMoveShip(int i)
+string Game::nextTurnMoveShip(int id)
 {
     int y, x, desty, destx, newy, newx, maxy, maxx;
-    int id;
     double val;
     bool valid = false;
     string curCoord, destCoord;
@@ -218,10 +258,7 @@ string Game::nextTurnMoveShip(int i)
     ostringstream os;
     
     mt19937 rng(time(NULL));
-    uniform_int_distribution<int> hdir(-100, 100);
-    uniform_int_distribution<int> vdir(-100, 100);
-
-    id = player->getShipID(i);
+    uniform_int_distribution<int> dir(0, 100);
 
     //Standard error value. If this happens, return an empty string and let the caller handle it.
     if(id == -1)
@@ -229,6 +266,9 @@ string Game::nextTurnMoveShip(int i)
 
     curCoord = player->getShipCoord(id);
     destCoord = player->getShipDestCoord(id);
+    
+    if(curCoord == destCoord)
+        return curCoord;
 
     is.str(curCoord);
     is >> y;
@@ -248,55 +288,107 @@ string Game::nextTurnMoveShip(int i)
     if(x == 0 || y == 0 || destx == 0 || desty == 0 || maxx == 0 || maxy == 0)
         return "";
 
+    //If I don't get the time to write what I'm doing here, I'll just leave it with this quote I found on
+    //the internet once:
+    //"If it was hard to code it, it's hard to understand it"
     do
     {
         if(x != destx)
         {
-            val = hdir(rng);
+            val = dir(rng);
 
-            if(((x-1) + (maxx - destx)) < destx - x)
+            if(x > destx)
             {
-                if(val - 75 > 0)
-                    newx = x + 1;
-                else if(val == 0)
-                    newx = x;
+                if(x-destx > (maxx - x) + (destx - 1) + 1)
+                {
+                    (val - 15 > 0) ? (newx = x + 1) : (newx = x - 1);
+                }
                 else
-                    newx = x - 1;
+                {
+                    (val - 15 > 0) ? (newx = x - 1) : (newx = x + 1);
+                }
             }
             else
             {
-                if(val + 75 < 0)
+                if(destx-x > (maxx - destx) + (x - 1) + 1)
+                {
+                    (val - 15 > 0) ? (newx = x - 1) : (newx = x + 1);
+                }
+                else
+                {
+                    (val - 15 > 0) ? (newx = x + 1) : (newx = x - 1);
+                }
+            }
+        }
+        else
+        {
+            val = dir(rng);
+            
+            if(val - 5 > 0)
+                newx = x;
+            else
+            {
+                val = dir(rng);
+                if(val - 50 > 0)
                     newx = x - 1;
-                else if(val == 0)
-                    newx = x;
                 else
                     newx = x + 1;
             }
         }
+        
+        if(newx > maxx)
+                newx = 1;
+            else if(newx < 1)
+                newx = maxx;
 
         if(y != desty)
         {
-            val = vdir(rng);
+            val = dir(rng);
 
-            if(((y-1) + (maxy - desty)) < desty - y)
+            if(y > desty)
             {
-                if(val - 75 > 0)
-                    newy = y + 1;
-                else if(val == 0)
-                    newy = y;
+                if(y-desty > (maxy - y) + (desty - 1) + 1)
+                {
+                    (val - 15 > 0) ? (newy = y + 1) : (newy = y - 1);
+                }
                 else
-                    newy = y - 1;
+                {
+                    (val - 15 > 0) ? (newy = y - 1) : (newy = y + 1);
+                }
             }
             else
             {
-                if(val + 75 < 0)
+                if(desty-y > (maxy - desty) + (y - 1) + 1)
+                {
+                    (val - 15 > 0) ? (newy = y - 1) : (newy = y + 1);
+                }
+                else
+                {
+                    (val - 15 > 0) ? (newy = y + 1) : (newy = y - 1);
+                }
+            } 
+        }
+        else
+        {
+            val = dir(rng);
+            
+            if(val - 5 > 0)
+                newy = y;
+            else
+            {
+                val = dir(rng);
+                if(val - 50 > 0)
                     newy = y - 1;
-                else if(val == 0)
-                    newy = y;
                 else
                     newy = y + 1;
             }
         }
+        
+        if(newy > maxy)
+                newy = 1;
+            else if(newy < 1)
+                newy = maxy;
+        
         os.str("");
         os.clear();
         os << newy << " " << newx;
@@ -306,6 +398,10 @@ string Game::nextTurnMoveShip(int i)
             if(map->getOceanCoord(i) == os.str())
             {
                 valid = true;
+                
+                if(player->getShipInHarbor(id))
+                    player->toggleShipInHarbor(id);
+                
                 break;
             }
         }
@@ -314,9 +410,13 @@ string Game::nextTurnMoveShip(int i)
         {
             for(int i=0; i<map->getTotalHarborTiles(); i++)
             {
-                if(destCoord == map->getHarborCoord(i) && os.str() == map->getHarborCoord(1))
+                if(os.str() == map->getHarborCoord(i))
                 {
                     valid = true;
+                    
+                    if(!player->getShipInHarbor(id))
+                        player->toggleShipInHarbor(id);
+                    
                     break;
                 }
             }
