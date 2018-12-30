@@ -309,12 +309,12 @@ string Game::nextTurnMoveShip(int id)
             {
                 if(x-destx > (maxx - x) + (destx - 1) + 1)
                 {
-                    (val - 15 > 0) ? (newx = x + 1) : (newx = x - 1);
+                    (val > 15) ? (newx = x + 1) : (newx = x - 1);
                 }
                 else
                 {
                     if(x - destx > 1)
-                        (val - 15 > 0) ? (newx = x - 1) : (newx = x + 1);
+                        (val > 15) ? (newx = x - 1) : (newx = x + 1);
                     else
                         destx = x;
                 }
@@ -323,12 +323,12 @@ string Game::nextTurnMoveShip(int id)
             {
                 if(destx-x > (maxx - destx) + (x - 1) + 1)
                 {
-                    (val - 15 > 0) ? (newx = x - 1) : (newx = x + 1);
+                    (val > 15) ? (newx = x - 1) : (newx = x + 1);
                 }
                 else
                 {
                     if(destx - x > 1)
-                        (val - 15 > 0) ? (newx = x + 1) : (newx = x - 1);
+                        (val > 15) ? (newx = x + 1) : (newx = x - 1);
                     else
                         destx = x;
                 }
@@ -338,12 +338,12 @@ string Game::nextTurnMoveShip(int id)
         {
             val = dir(rng);
             
-            if(val - 5 > 0)
+            if(val > 5)
                 newx = x;
             else
             {
                 val = dir(rng);
-                if(val - 50 > 0)
+                if(val > 50)
                     newx = x - 1;
                 else
                     newx = x + 1;
@@ -363,12 +363,12 @@ string Game::nextTurnMoveShip(int id)
             {
                 if(y-desty > (maxy - y) + (desty - 1) + 1)
                 {
-                    (val - 15 > 0) ? (newy = y + 1) : (newy = y - 1);
+                    (val > 15) ? (newy = y + 1) : (newy = y - 1);
                 }
                 else
                 {
                     if(y - desty > 1)
-                        (val - 15 > 0) ? (newy = y - 1) : (newy = y + 1);
+                        (val > 15) ? (newy = y - 1) : (newy = y + 1);
                     else
                         desty = y;
                 }
@@ -377,12 +377,12 @@ string Game::nextTurnMoveShip(int id)
             {
                 if(desty-y > (maxy - desty) + (y - 1) + 1)
                 {
-                    (val - 15 > 0) ? (newy = y - 1) : (newy = y + 1);
+                    (val > 15) ? (newy = y - 1) : (newy = y + 1);
                 }
                 else
                 {
                     if(desty - y > 1)
-                        (val - 15 > 0) ? (newy = y + 1) : (newy = y - 1);
+                        (val > 15) ? (newy = y + 1) : (newy = y - 1);
                     else
                         desty = y;
                 }
@@ -392,12 +392,12 @@ string Game::nextTurnMoveShip(int id)
         {
             val = dir(rng);
             
-            if(val - 5 > 0)
+            if(val > 5)
                 newy = y;
             else
             {
                 val = dir(rng);
-                if(val - 50 > 0)
+                if(val > 50)
                     newy = y - 1;
                 else
                     newy = y + 1;
