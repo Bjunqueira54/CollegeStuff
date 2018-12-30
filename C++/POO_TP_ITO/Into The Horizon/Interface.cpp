@@ -89,6 +89,11 @@ Interface::Interface(char lang)
             line.push_back("Nome do Jogador: ");                        //47
             line.push_back("Dinheiro do Jogador: ");                    //48
             line.push_back("Tamanho da frota do Jogador: ");            //49
+            line.push_back("Veleiro");                                  //50
+            line.push_back("Galeao");                                   //51
+            line.push_back("Escuna");                                   //52
+            line.push_back("Fragata");                                  //53
+            line.push_back("Navio da Linha");                           //54
         }
         
         //tutorial
@@ -205,6 +210,11 @@ Interface::Interface(char lang)
             line.push_back("Player's Name: ");
             line.push_back("Player's Gold: ");
             line.push_back("Fleet size: ");
+            line.push_back("Sailboat");
+            line.push_back("Galeon");
+            line.push_back("Schooner");
+            line.push_back("Frigate");
+            line.push_back("Ship of the Line");
         }
         
         //tutorial
@@ -1022,7 +1032,8 @@ int Interface::drawMap()
     }
     
     is.clear();
-    is.str(game->getPlayerMainHarbor()->getCoord());
+    is.str(game->getPlayerMainHarborCoord());
+    
     is >> y;
     is >> x;
     wattron(wmap, COLOR_PAIR(5));
@@ -1044,7 +1055,7 @@ string Interface::getInput(WINDOW *win, int lim = 0)
     {
 	c = getch();
 	
-	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' ' || c == '.'))
+	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' ' || c == '.') || (c >= '0' && c <= '9'))
         {
 	    if(input.size() <= lim && lim > 0)
 		input.push_back(c);
@@ -1209,6 +1220,45 @@ void Interface::printStats()
     os.clear();
     os << getLine(49) << game->getPlayerFleetSize();
     mvwaddstr(wstats, i++, 1, os.str().c_str());
+    
+    if(game->getPlayerFleetSize() != 0)
+    {
+        int id, typenum, y, x, crew, mc, water, mw, fish, cargo, ml;
+        
+        for(int j=0; j<game->getPlayerFleetSize(); j++)
+        {
+            istringstream is;
+            i++;
+            id = game->getPlayerShipID(j);
+            is.str(game->getPlayerShipInfo(id));
+            //Format: id typeNum Y X Crew maxCrew Water maxWater Fish Cargo maxLoad
+            is >> id;
+            is >> typenum;
+            is >> y;
+            is >> x;
+            is >> crew;
+            is >> mc;
+            is >> water;
+            is >> mw;
+            is >> fish;
+            is >> cargo;
+            is >> ml;
+            
+            os.str("");
+            os.clear();
+            
+            os << "Ship ID: " << id << " Type: " << getLine(49+typenum) << " Location: (" << x << "," << y << ")";
+            mvwaddstr(wstats, i++, 2, os.str().c_str());
+            
+            os.str("");
+            os.clear();
+            os << "Crew: " << crew << "/" << mc << " Water: " << water << "/" << mw << " Fish-Cargo: " << fish << "-" << cargo << "/" << ml;
+            mvwaddstr(wstats, i++, 2, os.str().c_str());
+            
+            if(j > 10)
+                mvwaddstr(wstats, ++i, 2, "...");
+        }
+    }
     
     wrefresh(wstats);
 }

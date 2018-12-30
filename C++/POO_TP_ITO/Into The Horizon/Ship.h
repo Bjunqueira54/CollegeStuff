@@ -28,30 +28,45 @@ public:
     
     int setDestination(int dy, int dx, bool idh);
 	void move(int newy, int newx);
-    
-    const int getID() const { return id; }
-    const int getCargo() const { return cargo; }
-    const int getCrew() const { return crew; }
-    const int getFish() const { return fish; }
-    const int getMaxmoves() const { return maxmoves; }
-    const int getMoves() const { return moves; }
-    const int getWater() const { return water; }
-    const string getCoord() const;
+	
+				//////////////////////
+				///Getter Functions///
+				//////////////////////
+	
+	//Returns a string with the format "Y X".
 	const string getDestCoord() const;
-    const bool isInHarbor() const { return inHarbor; }
-	bool isAuto() const { return Auto; }
-	bool isDestHarbor() const { return DestHarbor; }
-	bool isStopped() const { return Stopped; }
+	//Returns a string with the format "Y X".
+	const string getCoord() const;
+	//Returns the full information about the ship. Use this for stats printing.
+	//Format: id typeNum Y X Crew maxCrew Water maxWater Fish Cargo maxLoad
+	virtual const string getShipInfo() const = 0;
+	const bool isDestHarbor() const { return DestHarbor; }
+	const bool isInHarbor() const { return inHarbor; }
+	const bool isStopped() const { return Stopped; }
+	const bool isAuto() const { return Auto; }
+	const int getMaxmoves() const { return maxmoves; }
+	const int getCargo() const { return cargo; }
+	const int getMoves() const { return moves; }
+	const int getWater() const { return water; }
+	const int getCrew() const { return crew; }
+	const int getFish() const { return fish; }
+	const int getID() const { return id; }
+
+	virtual const int getType() const = 0;
+	const Player& getOwner() { return *owner; }
     
-    virtual const int getType() const = 0;
-    
-    const Player& getOwner() { return *owner; }
-    
-    virtual ~Ship();
+	virtual ~Ship();
     
 private:
     
-    void whatdir();
+	void whatdir();
+	
+protected:
+	
+	const int getMaxcrew() const { return maxcrew; }
+	const int getMaxload() const { return maxload; }
+	const int getMaxwater() const { return maxwater; }
+
 };
 
 #endif

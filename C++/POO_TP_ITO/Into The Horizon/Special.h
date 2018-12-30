@@ -14,6 +14,7 @@ public:
     Special(Player* o, int id, int x, int y);
     
     const int getType() const { return 5; }
+	const string getShipInfo() const;
     
     virtual ~Special();
 };

@@ -130,8 +130,6 @@ private:
     //number of ships in his fleet, etc.
     void printStats();
     
-private:
-    
     int COLOR_CONVERTER(int n) { return (n * (1000/255)); }
 };
 

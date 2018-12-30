@@ -13,6 +13,7 @@ public:
     Frigate(Player* o, int id, int x, int y);
     
     const int getType() const { return 4; }
+	const string getShipInfo() const;
     
     virtual ~Frigate();
 };

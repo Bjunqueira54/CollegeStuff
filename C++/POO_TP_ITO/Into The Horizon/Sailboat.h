@@ -11,6 +11,7 @@ public:
     Sailboat(Player* o, int id, int x, int y);
     
     const int getType() const { return 1; }
+	const string getShipInfo() const;
     
     virtual ~Sailboat();
 };

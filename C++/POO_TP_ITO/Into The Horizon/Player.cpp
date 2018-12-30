@@ -14,36 +14,34 @@ int Player::buyShip(int type)
     int x, y, i, id;
     istringstream is;
     is.str(mainharbor->getCoord());
-    is >> x;
     is >> y;
+    is >> x;
     
     for(i=0; i<fleet.size(); i++)
     {
         if(i+1 != fleet[i]->getID())
-        {
-            id = i + 1;
             break;
-        }
     }
     
+    id = i + 1;
     auto it = fleet.begin() + i;
     
     switch(type)
     {
 	case 1:
-            fleet.insert(it, new Sailboat(this, id, x, y));
+            fleet.insert(it, new Sailboat(this, id, y, x));
 	    return 0;
 	case 2:
-            fleet.insert(it, new Galeon(this, id, x, y));
+            fleet.insert(it, new Galeon(this, id, y, x));
 	    return 0;
 	case 3:
-            fleet.insert(it, new Schooner(this, id, x, y));
+            fleet.insert(it, new Schooner(this, id, y, x));
 	    return 0;
 	case 4:
-            fleet.insert(it, new Frigate(this, id, x, y));
+            fleet.insert(it, new Frigate(this, id, y, x));
 	    return 0;
 	case 5:
-            fleet.insert(it, new Special(this, id, x, y));
+            fleet.insert(it, new Special(this, id, y, x));
 	    return 0;
 	default:
 	    return -1;
@@ -147,6 +145,15 @@ const string Player::getShipDestCoord(int id) const
     return "";
 }
 
+const string Player::getShipInfo(int id) const
+{
+    for(auto& it: fleet)
+    {
+        if(it->getID() == id)
+            return it->getShipInfo();
+    }
+}
+
 const bool Player::getShipInHarbor(int id) const
 {
     //Iterator to look for a ship with matching ID numbers. If found, returns it's state.
@@ -174,7 +181,7 @@ const int Player::getShipID(int i) const
         return fleet[i]->getID();
 }
 
-int Player::ShipMove(int id, string destCoord, bool isDestHarbor)
+int Player::ShipSetDestination(int id, string destCoord, bool isDestHarbor)
 {
     for(auto& it: fleet)
     {
@@ -191,6 +198,20 @@ int Player::ShipMove(int id, string destCoord, bool isDestHarbor)
             it->setDestination(y, x, isDestHarbor);
         }
     }
+}
+
+int Player::ShipMove(int id, int yy, int xx)
+{
+    for(auto& it: fleet)
+    {
+        if(it->getID() == id)
+        {
+            it->move(yy, xx);
+            return 0;
+        }
+    }
+    
+    return -1;
 }
 
 Player::~Player()

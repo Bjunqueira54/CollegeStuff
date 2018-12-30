@@ -1,7 +1,7 @@
 #include "Ship.h"
 #include "Player.h"
 
-Ship::Ship(Player* o, int i, int xx, int yy, int mm, int mc, int mw, int ml): id(i), x(xx), y(yy), maxmoves(mm), maxcrew(mc), maxwater(mw), maxload(ml)
+Ship::Ship(Player* o, int i, int yy, int xx, int mm, int mc, int mw, int ml): id(i), y(yy), x(xx), maxmoves(mm), maxcrew(mc), maxwater(mw), maxload(ml)
 {
     owner = o;
     moves = maxmoves;

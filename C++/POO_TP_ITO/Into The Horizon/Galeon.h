@@ -13,6 +13,7 @@ public:
     Galeon(Player* o, int id, int x, int y);
     
     const int getType() const { return 2; }
+	const string getShipInfo() const;
     
     virtual ~Galeon();
 };

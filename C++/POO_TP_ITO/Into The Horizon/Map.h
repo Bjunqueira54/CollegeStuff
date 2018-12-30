@@ -15,14 +15,17 @@ public:
 
     Map(vector<string> vmap);
     
+	//Returns a string with the format "Y X".
+	const string getHarborCoord(int i) const { return harbors[i]->getCoord(); }
+	//Returns a string with the format "Y X".
+	const string getOceanCoord(int i) const { return ocean[i]->getCoord(); }
+	//Return a string in the format of "HEIGHT WIDTH".
     const string getDim() const;
-    const int getTotalOceanTiles() const { return ocean.size(); }
-    const string getOceanCoord(int i) const { return ocean[i]->getCoord(); }
+	const char getHarborID(int i) const { return harbors[i]->getID(); }
+	const bool harborIsFriendly(int i) const { return harbors[i]->isFriendly(); }
     const int getTotalHarborTiles() const { return harbors.size(); }
-    const string getHarborCoord(int i) const { return harbors[i]->getCoord(); }
-    const bool harborIsFriendly(int i) const { return harbors[i]->isFriendly(); }
-    const char getHarborID(int i) const { return harbors[i]->getID(); }
-    
+    const int getTotalOceanTiles() const { return ocean.size(); }
+
     Harbor* getHarbor(int i) const { return harbors[i]; }
     
     virtual ~Map();
