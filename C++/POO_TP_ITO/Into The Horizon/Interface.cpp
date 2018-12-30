@@ -94,6 +94,13 @@ Interface::Interface(char lang)
             line.push_back("Escuna");                                   //52
             line.push_back("Fragata");                                  //53
             line.push_back("Navio da Linha");                           //54
+            line.push_back("ID do Navio: ");                            //55
+            line.push_back("Tipo: ");                                   //56
+            line.push_back("Localizacao: ");                            //57
+            line.push_back("Destino: ");                                //58
+            line.push_back("Tripulacao: ");                             //59
+            line.push_back("Agua: ");                                   //60
+            line.push_back("Peixe+Mercadoria: ");                       //61
         }
         
         //tutorial
@@ -215,6 +222,13 @@ Interface::Interface(char lang)
             line.push_back("Schooner");
             line.push_back("Frigate");
             line.push_back("Ship of the Line");
+            line.push_back("Ship ID: ");
+            line.push_back("Type: ");
+            line.push_back("Location: ");
+            line.push_back("Destination: ");
+            line.push_back("Crew: ");
+            line.push_back("Water: ");
+            line.push_back("Fish+Cargo: ");
         }
         
         //tutorial
@@ -581,7 +595,7 @@ int Interface::configPhase()
 void Interface::MainGameLoop()
 {
     int cmdval;
-    string cmd;
+    string cmd, logentry;
 
     if(configPhase() == -1)
         return;
@@ -617,10 +631,6 @@ void Interface::MainGameLoop()
             
             if(cmdval == -1)
                 mvwaddstr(wcmd, getmaxy(wcmd)-2, 1, getLine(25));
-            else if(cmdval == 0)
-            {
-                turncmd.push_back(cmd);
-            }
             else if(cmdval < -1)
             {
                 //ALL ERROR CHECKING HAPPENS HERE!
@@ -637,9 +647,15 @@ void Interface::MainGameLoop()
         }
         while(cmdval != 20 && cmdval != 2);
         
+        if(cmdval == 20)
+            continue;
+        
         //change to next turn after this
         for(int i=0; i<turncmd.size(); i++)
-            parseCmd(turncmd[i], 1);
+        {
+            cmdval = parseCmd(turncmd[i], 1);
+            
+        }
         
         game->nextTurn();
     }
@@ -681,7 +697,10 @@ int Interface::parseCmd(string c, bool exec)
         case 3:
         {
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             char t;
             
@@ -695,7 +714,10 @@ int Interface::parseCmd(string c, bool exec)
         case 4:
         {
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             int id, retval;
             
@@ -740,18 +762,27 @@ int Interface::parseCmd(string c, bool exec)
         }
         case 6:
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             return 0;
         case 7:
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             return 0;
         case 8:
         {
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             int id;
             string dir;
@@ -768,32 +799,50 @@ int Interface::parseCmd(string c, bool exec)
         }
         case 9:
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             return 0;
         case 10:
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             return 0;
         case 11:
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             return 0;
         case 12:
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             return 0;
         case 13:
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             return 0;
         case 14:
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             int m;
             
@@ -805,12 +854,18 @@ int Interface::parseCmd(string c, bool exec)
             return 0;
         case 15:
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             return 0;
         case 16:
             if(exec == false)
+            {
+                turncmd.push_back(c);
                 return 0;
+            }
             
             return 0;
         case 17:
@@ -1231,7 +1286,7 @@ void Interface::printStats()
     
     if(game->getPlayerFleetSize() != 0)
     {
-        int id, typenum, y, x, crew, mc, water, mw, fish, cargo, ml;
+        int id, typenum, y, x, desty, destx, crew, mc, water, mw, fish, cargo, ml;
         
         for(int j=0; j<game->getPlayerFleetSize(); j++)
         {
@@ -1239,11 +1294,13 @@ void Interface::printStats()
             i++;
             id = game->getPlayerShipID(j);
             is.str(game->getPlayerShipInfo(id));
-            //Format: id typeNum Y X Crew maxCrew Water maxWater Fish Cargo maxLoad
+            //Format: id typeNum Y X DestY DestX Crew maxCrew Water maxWater Fish Cargo maxLoad
             is >> id;
             is >> typenum;
             is >> y;
             is >> x;
+            is >> desty;
+            is >> destx;
             is >> crew;
             is >> mc;
             is >> water;
@@ -1255,11 +1312,16 @@ void Interface::printStats()
             os.str("");
             os.clear();
             
-            os << "Ship ID: " << id << " Type: " << getLine(49+typenum) << " Location: (" << x << "," << y << ")";
+            os << getLine(55) << id << " " << getLine(56) << " " << getLine(49+typenum) << " " << getLine(57) << "(" << x << "," << y << ")";
+            
+            if(destx != x && desty != y)
+                os << " " << getLine(58) << "(" << destx << "," << desty << ")";
+
             mvwaddstr(wstats, i++, 2, os.str().c_str());
             
             os.str("");
             os.clear();
+            
             os << "Crew: " << crew << "/" << mc << " Water: " << water << "/" << mw << " Fish-Cargo: " << fish << "-" << cargo << "/" << ml;
             mvwaddstr(wstats, i++, 2, os.str().c_str());
             

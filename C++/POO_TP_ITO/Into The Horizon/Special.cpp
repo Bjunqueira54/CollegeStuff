@@ -10,7 +10,7 @@ const string Special::getShipInfo() const
 {
     ostringstream os;
 
-    os << getID() << " 5 " << getCoord() << " " << getCrew() << " " << getMaxcrew() << " ";
+    os << getID() << " 5 " << getCoord() << " " << getDestCoord() << " " << getCrew() << " " << getMaxcrew() << " ";
     os << getWater() << " " << getMaxwater() << " " << getFish() << " " << getCargo() << " " << getMaxload();
     
     return os.str();

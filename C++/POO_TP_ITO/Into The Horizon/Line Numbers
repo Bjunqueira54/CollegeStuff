@@ -1,12 +1,12 @@
 config <file>       //0 (done)
-exec <file>         //1
+exec <file>         //1 (done)
 prox                //2 (done)
 compranav <type>    //3 (done)
 vendenav <id>       //4 (done)
 lista               //5 (done)
 compra <id> <m>     //6
 vende <id>          //7
-move <id> <dir>     //8
+move <id> <dir>     //8 (done?)
 auto <id>           //9
 stop <id>           //10
 pirata <x> <y> <t>  //11
@@ -19,7 +19,7 @@ comprasold <id> <S> //16
 saveg <file>        //17
 loadg <file>        //18
 delg <file>         //19
-sair                //20
+sair                //20 (done)
 
 (Prima qualquer tecla para continuar)   //0
 Bem vindo a Into the Horizon!           //1
@@ -76,3 +76,10 @@ Galeao                                  //51
 Escuna                                  //52
 Fragata                                 //53
 Navio da Linha                          //54
+ID do Navio:                            //55
+Tipo:                                   //56
+Localizacao:                            //57
+Destino:                                //58
+Tripulacao:                             //59
+Agua:                                   //60
+Peixe+Mercadoria:                       //61

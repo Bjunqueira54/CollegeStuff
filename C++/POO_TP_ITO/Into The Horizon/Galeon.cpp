@@ -10,7 +10,7 @@ const string Galeon::getShipInfo() const
 {
     ostringstream os;
 
-    os << getID() << " 2 " << getCoord() << " " << getCrew() << " " << getMaxcrew() << " ";
+    os << getID() << " 2 " << getCoord() << " " << getDestCoord() << " " << getCrew() << " " << getMaxcrew() << " ";
     os << getWater() << " " << getMaxwater() << " " << getFish() << " " << getCargo() << " " << getMaxload();
     
     return os.str();

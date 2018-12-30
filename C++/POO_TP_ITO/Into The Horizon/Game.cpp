@@ -56,7 +56,7 @@ void Game::nextTurn()
         if(player->getShipCoord(id) == player->getShipDestCoord(id))
             continue;
         
-        for(int j=0; j < moves; j++);
+        do
         {
             nextCoord = nextTurnMoveShip(id);
 
@@ -92,6 +92,14 @@ void Game::nextTurn()
                     break;
                 continue;
             }
+            
+            moves--;
+        }
+        while((moves > 0) && (faultruns < 3));
+        
+        if(!player->getShipSpecMoving(id))
+        {
+            player->ShipSetDestination(id, player->getShipCoord(id), player->getShipInHarbor(id));
         }
     }
     
@@ -305,7 +313,10 @@ string Game::nextTurnMoveShip(int id)
                 }
                 else
                 {
-                    (val - 15 > 0) ? (newx = x - 1) : (newx = x + 1);
+                    if(x - destx > 1)
+                        (val - 15 > 0) ? (newx = x - 1) : (newx = x + 1);
+                    else
+                        destx = x;
                 }
             }
             else
@@ -316,7 +327,10 @@ string Game::nextTurnMoveShip(int id)
                 }
                 else
                 {
-                    (val - 15 > 0) ? (newx = x + 1) : (newx = x - 1);
+                    if(destx - x > 1)
+                        (val - 15 > 0) ? (newx = x + 1) : (newx = x - 1);
+                    else
+                        destx = x;
                 }
             }
         }
@@ -353,7 +367,10 @@ string Game::nextTurnMoveShip(int id)
                 }
                 else
                 {
-                    (val - 15 > 0) ? (newy = y - 1) : (newy = y + 1);
+                    if(y - desty > 1)
+                        (val - 15 > 0) ? (newy = y - 1) : (newy = y + 1);
+                    else
+                        desty = y;
                 }
             }
             else
@@ -364,7 +381,10 @@ string Game::nextTurnMoveShip(int id)
                 }
                 else
                 {
-                    (val - 15 > 0) ? (newy = y + 1) : (newy = y - 1);
+                    if(desty - y > 1)
+                        (val - 15 > 0) ? (newy = y + 1) : (newy = y - 1);
+                    else
+                        desty = y;
                 }
             } 
         }

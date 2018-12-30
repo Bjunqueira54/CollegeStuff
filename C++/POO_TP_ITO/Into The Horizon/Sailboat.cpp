@@ -10,7 +10,7 @@ const string Sailboat::getShipInfo() const
 {
     ostringstream os;
 
-    os << getID() << " 1 " << getCoord() << " " << getCrew() << " " << getMaxcrew() << " ";
+    os << getID() << " 1 " << getCoord() << " " << getDestCoord() << " " << getCrew() << " " << getMaxcrew() << " ";
     os << getWater() << " " << getMaxwater() << " " << getFish() << " " << getCargo() << " " << getMaxload();
     
     return os.str();

@@ -11,7 +11,7 @@ const string Frigate::getShipInfo() const
 {
     ostringstream os;
 
-    os << getID() << " 4 " << getCoord() << " " << getCrew() << " " << getMaxcrew() << " ";
+    os << getID() << " 4 " << getCoord() << " " << getDestCoord() << " " << getCrew() << " " << getMaxcrew() << " ";
     os << getWater() << " " << getMaxwater() << " " << getFish() << " " << getCargo() << " " << getMaxload();
     
     return os.str();
