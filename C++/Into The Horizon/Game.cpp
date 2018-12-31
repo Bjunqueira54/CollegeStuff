@@ -316,7 +316,7 @@ string Game::nextTurnMoveShip(int id)
                     if(x - destx > 1)
                         (val > 15) ? (newx = x - 1) : (newx = x + 1);
                     else
-                        destx = x;
+                        newx = destx;
                 }
             }
             else
@@ -330,7 +330,7 @@ string Game::nextTurnMoveShip(int id)
                     if(destx - x > 1)
                         (val > 15) ? (newx = x + 1) : (newx = x - 1);
                     else
-                        destx = x;
+                        newx = destx;
                 }
             }
         }
@@ -370,7 +370,7 @@ string Game::nextTurnMoveShip(int id)
                     if(y - desty > 1)
                         (val > 15) ? (newy = y - 1) : (newy = y + 1);
                     else
-                        desty = y;
+                        newy = desty;
                 }
             }
             else
@@ -384,7 +384,7 @@ string Game::nextTurnMoveShip(int id)
                     if(desty - y > 1)
                         (val > 15) ? (newy = y + 1) : (newy = y - 1);
                     else
-                        desty = y;
+                        newy = desty;
                 }
             } 
         }

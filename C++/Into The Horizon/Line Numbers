@@ -6,7 +6,7 @@ vendenav <id>       //4 (done)
 lista               //5 (done)
 compra <id> <m>     //6
 vende <id>          //7
-move <id> <dir>     //8 (done?)
+move <id> <dir>     //8 (done)
 auto <id>           //9
 stop <id>           //10
 pirata <x> <y> <t>  //11

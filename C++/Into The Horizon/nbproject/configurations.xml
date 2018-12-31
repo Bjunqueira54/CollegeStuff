@@ -67,6 +67,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Line Numbers</itemPath>
       <itemPath>Makefile</itemPath>
+      <itemPath>config.ini</itemPath>
     </logicalFolder>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>

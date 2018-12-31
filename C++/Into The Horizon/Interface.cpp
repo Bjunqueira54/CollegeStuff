@@ -858,7 +858,7 @@ int Interface::parseCmd(string c, bool exec)
                 turncmd.push_back(c);
                 return 0;
             }
-            
+         
             return 0;
         case 16:
             if(exec == false)
