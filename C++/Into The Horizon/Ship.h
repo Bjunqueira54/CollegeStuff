@@ -32,6 +32,10 @@ public:
 	void toggleInHarbor() { inHarbor = !inHarbor; }
 	void move(int newy, int newx);
 	int setDestination(int dy, int dx, bool idh);
+	int addCargo(int c);
+	int addFish(int f);
+	int addCrew(int c);
+	int Stop();
 
 				//////////////////////
 				///Getter Functions///

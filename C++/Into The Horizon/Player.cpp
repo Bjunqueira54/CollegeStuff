@@ -6,6 +6,53 @@ Player::Player(const Player& orig) {}
 
 Player::Player(string n, int m, Harbor* h):name(n), money(m) { mainharbor = h; }
 
+void Player::setMoney(int n)
+{
+    if(n > 0)
+        money += n;
+    else
+        money -= abs(n);
+}
+
+int Player::ShipSetCargo(int id, int cargo)
+{
+    for(auto& it: fleet)
+    {
+        if(it->getID() == id)
+        {
+            return it->addCargo(cargo);
+        }
+    }
+    
+    return -1;
+}
+
+int Player::ShipSetCrew(int id, int crew)
+{
+    for(auto& it: fleet)
+    {
+        if(it->getID() == id)
+        {
+            return it->addCrew(crew);
+        }
+    }
+    
+    return -1;
+}
+
+int Player::ShipSetFish(int id, int fish)
+{
+    for(auto& it: fleet)
+    {
+        if(it->getID() == id)
+        {
+            return it->addFish(fish);
+        }
+    }
+        
+    return -1;
+}
+
 int Player::buyShip(int type)
 {
     int x, y, i, id;
@@ -149,6 +196,8 @@ const string Player::getShipInfo(int id) const
         if(it->getID() == id)
             return it->getShipInfo();
     }
+    
+    return "";
 }
 
 const bool Player::getShipSpecMoving(int id) const
@@ -201,6 +250,24 @@ const bool Player::getShipAuto(int id) const
     return true;   
 }
 
+const int Player::getShipCargo(int id) const
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->getCargo();
+    
+    return -1;
+}
+
+const int Player::getShipFish(int id) const
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->getFish();
+    
+    return -1;
+}
+
 const int Player::getShipMoves(int id) const
 {
     for(auto& it: fleet)
@@ -225,6 +292,8 @@ const int Player::getShipID(int i) const
 {
     if(i < fleet.size())
         return fleet[i]->getID();
+    
+    return -1;
 }
 
 int Player::ShipSetDestination(int id, string destCoord, bool isDestHarbor)
@@ -241,9 +310,11 @@ int Player::ShipSetDestination(int id, string destCoord, bool isDestHarbor)
             is >> y;
             is >> x;
             
-            it->setDestination(y, x, isDestHarbor);
+            return it->setDestination(y, x, isDestHarbor);
         }
     }
+    
+    return -1;
 }
 
 int Player::ShipMove(int id, int yy, int xx)
@@ -260,13 +331,23 @@ int Player::ShipMove(int id, int yy, int xx)
     return -1;
 }
 
+int Player::ShipStop(int id)
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            it->Stop();
+}
+
 void Player::toggleShipSpecMoving(int id)
 {
     for(auto& it: fleet)
         if(it->getID() == id)
         {
             it->toggleSpecMoving();
+            return;
         }
+    
+    return;
 }
 
 void Player::toggleShipInHarbor(int id)
@@ -275,7 +356,10 @@ void Player::toggleShipInHarbor(int id)
         if(it->getID() == id)
         {
             it->toggleInHarbor();
+            return;
         }
+    
+    return;
 }
 
 Player::~Player()

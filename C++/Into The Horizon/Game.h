@@ -11,6 +11,7 @@ class Game
 	const string playername;
 	static Player* player;
 	static Player* pirate;
+	//static Player* abandoned;
 	static Settings* settings;
 	static Map* map;
 	static int turn;
@@ -62,9 +63,15 @@ public:
                     //////////////////////////////
     
 	void PlayerAddMoney(int m) { player->setMoney(m); }
+	int PlayerShipMoveTo(int id, int xx, int yy);
+	int PlayerShipMoveTo(int id, char hid);
 	int PlayerShipMove(int id, string dir);
+	int PlayerShipStop(int id) { return player->ShipStop(id); }
 	int PlayerSellShip(int id);
+	int PlayerBuyCargo(int id, int cargo);
+	int PlayerBuyCrew(int id, int crew);
 	int PlayerBuyShip(char t);
+	int PlayerSell(int id);
     
                     /////////////////////////////////////
                     ///Player Related Getter Functions///

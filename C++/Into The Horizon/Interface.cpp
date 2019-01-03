@@ -156,8 +156,8 @@ Interface::Interface(char lang)
             cmd.push_back("pirate");
             cmd.push_back("evpos");
             cmd.push_back("evship");
-            cmd.push_back("coins");
-            cmd.push_back("goto");
+            cmd.push_back("gold");
+            cmd.push_back("moveto");
             cmd.push_back("buycrew");
             cmd.push_back("saveg");
             cmd.push_back("loadg");
@@ -606,7 +606,6 @@ void Interface::MainGameLoop()
     {
         drawBox(wcmd);
         drawMap();
-        printStats();
         turncmd.clear();
         ostringstream g_turn;
         g_turn << getLine(11) << game->getTurn();
@@ -615,6 +614,8 @@ void Interface::MainGameLoop()
         
         do
         {
+            printStats();
+            
             wmove(wcmd, getmaxy(wcmd)-3, 1);
             wclrtoeol(wcmd);
             mvwaddch(wcmd, getmaxy(wcmd)-3, getmaxx(wcmd)-1, '|');
@@ -654,7 +655,6 @@ void Interface::MainGameLoop()
         for(int i=0; i<turncmd.size(); i++)
         {
             cmdval = parseCmd(turncmd[i], 1);
-            
         }
         
         game->nextTurn();
@@ -761,21 +761,42 @@ int Interface::parseCmd(string c, bool exec)
             return 0;
         }
         case 6:
+        {
             if(exec == false)
             {
                 turncmd.push_back(c);
                 return 0;
             }
             
-            return 0;
+            int id, cargo;
+            
+            if(!(is >> id))
+                return -1;
+            
+            if(!(is >> cargo))
+                return -1;
+                
+            retval = game->PlayerBuyCargo(id, cargo);
+            
+            return retval;
+        }
         case 7:
+        {
             if(exec == false)
             {
                 turncmd.push_back(c);
                 return 0;
             }
             
+            int id;
+            
+            if(!(is >> id))
+                return -1;
+            
+            game->PlayerSell(id);
+            
             return 0;
+        }
         case 8:
         {
             if(exec == false)
@@ -798,6 +819,7 @@ int Interface::parseCmd(string c, bool exec)
             return retval;
         }
         case 9:
+        {
             if(exec == false)
             {
                 turncmd.push_back(c);
@@ -805,15 +827,25 @@ int Interface::parseCmd(string c, bool exec)
             }
             
             return 0;
+        }
         case 10:
+        {
             if(exec == false)
             {
                 turncmd.push_back(c);
                 return 0;
             }
+            int id;
             
-            return 0;
+            if(!(is >> id))
+                return -1;
+            
+            retval = game->PlayerShipStop(id);
+            
+            return retval;
+        }
         case 11:
+        {
             if(exec == false)
             {
                 turncmd.push_back(c);
@@ -821,7 +853,9 @@ int Interface::parseCmd(string c, bool exec)
             }
             
             return 0;
+        }
         case 12:
+        {
             if(exec == false)
             {
                 turncmd.push_back(c);
@@ -829,7 +863,9 @@ int Interface::parseCmd(string c, bool exec)
             }
             
             return 0;
+        }
         case 13:
+        {
             if(exec == false)
             {
                 turncmd.push_back(c);
@@ -837,37 +873,74 @@ int Interface::parseCmd(string c, bool exec)
             }
             
             return 0;
+        }
         case 14:
-            if(exec == false)
-            {
-                turncmd.push_back(c);
-                return 0;
-            }
-            
+        {
             int m;
             
-            is >> m;
+            if(!(is >> m))
+                return -1;
             
             if(m != 0)
                 game->PlayerAddMoney(m);
             
             return 0;
+        }
         case 15:
+        {
             if(exec == false)
             {
                 turncmd.push_back(c);
                 return 0;
             }
+            char hid;
+            int id, xx, yy;
+            
+            is >> id;
+            
+            if(id == 0)
+                return -1;
+            
+            if(!(is >> hid))
+                return -1; 
+            
+            if(hid >= '0' && hid <= '9')
+            {
+                is.putback(hid);
+                
+                is >> xx;
+                if(!(is >> yy))
+                    return -1;
+                
+                retval = game->PlayerShipMoveTo(id, xx, yy);
+            }
+            else
+            {
+                retval = game->PlayerShipMoveTo(id, hid);
+            }
          
-            return 0;
+            return retval;
+        }
         case 16:
+        {
             if(exec == false)
             {
                 turncmd.push_back(c);
                 return 0;
             }
             
-            return 0;
+            int id, crew;
+            
+            if(!(is >> id))
+                return -1;
+            
+            if(!(is >> crew))
+                return -1;
+                
+            retval = game->PlayerBuyCrew(id, crew);
+            
+            return retval;
+        }
         case 17:
             return 0;
         case 18:
@@ -1118,7 +1191,7 @@ string Interface::getInput(WINDOW *win, int lim = 0)
     {
 	c = getch();
 	
-	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' ' || c == '.') || (c >= '0' && c <= '9'))
+	if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' ' || c == '.' || c == '-') || (c >= '0' && c <= '9'))
         {
 	    if(input.size() <= lim && lim > 0)
 		input.push_back(c);

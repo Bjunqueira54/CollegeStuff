@@ -4,18 +4,18 @@ prox                //2 (done)
 compranav <type>    //3 (done)
 vendenav <id>       //4 (done)
 lista               //5 (done)
-compra <id> <m>     //6
-vende <id>          //7
+compra <id> <m>     //6 (done)
+vende <id>          //7 (done)
 move <id> <dir>     //8 (done)
 auto <id>           //9
-stop <id>           //10
+stop <id>           //10 (done)
 pirata <x> <y> <t>  //11
 evpos <E> <x> <y>   //12
 evnav <E> <id>      //13
-moedas <n>          //14
-vaipara <id> <H>    //15
+moedas <n>          //14 (done)
+vaipara <id> <H>    //15 (Kinda done)
 (vaipara <id> <x> <y>)
-comprasold <id> <S> //16
+comprasold <id> <S> //16 (Test it)
 saveg <file>        //17
 loadg <file>        //18
 delg <file>         //19

@@ -35,7 +35,7 @@ public:
                 //////////////////////
     
     //Adds (or subtracts) <n> to (or from) the player's total balance.
-    void setMoney(int n) { money += n; }
+    void setMoney(int n);
     
                 //////////////////////
                 ///Getter Functions///
@@ -76,9 +76,15 @@ public:
 	//Note: Check if all other booleans are also true. If they are,
 	//then something went wrong.
 	const bool getShipAuto(int id) const;
+	//Returns the total cargo currently in ship <id>
+	//Returns -1 if an error occurred.
+	const int getShipCargo(int id) const;
 	//Returns the amount of moves available for the ship with <id>.
 	//Returns -1 if an error occurred.
 	const int getShipMoves(int id) const;
+	//Returns the total amount of fish currently in ship <id>.
+	//Retuns -1 if an error occurred.
+	const int getShipFish(int id) const;
 	//Returns the (int) value of a ship as commented at the top of this header file.
 	//Returns -1 if an error occurred.
 	const int getShipType(int id) const;
@@ -112,6 +118,8 @@ public:
 	//Moves ship <id> in the direction of <dir>. Uses 1 move.
     int ShipSetDestination(int id, string destCoord, bool isDestHarbor);
 	
+	int ShipSellLoad(int id);
+	
 	//Updates the (<yy>,<xx>) coordinates of the ship with ID number <id>.
 	//Return values: 0 on success, -1 if an error occurred.
 	int ShipMove(int id, int yy, int xx);
@@ -121,10 +129,17 @@ public:
     //Note: Do NOT use this to remove ships from Player's ownership, use
     //the abandonShip(int i) function.
     int sellShip(int id);
+	
+	int ShipSetCargo(int id, int cargo);
+	
+	int ShipSetCrew(int id, int crew);
+	int ShipSetFish(int id, int fish);
     
     //For the player: buys a ship of type <type> and spawns it in the
     //player's main harbor.
     int buyShip(int type);
+	
+	int ShipStop(int id);
 	
     virtual ~Player();
 };

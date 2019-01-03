@@ -145,6 +145,72 @@ int Game::PlayerSellShip(int id)
     player->setMoney(money);
 }
 
+int Game::PlayerBuyCargo(int id, int cargo)
+{
+    int retval, total;
+    
+    total = cargo * settings->GetCargobuy();
+    
+    if(player->getMoney() > total)
+    {
+        retval = player->ShipSetCargo(id, cargo);
+        
+        if(retval == 0)
+        {
+            total = total * (-1);
+            player->setMoney(total);
+            return 0;
+        }
+        else if(retval == -1)
+            return -1;
+        else if(retval > 0)
+        {
+            int aux = cargo;
+            
+            aux -= retval;
+            total = aux * settings->GetCargobuy();
+            total = total * (-1);
+            player->setMoney(total);
+            return 0;
+        }
+    }
+    else
+        return -1;
+}
+
+int Game::PlayerBuyCrew(int id, int crew)
+{
+int retval, total;
+    
+    total = crew * settings->GetCrewprice();
+    
+    if(player->getMoney() > total)
+    {
+        retval = player->ShipSetCrew(id, crew);
+        
+        if(retval == 0)
+        {
+            total = total * (-1);
+            player->setMoney(total);
+            return 0;
+        }
+        else if(retval == -1)
+            return -1;
+        else if(retval > 0)
+        {
+            int aux = crew;
+            
+            aux -= retval;
+            total = aux * settings->GetCrewprice();
+            total = total * (-1);
+            player->setMoney(total);
+            return 0;
+        }
+    }
+    else
+        return -1;
+}
+
 string Game::getDestCoord(string curCoord, string dir)
 {
     int desty, destx;
@@ -207,6 +273,53 @@ string Game::getDestCoord(string curCoord, string dir)
     return os.str();
 }
 
+int Game::PlayerShipMoveTo(int id, int xx, int yy)
+{
+    ostringstream os;
+    
+    os << yy << " " << xx;
+    
+    for(int i=0; i<map->getTotalOceanTiles(); i++)
+    {
+        if(map->getOceanCoord(i) == os.str())
+        {
+            player->ShipSetDestination(id, os.str(), 0);
+            return 0;
+        }
+    }
+    
+    for(int i=0; i<map->getTotalHarborTiles(); i++)
+    {
+        if(map->getHarborCoord(i) == os.str())
+        {
+            if(map->harborIsFriendly(i))
+                player->ShipSetDestination(id, os.str(), 1);
+        }
+    }
+    
+    return -1;
+}
+
+int Game::PlayerShipMoveTo(int id, char hid)
+{
+    string destCoord;
+    
+    for(int i=0; i<map->getTotalHarborTiles(); i++)
+    {
+        if(map->getHarborID(i) == hid)
+        {
+            destCoord = map->getHarborCoord(i);
+            
+            if(map->harborIsFriendly(i))
+                player->ShipSetDestination(id, destCoord, 1);
+            
+            return 0;
+        }
+    }
+    
+    return -1;
+}
+
 int Game::PlayerShipMove(int id, string dir)
 {
     string destCoord;
@@ -254,6 +367,32 @@ int Game::PlayerShipMove(int id, string dir)
         return -1;
     else
         return player->ShipSetDestination(id, destCoord, isDestHarbor);
+}
+
+int Game::PlayerSell(int id)
+{
+    int fish, flo, cargo, clo, total;
+    
+    fish = player->getShipFish(id);
+    cargo = player->getShipCargo(id);
+    
+    if(fish == -1 || cargo == -1)
+        return -1;
+    
+    clo = player->ShipSetCargo(id, (cargo * (-1)));
+    flo = player->ShipSetFish(id, (fish * (-1)));
+    
+    //wtf happened? If you ask to sell whatever getShipX() returns, there should be
+    //no leftovers nor should the function return -1.
+    if(clo != 0 || flo != 0)
+        return -1;
+    
+    total = fish * settings->GetFishprice();
+    total += cargo * settings->GetCargosell();
+    
+    player->setMoney(total);
+    
+    return 0;
 }
 
 string Game::nextTurnMoveShip(int id)
