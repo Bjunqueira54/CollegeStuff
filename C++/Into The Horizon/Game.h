@@ -6,6 +6,12 @@
 #include "Settings.h"
 #include "Map.h"
 
+/*Faction Numbers:
+ 0 - Abandoned
+ 1 - Player
+ 2 - Pirate
+ */
+
 class Game
 {
 	const string playername;
@@ -27,6 +33,8 @@ public:
                     ///Game Related Functions///
                     ////////////////////////////
     
+	//Returns the player's name before the game even starts.
+	const string PlayerName() const { return playername; }
 	const int getPhase() const { return phase; }
 	const int getTurn() const { return turn; }
 	void configPhase(ifstream& file);
@@ -63,8 +71,9 @@ public:
                     //////////////////////////////
     
 	void PlayerAddMoney(int m) { player->setMoney(m); }
-	int PlayerShipMoveTo(int id, int xx, int yy);
-	int PlayerShipMoveTo(int id, char hid);
+	int PlayerShipSetAuto(int id) { return player->ShipSetAuto(id); }
+	int PlayerShipMoveTo(int id, int xx, int yy, int faction);
+	int PlayerShipMoveTo(int id, char hid, int faction);
 	int PlayerShipMove(int id, string dir);
 	int PlayerShipStop(int id) { return player->ShipStop(id); }
 	int PlayerSellShip(int id);
@@ -72,6 +81,8 @@ public:
 	int PlayerBuyCrew(int id, int crew);
 	int PlayerBuyShip(char t);
 	int PlayerSell(int id);
+	
+	int PirateAddShip(char t, int y, int x);
     
                     /////////////////////////////////////
                     ///Player Related Getter Functions///
@@ -80,16 +91,16 @@ public:
 	//Returns a string with the format "Y X".
 	const string getPlayerMainHarborCoord() const { return player->getMainHarborCoord(); }
 	//Returns a string with the format "Y X".
-	const string getPlayerShipCoord(int i) const { return player->getShipCoord(i); }
+	const string getPlayerShipCoord(int id, int faction) const;
 	//Returns the full information about the ship with the ID number <id>. 
 	//Use this for stats printing.\n
 	//Format: id typeNum Y X Crew maxCrew Water maxWater Fish Cargo maxLoad
-	const string getPlayerShipInfo(int id) const { return player->getShipInfo(id); }
+	const string getPlayerShipInfo(int id, int faction) const;
 	const string getPlayerName() const { return player->getName(); }
-	const bool getPlayerShipInHarbor(int id) const { return player->getShipInHarbor(id); }
-	const int getPlayerFleetSize() const { return player->getNships(); }
-	const int getPlayerShipType(int id) const { return player->getShipType(id); }
-	const int getPlayerShipID(int i) const { return player->getShipID(i);}
+	const bool getPlayerShipInHarbor(int id, int faction) const;
+	const int getPlayerFleetSize(int faction) const;
+	const int getPlayerShipType(int id, int faction) const;
+	const int getPlayerShipID(int i, int faction) const;
 	const int getPlayerMoney() const { return player->getMoney(); }
 
 	virtual ~Game();

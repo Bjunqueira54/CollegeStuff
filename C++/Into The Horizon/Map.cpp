@@ -25,6 +25,25 @@ const string Map::getDim() const
     return os.str();
 }
 
+void Map::OceanTurnUpdate()
+{
+    for(auto& it: ocean)
+        it->TurnUpdate();
+}
+
+void Map::OceanFished(string Coord)
+{
+    for(auto& it: ocean)
+    {
+        if(it->getCoord() == Coord)
+        {
+            it->Fished();
+            return;
+        }
+    }
+            
+}
+
 Map::~Map()
 {
     for(auto& it: ocean)

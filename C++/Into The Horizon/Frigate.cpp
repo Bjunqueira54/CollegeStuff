@@ -4,7 +4,7 @@
 
 Frigate::Frigate(const Frigate& orig) {}*/
 
-Frigate::Frigate(Player* o, int id, int x, int y): Ship(o, id, x, y, 2, 50, 500, 0) {
+Frigate::Frigate(Player* o, int id, int y, int x, bool sih): Ship(o, id, y, x, sih, 2, 50, 500, 0) {
 }
 
 const string Frigate::getShipInfo() const

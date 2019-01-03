@@ -10,7 +10,7 @@ public:
     
     /*Frigate();
     Frigate(const Frigate& orig);*/
-    Frigate(Player* o, int id, int x, int y);
+    Frigate(Player* o, int id, int y, int x, bool sih);
     
     const int getType() const { return 4; }
 	const string getShipInfo() const;

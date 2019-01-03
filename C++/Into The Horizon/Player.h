@@ -71,6 +71,9 @@ public:
 	//Note: Check if all other booleans are also true. If they are,
 	//then something went wrong.
 	const bool getShipStopped(int id) const;
+	//Returns if ship is full or not.
+	//Returns false even if ship doesn't exist.
+	const bool getShipIsFull(int id) const;
 	//Returns if a ship is currently in auto mode.
 	//In case <id> does not exist, returns true.
 	//Note: Check if all other booleans are also true. If they are,
@@ -82,6 +85,9 @@ public:
 	//Returns the amount of moves available for the ship with <id>.
 	//Returns -1 if an error occurred.
 	const int getShipMoves(int id) const;
+	//Returns the amount of water currently in ship <id>
+	//Returns -1 if the ship doesn't exist;
+	const int getShipWater(int id) const;
 	//Returns the total amount of fish currently in ship <id>.
 	//Retuns -1 if an error occurred.
 	const int getShipFish(int id) const;
@@ -93,14 +99,14 @@ public:
     const int getCrew(int id) const;
     const int getFish(int id) const;
 	
+	const int getShipmaxCrew(int id) const;
+	const int ShipFish(int id) const;
+	const bool CoordExists(string coord) const;
+	
                 ////////////////////
                 ///Ship Functions///
                 ////////////////////
 
-    //Use this to capture a ship with no crew floating in the ocean.
-    //NOTE: Pirates need to check if the ship is a sailboat or a frigate.
-    void captureShip();
-	
 	//Sets the boolean variable "SpecMoving" to it's inverted state.
 	//Check it's state before using this function to be sure you're
 	//getting what you desire.
@@ -111,14 +117,24 @@ public:
 	//getting what you desire.
 	void toggleShipInHarbor(int id);
 	
-	//For the pirates: spawns a ship of type <type> to the coordinates
-    //x and y (make sure it's not on a land/harbor tile.
-    int spawnship(int type, int x, int y);
+	void toggleShipAuto(int id);
 	
-	//Moves ship <id> in the direction of <dir>. Uses 1 move.
+	//Use this to capture a ship with no crew floating in the ocean.
+    //NOTE: Pirates need to check if the ship is a sailboat or a frigate.
+    void captureShip();
+	
+	//For the pirates: spawns a ship of type <type> to the coordinates
+    //x and y. Use <sih> to control if the ship is spawning in a harbor
+	//tile of not.
+    int spawnship(int type, int x, int y, bool sih);
+	
+	//Sets the destination coordinatinates for ship <id>
+	//Returns -1 if <id> does not exist.
     int ShipSetDestination(int id, string destCoord, bool isDestHarbor);
 	
-	int ShipSellLoad(int id);
+	//Turns on "Auto" mode for the ship with <id>
+	//Returns -1 if ship was not found.
+	int ShipSetAuto(int id);
 	
 	//Updates the (<yy>,<xx>) coordinates of the ship with ID number <id>.
 	//Return values: 0 on success, -1 if an error occurred.

@@ -11,7 +11,10 @@ public:
     
     Ocean(int yy, int xx);
     
-    
+    void TurnUpdate();
+	void Fished();
+	
+	const int getFish() const { return fish; }
     
     virtual ~Ocean();
 };

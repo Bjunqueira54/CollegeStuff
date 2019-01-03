@@ -11,7 +11,7 @@ class Ship
 	int destx, desty;
 	const int moves, maxcrew, maxwater, maxload;
 	int crew, water, cargo, fish;
-	bool inHarbor = true;
+	bool inHarbor;
 	bool Auto = false;
 	bool Stopped = true;
 	bool DestHarbor = false;
@@ -25,17 +25,20 @@ public:
 	Ship() = delete;
 
 	//Derivative Constructor
-	Ship(Player* o, int id, int x, int y, int mm, int mc, int mw, int ml);
+	Ship(Player* o, int id, int y, int x, bool sih, int mm, int mc, int mw, int ml);
 
 	const Player& getOwner() { return *owner; }
 	void toggleSpecMoving() { specMoving = !specMoving; }
 	void toggleInHarbor() { inHarbor = !inHarbor; }
+	void toggleAuto() { Auto = !Auto; }
 	void move(int newy, int newx);
 	int setDestination(int dy, int dx, bool idh);
 	int addCargo(int c);
 	int addFish(int f);
 	int addCrew(int c);
+	int SetAuto();
 	int Stop();
+	int Fish();
 
 				//////////////////////
 				///Getter Functions///
@@ -49,7 +52,11 @@ public:
 	const bool isDestHarbor() const { return DestHarbor; }
 	const bool isInHarbor() const { return inHarbor; }
 	const bool isStopped() const { return Stopped; }
+	const bool isFull() const;
 	const bool isAuto() const { return Auto; }
+	const int getMaxwater() const { return maxwater; }
+	const int getMaxcrew() const { return maxcrew; }
+	const int getMaxload() const { return maxload; }
 	const int getMoves() const { return moves; }
 	const int getCargo() const { return cargo; }
 	const int getWater() const { return water; }
@@ -71,13 +78,6 @@ public:
 private:
     
 	void whatdir();
-	
-protected:
-	
-	const int getMaxcrew() const { return maxcrew; }
-	const int getMaxload() const { return maxload; }
-	const int getMaxwater() const { return maxwater; }
-
 };
 
 #endif

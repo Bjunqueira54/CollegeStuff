@@ -8,7 +8,7 @@ class Schooner: public Ship
     
 public:
 
-    Schooner(Player* o, int id, int x, int y);
+    Schooner(Player* o, int id, int y, int x);
     
     const int getType() const { return 3; }
 	const string getShipInfo() const;

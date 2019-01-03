@@ -1,7 +1,7 @@
 #include "Ship.h"
 #include "Player.h"
 
-Ship::Ship(Player* o, int i, int yy, int xx, int mm, int mc, int mw, int ml): id(i), y(yy), x(xx), moves(mm), maxcrew(mc), maxwater(mw), maxload(ml)
+Ship::Ship(Player* o, int i, int yy, int xx, bool sih, int mm, int mc, int mw, int ml): id(i), y(yy), x(xx), inHarbor(sih), moves(mm), maxcrew(mc), maxwater(mw), maxload(ml)
 {
     owner = o;
     crew = maxcrew;
@@ -9,15 +9,6 @@ Ship::Ship(Player* o, int i, int yy, int xx, int mm, int mc, int mw, int ml): id
     fish = cargo = 0;
     destx = x;
     desty = y;
-}
-
-const string Ship::getCoord() const
-{
-    ostringstream os;
-    
-    os << y << " " << x;
-    
-    return os.str();
 }
 
 const string Ship::getDestCoord() const
@@ -29,15 +20,29 @@ const string Ship::getDestCoord() const
     return os.str();
 }
 
+const string Ship::getCoord() const
+{
+    ostringstream os;
+    
+    os << y << " " << x;
+    
+    return os.str();
+}
+
+const bool Ship::isFull() const
+{
+    if(cargo + fish >= maxload)
+        return true;
+    else
+        return false;
+}
+
 int Ship::setDestination(int dy, int dx, bool idh)
 {
     desty = dy;
     destx = dx;
     DestHarbor = idh;
     specMoving = true;
-    
-    if(Auto)
-        Auto = false;
     
     return 0;
 }
@@ -67,6 +72,22 @@ int Ship::Stop()
 {
     destx = x;
     desty = y;
+}
+
+int Ship::Fish()
+{
+    if(fish += 1)
+        return 0;
+    else
+        return -1;
+}
+
+int Ship::SetAuto()
+{
+    if(Auto = true)
+        return 0;
+    
+    return -1;
 }
 
 int Ship::addCargo(int c)

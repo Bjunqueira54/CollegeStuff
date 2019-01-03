@@ -73,7 +73,7 @@ int Player::buyShip(int type)
     switch(type)
     {
 	case 1:
-            fleet.insert(it, new Sailboat(this, id, y, x));
+            fleet.insert(it, new Sailboat(this, id, y, x, true));
 	    return 0;
 	case 2:
             fleet.insert(it, new Galeon(this, id, y, x));
@@ -82,7 +82,7 @@ int Player::buyShip(int type)
             fleet.insert(it, new Schooner(this, id, y, x));
 	    return 0;
 	case 4:
-            fleet.insert(it, new Frigate(this, id, y, x));
+            fleet.insert(it, new Frigate(this, id, y, x, true));
 	    return 0;
 	case 5:
             fleet.insert(it, new Special(this, id, y, x));
@@ -108,34 +108,32 @@ int Player::sellShip(int id)
     return -1;
 }
 
-int Player::spawnship(int type, int x, int y)
+int Player::spawnship(int type, int x, int y, bool sih)
 {
     int id, i;
     
     for(i=0; i<fleet.size(); i++)
     {
         if(i+1 != fleet[i]->getID())
-        {
-            id = i + 1;
             break;
-        }
     }
+    
+    id = i + 1;
     
     auto it = fleet.begin() + i;
     
     if(type == 1)
     {
-	fleet.insert(it, new Sailboat(this, id, x, y));
+	fleet.insert(it, new Sailboat(this, id, y, x, sih));
 	return 0;
     }
     else if(type == 4)
     {
-	fleet.insert(it, new Frigate(this, id, x, y));
+	fleet.insert(it, new Frigate(this, id, y, x, sih));
 	return 0;
     }
     else
 	return -1;
-	
 }
 
 const int Player::getCrew(int id) const
@@ -237,6 +235,13 @@ const bool Player::getShipStopped(int id) const
     return true;   
 }
 
+const bool Player::getShipIsFull(int id) const
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->isFull();
+}
+
 const bool Player::getShipAuto(int id) const
 {
     //Iterator to look for a ship with matching ID numbers. If found, returns it's state.
@@ -268,6 +273,17 @@ const int Player::getShipFish(int id) const
     return -1;
 }
 
+const bool Player::CoordExists(string coord) const
+{
+    for(auto& it: fleet)
+    {
+        if(it->getCoord() == coord)
+            return true;
+    }
+    
+    return false;
+}
+
 const int Player::getShipMoves(int id) const
 {
     for(auto& it: fleet)
@@ -276,6 +292,15 @@ const int Player::getShipMoves(int id) const
     
     //If a ship with that ID number doesn't exist, return the general error value of -1
     return -1;  
+}
+
+const int Player::getShipWater(int id) const
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->getWater();
+    
+    return -1;
 }
 
 const int Player::getShipType(int id) const
@@ -315,6 +340,13 @@ int Player::ShipSetDestination(int id, string destCoord, bool isDestHarbor)
     }
     
     return -1;
+}
+
+int Player::ShipSetAuto(int id)
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->SetAuto();
 }
 
 int Player::ShipMove(int id, int yy, int xx)
@@ -360,6 +392,36 @@ void Player::toggleShipInHarbor(int id)
         }
     
     return;
+}
+
+void Player::toggleShipAuto(int id)
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+        {
+            it->toggleAuto();
+            return;
+        }
+
+    return;
+}
+
+const int Player::getShipmaxCrew(int id) const
+{
+    for(auto& it: fleet)
+        if(it->getID() == id)
+            return it->getMaxcrew();
+
+    return -1;
+}
+
+const int Player::ShipFish(int id) const
+{
+    for(auto &it: fleet)
+        if(it->getID() == id)
+            return it->Fish();
+    
+    return -1;
 }
 
 Player::~Player()

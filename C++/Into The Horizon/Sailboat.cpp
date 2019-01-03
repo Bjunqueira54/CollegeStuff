@@ -4,7 +4,7 @@
 
 Sailboat::Sailboat(const Sailboat& orig) {}*/
 
-Sailboat::Sailboat(Player* o, int id, int x, int y): Ship(o, id, x, y, 2, 20, 200, 40) {}
+Sailboat::Sailboat(Player* o, int id, int y, int x, bool sih): Ship(o, id, y, x, sih, 2, 20, 200, 40) {}
 
 const string Sailboat::getShipInfo() const
 {

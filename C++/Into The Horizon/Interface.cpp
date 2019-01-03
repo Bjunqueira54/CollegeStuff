@@ -269,8 +269,6 @@ Interface::Interface(char lang)
 	exit (EXIT_FAILURE);
 }
 
-Interface::Interface(const Interface& orig) {}
-
 void Interface::drawBox(WINDOW *win)
 {
     wclear(win);
@@ -826,7 +824,14 @@ int Interface::parseCmd(string c, bool exec)
                 return 0;
             }
             
-            return 0;
+            int id;
+            
+            if(!(is >> id))
+                return -1;
+            
+            retval = game->PlayerShipSetAuto(id);
+            
+            return retval;
         }
         case 10:
         {
@@ -852,7 +857,20 @@ int Interface::parseCmd(string c, bool exec)
                 return 0;
             }
             
-            return 0;
+            int xx, yy;
+            char t;
+            
+            is >> xx;
+            is >> yy;
+            
+            if(xx == 0 || yy == 0)
+                return -1;
+            
+            is >> t;
+            
+            retval = game->PirateAddShip(t, yy, xx);
+            
+            return retval;
         }
         case 12:
         {
@@ -912,11 +930,11 @@ int Interface::parseCmd(string c, bool exec)
                 if(!(is >> yy))
                     return -1;
                 
-                retval = game->PlayerShipMoveTo(id, xx, yy);
+                retval = game->PlayerShipMoveTo(id, xx, yy, 1);
             }
             else
             {
-                retval = game->PlayerShipMoveTo(id, hid);
+                retval = game->PlayerShipMoveTo(id, hid, 1);
             }
          
             return retval;
@@ -1122,11 +1140,11 @@ int Interface::drawMap()
     
     //Step 4: Draw all the existing player fleet, along with marking which of the existing harbors
     //          is his main harbor.
-    for(int i=0; i<game->getPlayerFleetSize(); i++)
+    for(int i=0; i<game->getPlayerFleetSize(1); i++)
     {
-        int id = game->getPlayerShipID(i);
+        int id = game->getPlayerShipID(i, 1);
         
-        if(game->getPlayerShipInHarbor(id))
+        if(game->getPlayerShipInHarbor(id, 1))
             continue;
         
         ostringstream sid;
@@ -1137,12 +1155,12 @@ int Interface::drawMap()
             sid << id;
         
         is.clear();
-        is.str(game->getPlayerShipCoord(id));
+        is.str(game->getPlayerShipCoord(id, 1));
         
         is >> y;
         is >> x;
         
-        switch(game->getPlayerShipType(id))
+        switch(game->getPlayerShipType(id, 1))
         {
             case 1:
                 wattron(wmap, COLOR_PAIR(7));
@@ -1174,6 +1192,52 @@ int Interface::drawMap()
     is >> x;
     wattron(wmap, COLOR_PAIR(5));
     mvwaddch(wmap, y*2-1, x*2, '*');
+    
+    //Step 5: Draw all the existing pirate ships.
+    for(int i=0; i<game->getPlayerFleetSize(2); i++)
+    {
+        int id = game->getPlayerShipID(i, 2);
+        
+        if(game->getPlayerShipInHarbor(id, 2))
+            continue;
+        
+        ostringstream sid;
+        
+        if(id < 10)
+            sid << "0" << id;
+        else
+            sid << id;
+        
+        is.clear();
+        is.str(game->getPlayerShipCoord(id, 2));
+        
+        is >> y;
+        is >> x;
+        
+        switch(game->getPlayerShipType(id, 2))
+        {
+            case 1:
+                wattron(wmap, COLOR_PAIR(7));
+                break;
+            case 2:
+                wattron(wmap, COLOR_PAIR(8));
+                break;
+            case 3:
+                wattron(wmap, COLOR_PAIR(9));
+                break;
+            case 4:
+                wattron(wmap, COLOR_PAIR(10));
+                break;
+            case 5:
+                wattron(wmap, COLOR_PAIR(11));
+                break;
+        }
+
+        mvwaddch(wmap, y*2-1, x*2-1, sid.str()[0]);
+        mvwaddch(wmap, y*2-1, x*2, sid.str()[1]);
+        mvwaddch(wmap, y*2, x*2-1, 'x');
+        mvwaddch(wmap, y*2, x*2, 'x');
+    }
     
     wrefresh(wmap);
     return 0;
@@ -1354,19 +1418,19 @@ void Interface::printStats()
     mvwaddstr(wstats, i++, 1, os.str().c_str());
     os.str("");
     os.clear();
-    os << getLine(49) << game->getPlayerFleetSize();
+    os << getLine(49) << game->getPlayerFleetSize(1);
     mvwaddstr(wstats, i++, 1, os.str().c_str());
     
-    if(game->getPlayerFleetSize() != 0)
+    if(game->getPlayerFleetSize(1) != 0)
     {
         int id, typenum, y, x, desty, destx, crew, mc, water, mw, fish, cargo, ml;
         
-        for(int j=0; j<game->getPlayerFleetSize(); j++)
+        for(int j=0; j<game->getPlayerFleetSize(1); j++)
         {
             istringstream is;
             i++;
-            id = game->getPlayerShipID(j);
-            is.str(game->getPlayerShipInfo(id));
+            id = game->getPlayerShipID(j, 1);
+            is.str(game->getPlayerShipInfo(id, 1));
             //Format: id typeNum Y X DestY DestX Crew maxCrew Water maxWater Fish Cargo maxLoad
             is >> id;
             is >> typenum;
@@ -1385,9 +1449,9 @@ void Interface::printStats()
             os.str("");
             os.clear();
             
-            os << getLine(55) << id << " " << getLine(56) << " " << getLine(49+typenum) << " " << getLine(57) << "(" << x << "," << y << ")";
+            os << getLine(55) << id << " " << getLine(56) << getLine(49+typenum) << " " << getLine(57) << "(" << x << "," << y << ")";
             
-            if(destx != x && desty != y)
+            if(destx != x || desty != y)
                 os << " " << getLine(58) << "(" << destx << "," << desty << ")";
 
             mvwaddstr(wstats, i++, 2, os.str().c_str());

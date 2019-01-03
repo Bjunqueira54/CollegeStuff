@@ -7,13 +7,13 @@ lista               //5 (done)
 compra <id> <m>     //6 (done)
 vende <id>          //7 (done)
 move <id> <dir>     //8 (done)
-auto <id>           //9
+auto <id>           //9 (done)
 stop <id>           //10 (done)
-pirata <x> <y> <t>  //11
+pirata <x> <y> <t>  //11 (done)
 evpos <E> <x> <y>   //12
 evnav <E> <id>      //13
 moedas <n>          //14 (done)
-vaipara <id> <H>    //15 (Kinda done)
+vaipara <id> <H>    //15 (done)
 (vaipara <id> <x> <y>)
 comprasold <id> <S> //16 (Test it)
 saveg <file>        //17

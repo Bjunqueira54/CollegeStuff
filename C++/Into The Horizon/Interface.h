@@ -8,7 +8,7 @@
 #define MAX_Y 40
 
 #define GAME_VERSION_MAJOR 1
-#define GAME_VERSION_MINOR 3
+#define GAME_VERSION_MINOR 7
 
 #define TERM_DEFAULT 11
 
@@ -39,7 +39,6 @@ class Interface
     
 public:
     
-    Interface(const Interface& orig);
     Interface(char lang);
 
     const char* getCmd(int i);
