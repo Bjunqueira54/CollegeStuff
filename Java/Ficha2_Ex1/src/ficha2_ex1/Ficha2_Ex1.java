@@ -131,7 +131,14 @@ public class Ficha2_Ex1
 	}
 	else
 	{
-	    letras[strikes++] = c;
+	    char aux[] = new char[++strikes];
+	    
+	    for(int i = 0; i < letras.length; i++)
+		aux[i] = letras[i];
+	    
+	    aux[strikes-1] = c;
+	    
+	    letras = aux;
 	}
     }
 }
