@@ -6,13 +6,13 @@ public class Ficha2_Ex2
 {
     String titulo;
     String autores[];
-    String texto[];
+    StringBuffer texto[];
     
     public Ficha2_Ex2(String titulo)
     {
 	this.titulo = titulo;
 	autores = new String[5];
-	texto = new String[10];
+	texto = new StringBuffer[10];
 	
 	for (int i = 0; i < autores.length; i++)
 	    autores[i] = null;
@@ -57,12 +57,28 @@ public class Ficha2_Ex2
 	System.out.println(documento.getAutores());
 	
 	documento.addText("mais uma linha.");
-	/*documento.addText("mais 2 linhas. mais 3 linhas.");
+	documento.addText("mais 2 linhas. mais 3 linhas.");
 	documento.removeText("mais 4 linhas");
 	
-	documento.countWords();
-	documento.countWords("linha");
-	documento.changeToSentenceCase();*/
+	documento.changeToSentenceCase();
+	
+	System.out.println(documento.ShowText());
+	
+	/*documento.countWords();
+	documento.countWords("linha");*/
+    }
+    
+    public String ShowText()
+    {
+	StringBuffer aux = new StringBuffer("");
+	
+	for (StringBuffer text : texto)
+	{
+	    if(text != null)
+		aux.append(text + " ");
+	}
+	
+	return aux.toString();
     }
     
     public boolean ExisteEspaco()
@@ -78,8 +94,24 @@ public class Ficha2_Ex2
 	return false;
     }
     
-    public void addAuthor(String autor)
+    public boolean SearchAuthor(String autor)
     {
+	for (int i = 0; i < autores.length; i++)
+	{
+	    if(autores[i] == null)
+		continue;
+	    else if(autores[i].compareToIgnoreCase(autor) == 0)
+		return true;
+	}
+	
+	return false;
+    }
+    
+    public boolean addAuthor(String autor)
+    {
+	if(SearchAuthor(autor))
+	    return false;
+	
 	if(ExisteEspaco())
 	{
 	    for (int i = 0; i < autores.length; i++)
@@ -87,7 +119,7 @@ public class Ficha2_Ex2
 		if(autores[i] == null)
 		{
 		    autores[i] = autor;
-		    return;
+		    break;
 		}
 	    }
 	}
@@ -98,18 +130,25 @@ public class Ficha2_Ex2
 	    autores = aux;
 	    autores[autores.length-1] = autor;
 	}
+	
+	return true;
     }
     
-    public void removeAuthor(String autor)
+    public boolean removeAuthor(String autor)
     {
+	if(!SearchAuthor(autor))
+	    return false;
+	
 	for (int i = 0; i < autores.length; i++)
 	{
 	    if(autores[i].equals(autor))
 	    {
 		autores[i] = null;
-		return;
+		break;
 	    }
 	}
+	
+	return true;
     }
     
     public void removeAuthor(int pos)
@@ -120,7 +159,14 @@ public class Ficha2_Ex2
     
     public void addText(String text)
     {
-	
+	for(int i = 0; i < texto.length; i++)
+	{
+	    if(texto[i] == null)
+	    {
+		texto[i] = new StringBuffer(text);
+		return;
+	    }
+	}
     }
     
     public void removeText(String text)
@@ -140,6 +186,16 @@ public class Ficha2_Ex2
     
     public void changeToSentenceCase()
     {
+	char aux;
 	
+	for(int i = 0; i < texto.length; i++)
+	{
+	    if(texto[i] == null)
+		continue;
+	    
+	    aux = texto[i].charAt(0);
+	    Character.toUpperCase(aux);
+	    texto[i].setCharAt(0, aux);
+	}
     }
 }
