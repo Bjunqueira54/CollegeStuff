@@ -44,6 +44,13 @@ public abstract class Cartao
     public abstract boolean RegistaChamada(int NumeroDestino, int duracao);
     public abstract String getName();
     
+    public void CarregaCartao(int saldo)
+    {
+        if(saldo < 0) return;
+        
+        this.saldo += saldo;
+    }
+    
     @Override
     public String toString()
     {

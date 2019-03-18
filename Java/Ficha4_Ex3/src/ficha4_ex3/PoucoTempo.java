@@ -4,7 +4,12 @@ public class PoucoTempo extends Cartao
 {
     static double CUSTO_MIN = 0.2;
     
-    public PoucoTempo(int numero, double saldo)
+    public PoucoTempo(int numero)
+    {
+        this(numero, 0.0);
+    }
+    
+    private PoucoTempo(int numero, double saldo)
     {
         super(numero, saldo);
     }
