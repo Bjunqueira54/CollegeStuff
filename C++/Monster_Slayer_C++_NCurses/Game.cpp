@@ -8,7 +8,13 @@ Game::Game()
 
 void Game::start()
 {
-    //interface.introduction();
+    getchar();
+    DrawMainMenu();
+    
+    int opt = 0;
+    
+    while(opt != 1 && opt != 2)
+        opt = interface->getOpt();
 }
 
 Game::~Game()

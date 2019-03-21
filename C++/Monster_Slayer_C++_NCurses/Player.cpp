@@ -12,7 +12,7 @@ Player::Player(const string PlayerName): name(PlayerName)
     isHealing = false;
 }
 
-int Player::DamageRoll()
+const int Player::DamageRoll()
 {
     mt19937 rand(time(0));
     uniform_int_distribution<int> dmgRoll(25, 35);
@@ -23,7 +23,7 @@ int Player::DamageRoll()
 	return dmgRoll(rand);
 }
 
-int Player::SpecialDamage()
+const int Player::SpecialDamage()
 {
     mt19937 rand(time(0));
     uniform_int_distribution<int> specialRoll(30, 40);
@@ -31,7 +31,7 @@ int Player::SpecialDamage()
     return specialRoll(rand);
 }
 
-bool Player::CritRoll()
+const bool Player::CritRoll()
 {
     mt19937 rand(time(0));
     uniform_int_distribution<int> crit(1, 100);
@@ -39,7 +39,7 @@ bool Player::CritRoll()
     return (crit(rand) <= 20);
 }
 
-bool Player::MissRoll()
+const bool Player::MissRoll()
 {
     mt19937 rand(time(0));
     uniform_int_distribution<int> miss(1, 100);

@@ -47,6 +47,9 @@
         <ccTool>
           <standard>8</standard>
         </ccTool>
+        <linkerTool>
+          <commandLine>-lncurses</commandLine>
+        </linkerTool>
       </compileType>
       <item path="Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
