@@ -15,7 +15,7 @@ public class UIOperadoraTXT
     };
     
     Operadora telco;
-
+    
     public UIOperadoraTXT(Operadora telco)
     {
         this.telco = telco;
