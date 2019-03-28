@@ -10,11 +10,12 @@ void Game::start()
 {
     getchar();
     DrawMainMenu();
+    getchar();
     
     int opt = 0;
     
-    while(opt != 1 && opt != 2)
-        opt = interface->getOpt();
+    /*while(opt != 1 && opt != 2)
+        opt = interface->getOpt();*/
 }
 
 Game::~Game()

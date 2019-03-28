@@ -5,8 +5,7 @@
 
 class Interface
 {
-    
-    
+    WINDOW* mainwin;
 public:
     
     Interface();
@@ -25,6 +24,13 @@ public:
     int getOpt();
     
     virtual ~Interface();
+    
+private:
+
+    void SetScreenSize(int Lines, int Columns);
+    void DrawBorder(WINDOW* win);
+    
+    void DrawScene(WINDOW* win);
 };
 
 #endif
