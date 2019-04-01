@@ -15,12 +15,50 @@ Interface::Interface()
 
 void Interface::DrawMainMenu()
 {
+    ColorInitializer();
+    getchar();
     DrawScene(stdscr);
     clear();
     DrawBorder(stdscr);
     mvwaddstr(stdscr, 5, 10, "1 - Start Game");
     mvwaddstr(stdscr, 6, 10, "2 - Exit Game");
     refresh();
+}
+
+void Interface::DrawScene(WINDOW *win)
+{
+    wclear(win);
+    int y = getmaxy(win);
+    y--;
+    
+    int x = getmaxx(win);
+    
+    wattron(win, COLOR_PAIR(SKY_COLOR));
+    
+    for(int i = 0; i < y/2; i++)
+    {
+        for (int j = 0; j < x; j++)
+        {
+            mvwaddch(win, i, j, ' ');
+        }
+
+    }
+    
+    wattron(win, COLOR_PAIR(GROUND_COLOR));
+    
+    for (int i = y/2; i < y; i++)
+    {
+        for (int j = 0; j < x; j++)
+        {
+            mvwaddch(win, i, j, ' ');
+        }
+    }
+    
+    wrefresh(win);
+    getchar();
+    wattron(win, COLOR_PAIR(TERM_COLOR_DEFAULT));
+    wclear(win);
+    wrefresh(win);
 }
 
 void Interface::DrawBorder(WINDOW* win)
@@ -45,6 +83,19 @@ void Interface::DrawBorder(WINDOW* win)
         mvwaddch(win, i, 0, '|');
         mvwaddch(win, i, 150-1, '|');
     }
+}
+
+void Interface::DrawRenderModel(WINDOW *win, vector<int> coord)
+{
+    wattron(win, COLOR_PAIR(RENDER_CHAR_DEFAULT));
+    
+    for (int i = 0; i < coord.size(); i++)
+    {
+        mvwaddch(win, coord[i][1], coord[i][0], ' ');
+    }
+
+    wattron(win, COLOR_PAIR(TERM_COLOR_DEFAULT));
+    wrefresh(win);
 }
 
 void Interface::SetScreenSize(int lines, int columns)
@@ -76,37 +127,17 @@ void Interface::SetScreenSize(int lines, int columns)
     #endif
 }
 
-void Interface::DrawScene(WINDOW* win)
+void Interface::ColorInitializer()
 {
-    getchar();
+    init_pair(TERM_COLOR_DEFAULT, COLOR_WHITE, COLOR_BLACK);
+    init_pair(SKY_COLOR, COLOR_WHITE, COLOR_CYAN);
     
-    wclear(win);
-    wrefresh(win);
+    short COLOR_GRAY;
     
-    int SKY_COLOR = 11;
-    int SKY_BACKGROUND;
-    int SKY_FOREGROUND;
-    int x, y;
-    x = getmaxx(win);
-    y = getmaxy(win);
+    init_color(COLOR_GRAY, COLOR_CONVERTER(220), COLOR_CONVERTER(220), COLOR_CONVERTER(220));
     
-    init_color(SKY_FOREGROUND, 1000, 1000, 1000);
-    init_color(SKY_BACKGROUND, 1000, 1000, 1000);
-    
-    init_pair(1, SKY_FOREGROUND, SKY_BACKGROUND);
-    
-    wattron(win, COLOR_PAIR(1));
-    
-    for(int i = 0; i < y; i++)
-    {
-        for(int j = 0; j < x; j++)
-        {
-            mvwaddch(win, i, j, ' ');
-        }
-    }
-    wrefresh(win);
-    
-    getchar();
+    init_pair(GROUND_COLOR, COLOR_BLACK, COLOR_GRAY);
+    init_pair(RENDER_CHAR_DEFAULT, COLOR_WHITE, COLOR_WHITE);
 }
 
 Interface::~Interface()
