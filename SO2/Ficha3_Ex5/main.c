@@ -79,3 +79,27 @@ DWORD WINAPI ThreadProdutor(LPVOID param)
     
     return 0;
 }
+
+DWORD WINAPI ThreadConsumidor(LPVOID param)
+{
+    TCHAR strLocal[MAX];
+    _tprintf(TEXT("[Consumidor]Sou a thread %d e vou começar a trabalhar ...\n"), GetCurrentThreadId());
+    Sleep(100);
+    
+    do
+    {
+        WaitForSingleObject(hMutex, INFINITE);
+        if(nova)
+        {
+            _tcscpy_s(strLocal, MAX, frase);
+            nova = FALSE;
+            _tprintf(TEXT("[Consumidor]:%s"),strLocal);
+        }
+        
+        ReleaseMutex(hMutex);
+        Sleep(1000);
+    }
+    while(_tcsncmp(strLocal, TEXT("fim"),3));
+    
+    return 0;
+}
