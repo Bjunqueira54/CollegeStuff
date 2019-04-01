@@ -49,18 +49,18 @@ public class AwaitPlacement extends StateAdapter
             if (getGame().hasWon(p)) 
             {
                 p.setHasWon(true);
-                return /*...*/;
+                return new AwaitBeginning(getGame());
             }
             
             getGame().setNextPlayerTurn();
                         
             if(getGame().getCurrentPlayer().getNumAvailableTokens() > 0)
             {
-                return /*...*/;
+                return this;
             }
             else
             {
-                return /*...*/;
+                return new AwaitReturn(getGame());
             }           
         } 
         
@@ -70,7 +70,7 @@ public class AwaitPlacement extends StateAdapter
     @Override
     public IStates quit() 
     {
-        getGame()./*...*/.setHasWon(true);
-        return /*...*/;
+        getGame().getNotCurrentPlayer().setHasWon(true);
+        return new AwaitBeginning(getGame());
     }   
 }

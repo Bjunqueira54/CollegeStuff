@@ -12,7 +12,7 @@ public class AwaitBeginning extends StateAdapter
     @Override
     public IStates setNumberPlayers(int num)
     { 
-        getGame()./*...*/;
+        getGame().setNumPlayers(num);
         return this; 
     }
     
@@ -28,7 +28,7 @@ public class AwaitBeginning extends StateAdapter
     {
         if(getGame().initialize())
         {
-            return /*...*/;
+            return new AwaitPlacement(getGame());
         }
         
         return this; 

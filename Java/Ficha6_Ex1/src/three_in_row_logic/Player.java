@@ -40,7 +40,7 @@ public class Player implements Constants
         availableTokens.clear();        
         
         for(int i=0; i<NUM_TOKENS_TURN; i++){
-            availableTokens./*...*/;
+            availableTokens.add(new Token(this));
         }
         
         hasWon = false;
