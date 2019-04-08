@@ -1,6 +1,6 @@
 package logicaJogo;
 
-public class deletedem
+public class GameData
 {
     
 }
