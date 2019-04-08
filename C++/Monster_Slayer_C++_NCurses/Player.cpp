@@ -10,8 +10,6 @@ Player::Player(const string PlayerName): name(PlayerName)
     isBlocking = false;
     isFirstRound = true;
     isHealing = false;
-    
-    rPlayer = new RenderModel();
 }
 
 const int Player::DamageRoll()
