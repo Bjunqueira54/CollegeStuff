@@ -30,7 +30,7 @@ public class GameData
         for (int i = 0; i < NBALLS; i++)
         {
             bag.add(new WhiteBall(this));
-            bag.add(new BlackBall());
+            bag.add(new BlackBall(this));
         }
         
         Collections.shuffle(bag);

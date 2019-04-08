@@ -31,5 +31,7 @@ public class AwaitBet extends StateAdapter
         {
             return new GameOver(getGameData());
         }
+        
+        return new AwaitOption(getGameData());
     }
 }
