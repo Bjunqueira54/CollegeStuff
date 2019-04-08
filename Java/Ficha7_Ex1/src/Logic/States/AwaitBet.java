@@ -7,7 +7,6 @@ import Logic.GameData;
 
 public class AwaitBet extends StateAdapter
 {
-
     public AwaitBet(GameData gamedata)
     {
         super(gamedata);
