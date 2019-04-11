@@ -4,6 +4,6 @@ import gameLogic.States.gStates;
 
 public class Game
 {
-    GameData gamedata;
-    gStates state;
+    GameData game_data;
+    gStates journey_tracker;
 }
