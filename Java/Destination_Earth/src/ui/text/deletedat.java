@@ -1,4 +1,4 @@
-package iu.texto;
+package ui.text;
 
 public class deletedat
 {

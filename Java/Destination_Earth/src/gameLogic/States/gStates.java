@@ -1,4 +1,4 @@
-package logicaJogo.States;
+package gameLogic.States;
 
 public interface gStates
 {

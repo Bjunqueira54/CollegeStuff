@@ -1,4 +1,4 @@
-package logicaJogo;
+package gameLogic;
 
 public class GameData
 {

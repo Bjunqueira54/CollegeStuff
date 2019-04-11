@@ -1,4 +1,4 @@
-package logicaJogo.Tokens;
+package gameLogic.Tokens;
 
 public class SealRoom extends Token
 {

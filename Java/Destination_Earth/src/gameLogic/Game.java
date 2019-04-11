@@ -1,6 +1,6 @@
-package logicaJogo;
+package gameLogic;
 
-import logicaJogo.States.gStates;
+import gameLogic.States.gStates;
 
 public class Game
 {

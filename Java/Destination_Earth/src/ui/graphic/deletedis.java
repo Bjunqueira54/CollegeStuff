@@ -1,4 +1,4 @@
-package iu.grafico;
+package ui.graphic;
 
 public class deletedis
 {
