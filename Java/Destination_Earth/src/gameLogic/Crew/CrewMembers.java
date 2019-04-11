@@ -17,23 +17,23 @@ public class CrewMembers
     public int pickCrewMember()
     {
         //mostrar todas as hipoteses
-        //cada uma com um numero
+        //cada uma com um numero (1 a 12)
         int opt = readOption();
         addCrewMember(opt);
         switch(opt)
         {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
+            case 1: //doctor
+            case 2: //comm's officer
+            case 3: //red shirt
+            case 4: //science officer
+            case 5: //engineer
+            case 6: //captain
+            case 7: //commander
+            case 8: //transporter chief
+            case 9: //moral officer
+            case 10: //security officer
+            case 11: //navigation officer
+            case 12: //shuttle pilot
             default: return 0;
         }
     }
