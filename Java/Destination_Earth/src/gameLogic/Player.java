@@ -1,5 +1,7 @@
 package gameLogic;
 
+import gameLogic.Crew.CrewMembers;
+
 public class Player
 {
     static int MAX_POINTS = 12; //o maximo é sempre 12
@@ -7,12 +9,16 @@ public class Player
     int HP;
     int IP;
     int Current_AP;
+    
+    CrewMembers PCs[];
 
     public Player(int HP, int IP)
     {
         this.HP = HP;
         this.IP = IP;
         this.Current_AP = ACTION_POINTS;
+        
+        PCs = new CrewMembers[2];
     }
 
     public void setActionPoints(int AP) {this.ACTION_POINTS = AP;}
