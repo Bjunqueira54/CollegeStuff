@@ -1,7 +1,6 @@
 package gameLogic;
 
 import gameLogic.Crew.CrewMembers;
-import static gameLogic.Crew.CrewMembers.setActionPoints;
 
 public class Player
 {
@@ -19,7 +18,7 @@ public class Player
         
         this.HP = HP;
         this.IP = IP;
-        this.Current_AP = setActionPoints();
+        //this.Current_AP = setActionPoints();
     }
     
     public void setHP(int HP) {this.HP = HP;}
