@@ -6,4 +6,9 @@ public class ShuttlePilot extends CrewMembers
     int attack = 1;//d6
     //provisorio
     String special = "Starts with 4 extra health";
+
+    public ShuttlePilot()
+    {
+        
+    }
 }

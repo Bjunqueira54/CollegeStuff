@@ -6,4 +6,9 @@ public class TransporterChief extends CrewMembers
     int attack = 1;//d6
     //provisorio
     String special = "Can teleport to any room on the ship for 1 action point";
+
+    public TransporterChief()
+    {
+        
+    }
 }

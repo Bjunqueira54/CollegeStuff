@@ -6,4 +6,7 @@ public class MoralOfficer extends CrewMembers
     int attack = 1;//d6
     //provisorio
     String special = "Starts with 5 inspiration points";
+
+    public MoralOfficer() {
+    }
 }

@@ -6,4 +6,9 @@ public class NavigationOfficer extends CrewMembers
     int attack = 1;//d6
     //provisorio
     String special = "Can move 2 rooms for 1 action point";
+
+    public NavigationOfficer()
+    {
+        
+    }
 }

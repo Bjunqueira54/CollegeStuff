@@ -6,4 +6,9 @@ public class SecurityOfficer extends CrewMembers
     int attack = 2;//d6
     //provisorio
     String special = "Starts with 2d6 for attack";
+
+    public SecurityOfficer()
+    {
+        
+    }
 }

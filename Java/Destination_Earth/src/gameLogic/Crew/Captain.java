@@ -6,4 +6,9 @@ public class Captain extends CrewMembers
     int attack = 1;//d6
     //provisorio
     String special = "Can attack an alien on a 3+";
+
+    public Captain()
+    {
+        
+    }
 }

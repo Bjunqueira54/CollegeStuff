@@ -9,4 +9,9 @@ public class Engineer extends CrewMembers
             + "2 hull for 1 ip when resting"
             + "1 hull for 1 action point"
             + "1 hull per round for free if in engineering";
+
+    public Engineer()
+    {
+        
+    }
 }
