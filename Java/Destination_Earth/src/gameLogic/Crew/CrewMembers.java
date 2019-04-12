@@ -4,21 +4,25 @@ import java.util.Scanner;
 
 public class CrewMembers 
 {
-    Scanner s = new Scanner(System.in);
     int takenOptions[];
     int count = 0;
     
     public CrewMembers()
     {
         takenOptions = new int[2];
-        pickCrewMember();        
+        //pickCrewMember();        
     }
-
-    public int pickCrewMember()
+    
+    //ATENÇÂO: Apaguei uma função que tinhas aqui porque involvia ir buscar input
+    //do jogador com um scanner. Isso está 100% extremamente errado.
+    //Scanners e input gathering fazem-se nas classes do interface (texto ou gráfico)
+    //e só depois é que chamamos as funções das classes relativas ao jogo.
+    //Nunca ir buscar inputs diretamente as classes de lógica
+    
+    /*public int pickCrewMember()
     {
         //mostrar todas as hipoteses
         //cada uma com um numero (1 a 12)
-        int opt = readOption();
         addCrewMember(opt);
         switch(opt)
         {
@@ -36,18 +40,7 @@ public class CrewMembers
             case 12: //shuttle pilot
             default: return 0;
         }
-    }
-    
-    
-    private int readOption()
-    {
-        int opt = 0;
-        do
-        {
-            opt = s.nextInt();
-        } while(verifyOption(opt));
-        return opt;
-    }
+    }*/
     
     private boolean verifyOption(int opt)
     {
