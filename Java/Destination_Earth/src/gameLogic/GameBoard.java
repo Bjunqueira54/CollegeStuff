@@ -40,5 +40,11 @@ public class GameBoard
     
     public String getRoom(int index) {return rooms[index];}
     
-    //public List<Integer> getRoomDoors(int room) {return doors[room];}
+    public int[] getRoomDoors(int room)
+    {
+        int[] door_number = new int[doors[room].length];
+        for (int i=0; i < doors[room].length; i++)
+            door_number[i] = doors[room][i+1];
+        return door_number;
+    }
 }
