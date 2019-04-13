@@ -45,6 +45,7 @@ public class GameBoard
         int[] door_number = new int[doors[room].length];
         for (int i=0; i < doors[room].length; i++)
             door_number[i] = doors[room][i+1];
+        
         return door_number;
     }
 }
