@@ -21,6 +21,8 @@ public class Player
         //this.Current_AP = setActionPoints();
     }
     
+    public void setAP(int AP) {this.ACTION_POINTS = AP;}
+    
     public void setHP(int HP) {this.HP = HP;}
 
     public void setIP(int IP) {this.IP = IP;}
