@@ -1,6 +1,6 @@
 package ui.text;
 
-public class deletedat
+public class delete_this
 {
     
 }
