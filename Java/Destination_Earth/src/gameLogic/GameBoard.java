@@ -3,6 +3,7 @@ package gameLogic;
 public class GameBoard 
 {
     //todas as salas tem id-1
+    //no futuro mudar isto para o ui.text
     String rooms[] = {
         "Bridge",           //0
         "Sick Bay",         //1
