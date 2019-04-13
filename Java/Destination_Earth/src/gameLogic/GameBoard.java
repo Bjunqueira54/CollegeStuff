@@ -1,5 +1,7 @@
 package gameLogic;
 
+import java.util.ArrayList;
+
 public class GameBoard 
 {
     String rooms[] = {
@@ -16,8 +18,9 @@ public class GameBoard
         "Astrometrics",
         "Holodeck",
         "Hydroponics",
-    };
-    int doors[][];
+    };    
+    ArrayList<Integer> doors[];
     
     public String getRoom(int index) {return rooms[index];}
+    public ArrayList<Integer> getRoomDoors(int room) {return doors[room];}
 }
