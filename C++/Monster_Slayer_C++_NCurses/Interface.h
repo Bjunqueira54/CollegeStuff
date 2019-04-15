@@ -25,13 +25,12 @@ public:
     //Note: use DrawMainMenu() for out-of-game main menu
     void DrawCombatMenu();
     
-    //Recieves an array of coordinates and draws each position with
-    //a default white background/foreground space character
-    void DrawRenderModel(WINDOW *win, vector<int> coord);
-    
     //Gets a character from the user and returns the
     //ASCII int value for it
     int getOpt();
+    
+    //Gets the name for the player while also printing in on screen
+    string getName(WINDOW* win);
     
     virtual ~Interface();
     

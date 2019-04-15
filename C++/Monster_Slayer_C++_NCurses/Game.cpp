@@ -4,21 +4,32 @@
 Game::Game()
 {
     interface = new Interface();
-    monster = new NPC();
-    player = new Player("GothicDreadTest");
 }
 
 void Game::start()
 {
+    string PlayerName;
+    
     getchar();
     DrawMainMenu();
-    getchar();
-    interface->DrawRenderModel(stdscr, player->getRenderCoord());
     
     int opt = 0;
     
-    /*while(opt != 1 && opt != 2)
-        opt = interface->getOpt();*/
+    while(opt != 1 && opt != 2)
+    {
+        opt = interface->getOpt();
+        
+        switch(opt)
+        {
+            case '1':
+                PlayerName = interface->getName(stdscr);
+                break;
+            case '2':
+                break;
+            default:
+                opt = 0;
+        }
+    }
 }
 
 Game::~Game()

@@ -8,6 +8,8 @@ Interface::Interface()
     start_color();
     noecho();
     curs_set(0);
+    keypad(stdscr, true);
+    ColorInitializer();
     
     mvwaddstr(stdscr, 0, 5, "Welcome to Monster Slayer");
     refresh();
@@ -15,9 +17,6 @@ Interface::Interface()
 
 void Interface::DrawMainMenu()
 {
-    ColorInitializer();
-    getchar();
-    DrawScene(stdscr);
     clear();
     DrawBorder(stdscr);
     mvwaddstr(stdscr, 5, 10, "1 - Start Game");
@@ -61,6 +60,49 @@ void Interface::DrawScene(WINDOW *win)
     wrefresh(win);
 }
 
+int Interface::getOpt()
+{
+    int c;
+    
+    c = getchar();
+    
+    return c;
+}
+
+string Interface::getName(WINDOW* win)
+{
+    string name = "";
+    wclear(win);
+    mvwaddstr(win, 10, 59, "Choose your name");
+    int x = 60, y = 11;
+    mvwaddch(win, y, x, '_');
+    
+    char c;
+    
+    do
+    {
+        c = getchar();
+        
+        if( (c > 'a' && c < 'z') ||
+            (c > 'A' && c < 'Z') ||
+            (c == ' ' || c == '-' || c == '.' || c == ',' || c == '_'))
+        {
+            mvwaddch(win, y, x, c);
+            mvwaddch(win, y, x++, '_');
+        }
+        else if(c == KEY_BACKSPACE)
+        {
+            mvwaddch(win, y, x, ' ');
+            mvwaddch(win, y, x--, '_');
+        }
+        
+        name += c;
+    }
+    while(c != KEY_ENTER || c != 10);
+    
+    return name;
+}
+
 void Interface::DrawBorder(WINDOW* win)
 {
     int x, y;
@@ -83,19 +125,6 @@ void Interface::DrawBorder(WINDOW* win)
         mvwaddch(win, i, 0, '|');
         mvwaddch(win, i, 150-1, '|');
     }
-}
-
-void Interface::DrawRenderModel(WINDOW *win, vector<int> coord)
-{
-    wattron(win, COLOR_PAIR(RENDER_CHAR_DEFAULT));
-    
-    for (int i = 0; i < coord.size(); i++)
-    {
-        mvwaddch(win, coord[i][1], coord[i][0], ' ');
-    }
-
-    wattron(win, COLOR_PAIR(TERM_COLOR_DEFAULT));
-    wrefresh(win);
 }
 
 void Interface::SetScreenSize(int lines, int columns)
