@@ -1,4 +1,4 @@
-package gameLogic;
+package gameLogic.Ship;
 
 import static gameLogic.GameData.getMaxPoints;
 
