@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gameLogic.Ship;
 
-/**
- *
- * @author gabri
- */
-public class Astrometrics 
-extends Ship{
+public class Astrometrics extends Ship
+{
+    int doors[] = {4,5,9,11};
     
+    public int[] getRoomDoors() {return doors;}
 }

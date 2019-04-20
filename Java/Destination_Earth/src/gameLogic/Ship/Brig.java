@@ -1,8 +1,8 @@
 package gameLogic.Ship;
 
-public class Enginnering extends Ship
+public class Brig extends Ship
 {
-    int doors[] = {2,11};
+    int doors[] = {4,8};
     
     public int[] getRoomDoors() {return doors;}
 }
