@@ -19,7 +19,6 @@ public class Player
         
         this.HP = DEFAULT_HP;
         this.IP = DEFAULT_IP;
-        //this.Current_AP = setActionPoints();
     }
     
     //incremetar o AP nao substituilo
