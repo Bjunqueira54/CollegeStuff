@@ -1,9 +1,11 @@
 package gameLogic.Crew;
 
+import gameLogic.Player;
 import ui.text.CrewMembersText;
 
 public class CrewMembers 
 {
+    Player p;
     CrewMembersText out;
     int takenOptions[];
     int count = 0;

@@ -34,13 +34,3 @@ public class CrewMembersText
         }
     }*/
 }
-
-   
-//mostrar todas as hipoteses
-        //cada uma com um numero (1 a 12)
-        /*addCrewMember(opt);
-        switch(opt)
-        {
-            
-            default: return 0;
-        }*/

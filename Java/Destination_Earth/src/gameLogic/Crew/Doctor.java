@@ -3,7 +3,8 @@ package gameLogic.Crew;
 public class Doctor extends CrewMembers
 {
     int movement = 1;
-    int attack = 1;//d6
+    int attack_die = 1;//d6
+    int attack_hit = 5;
     //provisorio
     String special = "Can heal"
             + "3 health for 1 ip when resting"
