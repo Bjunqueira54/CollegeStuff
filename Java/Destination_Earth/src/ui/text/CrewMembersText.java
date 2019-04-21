@@ -31,8 +31,8 @@ public class CrewMembersText
             case 10: //security officer
             case 11: //navigation officer
             case 12: //shuttle pilot
-        }*/
-    }
+        }
+    }*/
 }
 
    
