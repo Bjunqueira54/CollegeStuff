@@ -4,9 +4,9 @@ import gameLogic.Crew.CrewMembers;
 
 public class Player
 {
+    static int DEFAULT_HP = 8;
+    static int DEFAULT_IP = 0;
     int ACTION_POINTS = 5; //pode ser alterado
-    int DEFAULT_HP = 8;
-    int DEFAULT_IP = 0;
     int HP;
     int IP;
     int Current_AP;
@@ -16,9 +16,17 @@ public class Player
     public Player()
     {
         PCs = new CrewMembers[2];
+        pickMyCrew();
         
         this.HP = DEFAULT_HP;
         this.IP = DEFAULT_IP;
+        this.Current_AP = ACTION_POINTS;
+    }
+    
+    public void pickMyCrew()
+    {
+        PCs[0] = new CrewMembers();
+        PCs[1] = new CrewMembers(PCs[0].getOption());
     }
     
     //incremetar o AP nao substituilo

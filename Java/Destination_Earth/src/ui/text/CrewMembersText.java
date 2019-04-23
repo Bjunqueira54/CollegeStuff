@@ -8,9 +8,12 @@ public class CrewMembersText
     
     public CrewMembersText() {}
     
-    public void showCrewOptions()
+    public void showCrewOptions(int taken)
     {
+        if(taken != 0)
+            System.out.println("Opcoes ja escolhidas: " + taken);
         //mostrar as opções
+        System.out.print("-> ");
     }
     
     public int pickCrewMember() {return s.nextInt();}
