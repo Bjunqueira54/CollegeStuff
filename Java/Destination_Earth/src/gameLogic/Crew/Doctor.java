@@ -13,6 +13,6 @@ public class Doctor extends CrewMembers
 
     public Doctor()
     {
-        
+
     }
 }

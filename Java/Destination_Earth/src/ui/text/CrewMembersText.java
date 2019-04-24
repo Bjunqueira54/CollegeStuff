@@ -6,34 +6,39 @@ public class CrewMembersText
 {
     Scanner s = new Scanner(System.in);
     
+    static int CREW_MEMBER_TYPES = 12;
+    String[] crew_names = {
+        "Captain",
+        "Commander",
+        "Commns Officer",
+        "Doctor",
+        "Engineer",
+        "Moral Officer",
+        "Navigation Officer",
+        "Red Shirt",
+        "Science Officer",
+        "Security Officer",
+        "Shuttle Pilot",
+        "Transporter Chief"
+    };
+    
     public CrewMembersText() {}
     
-    public void showCrewOptions(int taken)
+    public void showCrewOptions(int[] taken)
     {
-        if(taken != 0)
-            System.out.println("Opcoes ja escolhidas: " + taken);
-        //mostrar as opções
-        System.out.print("-> ");
+        crewOptions(taken);
+        System.out.print("Escolha\n-> ");
+    }
+    
+    public void crewOptions(int[] taken)
+    {
+        System.out.println("Opcoes Possiveis:");
+        for (int i=1; i < CREW_MEMBER_TYPES; i++)
+            if(i != taken[0] && i != taken[1])
+                System.out.println("" + i + " - " + crew_names[i]);
     }
     
     public int pickCrewMember() {return s.nextInt();}
     
-    /*public (int index)
-    {
-        switch(index)
-        {
-            case 1: //doctor
-            case 2: //comm's officer
-            case 3: //red shirt
-            case 4: //science officer
-            case 5: //engineer
-            case 6: //captain
-            case 7: //commander
-            case 8: //transporter chief
-            case 9: //moral officer
-            case 10: //security officer
-            case 11: //navigation officer
-            case 12: //shuttle pilot
-        }
-    }*/
+    public String getCrewMemeberName(int index) {return crew_names[index];}
 }

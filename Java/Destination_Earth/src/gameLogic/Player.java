@@ -1,22 +1,40 @@
 package gameLogic;
 
+import gameLogic.Crew.Captain;
+import gameLogic.Crew.Commander;
+import gameLogic.Crew.CommsOfficer;
 import gameLogic.Crew.CrewMembers;
+import gameLogic.Crew.Doctor;
+import gameLogic.Crew.Engineer;
+import gameLogic.Crew.MoralOfficer;
+import gameLogic.Crew.NavigationOfficer;
+import gameLogic.Crew.RedShirt;
+import gameLogic.Crew.ScienceOfficer;
+import gameLogic.Crew.SecurityOfficer;
+import gameLogic.Crew.ShuttlePilot;
+import gameLogic.Crew.TransporterChief;
+import ui.text.CrewMembersText;
 
 public class Player
 {
     static int DEFAULT_HP = 8;
     static int DEFAULT_IP = 0;
-    int ACTION_POINTS = 5; //pode ser alterado
+    int ACTION_POINTS = 5; 
     int HP;
     int IP;
     int Current_AP;
     
     CrewMembers PCs[];
-
+    CrewMembersText cout;
+    int takenOption[] = {0,0};
+    int count = 0;
+    
     public Player()
     {
         PCs = new CrewMembers[2];
+        cout = new CrewMembersText();
         pickMyCrew();
+        assembleMyCrew();
         
         this.HP = DEFAULT_HP;
         this.IP = DEFAULT_IP;
@@ -25,11 +43,58 @@ public class Player
     
     public void pickMyCrew()
     {
-        PCs[0] = new CrewMembers();
-        PCs[1] = new CrewMembers(PCs[0].getOption());
+        int option;
+        do {
+            cout.showCrewOptions(takenOption);
+            option = cout.pickCrewMember();
+            takenOption[count++] = option;
+        } while(!verifyOption(option) || count != 2);
     }
     
-    //incremetar o AP nao substituilo
+    private boolean verifyOption(int opt)
+    {
+        if(opt >= 1 && opt <= 12)
+            for (int i=0; i < takenOption.length; i++)
+                if(opt == takenOption[i])
+                    return false;
+                else
+                    return true;
+        return false;
+    }
+    
+    public void assembleMyCrew()
+    {
+        for (int i=0; i < PCs.length; i++)  { System.out.println("" + i);
+            switch(takenOption[i])
+            {
+                case 1: PCs[i] = new Captain();
+                        break;
+                case 2: PCs[i] = new Commander();
+                        break;
+                case 3: PCs[i] = new CommsOfficer();
+                        break;
+                case 4: PCs[i] = new Doctor();
+                        break;
+                case 5: PCs[i] = new Engineer();
+                        break;
+                case 6: PCs[i] = new MoralOfficer();
+                        break;
+                case 7: PCs[i] = new NavigationOfficer();
+                        break;
+                case 8: PCs[i] = new RedShirt();
+                        break;
+                case 9: PCs[i] = new ScienceOfficer();
+                        break;
+                case 10: PCs[i] = new SecurityOfficer();
+                        break;
+                case 11: PCs[i] = new ShuttlePilot();
+                        break;
+                case 12: PCs[i] = new TransporterChief();
+                        break;
+            }
+        }
+    }
+    
     public void setAP(int AP) {this.ACTION_POINTS += AP;}
     
     public void setHP(int HP) {this.HP = HP;}

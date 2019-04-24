@@ -10,6 +10,5 @@ public class Commander extends CrewMembers
 
     public Commander()
     {
-        p.setAP(1);
     }
 }
