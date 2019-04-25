@@ -14,7 +14,7 @@ public class MainMenu implements States
     @Override
     public States ChooseCrew()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new ChooseCrewState(gamedata);
     }
 
     @Override

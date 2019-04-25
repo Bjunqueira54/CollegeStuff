@@ -6,11 +6,11 @@ import static gameLogic.Dice.diceRoller;
 
 public class GameBoard 
 {
-    Ship ship;
-    private final Player p;
+    /*Ship ship;
+    //private final Player p;
     private final Alien a;
           
-    public GameBoard(Player player, Alien alien)
+   /* public GameBoard(Player player, Alien alien)
     {
         ship = new Ship();
         p = player;
@@ -25,5 +25,5 @@ public class GameBoard
             p.setPosition(i, diceRoller(2));
     }
     
-    private int getPCsLength() {return p.PCs.length;}
+    private int getPCsLength() {return p.PCs.length;}*/
 }
