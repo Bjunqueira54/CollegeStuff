@@ -12,7 +12,15 @@ public class Engineer extends CrewMembers
             + "1 hull per round for free if in engineering";
 
     public Engineer()
-    {
+    { 
         
     }
+    
+    public int getAttackHit() {return attack_hit;}
+    
+    public int getMovement() {return movement;}
+
+    public int getAttackDie() {return attack_die;}
+    
+    public void setAttackDie(int change) {this.attack_die += change;}
 }

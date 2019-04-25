@@ -13,4 +13,6 @@ public class Ship
     }
 
     public int getHullHP() {return hull_HP;}
+    
+    public void setHullHP(int change) {hull_HP += change;}
 }

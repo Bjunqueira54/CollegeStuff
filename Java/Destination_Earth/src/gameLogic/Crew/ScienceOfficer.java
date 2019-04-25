@@ -9,7 +9,15 @@ public class ScienceOfficer extends CrewMembers
     String special = "Can attack aliens in any adjacent room as long as there is a door";
 
     public ScienceOfficer()
-    {
+    { 
         
     }
+    
+    public int getAttackHit() {return attack_hit;}
+    
+    public int getMovement() {return movement;}
+
+    public int getAttackDie() {return attack_die;}
+    
+    public void setAttackDie(int change) {this.attack_die += change;}
 }

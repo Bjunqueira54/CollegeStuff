@@ -12,4 +12,12 @@ public class SecurityOfficer extends CrewMembers
     {
         
     }
+    
+    public int getAttackHit() {return attack_hit;}
+    
+    public int getMovement() {return movement;}
+
+    public int getAttackDie() {return attack_die;}
+    
+    public void setAttackDie(int change) {this.attack_die += change;}
 }

@@ -9,7 +9,15 @@ public class ShuttlePilot extends CrewMembers
     String special = "Starts with 4 extra health";
 
     public ShuttlePilot()
-    {
+    { 
         
     }
+    
+    public int getAttackHit() {return attack_hit;}
+    
+    public int getMovement() {return movement;}
+
+    public int getAttackDie() {return attack_die;}
+    
+    public void setAttackDie(int change) {this.attack_die += change;}
 }
