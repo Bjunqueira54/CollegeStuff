@@ -8,4 +8,6 @@ public class ConferenceRoom extends Ship
     public int[] getRoomDoors() {return doors;}
     
     public boolean getRoomState() {return sealed_room;}
+    
+    public void setRoomState() {sealed_room = true;}
 }
