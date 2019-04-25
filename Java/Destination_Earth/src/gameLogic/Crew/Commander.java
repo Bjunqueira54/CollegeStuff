@@ -1,5 +1,7 @@
 package gameLogic.Crew;
 
+import static gameLogic.Player.setAP;
+
 public class Commander extends CrewMembers
 {
     int movement = 1;
@@ -10,5 +12,6 @@ public class Commander extends CrewMembers
 
     public Commander()
     {
+        setAP(1);
     }
 }

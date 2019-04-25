@@ -19,7 +19,7 @@ public class Player
 {
     static int DEFAULT_HP = 8;
     static int DEFAULT_IP = 0;
-    int ACTION_POINTS = 5; 
+    static int AP = 5; 
     int HP;
     int IP;
     int Current_AP;
@@ -38,7 +38,7 @@ public class Player
         
         this.HP = DEFAULT_HP;
         this.IP = DEFAULT_IP;
-        this.Current_AP = ACTION_POINTS;
+        this.Current_AP = AP;
     }
     
     public void pickMyCrew()
@@ -64,7 +64,7 @@ public class Player
     
     public void assembleMyCrew()
     {
-        for (int i=0; i < PCs.length; i++)  { System.out.println("" + i);
+        for (int i=0; i < PCs.length; i++)
             switch(takenOption[i])
             {
                 case 1: PCs[i] = new Captain();
@@ -86,16 +86,15 @@ public class Player
                 case 9: PCs[i] = new ScienceOfficer();
                         break;
                 case 10: PCs[i] = new SecurityOfficer();
-                        break;
+                         break;
                 case 11: PCs[i] = new ShuttlePilot();
-                        break;
+                         break;
                 case 12: PCs[i] = new TransporterChief();
-                        break;
+                         break;
             }
-        }
     }
     
-    public void setAP(int AP) {this.ACTION_POINTS += AP;}
+    public static void setAP(int change) {AP += change;}
     
     public void setHP(int HP) {this.HP = HP;}
 
