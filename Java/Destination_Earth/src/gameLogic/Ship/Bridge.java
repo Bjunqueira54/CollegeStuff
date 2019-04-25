@@ -2,10 +2,13 @@ package gameLogic.Ship;
 
 public class Bridge extends Ship
 {
-    int doors[] = {};
+    int doors[] = {4,7};
     boolean sealed_room = false;
     
     public int[] getRoomDoors() {return doors;}
     
     public boolean getRoomState() {return sealed_room;}
+    
+    public void setRoomState() {sealed_room = true;}
+
 }

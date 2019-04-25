@@ -27,11 +27,13 @@ public class Player
     CrewMembers PCs[];
     CrewMembersText cout;
     int takenOption[] = {0,0};
+    int position[];
     int count = 0;
     
     public Player()
     {
         PCs = new CrewMembers[2];
+        position = new int[2];
         cout = new CrewMembersText();
         pickMyCrew();
         assembleMyCrew();
@@ -94,15 +96,23 @@ public class Player
             }
     }
     
-    public static void setAP(int change) {AP += change;}
+    public CrewMembers[] getPCs() {return PCs;}
     
-    public void setHP(int HP) {this.HP = HP;}
-
-    public void setIP(int IP) {this.IP = IP;}
+    public int getPosition(int index) {return position[index];}
     
     public int getCurrentAP() {return Current_AP;}
     
     public int getHP() {return HP;}
 
     public int getIP() {return IP;}
+    
+    public void setPosition(int index, int pos) {position[index] = pos;}
+    
+    public static void setAP(int change) {AP += change;}
+    
+    public void setHP(int HP) {this.HP = HP;}
+
+    public void setIP(int IP) {this.IP = IP;}
+    
+    
 }
