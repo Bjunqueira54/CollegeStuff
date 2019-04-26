@@ -6,13 +6,13 @@ import gameLogic.States.ChooseCrewState;
 import gameLogic.States.MainMenu;
 import gameLogic.Crew.*;
 
-public class TextMain
+public class MainText
 {
     boolean quit = false;
     Scanner sc;
     Game game;
     
-    public TextMain(Game game)
+    public MainText(Game game)
     {
         sc = new Scanner(System.in);
         this.game = game;

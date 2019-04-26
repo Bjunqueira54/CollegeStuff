@@ -1,11 +1,11 @@
 import gameLogic.Game;
-import ui.text.TextMain;
+import ui.text.MainText;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        TextMain text = new TextMain(new Game());
+        MainText text = new MainText(new Game());
         
         text.run();
     }

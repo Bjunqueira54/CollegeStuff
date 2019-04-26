@@ -8,6 +8,7 @@ public class GameData
 {
     static int MAX_POINTS = 12; //o maximo é sempre 12
     
+    static int DEFAULT_IP = 0;
     static int DEFAULT_HP = 8;
     static int DEFAULT_AP = 5;
     int HP;
@@ -23,17 +24,18 @@ public class GameData
     {
         HP = DEFAULT_HP;
         AP = DEFAULT_AP;
-        IP = 0;
+        IP = DEFAULT_IP;
         crew = new ArrayList<>();
     }
     
-    public void NewRound()
+    public void NewRound()//tem de puder ser mudado
     {
         AP = 5;
     }
     
     public static int getMaxPoints() {return MAX_POINTS;}
     
+    //é possivel adicionar dois membros do mesmo tipo, nao pode acontecer
     public void AddCrewMember(CrewMembers crewmember) { crew.add(crewmember); }
     
     public boolean CompleteCrew() { return (crew.size() == 2); }
