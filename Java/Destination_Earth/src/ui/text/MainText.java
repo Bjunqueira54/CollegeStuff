@@ -34,6 +34,10 @@ public class MainText
     private void PrintCrewOptions(int page)
     {
         crew_names.CrewOptions(taken, page); //pequeno bug a mostrar opções
+        /*
+        ao escolher uma opção 1,2,3 na primeira escolha
+        na segunda escolha, ao mudar de pagina o numero da opção escolhida nao aparece
+        */
     }
     
     public void AddCrewMember(int menu_page, int opt)
