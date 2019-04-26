@@ -33,7 +33,7 @@ public class MainText
     
     private void PrintCrewOptions(int page)
     {
-        crew_names.CrewOptions(taken, page);
+        crew_names.CrewOptions(taken, page); //pequeno bug a mostrar opções
     }
     
     public void AddCrewMember(int menu_page, int opt)
@@ -71,7 +71,7 @@ public class MainText
                     game.AddCrewMember(new ScienceOfficer());
                     break;
             }
-        else
+        else if(menu_page == 2)
             switch(opt)
             {
                 default:
@@ -97,20 +97,22 @@ public class MainText
 
         while(!game.CompleteCrew())
         {
-            PrintCrewOptions(menu_page);
+            PrintCrewOptions(menu_page); //pequeno bug a mostrar opções
             
             opt = Read();
             
             menu_page = ChooseCrewProcessing(menu_page, opt);
         }
     }
-    
+    //menu_page = 
     private int ChooseCrewProcessing(int menu_page, int opt)
     {
         if(verifyOption(opt, menu_page))
             if(opt == 0)
                 if(menu_page == 1)
                     return 2;
+                else 
+                    return 1;
             else if(!AlreadyTaken(opt))
             {
                 AddToTaken(opt);
