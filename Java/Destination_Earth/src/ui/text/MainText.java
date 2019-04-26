@@ -12,10 +12,15 @@ public class MainText
     Scanner sc;
     Game game;
     
+    int[] taken = {0,0};
+    int count = 0;
+    CrewMembersText crew_names;
+    
     public MainText(Game game)
     {
         sc = new Scanner(System.in);
         this.game = game;
+        crew_names = new CrewMembersText();
     }
     
     private void PrintMainMenu()
@@ -26,40 +31,20 @@ public class MainText
         System.out.println("4 - Quit Game");
     }
     
-    private void PrintCrewOptions(int n)
+    private void PrintCrewOptions(int page)
     {
-        if(n == 1)
-        {
-            System.out.println("1 - Captain");
-            System.out.println("2 - Commander");
-            System.out.println("3 - Communications Officer");
-            System.out.println("4 - Doctor");
-            System.out.println("5 - Engineer");
-            System.out.println("6 - Moral Officer");
-            System.out.println("7 - Navigation Officer");
-            System.out.println("8 - Red Shirt");
-            System.out.println("9 - Science Officer");
-            System.out.println("0 - Next...");
-        }
-        else if (n == 2)
-        {
-            System.out.println("1 - Security Officer");
-            System.out.println("2 - Shuttle Pilot");
-            System.out.println("3 - Transporter Chief");
-            System.out.println("0 - Previous...");
-        }
+        crew_names.CrewOptions(taken, page);
     }
     
-    public void AddCrewMember(int menustate, int opt)
+    public void AddCrewMember(int menu_page, int opt)
     {
-        if(menustate == 1)
-        {
+        if(menu_page == 1)
             switch(opt)
             {
                 default:
                     break;
                 case 1:
-                    game.AddCrewMember(new Captain());
+                    game.AddCrewMember(new Captain());                    
                     break;
                 case 2:
                     game.AddCrewMember(new Commander());
@@ -86,9 +71,7 @@ public class MainText
                     game.AddCrewMember(new ScienceOfficer());
                     break;
             }
-        }
         else
-        {
             switch(opt)
             {
                 default:
@@ -103,7 +86,6 @@ public class MainText
                     game.AddCrewMember(new TransporterChief());
                     break;
             }
-        }
     }
     
     public void ChooseCrew()
@@ -111,27 +93,45 @@ public class MainText
         game.SetState(new ChooseCrewState(game.getGameData()));
         
         int opt;
-        int menustate = 1;
+        int menu_page = 1;
 
         while(!game.CompleteCrew())
         {
-            PrintCrewOptions(menustate);
+            PrintCrewOptions(menu_page);
             
-            opt = sc.nextInt();
+            opt = Read();
             
-            if((menustate == 2) && (opt > 3)) {}
-            else if (opt == 0)
-            {
-                if(menustate == 1)
-                    menustate = 2;
-                else
-                    menustate = 1;
-            }
-            else
-            {
-                AddCrewMember(menustate, opt);
-            }
+            menu_page = ChooseCrewProcessing(menu_page, opt);
         }
+    }
+    
+    private int ChooseCrewProcessing(int menu_page, int opt)
+    {
+        if(verifyOption(opt, menu_page))
+            if(opt == 0)
+                if(menu_page == 1)
+                    return 2;
+            else if(!AlreadyTaken(opt))
+            {
+                AddToTaken(opt);
+                AddCrewMember(menu_page, opt);
+            }
+        return 1;
+    }
+    
+    private boolean verifyOption(int opt, int page)
+    {
+        return ((page == 1 && opt >= 0 && opt <= 9) || (page == 2 && opt >= 0 && opt <= 3));
+    }
+    
+    private void AddToTaken(int opt) { taken[count++] = opt; }
+    
+    private boolean AlreadyTaken(int opt)
+    {
+        for (int i=0; i<taken.length; i++)
+            if(opt == taken[i])
+                return true;
+        return false;
     }
     
     public void run()
@@ -143,7 +143,7 @@ public class MainText
             game.SetState(new MainMenu(game.getGameData()));
             PrintMainMenu();
             
-            opt = sc.nextInt();
+            opt = Read();
             
             switch(opt)
             {
@@ -160,5 +160,16 @@ public class MainText
                 default: break;
             }
         }
+    }
+    
+    private int Read()
+    {
+        ChooseText();
+        return sc.nextInt();
+    }
+    
+    private void ChooseText()
+    {
+        System.out.print("Escolha\n-> ");
     }
 }

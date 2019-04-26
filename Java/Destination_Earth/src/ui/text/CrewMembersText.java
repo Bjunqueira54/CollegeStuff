@@ -1,13 +1,11 @@
 package ui.text;
 
-import java.util.Scanner;
-
 public class CrewMembersText
 {
-    Scanner s = new Scanner(System.in);
+    static int CREW_MEMBER_PAGE_1 = 10;
+    static int CREW_MEMBER_PAGE_2 = 4;
     
-    static int CREW_MEMBER_TYPES = 12;
-    String[] crew_names = {
+    String[] crew_names_page1 = {
         "Captain",
         "Commander",
         "Commns Officer",
@@ -16,29 +14,42 @@ public class CrewMembersText
         "Moral Officer",
         "Navigation Officer",
         "Red Shirt",
-        "Science Officer",
+        "Science Officer"
+    };
+    
+    String[] crew_names_page2 = {
         "Security Officer",
         "Shuttle Pilot",
-        "Transporter Chief"
+        "Transporter Chief",
     };
     
     public CrewMembersText() {}
     
-    public void showCrewOptions(int[] taken)
+    public void CrewOptions(int[] taken, int page)
     {
-        crewOptions(taken);
-        System.out.print("Escolha\n-> ");
-    }
+        System.out.println("Possible Options (Page " + page + "/2):");
+        
+        if(page == 1)
+        {
+            for (int i=1; i < CREW_MEMBER_PAGE_1; i++)
+                if(!AlreadyTaken(taken, i))
+                    System.out.println("" + i + " - " + crew_names_page1[i-1]);
+            System.out.println("0 - Next...");
+        }
+        else if(page == 2)
+        {
+            for (int i=1; i < CREW_MEMBER_PAGE_2; i++)
+                if(!AlreadyTaken(taken, i))
+                    System.out.println("" + i + " - " + crew_names_page2[i-1]);  
+            System.out.println("0 - Previous...");
+        }
+    }    
     
-    public void crewOptions(int[] taken)
+    private boolean AlreadyTaken(int[] taken, int opt)
     {
-        System.out.println("Opcoes Possiveis:");
-        for (int i=1; i < CREW_MEMBER_TYPES; i++)
-            if(i != taken[0] && i != taken[1])
-                System.out.println("" + i + " - " + crew_names[i]);
+        for (int i=0; i<taken.length; i++)
+            if(opt == taken[i])
+                return true;
+        return false;
     }
-    
-    public int pickCrewMember() {return s.nextInt();}
-    
-    public String getCrewMemeberName(int index) {return crew_names[index];}
 }
