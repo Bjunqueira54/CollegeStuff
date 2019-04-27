@@ -5,6 +5,7 @@ import gameLogic.Game;
 import gameLogic.States.ChooseCrewState;
 import gameLogic.States.MainMenu;
 import gameLogic.Crew.*;
+import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
 
 public class MainText
 {
@@ -33,14 +34,10 @@ public class MainText
     
     private void PrintCrewOptions(int page)
     {
-        crew_names.CrewOptions(taken, page); //pequeno bug a mostrar opções
-        /*
-        ao escolher uma opção 1,2,3 na primeira escolha
-        na segunda escolha, ao mudar de pagina o numero da opção escolhida nao aparece
-        */
+        crew_names.CrewOptions(taken, page);
     }
     
-    public void AddCrewMember(int menu_page, int opt)
+    public void AddCrewMember(int menu_page, int opt) throws CrewMemberAlreadyPresentException
     {
         if(menu_page == 1)
             switch(opt)
@@ -101,43 +98,44 @@ public class MainText
 
         while(!game.CompleteCrew())
         {
-            PrintCrewOptions(menu_page); //pequeno bug a mostrar opções
+            PrintCrewOptions(menu_page);
             
             opt = Read();
             
             menu_page = ChooseCrewProcessing(menu_page, opt);
         }
     }
+    
     //menu_page = 
     private int ChooseCrewProcessing(int menu_page, int opt)
     {
         if(verifyOption(opt, menu_page))
+        {
             if(opt == 0)
+            {
                 if(menu_page == 1)
                     return 2;
                 else 
                     return 1;
-            else if(!AlreadyTaken(opt))
-            {
-                AddToTaken(opt);
-                AddCrewMember(menu_page, opt);
             }
+            else
+            {
+                try
+                {
+                    AddCrewMember(menu_page, opt);
+                }
+                catch(CrewMemberAlreadyPresentException ex)
+                {
+                    System.out.println("Crew Member Already Selected");
+                }
+            }
+        }
         return 1;
     }
     
     private boolean verifyOption(int opt, int page)
     {
-        return ((page == 1 && opt >= 0 && opt <= 9) || (page == 2 && opt >= 0 && opt <= 3));
-    }
-    
-    private void AddToTaken(int opt) { taken[count++] = opt; }
-    
-    private boolean AlreadyTaken(int opt)
-    {
-        for (int i=0; i<taken.length; i++)
-            if(opt == taken[i])
-                return true;
-        return false;
+        return ((page == 1 && (opt >= 0 && opt <= 9)) || (page == 2 && (opt >= 0 && opt <= 3)));
     }
     
     public void run()

@@ -2,6 +2,7 @@ package gameLogic;
 
 import gameLogic.States.States;
 import gameLogic.Crew.*;
+import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
 
 public class Game
 {
@@ -24,7 +25,7 @@ public class Game
     
     public boolean CompleteCrew() { return gamedata.CompleteCrew(); }
     
-    public void AddCrewMember(CrewMembers crewmember)
+    public void AddCrewMember(CrewMembers crewmember) throws CrewMemberAlreadyPresentException
     {
         gamedata.AddCrewMember(crewmember);
     }

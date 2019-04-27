@@ -1,6 +1,7 @@
 package gameLogic;
 
 import gameLogic.Crew.*;
+import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
 import gameLogic.Tokens.Alien;
 import java.util.ArrayList;
 
@@ -36,7 +37,23 @@ public class GameData
     public static int getMaxPoints() {return MAX_POINTS;}
     
     //é possivel adicionar dois membros do mesmo tipo, nao pode acontecer
-    public void AddCrewMember(CrewMembers crewmember) { crew.add(crewmember); }
+    public void AddCrewMember(CrewMembers crewmember) throws CrewMemberAlreadyPresentException
+    {
+        if(crew.isEmpty())
+            crew.add(crewmember);
+        else
+        {
+            for (CrewMembers it : crew)
+            {
+                if(crewmember.getClass() == it.getClass())
+                {
+                    throw new CrewMemberAlreadyPresentException();
+                }
+            }
+            
+            crew.add(crewmember);
+        }
+    }
     
     public boolean CompleteCrew() { return (crew.size() == 2); }
     
