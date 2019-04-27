@@ -2,14 +2,15 @@ package ui.text;
 
 import java.util.Scanner;
 import gameLogic.Game;
-import gameLogic.States.MainMenu;
+import gameLogic.States.*;
 import gameLogic.Crew.*;
-import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
+import gameLogic.Exceptions.*;
 import java.util.InputMismatchException;
 
 public class MainText
 {
     boolean quit = false;
+    int menu_crew_page = 1;
     Scanner sc;
     Game game;
     
@@ -29,7 +30,7 @@ public class MainText
         System.out.println("1 - Start Game");
         System.out.println("2 - Choose Adventure");
         System.out.println("3 - Choose Crew");
-        System.out.println("4 - Quit Game");
+        System.out.println("0 - Quit Game");
     }
     
     private void PrintCrewOptions(int page)
@@ -91,16 +92,15 @@ public class MainText
     
     public void ChooseCrew()
     {
-        int opt;
-        int menu_page = 1;
-
-        while(!game.CompleteCrew())
+        int opt = -1;
+        
+        while(opt == 0)
         {
-            PrintCrewOptions(menu_page);
-            
+            PrintCrewOptions(menu_crew_page);
+
             opt = Read();
-            
-            menu_page = ChooseCrewProcessing(menu_page, opt);
+
+            menu_crew_page = ChooseCrewProcessing(menu_crew_page, opt);
         }
     }
     
@@ -128,6 +128,7 @@ public class MainText
                 }
             }
         }
+        
         return 1;
     }
     
@@ -214,38 +215,6 @@ public class MainText
         }
     }
     
-    public void run()
-    {
-        int opt;
-        
-        while(!quit)
-        {
-            game.SetState(new MainMenu(game.getGameData()));
-            System.out.println(game.getRoundsAsString());
-            System.out.println(game.getCrewMembersAsString());
-            PrintMainMenu();
-            
-            opt = Read();
-            
-            switch(opt)
-            {
-                case 1:
-                    game.start();
-                    break;
-                case 2:
-                    ChooseAdventure();
-                    break;
-                case 3:
-                    ChooseCrew();
-                    break;
-                case 4:
-                    quit = true;
-                    break;
-                default: break;
-            }
-        }
-    }
-    
     private int Read()
     {
         ChooseText();
@@ -263,5 +232,50 @@ public class MainText
     private void ChooseText()
     {
         System.out.print("Escolha\n-> ");
+    }
+    
+    public void run()
+    {
+        while(!quit)
+        {
+            States state = game.getGameState();
+            
+            if(state instanceof MainMenu)
+            {
+                MainMenu();
+            }
+            else if(state instanceof ChooseCrewState)
+            {
+                ChooseCrew();
+            }
+        }
+    }
+    
+    public void MainMenu()
+    {
+        int opt;
+        
+        System.out.println(game.getRoundsAsString());
+        System.out.println(game.getCrewMembersAsString());
+        PrintMainMenu();
+
+        opt = Read();
+
+        switch(opt)
+        {
+            case 1:
+                game.start();
+                break;
+            case 2:
+                //ChooseAdventure();
+                break;
+            case 3:
+                game.ChooseCrew();
+                break;
+            case 0:
+                quit = true;
+                break;
+            default: break;
+        }
     }
 }

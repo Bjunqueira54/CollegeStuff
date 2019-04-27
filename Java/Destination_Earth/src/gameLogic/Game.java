@@ -3,6 +3,7 @@ package gameLogic;
 import gameLogic.States.States;
 import gameLogic.Crew.*;
 import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
+import gameLogic.States.*;
 
 public class Game
 {
@@ -12,6 +13,7 @@ public class Game
     public Game()
     {
         gamedata = new GameData();
+        state = new MainMenu(gamedata);
     }
     
     public void SetState(States state)
@@ -42,4 +44,6 @@ public class Game
     public String getCrewMembersAsString() { return gamedata.getCrewMembersAsString(); }
     
     public void start() { state = state.startgame(); }
+    
+    public void ChooseCrew() { state = new ChooseCrewState(gamedata); }
 }

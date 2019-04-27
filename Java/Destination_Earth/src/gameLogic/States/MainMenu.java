@@ -2,19 +2,11 @@ package gameLogic.States;
 
 import gameLogic.GameData;
 
-public class MainMenu implements States
+public class MainMenu extends StateAdapter
 {
-    private GameData gamedata;
-    
     public MainMenu(GameData gamedata)
     {
-        this.gamedata = gamedata;
-    }
-
-    @Override
-    public States quitgame()
-    {
-        return this;
+        super(gamedata);
     }
 
     @Override
@@ -22,6 +14,4 @@ public class MainMenu implements States
     {
         return new AwaitRoundPlayerChoice(gamedata);
     }
-    
-    public GameData getGameData() { return this.gamedata; }
 }

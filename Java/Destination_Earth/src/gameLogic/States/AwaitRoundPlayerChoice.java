@@ -2,19 +2,11 @@ package gameLogic.States;
 
 import gameLogic.GameData;
 
-public class AwaitRoundPlayerChoice implements States
+public class AwaitRoundPlayerChoice extends StateAdapter
 {
-    private GameData gamedata;
-    
     public AwaitRoundPlayerChoice(GameData gamedata)
     {
-        this.gamedata = gamedata;
-    }
-
-    @Override
-    public States startgame()
-    {
-        return this;
+        super(gamedata);
     }
 
     @Override
