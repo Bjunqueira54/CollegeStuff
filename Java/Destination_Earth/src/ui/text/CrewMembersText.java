@@ -25,31 +25,21 @@ public class CrewMembersText
     
     public CrewMembersText() {}
     
-    public void CrewOptions(int[] taken, int page)
+    public void CrewOptions(int page)
     {
         System.out.println("Possible Options (Page " + page + "/2):");
         
         if(page == 1)
         {
             for (int i=1; i < CREW_MEMBER_PAGE_1; i++)
-                if(!AlreadyTaken(taken, i))
-                    System.out.println("" + i + " - " + crew_names_page1[i-1]);
+                System.out.println("" + i + " - " + crew_names_page1[i-1]);
             System.out.println("0 - Next...");
         }
         else if(page == 2)
         {
             for (int i=1; i < CREW_MEMBER_PAGE_2; i++)
-                if(!AlreadyTaken(taken, i))
-                    System.out.println("" + i + " - " + crew_names_page2[i-1]);  
+                System.out.println("" + i + " - " + crew_names_page2[i-1]);  
             System.out.println("0 - Previous...");
         }
-    }    
-    
-    private boolean AlreadyTaken(int[] taken, int opt)
-    {
-        for (int i=0; i<taken.length; i++)
-            if(opt == taken[i])
-                return true;
-        return false;
     }
 }

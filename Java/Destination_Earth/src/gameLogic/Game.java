@@ -48,4 +48,16 @@ public class Game
     public void ChooseCrew() { SetState(new ChooseCrewState(gamedata)); }
     
     public void ChooseAdventure() { SetState(new ChooseAdventureState(gamedata)); }
+    
+    public int getRoundNumber() { return getGameData().getRoundNumber(); }
+    
+    public String getRoundType(int round) { return getGameData().getRound(round); }
+    
+    public int getHP() { return getGameData().getHP(); }
+    
+    public int getAP() { return getGameData().getAP(); }
+    
+    public int getIP() { return getGameData().getIP(); }
+    
+    public String getCrewMember(int index) { return getGameData().getCrewMember(index - 1); }
 }

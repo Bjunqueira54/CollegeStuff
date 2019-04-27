@@ -9,20 +9,20 @@ public class GameData
 {
     static int MAX_POINTS = 12; //o max é sempre 12
     
-    final int DEFAULT_IP = 0;
-    final int DEFAULT_HP = 8;
-    final int DEFAULT_AP = 5;
+    private final int DEFAULT_IP = 0;
+    private final int DEFAULT_HP = 8;
+    private final int DEFAULT_AP = 5;
     
-    int round = 1;
-    int HP;
-    int AP;
-    int IP;
+    private int round = 1;
+    private int HP;
+    private int AP;
+    private int IP;
     
-    ArrayList<CrewMembers> crew;
-    ArrayList<String> adventure;
+    private ArrayList<CrewMembers> crew;
+    private ArrayList<String> adventure;
     
-    Alien alien;
-    GameBoard game_board;
+    private Alien alien;
+    private GameBoard game_board;
     
     private boolean hasDoctor = false;
     private boolean hasEngineer = false;
@@ -34,11 +34,6 @@ public class GameData
         IP = DEFAULT_IP;
         crew = new ArrayList<>();
         adventure = new ArrayList<>();
-    }
-    
-    public void NewRound()//tem de puder ser mudado
-    {
-        AP = 5;
     }
     
     public static int getMaxPoints() { return MAX_POINTS; }
@@ -108,9 +103,12 @@ public class GameData
         
         return str;
     }
+    public String getCrewMember(int index) { return crew.get(index).toString(); }
     
     public String getRound(int i) { return adventure.get(i-1); }
     public int getRoundNumber() { return round; }
+    
+    public int DieRoll() { return (1 + (int) (Math.random() * 6 ) ); }
     
     public void startgame()
     {
@@ -136,9 +134,17 @@ public class GameData
             {
                 HP += 4;
             }
+            
+            it.setNewPosition(DieRoll());
         }
+        
+        
     }
     
     public boolean hasDoctor() { return this.hasDoctor; }
     public boolean hasEngineer() { return this.hasEngineer; }
+    
+    public int getHP() { return HP; }
+    public int getAP() { return AP; }
+    public int getIP() { return IP; }
 }

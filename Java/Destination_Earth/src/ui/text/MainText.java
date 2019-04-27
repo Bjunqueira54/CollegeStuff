@@ -14,7 +14,6 @@ public class MainText
     Scanner sc;
     Game game;
     
-    int[] taken = {0,0};
     int count = 0;
     CrewMembersText crew_names;
     
@@ -33,9 +32,51 @@ public class MainText
         System.out.println("0 - Quit Game");
     }
     
-    private void PrintCrewOptions(int page)
+    private void PrintCrewMenu(int page)
     {
-        crew_names.CrewOptions(taken, page);
+        crew_names.CrewOptions(page);
+    }
+    
+    private void PrintAdventureMenu()
+    {
+        System.out.println("1 - Spawn Aliens");
+        System.out.println("2 - Spawn Aliens with Retreat");
+        System.out.println("3 - Rest");
+        System.out.println("4 - Default Adventure");
+        System.out.println("0 - Exit");
+    }
+    
+    private void PrintSpawnAliensMenu()
+    {
+        System.out.println("1 - 1 Alien");
+        System.out.println("2 - 2 Aliens");
+        System.out.println("3 - 3 Aliens");
+        System.out.println("4 - 4 Aliens");
+        System.out.println("5 - 5 Aliens");
+        System.out.println("6 - 6 Aliens");
+        System.out.println("7 - 7 Aliens");
+        System.out.println("8 - 8 Aliens");
+        System.out.println("9 - 9 Aliens");
+    }
+    
+    private void PrintGameStats()
+    {
+        int round = game.getRoundNumber();
+        
+        System.out.println("Round: " + round + "\tRound Type: " + game.getRoundType(round));
+        System.out.println("HP: " + game.getHP() + "\tAP: " + game.getAP() + "\tIP: " + game.getIP());
+    }
+    
+    private void PrintRoundMenu()
+    {
+        System.out.println("\nSelect Crew Member");
+        System.out.println("1 - " + game.getCrewMember(1));
+        System.out.println("2 - " + game.getCrewMember(2));
+    }
+    
+    private void PrintActionMenu(int CrewMember)
+    {
+        
     }
     
     public void AddCrewMember(int menu_page, int opt) throws CrewMemberAlreadyPresentException
@@ -94,7 +135,7 @@ public class MainText
     {
         int opt;
 
-        PrintCrewOptions(menu_crew_page);
+        PrintCrewMenu(menu_crew_page);
 
         opt = Read();
 
@@ -138,35 +179,13 @@ public class MainText
     {
         return (opt >= 0 && opt <= 9);
     }
-    
-    private void PrintAdventureOptions()
-    {
-        System.out.println("1 - Spawn Aliens");
-        System.out.println("2 - Spawn Aliens with Retreat");
-        System.out.println("3 - Rest");
-        System.out.println("4 - Default Adventure");
-        System.out.println("0 - Exit");
-    }
-    
-    private void PrintSpawnAliensMenu()
-    {
-        System.out.println("1 - 1 Alien");
-        System.out.println("2 - 2 Aliens");
-        System.out.println("3 - 3 Aliens");
-        System.out.println("4 - 4 Aliens");
-        System.out.println("5 - 5 Aliens");
-        System.out.println("6 - 6 Aliens");
-        System.out.println("7 - 7 Aliens");
-        System.out.println("8 - 8 Aliens");
-        System.out.println("9 - 9 Aliens");
-    }
-    
+
     public void ChooseAdventure()
     {
         int opt;
         
         System.out.println(game.getRoundsAsString());
-        PrintAdventureOptions();
+        PrintAdventureMenu();
 
         opt = Read();
 
@@ -229,6 +248,22 @@ public class MainText
         System.out.print("Escolha\n-> ");
     }
     
+    private void RoundMenu()
+    {
+        int opt;
+        
+        PrintGameStats();
+        
+        PrintRoundMenu();
+        
+        opt = Read();
+        
+        if(opt == 1 || opt == 2)
+        {
+            PrintActionMenu(opt);
+        }
+    }
+    
     public void run()
     {
         while(!quit)
@@ -249,7 +284,11 @@ public class MainText
             }
             else if(state instanceof AwaitRoundPlayerChoice)
             {
-                
+                RoundMenu();
+            }
+            else if(state instanceof AwaitRestingPlayerChoice)
+            {
+                //RestingMenu();
             }
         }
     }
