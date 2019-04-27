@@ -10,11 +10,11 @@ public class ChooseCrewState extends StateAdapter
     public ChooseCrewState(GameData g)
     {
         super(g);
-        gamedata.ClearCrew();
+        getGameData().ClearCrew();
     }
 
     @Override
-    public States ChooseCrew(CrewMembers cm)
+    public States ChooseCrew(CrewMembers cm) throws CrewMemberAlreadyPresentException
     {
         try
         {
@@ -22,15 +22,11 @@ public class ChooseCrewState extends StateAdapter
         }
         catch(CrewMemberAlreadyPresentException ex)
         {
-            try
-            {
-                throw new CrewMemberAlreadyPresentException();
-            }
-            catch (CrewMemberAlreadyPresentException ex1) {}
+            throw new CrewMemberAlreadyPresentException();
         }
         
-        if(gamedata.CompleteCrew())
-            return new MainMenu(gamedata);
+        if(getGameData().CompleteCrew())
+            return new MainMenu(getGameData());
         else
             return this;
     }

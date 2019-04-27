@@ -61,11 +61,10 @@ public class GameData
     public void ClearCrew() { crew.clear(); }
     public void ClearAdventure() { adventure.clear(); }
     
-    public boolean isAdventureSet() { return (adventure.size() == 13); }
+    public boolean isAdventureSet() { return (adventure.size() >= 13); }
     
-    public void addRestingRound() { adventure.add("R"); }
-    public void addSpawnAliensRound(int n) { adventure.add(n + "A"); }
-    public void addSpawnRetreatingAliensRound(int n) { adventure.add(n + "A*"); }
+    public void addRound(String round) { adventure.add(round); }
+    
     public void SetDefaultAdventure()
     {
         ClearAdventure();

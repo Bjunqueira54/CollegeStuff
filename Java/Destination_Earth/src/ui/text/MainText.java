@@ -92,19 +92,16 @@ public class MainText
     
     public void ChooseCrew()
     {
-        int opt = -1;
-        
-        while(opt == 0)
-        {
-            PrintCrewOptions(menu_crew_page);
+        int opt;
 
-            opt = Read();
+        PrintCrewOptions(menu_crew_page);
 
-            menu_crew_page = ChooseCrewProcessing(menu_crew_page, opt);
-        }
+        opt = Read();
+
+        menu_crew_page = ChooseCrewProcessing(menu_crew_page, opt);
+
     }
     
-    //menu_page = 
     private int ChooseCrewProcessing(int menu_page, int opt)
     {
         if(verifyOption(opt, menu_page))
@@ -166,33 +163,31 @@ public class MainText
     
     public void ChooseAdventure()
     {
-        int opt = -1;
+        int opt;
         
-        while(opt != 0 && !game.isAdventureSet())
+        System.out.println(game.getRoundsAsString());
+        PrintAdventureOptions();
+
+        opt = Read();
+
+        if(opt >= 0 && opt <= 4)
         {
-            System.out.println(game.getRoundsAsString());
-            PrintAdventureOptions();
-
-            opt = Read();
-
-            if(opt >= 0 && opt <= 4)
+            switch(opt)
             {
-                switch(opt)
-                {
-                    case 1:
-                        SpawnAliens(false);
-                        break;
-                    case 2:
-                        SpawnAliens(true);
-                        break;
-                    case 3:
-                        game.addRestingRound();
-                    case 4:
-                        game.SetDefaultAdventure();
-                        break;
-                    default:
-                        break;
-                }
+                case 1:
+                    SpawnAliens(false);
+                    break;
+                case 2:
+                    SpawnAliens(true);
+                    break;
+                case 3:
+                    game.addRestingRound();
+                    break;
+                case 4:
+                    game.SetDefaultAdventure();
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -248,6 +243,10 @@ public class MainText
             {
                 ChooseCrew();
             }
+            else if(state instanceof ChooseAdventureState)
+            {
+                ChooseAdventure();
+            }
         }
     }
     
@@ -267,7 +266,7 @@ public class MainText
                 game.start();
                 break;
             case 2:
-                //ChooseAdventure();
+                game.ChooseAdventure();
                 break;
             case 3:
                 game.ChooseCrew();
@@ -275,7 +274,8 @@ public class MainText
             case 0:
                 quit = true;
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 }

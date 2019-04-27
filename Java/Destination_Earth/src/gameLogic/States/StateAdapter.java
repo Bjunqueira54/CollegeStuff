@@ -23,7 +23,7 @@ public class StateAdapter implements States
     public States ChooseDefaultAdventure() { return this; }
 
     @Override
-    public States ChooseCrew(CrewMembers cm) { return this; }
+    public States ChooseCrew(CrewMembers cm) throws CrewMemberAlreadyPresentException { return this; }
 
     @Override
     public States startgame() { return this; }

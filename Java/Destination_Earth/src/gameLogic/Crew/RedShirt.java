@@ -2,6 +2,7 @@ package gameLogic.Crew;
 
 public class RedShirt extends CrewMembers
 {
+    String name = "Red Shirt";
     int movement = 1;
     int attack_die = 1;//d6
     int attack_hit = 5;
@@ -24,6 +25,6 @@ public class RedShirt extends CrewMembers
     @Override
     public String toString()
     {
-        return "Red Shirt";
+        return name;
     }
 }

@@ -12,6 +12,6 @@ public class MainMenu extends StateAdapter
     @Override
     public States startgame()
     {
-        return new AwaitRoundPlayerChoice(gamedata);
+        return new AwaitRoundPlayerChoice(getGameData());
     }
 }

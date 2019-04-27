@@ -2,6 +2,7 @@ package gameLogic.Crew;
 
 public class CommsOfficer extends CrewMembers
 {
+    String name = "Communications Officer";
     int movement = 1;
     int attack_die = 1;//d6
     int attack_hit = 5;
@@ -25,7 +26,7 @@ public class CommsOfficer extends CrewMembers
     @Override
     public String toString()
     {
-        return "Communications Officer";
+        return name;
     }
     
 }

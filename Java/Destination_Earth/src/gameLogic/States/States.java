@@ -1,6 +1,7 @@
 package gameLogic.States;
 
 import gameLogic.Crew.CrewMembers;
+import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
 import gameLogic.Tokens.Token;
 
 public interface States
@@ -8,7 +9,7 @@ public interface States
     //Main Menu Functions
     public States ChooseAdventure(String round);
     public States ChooseDefaultAdventure();
-    public States ChooseCrew(CrewMembers cm);
+    public States ChooseCrew(CrewMembers cm) throws CrewMemberAlreadyPresentException;
     public States startgame();
     
     //In-Game Round Functions

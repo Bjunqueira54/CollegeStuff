@@ -2,6 +2,7 @@ package gameLogic.Crew;
 
 public class Doctor extends CrewMembers
 {
+    String name = "Doctor";
     int movement = 1;
     int attack_die = 1;//d6
     int attack_hit = 5;
@@ -27,6 +28,6 @@ public class Doctor extends CrewMembers
     @Override
     public String toString()
     {
-        return "Doctor";
+        return name;
     }
 }
