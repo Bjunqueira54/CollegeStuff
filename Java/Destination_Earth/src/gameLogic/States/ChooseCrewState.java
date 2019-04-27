@@ -25,7 +25,7 @@ public class ChooseCrewState extends StateAdapter
             throw new CrewMemberAlreadyPresentException();
         }
         
-        if(getGameData().CompleteCrew())
+        if(getGameData().isCrewComplete())
             return new MainMenu(getGameData());
         else
             return this;

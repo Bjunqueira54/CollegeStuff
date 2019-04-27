@@ -25,7 +25,7 @@ public class Game
     
     public States getGameState() { return state; }
     
-    public boolean CompleteCrew() { return gamedata.CompleteCrew(); }
+    public boolean CompleteCrew() { return gamedata.isCrewComplete(); }
     
     public void AddCrewMember(CrewMembers crewmember) throws CrewMemberAlreadyPresentException { SetState(getGameState().ChooseCrew(crewmember)); }
     

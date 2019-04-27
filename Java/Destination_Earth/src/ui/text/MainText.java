@@ -247,6 +247,10 @@ public class MainText
             {
                 ChooseAdventure();
             }
+            else if(state instanceof AwaitRoundPlayerChoice)
+            {
+                
+            }
         }
     }
     

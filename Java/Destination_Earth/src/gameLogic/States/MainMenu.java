@@ -12,6 +12,16 @@ public class MainMenu extends StateAdapter
     @Override
     public States startgame()
     {
-        return new AwaitRoundPlayerChoice(getGameData());
+        if(getGameData().isAdventureSet() && getGameData().isCrewComplete())
+        {
+            getGameData().startgame();
+            
+            if(getGameData().getRound(1).compareToIgnoreCase("R") == 0)
+                return new AwaitRestingPlayerChoice(getGameData());
+            else
+                return new AwaitRoundPlayerChoice(getGameData());
+        }
+        else
+            return this;
     }
 }

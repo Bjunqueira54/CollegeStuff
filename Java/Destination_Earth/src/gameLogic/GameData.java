@@ -9,9 +9,11 @@ public class GameData
 {
     static int MAX_POINTS = 12; //o max é sempre 12
     
-    static int DEFAULT_IP = 0;
-    static int DEFAULT_HP = 8;
-    static int DEFAULT_AP = 5;
+    final int DEFAULT_IP = 0;
+    final int DEFAULT_HP = 8;
+    final int DEFAULT_AP = 5;
+    
+    int round = 1;
     int HP;
     int AP;
     int IP;
@@ -21,6 +23,9 @@ public class GameData
     
     Alien alien;
     GameBoard game_board;
+    
+    private boolean hasDoctor = false;
+    private boolean hasEngineer = false;
     
     public GameData()
     {
@@ -36,7 +41,7 @@ public class GameData
         AP = 5;
     }
     
-    public static int getMaxPoints() {return MAX_POINTS;}
+    public static int getMaxPoints() { return MAX_POINTS; }
     
     public void AddCrewMember(CrewMembers crewmember) throws CrewMemberAlreadyPresentException
     {
@@ -56,12 +61,11 @@ public class GameData
         }
     }
     
-    public boolean CompleteCrew() { return (crew.size() == 2); }
-    
     public void ClearCrew() { crew.clear(); }
     public void ClearAdventure() { adventure.clear(); }
     
     public boolean isAdventureSet() { return (adventure.size() >= 13); }
+    public boolean isCrewComplete() { return (crew.size() == 2); }
     
     public void addRound(String round) { adventure.add(round); }
     
@@ -104,4 +108,37 @@ public class GameData
         
         return str;
     }
+    
+    public String getRound(int i) { return adventure.get(i-1); }
+    public int getRoundNumber() { return round; }
+    
+    public void startgame()
+    {
+        for (CrewMembers it : crew)
+        {
+            if(it instanceof Commander)
+            {
+                AP = 6;
+            }
+            else if(it instanceof Doctor)
+            {
+                hasDoctor = true;
+            }
+            else if(it instanceof Engineer)
+            {
+                hasEngineer = true;
+            }
+            else if(it instanceof MoralOfficer)
+            {
+                IP = 5;
+            }
+            else if(it instanceof ShuttlePilot)
+            {
+                HP += 4;
+            }
+        }
+    }
+    
+    public boolean hasDoctor() { return this.hasDoctor; }
+    public boolean hasEngineer() { return this.hasEngineer; }
 }
