@@ -8,7 +8,7 @@ public class StateAdapter implements IStates, three_in_row_logic.Constants
 
     public StateAdapter(GameData g)
     {
-        this.game =g;
+        this.game = g;
     }
 
     public GameData getGame() 
@@ -22,20 +22,20 @@ public class StateAdapter implements IStates, three_in_row_logic.Constants
     }
 
     @Override
-    public IStates setNumberPlayers(int num){ return this;}
+    public IStates setNumberPlayers(int num) { return this;}
 
     @Override
-    public IStates setName(int num, String name){ return this;}
+    public IStates setName(int num, String name) { return this;}
 
     @Override
-    public IStates startGame(){ return this;}
+    public IStates startGame() { return this;}
 
     @Override
-    public IStates placeToken(int linha, int coluna){ return this;}
+    public IStates placeToken(int linha, int coluna) { return this;}
 
     @Override
-    public IStates returnToken(int linha, int coluna){ return this;}
+    public IStates returnToken(int linha, int coluna) { return this;}
 
     @Override
-    public IStates quit(){ return this;}   
+    public IStates quit() { return this;}   
 }

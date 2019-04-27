@@ -36,8 +36,7 @@ public class TextUI
         System.out.println(game.getPlayer(2) != null ? "" + game.getPlayer(2) : "");
         
         
-        if((game.getPlayer(1)!= null && game.getPlayer(1).getHasWon()) || 
-           (game.getPlayer(2)!= null && game.getPlayer(2).getHasWon() ))
+        if((game.getPlayer(1)!= null && game.getPlayer(1).getHasWon()) || (game.getPlayer(2)!= null && game.getPlayer(2).getHasWon() ))
         {    
             System.out.println(game.gridToString());
         }

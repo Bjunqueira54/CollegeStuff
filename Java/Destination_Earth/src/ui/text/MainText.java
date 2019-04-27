@@ -2,10 +2,10 @@ package ui.text;
 
 import java.util.Scanner;
 import gameLogic.Game;
-import gameLogic.States.ChooseCrewState;
 import gameLogic.States.MainMenu;
 import gameLogic.Crew.*;
 import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
+import java.util.InputMismatchException;
 
 public class MainText
 {
@@ -91,8 +91,6 @@ public class MainText
     
     public void ChooseCrew()
     {
-        game.SetState(new ChooseCrewState(game.getGameData()));
-        
         int opt;
         int menu_page = 1;
 
@@ -138,6 +136,84 @@ public class MainText
         return ((page == 1 && (opt >= 0 && opt <= 9)) || (page == 2 && (opt >= 0 && opt <= 3)));
     }
     
+    private boolean verifyOption(int opt)
+    {
+        return (opt >= 0 && opt <= 9);
+    }
+    
+    private void PrintAdventureOptions()
+    {
+        System.out.println("1 - Spawn Aliens");
+        System.out.println("2 - Spawn Aliens with Retreat");
+        System.out.println("3 - Rest");
+        System.out.println("4 - Default Adventure");
+        System.out.println("0 - Exit");
+    }
+    
+    private void PrintSpawnAliensMenu()
+    {
+        System.out.println("1 - 1 Alien");
+        System.out.println("2 - 2 Aliens");
+        System.out.println("3 - 3 Aliens");
+        System.out.println("4 - 4 Aliens");
+        System.out.println("5 - 5 Aliens");
+        System.out.println("6 - 6 Aliens");
+        System.out.println("7 - 7 Aliens");
+        System.out.println("8 - 8 Aliens");
+        System.out.println("9 - 9 Aliens");
+    }
+    
+    public void ChooseAdventure()
+    {
+        int opt = -1;
+        
+        while(opt != 0 && !game.isAdventureSet())
+        {
+            System.out.println(game.getRoundsAsString());
+            PrintAdventureOptions();
+
+            opt = Read();
+
+            if(opt >= 0 && opt <= 4)
+            {
+                switch(opt)
+                {
+                    case 1:
+                        SpawnAliens(false);
+                        break;
+                    case 2:
+                        SpawnAliens(true);
+                        break;
+                    case 3:
+                        game.addRestingRound();
+                    case 4:
+                        game.SetDefaultAdventure();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+    
+    public void SpawnAliens(boolean retreating)
+    {
+        int opt;
+        PrintSpawnAliensMenu();
+        
+        opt = Read();
+        
+        if(verifyOption(opt))
+        {
+            if(retreating)
+            {
+                game.addSpawnRetreatingAliensRound(opt);
+            }
+            else
+                game.addSpawnAliensRound(opt);
+        }
+    }
+    
     public void run()
     {
         int opt;
@@ -145,6 +221,8 @@ public class MainText
         while(!quit)
         {
             game.SetState(new MainMenu(game.getGameData()));
+            System.out.println(game.getRoundsAsString());
+            System.out.println(game.getCrewMembersAsString());
             PrintMainMenu();
             
             opt = Read();
@@ -152,8 +230,10 @@ public class MainText
             switch(opt)
             {
                 case 1:
+                    game.start();
                     break;
                 case 2:
+                    ChooseAdventure();
                     break;
                 case 3:
                     ChooseCrew();
@@ -169,7 +249,15 @@ public class MainText
     private int Read()
     {
         ChooseText();
-        return sc.nextInt();
+        try
+        {
+            return sc.nextInt();
+        }
+        catch(InputMismatchException ex)
+        {
+            sc.next();
+            return -1;
+        }
     }
     
     private void ChooseText()

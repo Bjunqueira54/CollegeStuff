@@ -1,6 +1,9 @@
 package gameLogic.Crew;
 
-public class CrewMembers 
+public abstract class CrewMembers 
 {
     public CrewMembers() {}
+    
+    @Override
+    public abstract String toString();
 }

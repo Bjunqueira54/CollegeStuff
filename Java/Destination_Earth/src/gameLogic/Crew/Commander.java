@@ -19,4 +19,10 @@ public class Commander extends CrewMembers
     public void setAttackDie(int change) {this.attack_die += change;}
     
     public int getCommanderAP() {return AP;}
+    
+    @Override
+    public String toString()
+    {
+        return "Commander";
+    }
 }

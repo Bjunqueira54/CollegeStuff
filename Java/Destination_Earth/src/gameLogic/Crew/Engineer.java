@@ -23,4 +23,10 @@ public class Engineer extends CrewMembers
     public int getAttackDie() {return attack_die;}
     
     public void setAttackDie(int change) {this.attack_die += change;}
+    
+    @Override
+    public String toString()
+    {
+        return "Engineer";
+    }
 }

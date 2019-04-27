@@ -10,32 +10,17 @@ public class MainMenu implements States
     {
         this.gamedata = gamedata;
     }
-    
+
     @Override
-    public States ChooseCrew()
+    public States quitgame()
     {
-        return new ChooseCrewState(gamedata);
+        return this;
     }
 
     @Override
-    public States chooseAction() { return this; }
-
-    @Override
-    public States quit()
+    public States startgame()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public States start()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public States setGame()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new AwaitRoundPlayerChoice(gamedata);
     }
     
     public GameData getGameData() { return this.gamedata; }
