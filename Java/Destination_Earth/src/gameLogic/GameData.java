@@ -16,7 +16,7 @@ public class GameData
     private final int DEFAULT_HP = 8;
     private final int DEFAULT_AP = 5;
     
-    private final int round = 1;
+    private int round = 1;
     private int HP;
     private int AP;
     private int IP;
