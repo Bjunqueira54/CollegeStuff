@@ -2,12 +2,14 @@ package gameLogic.Ship;
 
 public class ShuttleBay extends Ship
 {
-    int doors[] = {1,9};
-    boolean sealed_room = false;
+    private int id = 6;
+
+    public ShuttleBay()
+    {
+        super();
+        addDoor(2);
+        addDoor(10);
+    }
     
-    public int[] getRoomDoors() {return doors;}
-    
-    public boolean getRoomState() {return sealed_room;}
-    
-    public void setRoomState() {sealed_room = true;}
+    public int getId() { return id; }
 }

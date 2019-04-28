@@ -2,12 +2,14 @@ package gameLogic.Ship;
 
 public class Hydroponics extends Ship
 {
-    int doors[] = {8,9};
-    boolean sealed_room = false;
+    private int id = 12;
+
+    public Hydroponics()
+    {
+        super();
+        addDoor(9);
+        addDoor(10);
+    }
     
-    public int[] getRoomDoors() {return doors;}
-    
-    public boolean getRoomState() {return sealed_room;}
-    
-    public void setRoomState() {sealed_room = true;}
+    public int getId() { return id; }
 }

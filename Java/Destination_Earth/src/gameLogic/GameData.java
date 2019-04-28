@@ -1,8 +1,10 @@
 package gameLogic;
 
 import gameLogic.Crew.*;
+import gameLogic.Ship.*;
 import static gameLogic.Dice.diceRoller;
 import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
+import gameLogic.Ship.Ship;
 import gameLogic.Tokens.Alien;
 import java.util.ArrayList;
 
@@ -21,6 +23,7 @@ public class GameData
     
     private ArrayList<CrewMembers> crew;
     private ArrayList<String> adventure;
+    private ArrayList<Ship> ship;
     
     private Alien alien;
     private GameBoard game_board;
@@ -35,6 +38,7 @@ public class GameData
         IP = DEFAULT_IP;
         crew = new ArrayList<>();
         adventure = new ArrayList<>();
+        ship = new ArrayList<>();
     }
     
     /**
@@ -69,7 +73,7 @@ public class GameData
     
     public void addRound(String round) { adventure.add(round); }
     
-    /**
+    /*
      * create a default adventure
      */
     public void SetDefaultAdventure()
@@ -118,7 +122,7 @@ public class GameData
     
     public int DieRoll() { return diceRoller(1); }
     
-    public void startgame()
+    private void SetupCrew()
     {
         for (CrewMembers it : crew)
         {
@@ -135,6 +139,28 @@ public class GameData
             
             it.setNewPosition(DieRoll());
         }
+    }
+    
+    private void CreateShip()
+    {
+        ship.add(new Bridge());
+        ship.add(new SickBay());
+        ship.add(new Brig());
+        ship.add(new CrewQuarters());
+        ship.add(new ConferenceRoom());
+        ship.add(new ShuttleBay());
+        ship.add(new WeaponsBay());
+        ship.add(new MessHall());
+        ship.add(new Enginnering());
+        ship.add(new Astrometrics());
+        ship.add(new Holodeck());
+        ship.add(new Hydroponics());
+    }
+    
+    public void startgame()
+    {
+        SetupCrew();
+        CreateShip();
     }
     
     public boolean hasDoctor() { return this.hasDoctor; }

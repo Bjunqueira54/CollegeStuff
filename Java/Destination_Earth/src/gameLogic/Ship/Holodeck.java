@@ -2,12 +2,14 @@ package gameLogic.Ship;
 
 public class Holodeck extends Ship
 {
-    int doors[] = {3,6};
-    boolean sealed_room = false;
+    private int id = 11;
+
+    public Holodeck()
+    {
+        super();
+        addDoor(4);
+        addDoor(7);
+    }
     
-    public int[] getRoomDoors() {return doors;}
-    
-    public boolean getRoomState() {return sealed_room;}
-    
-    public void setRoomState() {sealed_room = true;}
+    public int getId() { return id; }
 }

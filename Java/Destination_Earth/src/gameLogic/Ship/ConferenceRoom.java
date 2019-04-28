@@ -2,12 +2,16 @@ package gameLogic.Ship;
 
 public class ConferenceRoom extends Ship
 {
-    int doors[] = {0,2,7,9};
-    boolean sealed_room = false;
+    private int id = 5;
+
+    public ConferenceRoom()
+    {
+        super();
+        addDoor(1);
+        addDoor(3);
+        addDoor(8);
+        addDoor(10);
+    }
     
-    public int[] getRoomDoors() {return doors;}
-    
-    public boolean getRoomState() {return sealed_room;}
-    
-    public void setRoomState() {sealed_room = true;}
+    public int getId() { return id; }
 }
