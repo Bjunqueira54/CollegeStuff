@@ -4,11 +4,23 @@ import gameLogic.GameData;
 
 public class AwaitRestingPlayerChoice extends StateAdapter
 {
-    public AwaitRestingPlayerChoice(GameData g)
+    public AwaitRestingPlayerChoice(GameData g) { super(g); }
+
+    @Override
+    public States AddHealth()
     {
-        super(g);
+        getGameData().addHealth();
+        return this;
     }
 
+    @Override
+    public States Repair()
+    {
+        getGameData().RepairHull();
+        
+        return this;
+    }
+    
     @Override
     public States quitgame()
     {

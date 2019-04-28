@@ -298,6 +298,24 @@ public class GameData
         SpawnAliens();
     }
     
+    public void MoveAliens()
+    {
+        int curRoom, nextRoom;
+        
+        for (Alien alienit : aliens)
+        {
+            curRoom = alienit.getCurrentRoom();
+            
+            if(ship.get(curRoom - 1).hasCrewMember()) {}
+            else
+            {
+                nextRoom = ship.get(curRoom - 1).getRandomRoom();
+                ship.get(curRoom - 1).MoveAlienOutOfRoom(alienit);
+                alienit.setCurrentRoom(nextRoom);
+            }
+        }
+    }
+    
     public void nextRound()
     {
         round++;
@@ -311,12 +329,57 @@ public class GameData
             aliens.clear();
             AliensRetreatAfterRound = false;
         }
+        else
+        {
+            //MoveAliens();
+            
+            for (Ship it : ship)
+            {
+                if(it.hasAliens() && !it.hasCrewMember())
+                {
+                    HP -= it.getNumAliens();
+                }
+                else if(it.hasAliens() && it.hasCrewMember())
+                {
+                    for(int i = 0; i < it.getNumAliens(); i++)
+                    {
+                        if(diceRoller(1) >= 5)
+                            HP--;
+                    }
+                }
+                else if(it.hasAliens() && it.hasOrganicDetonator())
+                {
+                    Alien aux = it.killAlien();
+                    OrganicDetonator aux2 = it.removeOrganicDetonator();
+                    
+                    if(aux != null)
+                        aliens.remove(aux);
+                    if(aux2 != null)
+                        tokens.remove(aux2);
+                }
+            }
+        }
         
         if(hasCommander)
             AP = 6;
         else
             AP = 5;
         SpawnAliens();
+    }
+    
+    public void addHealth()
+    {
+        if(hasDoctor())
+            HP += 2;
+        else
+            HP += 1;
+        
+        IP--;
+    }
+    
+    public void RepairHull()
+    {
+        
     }
     
     public void CrewMemberAttack(CrewMembers cm, int room) throws InvalidRoomException, NoAliensToAttackException

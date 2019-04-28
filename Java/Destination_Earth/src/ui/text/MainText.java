@@ -142,6 +142,60 @@ public class MainText
         System.out.println("0 - Back...");
     }
     
+    public void PrintRestingMenu()
+    {
+        PrintGameStats();
+        System.out.println("Resting...");
+        System.out.println("Choose your upgrades");
+        System.out.println("1 - Gain 1 HP (1 IP)");
+        System.out.println("2 - Repair 1 Hull (1 IP)");
+        System.out.println("3 - Build Organic Detonator (2 IP)");
+        System.out.println("4 - Add 1 to Movement (4 IP)");
+        System.out.println("5 - Build Particle Dispenser (5 IP)");
+        System.out.println("6 - Gain a Sealed Room Token (5 IP)");
+        System.out.println("7 - Gain an extra attack die (6 IP)");
+        System.out.println("8 - Gain +1 to attack roll (6 IP)");
+        System.out.println("9 - End Turn");
+        System.out.println("0 - Quit Game");
+    }
+    
+    public void RestingMenu()
+    {
+        int opt;
+        
+        PrintRestingMenu();
+        
+        opt = Read();
+        
+        switch(opt)
+        {
+            case 1:
+                game.SetState(getGameState().AddHealth());
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            case 8:
+                break;
+            case 9:
+                break;
+            case 0:
+                game.SetState(getGameState().quitgame());
+                break;
+            default:
+                break;
+        }
+    }
+    
     public void AddCrewMember(int menu_page, int opt) throws CrewMemberAlreadyPresentException
     {
         if(menu_page == 1)
@@ -448,7 +502,7 @@ public class MainText
             }
             else if(state instanceof AwaitRestingPlayerChoice)
             {
-                //RestingMenu();
+                RestingMenu();
             }
         }
     }

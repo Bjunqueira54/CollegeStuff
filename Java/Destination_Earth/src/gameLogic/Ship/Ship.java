@@ -49,6 +49,10 @@ public class Ship
         return false;
     }
     
+    public int getNumAliens() { return aliens.size(); }
+    
+    public int getRandomRoom() { return doors.get((int)(Math.random() * doors.size())).intValue(); }
+    
     public void addDoor(int door) { doors.add(door); }
     
     public boolean canBeSealed() { return sealable; }
@@ -86,7 +90,28 @@ public class Ship
     
     public void clearAliens() { aliens.clear(); }
     
-    public Alien killAlien() { return aliens.remove(aliens.size() - 1); }
+    public Alien killAlien()
+    {
+        if(!aliens.isEmpty())
+            return aliens.remove(aliens.size() - 1);
+        else
+            return null;
+    }
+    
+    public OrganicDetonator removeOrganicDetonator()
+    {
+        if(!hasOrganicDetonator())
+            return null;
+        
+        for (Token it : tokens)
+        {
+            if(it instanceof OrganicDetonator)
+                return (OrganicDetonator) tokens.remove(tokens.indexOf(it));
+        }
+        
+        //shouldn't reach this point, but netbeans wouldn't stfu about it
+        return null;
+    }
     
     public void addToken(Token token)
     {

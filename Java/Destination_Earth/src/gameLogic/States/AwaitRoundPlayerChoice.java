@@ -64,12 +64,13 @@ public class AwaitRoundPlayerChoice extends StateAdapter
             return this;
         else
         {
-            getGameData().nextRound();
-            
             if(getGameData().getRound(getGameData().getRoundNumber()).length() == 1)
                 return new AwaitRestingPlayerChoice(getGameData());
             else
+            {
+                getGameData().nextRound();
                 return this;
+            }
         }
     }
 
