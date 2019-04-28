@@ -25,6 +25,8 @@ public class MainText
         crew_names = new CrewMembersText();
     }
     
+    private States getGameState() { return game.getGameState(); }
+    
     private void PrintMainMenu()
     {
         System.out.println("1 - Start Game");
@@ -67,6 +69,7 @@ public class MainText
         System.out.println("Round: " + round + "\tRound Type: " + game.getRoundType(round));
         System.out.println("HP: " + game.getHP() + "\tAP: " + game.getAP() + "\tIP: " + game.getIP());
         System.out.print(game.getCrewMembersInfo());
+        System.out.println(game.getRoomsWithAliens());
     }
     
     private void PrintRoundMenu()
@@ -80,32 +83,34 @@ public class MainText
     private void PrintActionMenu(CrewMembers cm)
     {
         System.out.println("1 - Attack");
-        System.out.println("2 - Place Organic Detonator");
-        System.out.println("3 - Place Particle Dispenser");
-        System.out.println("4 - Seal Room");
+        System.out.println("2 - Move");
+        System.out.println("3 - Place Organic Detonator");
+        System.out.println("4 - Place Particle Dispenser");
+        System.out.println("5 - Seal Room");
+        
         if(cm instanceof Doctor)
-            System.out.println("5 - Heal");
+            System.out.println("6 - Heal");
         else if(cm instanceof Engineer)
-            System.out.println("5 - Repair");
+            System.out.println("6 - Repair");
+        
         System.out.println("0 - Back");
     }
     
-    public int ScienceOfficerAttackMenu(int room)
+    public int AdjacentRoomMenu(int room)
     {
         String parse = game.getAdjacentRooms(room);
         String parts = parse.replaceAll("[^0-9]", " ");
         ArrayList<Integer> choice = new ArrayList<>();
-        int i;
+        int i, j;
         
-        for(i = 0; i < parts.length(); i++)
+        for(i = 0, j = 1; i < parts.length(); i++)
         {
             if(!(parts.charAt(i) == ' '))
             {
-                System.out.println(i+1 + " - Room #" + parts.charAt(i) );
+                System.out.println(j + " - Room #" + parts.charAt(i) );
                 choice.add(Character.getNumericValue(parts.charAt(i)));
+                j++;
             }
-            else
-                i--;
         }
         System.out.println(i + 1 + " - Room #" + room);
         choice.add(room);
@@ -217,7 +222,7 @@ public class MainText
                 }
             }
         }
-        
+
         return 1;
     }
     
@@ -309,7 +314,7 @@ public class MainText
         
         if(opt == 0)
         {
-            game.getGameState().quitgame();
+            game.quitgame();
             return;
         }
         
@@ -328,13 +333,13 @@ public class MainText
                     int room;
                     if(cm instanceof ScienceOfficer)
                     {
-                        room = ScienceOfficerAttackMenu(cm.getCurrentPosition());
+                        room = AdjacentRoomMenu(cm.getCurrentPosition());
                     }
                     else
                         room = cm.getCurrentPosition();
                     try
                     {
-                        game.getGameState().Attack(cm, room);
+                        game.SetState(getGameState().Attack(cm, room));
                     }
                     catch(InvalidRoomException ex)
                     {
@@ -346,27 +351,42 @@ public class MainText
                     }
                     break;
                 }
-                case 2: //Place Organic Detonator
+                case 2: //move
+                {
+                    int room = AdjacentRoomMenu(cm.getCurrentPosition());
+                    
                     try
                     {
-                        game.getGameState().PlaceOrganicDetonator(cm);
+                        game.SetState(getGameState().Move(cm, room));
+                    }
+                    catch(InvalidRoomException ex)
+                    {
+                        System.out.println("Invalid Room Choice");
+                    }
+                    
+                    break;
+                }
+                case 3: //Place Organic Detonator
+                    try
+                    {
+                        game.SetState(getGameState().PlaceOrganicDetonator(cm));
                     }
                     catch(NoOrganicDetonatorsException ex)
                     {
                         System.out.println("No Organic Detonators remaining");
                     }
                     break;
-                case 3: //Place Particle Dispenser
+                case 4: //Place Particle Dispenser
                     try
                     {
-                        game.getGameState().PlaceParticleDispenser(cm);
+                        game.SetState(getGameState().PlaceParticleDispenser(cm));
                     }
                     catch(NoParticleDispensersException ex)
                     {
                         System.out.println("No Particle Dispensers remaining");
                     }
                     break;
-                case 4: //Seal a room
+                case 5: //Seal a room
                 {
                     PrintSealRoomMenu();
                     
@@ -377,7 +397,7 @@ public class MainText
                     
                     try
                     {
-                        game.getGameState().SealRool(opt);
+                        game.SetState(getGameState().SealRoom(opt));
                     }
                     catch(NoSealRoomTokensExceptions ex)
                     {
@@ -389,7 +409,7 @@ public class MainText
                     }
                     break;
                 }
-                case 5: //Heal OR repair
+                case 6: //Heal OR repair
                     break;
                 case 0: //Back
                     return;
@@ -402,7 +422,7 @@ public class MainText
     {
         while(!quit)
         {
-            States state = game.getGameState();
+            States state = getGameState();
             
             if(state instanceof MainMenu)
             {

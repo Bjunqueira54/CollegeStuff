@@ -64,13 +64,7 @@ public class Ship
             return false;
     }
     
-    public CrewMembers MoveCrewOutOfRoom(CrewMembers cm)
-    {
-        if(!crew.isEmpty())
-            return crew.get(crew.indexOf(cm));
-        else
-            return null;
-    }
+    public void MoveCrewOutOfRoom(CrewMembers cm) { if(!crew.isEmpty()) crew.remove(cm); }
     
     public boolean hasCrewMember() { return !crew.isEmpty(); }
     
@@ -83,7 +77,7 @@ public class Ship
     public Alien MoveAlienOutOfRoom(Alien alien)
     {
         if(!aliens.isEmpty())
-            return aliens.get(crew.indexOf(alien));
+            return aliens.remove(aliens.indexOf(alien));
         else
             return null;
     }

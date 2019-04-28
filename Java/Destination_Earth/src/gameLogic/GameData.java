@@ -239,6 +239,68 @@ public class GameData
         }
     }
     
+    public String getRoomsWithAliens()
+    {
+        if(aliens.isEmpty() || ship.isEmpty())
+            return "[]";
+        
+        ArrayList<Integer> roomlist = new ArrayList<>();
+        
+        for (Alien it : aliens)
+        {
+            if(!(roomlist.contains((Integer) it.getCurrentRoom())))
+                roomlist.add((Integer) it.getCurrentRoom());
+        }
+        
+        String roomstr = "[";
+        
+        for(int i = 0; i < roomlist.size(); i++)
+        {
+            roomstr += ship.get(roomlist.get(i).intValue() - 1).getName();
+            
+            if(!(i == roomlist.size() - 1))
+                roomstr += ", ";
+        }
+        
+        roomstr += "]";
+        
+        return roomstr;
+    }
+    
+    public void move(CrewMembers cm, int room) throws InvalidRoomException
+    {
+        if(cm instanceof TransporterChief)
+        {
+            ship.get(cm.getCurrentPosition()).MoveCrewOutOfRoom(cm);
+            cm.setNewPosition(room);
+        }
+        
+        String roomlist = getAdjacentRooms(room);
+        
+        roomlist = roomlist.replaceAll("[^0-9]", " ");
+        ArrayList<Integer> intlist = new ArrayList<>();
+        
+        for(int i = 0; i < roomlist.length(); i++)
+        {
+            if(roomlist.charAt(i) != ' ')
+                intlist.add((Integer) Character.getNumericValue(roomlist.charAt(i)));
+        }
+        
+        if(intlist.contains((Integer) room))
+        {
+            ship.get(cm.getCurrentPosition()).MoveCrewOutOfRoom(cm);
+            cm.setNewPosition(room);
+            AP--;
+        }
+        else
+            throw new InvalidRoomException();
+    }
+    
+    public void moveNavOfficer(int room)
+    {
+        throw new UnsupportedOperationException("Not Yet Coded");
+    }
+    
     public void startgame()
     {
         CreateShip();
@@ -256,7 +318,7 @@ public class GameData
             {
                 room.clearAliens();
             }
-            aliens.clear();;
+            aliens.clear();
             AliensRetreatAfterRound = false;
         }
         

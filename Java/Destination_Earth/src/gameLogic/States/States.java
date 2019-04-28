@@ -15,7 +15,7 @@ public interface States
     //In-Game Round Functions
     public States PlaceOrganicDetonator(CrewMembers cm) throws NoOrganicDetonatorsException;
     public States PlaceParticleDispenser(CrewMembers cm) throws NoParticleDispensersException;
-    public States SealRool(int room) throws NoSealRoomTokensExceptions, RoomAlreadySealedException;
+    public States SealRoom(int room) throws NoSealRoomTokensExceptions, RoomAlreadySealedException;
     public States ActivateTrap(int room);
     public States Attack(CrewMembers cm, int room) throws InvalidRoomException, NoAliensToAttackException;
     public States Move(CrewMembers cm, int room) throws InvalidRoomException;

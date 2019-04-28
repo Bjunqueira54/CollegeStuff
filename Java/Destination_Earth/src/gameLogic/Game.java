@@ -13,7 +13,7 @@ public class Game
     public Game()
     {
         gamedata = new GameData();
-        state = new MainMenu(gamedata);
+        state = new MainMenu(getGameData());
     }
     
     public void SetState(States state)
@@ -64,4 +64,12 @@ public class Game
     public CrewMembers getCrewMember(int index) { return getGameData().getCrewMember(index - 1); }
     
     public String getAdjacentRooms(int room) { return getGameData().getAdjacentRooms(room); }
+    
+    public String getRoomsWithAliens() { return getGameData().getRoomsWithAliens(); }
+    
+    public void quitgame()
+    {
+        gamedata = new GameData();
+        state = new MainMenu(getGameData());
+    }
 }

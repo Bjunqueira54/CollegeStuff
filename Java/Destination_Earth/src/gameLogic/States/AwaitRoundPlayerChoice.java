@@ -18,6 +18,17 @@ public class AwaitRoundPlayerChoice extends StateAdapter
     }
 
     @Override
+    public States Move(CrewMembers cm, int room) throws InvalidRoomException
+    {
+        if(!(cm instanceof NavigationOfficer))
+            getGameData().move(cm, room);
+        else
+            getGameData().moveNavOfficer(room);
+        
+        return CheckNextGameState();
+    }
+
+    @Override
     public States PlaceOrganicDetonator(CrewMembers cm) throws NoOrganicDetonatorsException
     {
         getGameData().PlaceOrganicDetonator(cm.getCurrentPosition());
@@ -34,7 +45,7 @@ public class AwaitRoundPlayerChoice extends StateAdapter
     }   
 
     @Override
-    public States SealRool(int room) throws NoSealRoomTokensExceptions, RoomAlreadySealedException
+    public States SealRoom(int room) throws NoSealRoomTokensExceptions, RoomAlreadySealedException
     {
         getGameData().SealRoom(room);
         
