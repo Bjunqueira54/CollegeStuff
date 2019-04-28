@@ -220,9 +220,7 @@ public class MainText
         if(verifyOption(opt))
         {
             if(retreating)
-            {
                 game.addSpawnRetreatingAliensRound(opt);
-            }
             else
                 game.addSpawnAliensRound(opt);
         }
