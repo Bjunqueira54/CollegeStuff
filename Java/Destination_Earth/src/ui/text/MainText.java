@@ -140,7 +140,6 @@ public class MainText
         opt = Read();
 
         menu_crew_page = ChooseCrewProcessing(menu_crew_page, opt);
-
     }
     
     private int ChooseCrewProcessing(int menu_page, int opt)
