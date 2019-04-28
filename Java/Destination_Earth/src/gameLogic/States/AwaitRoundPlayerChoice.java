@@ -20,18 +20,24 @@ public class AwaitRoundPlayerChoice extends StateAdapter
     @Override
     public States PlaceOrganicDetonator(CrewMembers cm) throws NoOrganicDetonatorsException
     {
+        getGameData().PlaceOrganicDetonator(cm.getCurrentPosition());
+        
         return CheckNextGameState();
     }
 
     @Override
     public States PlaceParticleDispenser(CrewMembers cm) throws NoParticleDispensersException
     {
+        getGameData().PlaceParticleDispencers(cm.getCurrentPosition());
+        
         return CheckNextGameState();
     }   
 
     @Override
-    public States SealRool(int room) throws NoSealRoomTokensExceptions
+    public States SealRool(int room) throws NoSealRoomTokensExceptions, RoomAlreadySealedException
     {
+        getGameData().SealRoom(room);
+        
         return CheckNextGameState();
     }
     

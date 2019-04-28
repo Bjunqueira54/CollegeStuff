@@ -35,7 +35,7 @@ public class StateAdapter implements States
     public States PlaceParticleDispenser(CrewMembers cm) throws NoParticleDispensersException { return this; }
 
     @Override
-    public States SealRool(int room) throws NoSealRoomTokensExceptions { return this; }
+    public States SealRool(int room) throws NoSealRoomTokensExceptions, RoomAlreadySealedException { return this; }
     
     @Override
     public States ActivateTrap(int room) { return this; }

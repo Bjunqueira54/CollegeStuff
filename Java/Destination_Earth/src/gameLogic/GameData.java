@@ -4,8 +4,7 @@ import gameLogic.Crew.*;
 import gameLogic.Ship.*;
 import static gameLogic.Dice.diceRoller;
 import gameLogic.Exceptions.*;
-import gameLogic.Ship.Ship;
-import gameLogic.Tokens.Alien;
+import gameLogic.Tokens.*;
 import java.util.ArrayList;
 
 public class GameData
@@ -25,6 +24,7 @@ public class GameData
     private ArrayList<String> adventure;
     private ArrayList<Ship> ship;
     private ArrayList<Alien> aliens;
+    private ArrayList<Token> tokens;
     
     private boolean hasDoctor = false;
     private boolean hasEngineer = false;
@@ -42,6 +42,7 @@ public class GameData
         adventure = new ArrayList<>();
         ship = new ArrayList<>();
         aliens = new ArrayList<>();
+        tokens = new ArrayList<>();
     }
     
     /**
@@ -66,6 +67,36 @@ public class GameData
             
             crew.add(crewmember);
         }
+    }
+    
+    public boolean haveOrganicDetonators()
+    {
+        for (Token it : tokens)
+        {
+            if(it instanceof OrganicDetonator)
+                return true;
+        }
+        return false;
+    }
+    
+    public boolean haveParticleDispensers()
+    {
+        for (Token it : tokens)
+        {
+            if(it instanceof ParticleDispenser)
+                return true;
+        }
+        return false;
+    }
+    
+    public boolean haveSealRoomToken()
+    {
+        for (Token it : tokens)
+        {
+            if(it instanceof SealRoom)
+                return true;
+        }
+        return false;
     }
     
     public void ClearCrew() { crew.clear(); }
@@ -272,6 +303,72 @@ public class GameData
     public boolean CheckIfScienceOfficerCanAttack(CrewMembers cm, int AttackRoom)
     {
         return ship.get(cm.getCurrentPosition()).hasDoor(AttackRoom);
+    }
+    
+    public void PlaceOrganicDetonator(int room) throws NoOrganicDetonatorsException
+    {
+        if(!haveOrganicDetonators())
+            throw new NoOrganicDetonatorsException();
+        
+        OrganicDetonator od;
+        
+        for (Token it : tokens)
+        {
+            if(it instanceof OrganicDetonator)
+            {
+                od = (OrganicDetonator) it;
+                od.setCurrentRoom(room);
+                ship.get(room - 1).addToken(od);
+                AP--;
+                return;
+            }
+        }
+    }
+    
+    public void PlaceParticleDispencers(int room) throws NoParticleDispensersException
+    {
+        if(!haveParticleDispensers())
+            throw new NoParticleDispensersException();
+        
+        ParticleDispenser pd;
+        
+        for (Token it : tokens)
+        {
+            if(it instanceof ParticleDispenser)
+            {
+                pd = (ParticleDispenser) it;
+                pd.setCurrentRoom(room);
+                ship.get(room - 1).addToken(pd);
+                AP--;
+                return;
+            }
+        }
+    }
+    
+    public void SealRoom(int room) throws NoSealRoomTokensExceptions, RoomAlreadySealedException
+    {
+        if(!haveSealRoomToken())
+            throw new NoSealRoomTokensExceptions();
+        else if(ship.get(room - 1).getRoomSealState())
+            throw new RoomAlreadySealedException();
+        
+        SealRoom sr;
+        
+        for(Token it : tokens)
+        {
+            if(it instanceof SealRoom)
+            {
+                sr = (SealRoom) it;
+                sr.setCurrentRoom(room);
+                ship.get(room - 1).addToken(sr);
+                
+                if(ship.get(room - 1).getRoomSealState())
+                    ship.get(room - 1).toggleSealState();
+                
+                AP--;
+                return;
+            }
+        }
     }
     
     public boolean hasDoctor() { return this.hasDoctor; }

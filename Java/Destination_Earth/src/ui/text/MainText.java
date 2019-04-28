@@ -5,6 +5,7 @@ import gameLogic.Game;
 import gameLogic.States.*;
 import gameLogic.Crew.*;
 import gameLogic.Exceptions.*;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 public class MainText
@@ -89,20 +90,45 @@ public class MainText
         System.out.println("0 - Back");
     }
     
-    public void PrintValidAttackRooms(int room)
+    public int ScienceOfficerAttackMenu(int room)
     {
         String parse = game.getAdjacentRooms(room);
         String parts = parse.replaceAll("[^0-9]", " ");
+        ArrayList<Integer> choice = new ArrayList<>();
+        int i;
         
-        for(int i = 0; i < parts.length(); i++)
+        for(i = 0; i < parts.length(); i++)
         {
             if(!(parts.charAt(i) == ' '))
             {
-                System.out.println(i+1 + " - Room # " + parts.charAt(i) );
+                System.out.println(i+1 + " - Room #" + parts.charAt(i) );
+                choice.add(Character.getNumericValue(parts.charAt(i)));
             }
             else
                 i--;
         }
+        System.out.println(i + 1 + " - Room #" + room);
+        choice.add(room);
+        System.out.println("0 - Back...");
+        
+        do
+        {
+            i = Read();
+        }
+        while(!choice.contains((Integer) i));
+        
+        return choice.get(choice.indexOf((Integer) i));
+    }
+    
+    public void PrintSealRoomMenu()
+    {
+        System.out.println("1 - Brig, Room #3");
+        System.out.println("2 - Crew Quarters, Room #4");
+        System.out.println("3 - Weapon's Bay, Room #7");
+        System.out.println("4 - Engineering, Room #9");
+        System.out.println("5 - Holodeck, Room #11");
+        System.out.println("6 - Hydroponics, Room #12");
+        System.out.println("0 - Back...");
     }
     
     public void AddCrewMember(int menu_page, int opt) throws CrewMemberAlreadyPresentException
@@ -281,33 +307,92 @@ public class MainText
         
         opt = Read();
         
+        if(opt == 0)
+        {
+            game.getGameState().quitgame();
+            return;
+        }
+        
         CrewMembers cm = game.getCrewMember(opt);
         
         if(cm != null)
         {
-            
             PrintActionMenu(cm);
             
             opt = Read();
             
             switch(opt)
             {
-                case 0:
+                case 1: //Attack
                 {
+                    int room;
                     if(cm instanceof ScienceOfficer)
-                        PrintValidAttackRooms(cm.getCurrentPosition());
+                    {
+                        room = ScienceOfficerAttackMenu(cm.getCurrentPosition());
+                    }
+                    else
+                        room = cm.getCurrentPosition();
+                    try
+                    {
+                        game.getGameState().Attack(cm, room);
+                    }
+                    catch(InvalidRoomException ex)
+                    {
+                        System.out.println("Invalid Room Choice");
+                    }
+                    catch(NoAliensToAttackException ex)
+                    {
+                        System.out.println("There's no Aliens to attack in that room");
+                    }
                     break;
                 }
-                case 1:
+                case 2: //Place Organic Detonator
+                    try
+                    {
+                        game.getGameState().PlaceOrganicDetonator(cm);
+                    }
+                    catch(NoOrganicDetonatorsException ex)
+                    {
+                        System.out.println("No Organic Detonators remaining");
+                    }
                     break;
-                case 2:
+                case 3: //Place Particle Dispenser
+                    try
+                    {
+                        game.getGameState().PlaceParticleDispenser(cm);
+                    }
+                    catch(NoParticleDispensersException ex)
+                    {
+                        System.out.println("No Particle Dispensers remaining");
+                    }
                     break;
-                case 3:
+                case 4: //Seal a room
+                {
+                    PrintSealRoomMenu();
+                    
+                    opt = Read();
+                    
+                    if(opt > 6)
+                        break;
+                    
+                    try
+                    {
+                        game.getGameState().SealRool(opt);
+                    }
+                    catch(NoSealRoomTokensExceptions ex)
+                    {
+                        System.out.println("No Seal Room Tokens remaining.");
+                    }
+                    catch(RoomAlreadySealedException ex)
+                    {
+                        System.out.println("This room as already been sealed!");
+                    }
                     break;
-                case 4:
+                }
+                case 5: //Heal OR repair
                     break;
-                case 5:
-                    break;
+                case 0: //Back
+                    return;
                 default:
             }
         }

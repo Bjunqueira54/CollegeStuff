@@ -10,4 +10,6 @@ public abstract class Token
     }
     
     public int getCurrentRoom() { return curPos; }
+    
+    public void setCurrentRoom(int room) { curPos = room; }
 }
