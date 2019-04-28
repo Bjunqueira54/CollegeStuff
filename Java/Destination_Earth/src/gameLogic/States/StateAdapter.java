@@ -1,13 +1,13 @@
 package gameLogic.States;
 
 import gameLogic.Crew.CrewMembers;
-import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
+import gameLogic.Exceptions.*;
 import gameLogic.GameData;
 import gameLogic.Tokens.Token;
 
 public class StateAdapter implements States
 {
-    GameData gamedata;
+    private GameData gamedata;
     
     public StateAdapter(GameData g)
     {
@@ -29,11 +29,29 @@ public class StateAdapter implements States
     public States startgame() { return this; }
 
     @Override
-    public States PlaceToken(Token token, int room) { return this; }
+    public States PlaceOrganicDetonator(CrewMembers cm) throws NoOrganicDetonatorsException { return this; }
 
     @Override
-    public States Attack() { return this; }
+    public States PlaceParticleDispenser(CrewMembers cm) throws NoParticleDispensersException { return this; }
 
+    @Override
+    public States SealRool(int room) throws NoSealRoomTokensExceptions { return this; }
+    
+    @Override
+    public States ActivateTrap(int room) { return this; }
+    
+    @Override
+    public States Attack(CrewMembers cm, int room) throws InvalidRoomException, NoAliensToAttackException { return this; }
+
+    @Override
+    public States Move(CrewMembers cm, int room) throws InvalidRoomException { return this; }
+
+    @Override
+    public States Heal() { return this; }
+
+    @Override
+    public States Repair() { return this; }
+    
     @Override
     public States UpgradeMovement(CrewMembers cm) { return this; }
 

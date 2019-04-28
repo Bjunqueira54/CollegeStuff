@@ -3,7 +3,7 @@ package gameLogic;
 import gameLogic.Crew.*;
 import gameLogic.Ship.*;
 import static gameLogic.Dice.diceRoller;
-import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
+import gameLogic.Exceptions.*;
 import gameLogic.Ship.Ship;
 import gameLogic.Tokens.Alien;
 import java.util.ArrayList;
@@ -24,21 +24,24 @@ public class GameData
     private ArrayList<CrewMembers> crew;
     private ArrayList<String> adventure;
     private ArrayList<Ship> ship;
-    
-    private Alien alien;
-    private GameBoard game_board;
+    private ArrayList<Alien> aliens;
     
     private boolean hasDoctor = false;
     private boolean hasEngineer = false;
+    private boolean hasCommander = false;
+    
+    private boolean AliensRetreatAfterRound = false;
     
     public GameData()
     {
         HP = DEFAULT_HP;
         AP = DEFAULT_AP;
         IP = DEFAULT_IP;
+        
         crew = new ArrayList<>();
         adventure = new ArrayList<>();
         ship = new ArrayList<>();
+        aliens = new ArrayList<>();
     }
     
     /**
@@ -95,6 +98,8 @@ public class GameData
         adventure.add("8A");
     }
     
+    public String getAdjacentRooms(int room) { return ship.get(room - 1).getDoors(); }
+    
     public String getRoundsAsString() { return adventure.toString(); }
     public String getCrewMembersAsString()
     {
@@ -115,9 +120,29 @@ public class GameData
         
         return str;
     }
-    public String getCrewMember(int index) { return crew.get(index).toString(); }
+    
+    public String getCrewMembersInfo()
+    {
+        String info = "";
+        
+        for (CrewMembers cm : crew)
+        {
+            info += cm.toString() + " Location: " + ship.get(cm.getCurrentPosition() - 1).getName() + "\n";
+        }
+        
+        return info;
+    }
+    
+    public CrewMembers getCrewMember(int index)
+    {
+        if(crew.get(index) == null)
+            return null;
+        else
+            return crew.get(index);
+    }
     
     public String getRound(int i) { return adventure.get(i-1); }
+    
     public int getRoundNumber() { return round; }
     
     public int DieRoll() { return diceRoller(1); }
@@ -127,7 +152,10 @@ public class GameData
         for (CrewMembers it : crew)
         {
             if(it instanceof Commander)
+            {
+                hasCommander = true;
                 AP = 6;
+            }
             else if(it instanceof Doctor)
                 hasDoctor = true;
             else if(it instanceof Engineer)
@@ -137,7 +165,9 @@ public class GameData
             else if(it instanceof ShuttlePilot)
                 HP += 4;
             
-            it.setNewPosition(DieRoll());
+            it.setNewPosition(diceRoller(2));
+            if(!ship.isEmpty())
+                ship.get(it.getCurrentPosition() - 1).MoveCrewToHere(it);
         }
     }
     
@@ -157,10 +187,91 @@ public class GameData
         ship.add(new Hydroponics());
     }
     
+    private void SpawnAliens()
+    {
+        String curRound = adventure.get(round - 1);
+        
+        if(curRound.length() == 1)
+            return;
+        
+        if(curRound.length() == 3)
+            AliensRetreatAfterRound = true;
+        
+        int numToSpawn = Character.getNumericValue(curRound.charAt(0));
+        
+        for(int i = 0; i < numToSpawn; i++)
+        {
+            int room = diceRoller(2);
+            Alien alien = new Alien(room);
+            aliens.add(alien);
+            ship.get(room - 1).MoveAlienToHere(alien);
+        }
+    }
+    
     public void startgame()
     {
-        SetupCrew();
         CreateShip();
+        SetupCrew();
+        SpawnAliens();
+    }
+    
+    public void nextRound()
+    {
+        round++;
+        
+        if(AliensRetreatAfterRound)
+        {
+            for (Ship room : ship)
+            {
+                room.clearAliens();
+            }
+            aliens.clear();;
+            AliensRetreatAfterRound = false;
+        }
+        
+        if(hasCommander)
+            AP = 6;
+        else
+            AP = 5;
+        SpawnAliens();
+    }
+    
+    public void CrewMemberAttack(CrewMembers cm, int room) throws InvalidRoomException, NoAliensToAttackException
+    {
+        if(!(cm instanceof ScienceOfficer) && (room != cm.getCurrentPosition()))
+            throw new InvalidRoomException();
+        
+        int roll = diceRoller(cm.getDiceNumber());
+        
+        if(cm instanceof Captain)
+        {
+            if(roll + 3 > 6 * cm.getDiceNumber())
+                roll = 6 * cm.getDiceNumber();
+            else
+                roll += 3;
+        }
+        
+        if(!ship.get(room - 1).hasAliens())
+            throw new NoAliensToAttackException();
+        
+        if(roll > 5)
+        {
+            if(cm instanceof ScienceOfficer)
+            {
+                if(!CheckIfScienceOfficerCanAttack(cm, room))
+                    throw new InvalidRoomException();
+            }
+            
+            aliens.remove(ship.get(room - 1).killAlien());
+            IP++;
+        }
+        
+        AP--;
+    }
+    
+    public boolean CheckIfScienceOfficerCanAttack(CrewMembers cm, int AttackRoom)
+    {
+        return ship.get(cm.getCurrentPosition()).hasDoor(AttackRoom);
     }
     
     public boolean hasDoctor() { return this.hasDoctor; }

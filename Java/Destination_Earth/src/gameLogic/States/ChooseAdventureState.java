@@ -7,7 +7,7 @@ public class ChooseAdventureState extends StateAdapter
     public ChooseAdventureState(GameData g)
     {
         super(g);
-        gamedata.ClearAdventure();
+        getGameData().ClearAdventure();
     }
     
     @Override

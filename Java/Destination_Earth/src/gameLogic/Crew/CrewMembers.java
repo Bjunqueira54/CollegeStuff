@@ -16,7 +16,6 @@ public abstract class CrewMembers
     public int getMovement() { return movement; }
     public int getCurrentPosition() { return CurPos; }
     public int getDiceNumber() { return dice; }
-    public int getDieRoll() { return (1 + (int) (Math.random() * (6 * dice) ) ); }
     
     public void upgradeMovement() { movement++; }
     public void upgradeDice() { dice += ((dice < 3) ? 1 : 0); }

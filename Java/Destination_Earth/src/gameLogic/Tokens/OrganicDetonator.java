@@ -3,8 +3,8 @@ package gameLogic.Tokens;
 public class OrganicDetonator extends Token
 {
 
-    public OrganicDetonator()
+    public OrganicDetonator(int room)
     {
-        
+        super(room);
     }
 }

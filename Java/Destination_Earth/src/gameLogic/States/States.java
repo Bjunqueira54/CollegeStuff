@@ -1,7 +1,7 @@
 package gameLogic.States;
 
 import gameLogic.Crew.CrewMembers;
-import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
+import gameLogic.Exceptions.*;
 import gameLogic.Tokens.Token;
 
 public interface States
@@ -13,8 +13,14 @@ public interface States
     public States startgame();
     
     //In-Game Round Functions
-    public States PlaceToken(Token token, int room);
-    public States Attack();
+    public States PlaceOrganicDetonator(CrewMembers cm) throws NoOrganicDetonatorsException;
+    public States PlaceParticleDispenser(CrewMembers cm) throws NoParticleDispensersException;
+    public States SealRool(int room) throws NoSealRoomTokensExceptions;
+    public States ActivateTrap(int room);
+    public States Attack(CrewMembers cm, int room) throws InvalidRoomException, NoAliensToAttackException;
+    public States Move(CrewMembers cm, int room) throws InvalidRoomException;
+    public States Heal();
+    public States Repair();
     
     //In-Game Resting Functions
     public States UpgradeMovement(CrewMembers cm);

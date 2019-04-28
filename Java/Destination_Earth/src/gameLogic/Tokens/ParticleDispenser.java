@@ -2,8 +2,8 @@ package gameLogic.Tokens;
 
 public class ParticleDispenser extends Token
 {
-    public ParticleDispenser()
+    public ParticleDispenser(int room)
     {
-        
+        super(room);
     }
 }

@@ -43,6 +43,8 @@ public class Game
     
     public String getCrewMembersAsString() { return gamedata.getCrewMembersAsString(); }
     
+    public String getCrewMembersInfo() { return gamedata.getCrewMembersInfo(); }
+    
     public void start() { SetState(getGameState().startgame()); }
     
     public void ChooseCrew() { SetState(new ChooseCrewState(gamedata)); }
@@ -59,5 +61,7 @@ public class Game
     
     public int getIP() { return getGameData().getIP(); }
     
-    public String getCrewMember(int index) { return getGameData().getCrewMember(index - 1); }
+    public CrewMembers getCrewMember(int index) { return getGameData().getCrewMember(index - 1); }
+    
+    public String getAdjacentRooms(int room) { return getGameData().getAdjacentRooms(room); }
 }

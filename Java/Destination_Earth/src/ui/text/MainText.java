@@ -65,6 +65,7 @@ public class MainText
         
         System.out.println("Round: " + round + "\tRound Type: " + game.getRoundType(round));
         System.out.println("HP: " + game.getHP() + "\tAP: " + game.getAP() + "\tIP: " + game.getIP());
+        System.out.print(game.getCrewMembersInfo());
     }
     
     private void PrintRoundMenu()
@@ -72,11 +73,36 @@ public class MainText
         System.out.println("\nSelect Crew Member");
         System.out.println("1 - " + game.getCrewMember(1));
         System.out.println("2 - " + game.getCrewMember(2));
+        System.out.println("0 - Quit Game");
     }
     
-    private void PrintActionMenu(int CrewMember)
+    private void PrintActionMenu(CrewMembers cm)
     {
+        System.out.println("1 - Attack");
+        System.out.println("2 - Place Organic Detonator");
+        System.out.println("3 - Place Particle Dispenser");
+        System.out.println("4 - Seal Room");
+        if(cm instanceof Doctor)
+            System.out.println("5 - Heal");
+        else if(cm instanceof Engineer)
+            System.out.println("5 - Repair");
+        System.out.println("0 - Back");
+    }
+    
+    public void PrintValidAttackRooms(int room)
+    {
+        String parse = game.getAdjacentRooms(room);
+        String parts = parse.replaceAll("[^0-9]", " ");
         
+        for(int i = 0; i < parts.length(); i++)
+        {
+            if(!(parts.charAt(i) == ' '))
+            {
+                System.out.println(i+1 + " - Room # " + parts.charAt(i) );
+            }
+            else
+                i--;
+        }
     }
     
     public void AddCrewMember(int menu_page, int opt) throws CrewMemberAlreadyPresentException
@@ -255,9 +281,35 @@ public class MainText
         
         opt = Read();
         
-        if(opt == 1 || opt == 2)
+        CrewMembers cm = game.getCrewMember(opt);
+        
+        if(cm != null)
         {
-            PrintActionMenu(opt);
+            
+            PrintActionMenu(cm);
+            
+            opt = Read();
+            
+            switch(opt)
+            {
+                case 0:
+                {
+                    if(cm instanceof ScienceOfficer)
+                        PrintValidAttackRooms(cm.getCurrentPosition());
+                    break;
+                }
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+            }
         }
     }
     
