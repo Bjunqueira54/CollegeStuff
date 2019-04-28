@@ -100,18 +100,23 @@ public class MainText
     {
         String parse = game.getAdjacentRooms(room);
         String parts = parse.replaceAll("[^0-9]", " ");
-        ArrayList<Integer> choice = new ArrayList<>();
-        int i, j;
+        String strarray[] = parts.split(" ");
         
-        for(i = 0, j = 1; i < parts.length(); i++)
+        ArrayList<Integer> choice = new ArrayList<>();
+        
+        int i;
+        
+        for(i = 0; i < strarray.length; i++)
         {
-            if(!(parts.charAt(i) == ' '))
-            {
-                System.out.println(j + " - Room #" + parts.charAt(i) );
-                choice.add(Character.getNumericValue(parts.charAt(i)));
-                j++;
-            }
+            if(strarray[i].equals(""))
+                continue;
+            
+            choice.add(Integer.parseInt(strarray[i]));
         }
+        
+        for(i = 0; i < choice.size(); i++)
+            System.out.println(i+1 + " - Room #" + choice.get(i).intValue());
+        
         System.out.println(i + 1 + " - Room #" + room);
         choice.add(room);
         System.out.println("0 - Back...");
@@ -120,7 +125,7 @@ public class MainText
         {
             i = Read();
         }
-        while(!choice.contains((Integer) i));
+        while(!choice.contains((Integer) i) || i == 0);
         
         return choice.get(choice.indexOf((Integer) i));
     }

@@ -347,7 +347,7 @@ public class GameData
         if(!ship.get(room - 1).hasAliens())
             throw new NoAliensToAttackException();
         
-        if(roll > 5)
+        if(roll >= 5)
         {
             if(cm instanceof ScienceOfficer)
             {
