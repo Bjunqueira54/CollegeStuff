@@ -1,6 +1,7 @@
 package gameLogic;
 
 import gameLogic.Crew.*;
+import static gameLogic.Dice.diceRoller;
 import gameLogic.Exceptions.CrewMemberAlreadyPresentException;
 import gameLogic.Tokens.Alien;
 import java.util.ArrayList;
@@ -36,6 +37,10 @@ public class GameData
         adventure = new ArrayList<>();
     }
     
+    /**
+     * (static) returns maximum hit points
+     * @return MAX_POINTS
+     */
     public static int getMaxPoints() { return MAX_POINTS; }
     
     public void AddCrewMember(CrewMembers crewmember) throws CrewMemberAlreadyPresentException
@@ -64,6 +69,9 @@ public class GameData
     
     public void addRound(String round) { adventure.add(round); }
     
+    /**
+     * create a default adventure
+     */
     public void SetDefaultAdventure()
     {
         ClearAdventure();
@@ -108,37 +116,25 @@ public class GameData
     public String getRound(int i) { return adventure.get(i-1); }
     public int getRoundNumber() { return round; }
     
-    public int DieRoll() { return (1 + (int) (Math.random() * 6 ) ); }
+    public int DieRoll() { return diceRoller(1); }
     
     public void startgame()
     {
         for (CrewMembers it : crew)
         {
             if(it instanceof Commander)
-            {
                 AP = 6;
-            }
             else if(it instanceof Doctor)
-            {
                 hasDoctor = true;
-            }
             else if(it instanceof Engineer)
-            {
                 hasEngineer = true;
-            }
             else if(it instanceof MoralOfficer)
-            {
                 IP = 5;
-            }
             else if(it instanceof ShuttlePilot)
-            {
                 HP += 4;
-            }
             
             it.setNewPosition(DieRoll());
         }
-        
-        
     }
     
     public boolean hasDoctor() { return this.hasDoctor; }

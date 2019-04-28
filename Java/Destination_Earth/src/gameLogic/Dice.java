@@ -6,7 +6,7 @@ public class Dice
     {
         int total=0;
         for (int i=0; i<n; i++)
-            total += (int) ((Math.random() * 5) + 1);
+            total += (int) ((Math.random() * 6) + 1);
         return total;
     }
 }
