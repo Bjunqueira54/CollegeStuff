@@ -117,17 +117,18 @@ public class MainText
         for(i = 0; i < choice.size(); i++)
             System.out.println(i+1 + " - Room #" + choice.get(i).intValue());
         
-        System.out.println(i + 1 + " - Room #" + room);
-        choice.add(room);
         System.out.println("0 - Back...");
         
         do
         {
             i = Read();
         }
-        while(!choice.contains((Integer) i) || i == 0);
+        while(!(i >= 0 && i <= choice.size()));
         
-        return choice.get(choice.indexOf((Integer) i));
+        if(i > 0)
+            return choice.get(i - 1).intValue();
+        else
+            return 0;
     }
     
     public void PrintSealRoomMenu()

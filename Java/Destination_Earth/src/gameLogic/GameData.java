@@ -275,21 +275,11 @@ public class GameData
             cm.setNewPosition(room);
         }
         
-        String roomlist = getAdjacentRooms(room);
-        
-        roomlist = roomlist.replaceAll("[^0-9]", " ");
-        ArrayList<Integer> intlist = new ArrayList<>();
-        
-        for(int i = 0; i < roomlist.length(); i++)
-        {
-            if(roomlist.charAt(i) != ' ')
-                intlist.add((Integer) Character.getNumericValue(roomlist.charAt(i)));
-        }
-        
-        if(intlist.contains((Integer) room))
+        if(ship.get(cm.getCurrentPosition() - 1).hasDoor(room))
         {
             ship.get(cm.getCurrentPosition()).MoveCrewOutOfRoom(cm);
             cm.setNewPosition(room);
+            ship.get(cm.getCurrentPosition()).MoveCrewToHere(cm);
             AP--;
         }
         else
