@@ -1,7 +1,9 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-struct PlayerEntity
+#include "includes.h"
+
+typedef struct PlayerEntity
 {
 	//Client Vars
 	char *name;
@@ -14,8 +16,6 @@ struct PlayerEntity
 	int size;
 
 
-};
-
-typedef struct PlayerEntity Player, *pPlayer;
+} Player, *pPlayer;
 
 #endif

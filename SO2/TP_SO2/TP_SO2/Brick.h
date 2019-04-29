@@ -1,6 +1,8 @@
 #ifndef BRICK_H
 #define BRICK_H
 
+#include "includes.h"
+
 typedef struct BrickEntity
 {
 	double x;

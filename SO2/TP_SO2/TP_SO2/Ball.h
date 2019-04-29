@@ -4,7 +4,7 @@
 #include "includes.h"
 #include "Player.h"
 
-struct BallEntity
+typedef struct BallEntity
 {
 	double x; //X Position
 	double y; //Y Position
@@ -14,8 +14,6 @@ struct BallEntity
 	double speed; //Maybe an int?
 
 	pPlayer lastPlayer; //Last player that touched the ball
-};
-
-typedef struct BallEntity Ball, *pBall;
+} Ball, *pBall;
 
 #endif
