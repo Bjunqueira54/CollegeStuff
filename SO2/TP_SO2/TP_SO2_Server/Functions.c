@@ -91,74 +91,72 @@ DWORD WINAPI BallControlThreadLoop(LPVOID param)
 
 void SetHighScores()
 {
+	HKEY chave;
+	DWORD queAconteceu, tamanho, flag, scoree;
+	TCHAR str[TAM];
+	TCHAR user[10][TAM] = { TEXT("1 - Bruno"), TEXT("2 - Cassandra"), TEXT("3 - David"), TEXT("4 - Leandro"), TEXT("5 - Abigail"),
+		TEXT("6 - Gabriel"), TEXT("7 - Francisco"), TEXT("8 - Joana"), TEXT("9 - Carolina"), TEXT("10 - Andreia")};
+	int score[10] = {1337, 720, 666, 420, 360, 69, 54, 25, 10, 0};
+	LONG result, i;
 
-#define TAM 200
-	
-		HKEY chave;
-		DWORD queAconteceu, tamanho, flag, scoree;
-		TCHAR str[TAM], user[TAM], score[TAM];
-		LONG result, i;
-#ifdef UNICODE
-		_setmode(_fileno(stdin), _O_WTEXT);
-		_setmode(_fileno(stdout), _O_WTEXT);
-		_setmode(_fileno(stderr), _O_WTEXT);
-#endif
-		//Criar/abrir uma chave em HKEY_CURRENT_USER\Software\TPS02
+	//Criar/abrir uma chave em HKEY_CURRENT_USER\Software\TPS02
 
-		if (RegCreateKeyEx(HKEY_CURRENT_USER, TEXT("Software\\TPSO2"), 0, NULL,
-			REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &chave, &queAconteceu) !=
-			ERROR_SUCCESS) {
-			_tprintf(TEXT("Erro ao criar/abrir chave (%d)\n"), GetLastError());
-			return -1;
-		}
-		else {
-			//Se a chave foi criada, inicializar os valores
-			if (queAconteceu == REG_CREATED_NEW_KEY) {
-				_tprintf(TEXT("Chave: HKEY_CURRENT_USER\\Software\\Software\\TPSO2 criada\n"));
-				//Criar valor "Username" = "nome"
-				scoree = 123;
-				RegSetValueEx(chave, TEXT("Top 10"), 0, REG_SZ, (LPBYTE)TEXT("cassandra %d"),
-					_tcslen(10) * sizeof(TCHAR), scoree);
-				//Criar valor "score" = x;
-				//RegSetValueEx(chave, TEXT("Score"), 0, REG_DWORD, (LPBYTE)&score, sizeof(DWORD));
+	if (RegCreateKeyEx(HKEY_CURRENT_USER, TEXT("Software\\TPSO2"), 0, NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS, NULL, &chave, &queAconteceu) != ERROR_SUCCESS)
+	{
+		_tprintf(TEXT("Erro ao criar/abrir chave (%d)\n"), GetLastError());
+		return;
+	}
+	else
+	{
+		//Se a chave foi criada, inicializar os valores
+		if (queAconteceu == REG_CREATED_NEW_KEY)
+		{
+			_tprintf(TEXT("Chave: HKEY_CURRENT_USER\\Software\\TPSO2 criada\n"));
+			//Criar valor "Username" = "nome"
+			/*scoree = 1337;
+			RegSetValueEx(chave, TEXT("Bruno"), 0, REG_DWORD, (LPBYTE) &scoree, sizeof(int));*/
 
-
-				_tprintf(TEXT("Valores nome e score guardados\n"));
+			for (int i = 0; i < 10; i++)
+			{
+				RegSetValueEx(chave, user[i], 0, REG_DWORD, (LPBYTE) &score[i], sizeof(int));
 			}
-			//Se a chave foi aberta, ler os valores lá guardados
-			else if (queAconteceu == REG_OPENED_EXISTING_KEY) {
-				_tprintf(TEXT("Chave: HKEY_CURRENT_USER\\Software\\Software\\TPSO2\n"));
-				tamanho = 20;
-				RegQueryValueEx(chave, TEXT("Username"), NULL, NULL, (LPBYTE)user,
-					&tamanho);
-				user[tamanho / sizeof(TCHAR)] = '\0';
-				tamanho = sizeof(score);
-				RegQueryValueEx(chave, TEXT("Score"), NULL, NULL, (LPBYTE)&score,
-					&tamanho);
-				_stprintf_s(str, TAM, TEXT("\n User:%s \n Score:%d\n"), user, score);
-				_tprintf(TEXT("Lido do Registry:%s\n\n"), str);
-			}
-			RegCloseKey(chave);
+			//Criar valor "score" = x;
+			//RegSetValueEx(chave, TEXT("Score"), 0, REG_DWORD, (LPBYTE)&score, sizeof(DWORD));
+
+
+			_tprintf(TEXT("Valores nome e score guardados\n"));
 		}
+		//Se a chave foi aberta, ler os valores lá guardados
+		/*else if (queAconteceu == REG_OPENED_EXISTING_KEY)
+		{
+			_tprintf(TEXT("Chave: HKEY_CURRENT_USER\\Software\\TPSO2\n"));
+			tamanho = 20;
+			RegQueryValueEx(chave, TEXT("Username"), NULL, NULL, (LPBYTE)user,
+				&tamanho);
+			user[tamanho / sizeof(TCHAR)] = '\0';
+			tamanho = sizeof(score);
+			RegQueryValueEx(chave, TEXT("Score"), NULL, NULL, (LPBYTE)&score,
+				&tamanho);
+			_stprintf_s(str, TAM, TEXT("\n User:%s \n Score:%d\n"), user, score);
+			_tprintf(TEXT("Lido do Registry:%s\n\n"), str);
+		}*/
 
-		/*
-			_tprintf(TEXT("quer apagar a key? (1=s,0=n ) "));
-			_tscanf_s(&flag);
-			if (flag == 1 ) {
-				result = RegDeleteKey(chave,0);
-				if (result == ERROR_SUCCESS)
-					_tprintf(TEXT("apaguei"));
-					return TRUE;
-				return FALSE;}
-			else
-				_tprintf(TEXT("nao apaguei"));
-			*/
+		RegCloseKey(chave);
+	}
+
+	/*
+		_tprintf(TEXT("quer apagar a key? (1=s,0=n ) "));
+		_tscanf_s(&flag);
+		if (flag == 1 ) {
+			result = RegDeleteKey(chave,0);
+			if (result == ERROR_SUCCESS)
+				_tprintf(TEXT("apaguei"));
+				return TRUE;
+			return FALSE;}
+		else
+			_tprintf(TEXT("nao apaguei"));
+		*/
 
 
-		_gettchar(); //pra nao fechar logo
-
-
-		
-	
-
+	_gettchar(); //pra nao fechar logo
 }

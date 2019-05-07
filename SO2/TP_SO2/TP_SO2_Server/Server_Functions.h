@@ -3,6 +3,8 @@
 #include "includes.h"
 #include "Ball.h"
 
+#define TAM 25
+
 extern int exitthreadstatus;
 
 extern int maxx, maxy, minx, miny;
