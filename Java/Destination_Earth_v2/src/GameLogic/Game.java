@@ -7,7 +7,7 @@ import GameLogic.States.*;
 public class Game
 {
     GameData data;
-    gStates state;
+    gState state;
     
     public Game()
     {
@@ -24,5 +24,10 @@ public class Game
     {
         data = new GameData();
         state = new MainMenu();
+    }
+    
+    public String getState()
+    {
+        return state.toString();
     }
 }

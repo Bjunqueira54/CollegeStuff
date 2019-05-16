@@ -1,6 +1,6 @@
 package GameLogic.States;
 
-public interface gStates
+public interface gState
 {
     
 }

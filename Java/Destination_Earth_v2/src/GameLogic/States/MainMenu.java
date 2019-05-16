@@ -6,4 +6,10 @@ public class MainMenu extends gStateAdapter
     {
         
     }
+
+    @Override
+    public String toString()
+    {
+        return "MainMenu";
+    }
 }
