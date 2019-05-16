@@ -19,8 +19,7 @@ public class Buttons extends Application
         VBox root = new VBox();
         Button b1 = new Button("Change the color");
         Button b2 = new Button("GoodBye");
-        b1.setOnAction(new ColorChangeHandler(root));
-        b2.setOnAction(new GoodbyeHandler());
+        
         
         Label label = new Label("Hello there :)");
         HBox box1 = new HBox();
@@ -28,8 +27,14 @@ public class Buttons extends Application
         root.getChildren().addAll(b1, b2, box1, label);
         
         Scene scene = new Scene(root, 300, 200);
+        scene.setFill(Color.AQUAMARINE);
+        
+        b1.setOnAction(new ColorChangeHandler(scene));
+        b2.setOnAction(new GoodbyeHandler());
+        
         PrimaryStage.setTitle("Buttons");
         PrimaryStage.setScene(scene);
+        
         PrimaryStage.show();
     }
     
@@ -44,12 +49,11 @@ public class Buttons extends Application
     
     private class ColorChangeHandler implements EventHandler<ActionEvent>
     {
-        private VBox root;
         private Scene scene;
         
-        public ColorChangeHandler(VBox root)
+        public ColorChangeHandler(Scene scene)
         {
-            this.root = root;
+            this.scene = scene;
         }
         
         @Override
@@ -58,8 +62,8 @@ public class Buttons extends Application
             int red = (int) (Math.random() * 256);
             int green = (int) (Math.random() * 256);
             int blue = (int) (Math.random() * 256);
-
-            Color color = Color.rgb(red, green, blue);
+            
+            scene.setFill(Color.rgb(red, green, blue));
         }
     }
 }
