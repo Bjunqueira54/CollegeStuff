@@ -1,14 +1,26 @@
-// TP_SO2_DLL.cpp : Defines the exported functions for the DLL application.
-//
-
 #include "stdafx.h"
-#include "Vars.h"
+#include "includes.h"
 
-//eu não sei fazer esta merda
-DWORD WINAPI LogIn(wchar_t *username)
+void LogIn(TCHAR *username)
 {
-	if (wcscmp(PlayerUsername, L""))
-		PlayerUsername = username;
-	else
-		LogIn(username);
+	do {}
+	while (_tcscmp(PlayerUsername, TEXT("")) != 0);	//Just waiting for the server to clear the string
+
+	if (_tcscmp(PlayerUsername, TEXT("") ) == 0)
+	{
+		for (int i = 0; i < _tcslen(username) || i < UNLEN; i++)
+		{
+			PlayerUsername[i] = username[i];
+		}
+	}
+}
+
+void ClearUsernameString()
+{
+	_tcscpy_s(PlayerUsername, UNLEN, TEXT(""));
+}
+
+TCHAR *getPlayerUsername()
+{
+	return PlayerUsername;
 }

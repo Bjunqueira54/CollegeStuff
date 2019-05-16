@@ -1,0 +1,8 @@
+﻿  Functions.c
+c:\users\dread\desktop\collegestuff\so2\tp_so2\tp_so2_server\functions.c(100): warning C4101: 'result': unreferenced local variable
+c:\users\dread\desktop\collegestuff\so2\tp_so2\tp_so2_server\functions.c(100): warning C4101: 'i': unreferenced local variable
+c:\users\dread\desktop\collegestuff\so2\tp_so2\tp_so2_server\functions.c(95): warning C4101: 'tamanho': unreferenced local variable
+c:\users\dread\desktop\collegestuff\so2\tp_so2\tp_so2_server\functions.c(96): warning C4101: 'str': unreferenced local variable
+c:\users\dread\desktop\collegestuff\so2\tp_so2\tp_so2_server\functions.c(95): warning C4101: 'scoree': unreferenced local variable
+c:\users\dread\desktop\collegestuff\so2\tp_so2\tp_so2_server\functions.c(95): warning C4101: 'flag': unreferenced local variable
+  TP_SO2_Server.vcxproj -> C:\Users\dread\Desktop\CollegeStuff\SO2\TP_SO2\Debug\TP_SO2_Server.exe

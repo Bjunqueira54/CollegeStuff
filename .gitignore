@@ -96,6 +96,9 @@
 /Java/Destination_Earth/build/
 /Java/Destination_Earth/dist/
 SO2/TP_SO2/.vs
+SO2/TP_SO2_DLL/.vs/
+SO2/TP_SO2_Client/.vs/
+SO2/TP_SO2_Server/.vs/
 /.vs
 C++/Test_Game/.vs
 /Java/Destination_Earth_v2/nbproject/private/
