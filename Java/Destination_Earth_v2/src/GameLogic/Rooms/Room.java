@@ -6,22 +6,29 @@ import GameLogic.Tokens.*;
 
 public class Room
 {
+    int id;
+    String name;
     boolean isSealed, hasParticleDispenser, hasOrganicDetonator;
+    boolean canBeSealed;
     ArrayList<Alien> aliens;
     ArrayList<CrewMember> crew;
     
-    public Room()
+    public Room(int id, String name, boolean Sealable)
     {
-        isSealed = false;
-        hasOrganicDetonator = false;
-        hasParticleDispenser = false;
+        this.id = id;
+        this.name = name;
+        this.isSealed = false;
+        this.hasOrganicDetonator = false;
+        this.hasParticleDispenser = false;
+        this.canBeSealed = Sealable;
     }
     
-    public boolean isSealed() { return isSealed; }
-    public boolean hasParticleDispenser() { return hasParticleDispenser; }
-    public boolean hasOrganicDetonator() { return hasOrganicDetonator; }
-    public boolean hasAliens() { return (aliens.size() > 0); }
-    public boolean hasCrewMember() { return (crew.size() > 0); }
+    public final boolean isSealed() { return isSealed; }
+    public final boolean hasParticleDispenser() { return hasParticleDispenser; }
+    public final boolean hasOrganicDetonator() { return hasOrganicDetonator; }
+    public final boolean hasAliens() { return (aliens.size() > 0); }
+    public final boolean hasCrewMember() { return (crew.size() > 0); }
+    public final boolean canBeSealed() { return canBeSealed; }
     
     public void addCrewMember(CrewMember cm) { crew.add(cm); }
     public void addAlien(Alien alien) { aliens.add(alien); }
@@ -42,5 +49,75 @@ public class Room
             return false;
     }
     
+    public boolean SealRoom()
+    {
+        if(isSealed == false)
+        {
+            isSealed = true;
+            return true;
+        }
+        else
+            return false;
+    }
     
+    public boolean PlaceOrganicDetonator()
+    {
+        if(hasOrganicDetonator == false)
+        {
+            hasOrganicDetonator = true;
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    public boolean PlaceParticleDispenser()
+    {
+        if(hasParticleDispenser == false)
+        {
+            hasOrganicDetonator = true;
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    public boolean unsealRoom()
+    {
+        if(isSealed == true)
+        {
+            isSealed = false;
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    public boolean removeParticleDispenser()
+    {
+        if(hasParticleDispenser == true)
+        {
+            hasParticleDispenser = false;
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    public boolean removeOrganicDetonator()
+    {
+        if(hasOrganicDetonator == true)
+        {
+            hasOrganicDetonator = false;
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return id + " - " + name;
+    }
 }
