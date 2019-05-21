@@ -1,10 +1,14 @@
 package GameLogic.States;
 
+import GameLogic.GameData;
+
 public class MainMenu extends gStateAdapter
 {
-    public MainMenu()
+    private GameData data;
+    
+    public MainMenu(GameData data)
     {
-        
+        this.data = data;
     }
 
     @Override

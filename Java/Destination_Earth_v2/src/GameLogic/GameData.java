@@ -6,10 +6,10 @@ import GameLogic.Rooms.*;
 
 public class GameData
 {
-    int HP;
-    int Hull;
-    ArrayList<CrewMember> crew;
-    ArrayList<Room> ship;
+    private int HP;
+    private int Hull;
+    private ArrayList<CrewMember> crew;
+    private ArrayList<Room> ship;
     
     public GameData()
     {
@@ -40,4 +40,21 @@ public class GameData
         ship.add(new Holodeck());
         ship.add(new Hydroponics());
     }
+    
+    public void addCrewMember(CrewMember cm) { crew.add(cm); }
+    
+    public String getCrewMembers()
+    {
+        String crewstr = "";
+        
+        if(crew.isEmpty())
+            return crewstr;
+        
+        for(int i = 0; i < crew.size(); i++)
+            crewstr += crew.get(i).toString() + ", ";
+        
+        return crewstr;
+    }
+    
+    public boolean isCrewComplete() { return (crew.size() == 2); }
 }

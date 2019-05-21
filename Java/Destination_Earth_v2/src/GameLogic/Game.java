@@ -1,18 +1,17 @@
 package GameLogic;
 
-import GameLogic.CrewMembers.*;
-import GameLogic.Rooms.*;
+import GameLogic.Exceptions.*;
 import GameLogic.States.*;
 
 public class Game
 {
-    GameData data;
-    gState state;
+    private GameData data;
+    private gState state;
     
     public Game()
     {
-        data = new GameData();
-        state = new MainMenu();
+        this.data = new GameData();
+        this.state = new MainMenu(data);
     }
     
     public void StartGame()
@@ -23,11 +22,17 @@ public class Game
     public void QuitGame()
     {
         data = new GameData();
-        state = new MainMenu();
+        state = new MainMenu(data);
     }
     
-    public String getState()
-    {
-        return state.toString();
-    }
+    public void MainMenu() { state = new MainMenu(data); }
+    public void ChooseCrew() { state = new ChooseCrew(data); }
+    public void ChooseCrewMember(String name) throws InvalidCrewMemberException, CrewMemberAlreadySelectedException
+    { state = state.ChooseCrewMember(name); }
+    
+    public String getState() { return state.toString(); }
+    
+    public String getCrewMembers() { return "[" + data.getCrewMembers() + "]"; }
+    
+    public boolean crewComplete() { return data.isCrewComplete(); }
 }
