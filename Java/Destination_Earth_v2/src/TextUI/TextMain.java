@@ -18,10 +18,21 @@ public class TextMain
     {
         public Printer() {}
         
+        public void PrintAdventureMenu()
+        {
+            PrintMenuInfo();
+            System.out.println("1 - Add Alien Round");
+            System.out.println("2 - Add Retreating Alien Round");
+            System.out.println("3 - Add Resting Round");
+            System.out.println("4 - Create the default adventure");
+            System.out.println("5 - Clear Adventure");
+            System.out.println("0 - Back to the main menu...");
+        }
+        
         public void PrintMenuInfo()
         {
             System.out.println("Crew: " + game.getCrewMembers());
-            System.out.println("Adventure: ");
+            System.out.println("Adventure: " + game.getAdventure());
             System.out.println("");
         }
         
@@ -36,6 +47,8 @@ public class TextMain
         
         public void PrintCrewMenu(int page)
         {
+            PrintMenuInfo();
+            
             if(page == 1)
             {
                 System.out.println("1 - Captain");
@@ -83,7 +96,7 @@ public class TextMain
                 game.ChooseCrew();
                 break;
             case 3:
-                //game.ChooseAdventure();
+                game.ChooseAdventure();
                 break;
             case 0:
                 quitting = true;
@@ -138,6 +151,9 @@ public class TextMain
                     case 8:
                         game.ChooseCrewMember("RedShirt");
                         break;
+                    case 0:
+                        game.MainMenu();
+                        break;
                     default:
                         break;
                 }
@@ -158,6 +174,9 @@ public class TextMain
                     case 4:
                         game.ChooseCrewMember("TransportChief");
                         break;
+                    case 0:
+                        game.MainMenu();
+                        break;
                     default:
                         break;
                 }
@@ -173,6 +192,34 @@ public class TextMain
         }
     }
     
+    private void ChooseAdventure()
+    {
+        pr.PrintAdventureMenu();
+        
+        opt = sc.nextInt();
+        
+        switch(opt)
+        {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                game.setDefaultAdventure();
+                break;
+            case 5:
+                game.ClearAdventure();
+                break;
+            case 0:
+                game.MainMenu();
+                break;
+            default:
+                break;
+        }
+    }
+    
     public void run()
     {
         while(!quitting)
@@ -181,6 +228,8 @@ public class TextMain
                 MainMenu();
             else if(game.getState().equalsIgnoreCase("ChooseCrew"))
                 ChooseCrewMenu();
+            else if(game.getState().equalsIgnoreCase("ChooseAdventure"))
+                ChooseAdventure();
         }
     }
 }

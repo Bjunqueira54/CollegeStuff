@@ -27,12 +27,23 @@ public class Game
     
     public void MainMenu() { state = new MainMenu(data); }
     public void ChooseCrew() { state = new ChooseCrew(data); }
+    public void ChooseAdventure() { state = new ChooseAdventure(data); }
+    
     public void ChooseCrewMember(String name) throws InvalidCrewMemberException, CrewMemberAlreadySelectedException
     { state = state.ChooseCrewMember(name); }
+    
+    public void ChooseAdventureRound(String round) throws InvalidRoundException
+    { state = state.ChooseRound(round); }
+    
+    public void setDefaultAdventure() { state = state.setDefaultAdventure(); }
     
     public String getState() { return state.toString(); }
     
     public String getCrewMembers() { return "[" + data.getCrewMembers() + "]"; }
     
+    public String getAdventure() { return "[" + data.getAdventure() + "]"; }
+    
     public boolean crewComplete() { return data.isCrewComplete(); }
+    
+    public void ClearAdventure() { state = state.clearAdventure(); }
 }

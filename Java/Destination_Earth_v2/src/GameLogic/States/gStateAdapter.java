@@ -17,4 +17,10 @@ public class gStateAdapter implements gState
     @Override
     public gState ChooseRound(String round) throws InvalidRoundException
     { return this; }
+
+    @Override
+    public gState setDefaultAdventure() { return this; }
+
+    @Override
+    public gState clearAdventure() { return this; }
 }
