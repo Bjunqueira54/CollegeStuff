@@ -205,6 +205,14 @@ public class TextMain
             case 2:
                 break;
             case 3:
+                try
+                {
+                    game.addRound("R");
+                }
+                catch(InvalidRoundException ex)
+                {
+                    System.out.println("Something went wrong. InvalidRoundException.");
+                }
                 break;
             case 4:
                 game.setDefaultAdventure();

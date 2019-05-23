@@ -46,4 +46,7 @@ public class Game
     public boolean crewComplete() { return data.isCrewComplete(); }
     
     public void ClearAdventure() { state = state.clearAdventure(); }
+    
+    public void addRound(String round) throws InvalidRoundException
+    { state = state.ChooseRound(round); }
 }
