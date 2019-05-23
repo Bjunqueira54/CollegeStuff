@@ -20,7 +20,6 @@ public class GameData
         ship = new ArrayList<>();
         rounds = new ArrayList<>();
         CreateShip();
-        round = 0;
     }
     
     //Not sure if here or in Game. Decide Later.
@@ -46,8 +45,29 @@ public class GameData
         ship.add(new Hydroponics());
     }
     
+    public char getNextRound()
+    {
+        if(rounds.get(round - 1) == 0)
+            return 'R';
+        else if(rounds.get(round - 1) >= 1 && rounds.get(round - 1) <= 8)
+            return 'A';
+        else if(rounds.get(round - 1) >= 11 && rounds.get(round - 1) <= 18)
+            return '*';
+        else
+            return 'R';
+    }
+    
+    //idk what to put in here
+    public void StartGame()
+    {
+        round = 1;
+        HP = 8;
+        Hull = 8;
+    }
+    
     public void setDefaultAdventure()
     {
+        rounds.clear();
         rounds.add(2);
         rounds.add(3);
         rounds.add(4);

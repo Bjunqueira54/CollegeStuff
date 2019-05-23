@@ -98,6 +98,10 @@ public class TextMain
             case 3:
                 game.ChooseAdventure();
                 break;
+            case 4:
+                //secret options to reset the game
+                game.reset();
+                break;
             case 0:
                 quitting = true;
                 break;
@@ -198,33 +202,37 @@ public class TextMain
         
         opt = sc.nextInt();
         
-        switch(opt)
+        try
         {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                try
-                {
+            switch(opt)
+            {
+                case 1:
+                    System.out.print("Number of Aliens to spawn: ");
+                    game.addRound(sc.next());
+                    break;
+                case 2:
+                    System.out.print("Number of Aliens to spawn: ");
+                    game.addRound(sc.next() + "*");
+                    break;
+                case 3:
                     game.addRound("R");
-                }
-                catch(InvalidRoundException ex)
-                {
-                    System.out.println("Something went wrong. InvalidRoundException.");
-                }
-                break;
-            case 4:
-                game.setDefaultAdventure();
-                break;
-            case 5:
-                game.ClearAdventure();
-                break;
-            case 0:
-                game.MainMenu();
-                break;
-            default:
-                break;
+                    break;
+                case 4:
+                    game.setDefaultAdventure();
+                    break;
+                case 5:
+                    game.ClearAdventure();
+                    break;
+                case 0:
+                    game.MainMenu();
+                    break;
+                default:
+                    break;
+            }
+        }
+        catch(InvalidRoundException ex)
+        {
+            System.out.println("Something went wrong. InvalidRoundException.");
         }
     }
     

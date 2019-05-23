@@ -16,7 +16,8 @@ public class Game
     
     public void StartGame()
     {
-        
+        data.StartGame();
+        state = new AwaitPlayerChoice(data);
     }
     
     public void QuitGame()
@@ -49,4 +50,12 @@ public class Game
     
     public void addRound(String round) throws InvalidRoundException
     { state = state.ChooseRound(round); }
+    
+    //Secret Dev Debugging function
+    //Use to reset the game back to the starting stage
+    public void reset()
+    {
+        data = new GameData();
+        state = new MainMenu(data);
+    }
 }
