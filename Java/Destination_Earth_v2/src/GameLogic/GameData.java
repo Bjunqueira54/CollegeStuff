@@ -96,7 +96,8 @@ public class GameData
         
         for (int i = 0; i < rounds.size(); i++)
         {
-            if(i+1 == round) aux += "(";
+            if(i+1 == round) 
+                aux += "(";
             
             if(rounds.get(i) == 0)
                 aux += "R";
@@ -105,9 +106,11 @@ public class GameData
             else if(rounds.get(i) >= 11 && rounds.get(i) <= 18)
                 aux += (rounds.get(i) - 10) + "A*";
             
-            if(i+1 == round) aux += ")";
+            if(i+1 == round)
+                aux += ")";
             
-            if(!(i == (rounds.size() - 1))) aux += ", ";
+            if(!(i == (rounds.size() - 1)))
+                aux += ", ";
         }
         
         return aux;
