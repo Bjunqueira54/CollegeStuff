@@ -12,6 +12,7 @@ public class Room
     boolean canBeSealed;
     ArrayList<Alien> aliens;
     ArrayList<CrewMember> crew;
+    ArrayList<Token> tokens;
     
     public Room(int id, String name, boolean Sealable)
     {
@@ -21,6 +22,10 @@ public class Room
         this.hasOrganicDetonator = false;
         this.hasParticleDispenser = false;
         this.canBeSealed = Sealable;
+        
+        aliens = new ArrayList<>();
+        crew = new ArrayList<>();
+        tokens = new ArrayList<>();
     }
     
     public final boolean isSealed() { return isSealed; }

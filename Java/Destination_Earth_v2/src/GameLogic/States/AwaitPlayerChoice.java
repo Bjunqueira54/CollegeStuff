@@ -10,4 +10,9 @@ public class AwaitPlayerChoice extends gStateAdapter
     {
         this.data = data;
     }
+
+    @Override
+    public String toString() { return "AwaitPlayerChoice"; }
+    
+    
 }

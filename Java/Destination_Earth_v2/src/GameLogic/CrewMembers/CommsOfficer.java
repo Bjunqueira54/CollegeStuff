@@ -2,14 +2,8 @@ package GameLogic.CrewMembers;
 
 public class CommsOfficer extends CrewMember
 {
-    public CommsOfficer()
-    {
-        
-    }
+    public CommsOfficer() { super(); }
 
     @Override
-    public String toString()
-    {
-        return "Communications Officer";
-    }
+    public String toString() { return "Communications Officer"; }
 }

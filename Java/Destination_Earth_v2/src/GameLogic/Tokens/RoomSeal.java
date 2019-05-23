@@ -1,6 +1,6 @@
 package GameLogic.Tokens;
 
-public class RoomSeal
+public class RoomSeal extends Token
 {
     
 }

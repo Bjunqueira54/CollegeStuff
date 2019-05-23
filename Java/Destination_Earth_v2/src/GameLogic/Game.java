@@ -44,9 +44,19 @@ public class Game
     
     public String getAdventure() { return "[" + data.getAdventure() + "]"; }
     
+    public String getCrewMembersWithLocation() { return data.getCrewMembersWithLocation(); }
+    
+    public String stats() { return data.getStats(); }
+    
     public boolean crewComplete() { return data.isCrewComplete(); }
     
     public void ClearAdventure() { state = state.clearAdventure(); }
+    
+    public boolean hasSetParticleDispenser() { return data.hasSetParticleDispenser(); }
+    
+    public boolean hasDoctor() { return data.hasDoctor(); }
+    
+    public boolean hasEngineer() { return data.hasEngineer(); }
     
     public void addRound(String round) throws InvalidRoundException
     { state = state.ChooseRound(round); }
@@ -58,4 +68,6 @@ public class Game
         data = new GameData();
         state = new MainMenu(data);
     }
+    
+    
 }

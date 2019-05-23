@@ -1,6 +1,6 @@
 package GameLogic.Tokens;
 
-public class OrganicDetonator
+public class OrganicDetonator extends Token
 {
     
 }

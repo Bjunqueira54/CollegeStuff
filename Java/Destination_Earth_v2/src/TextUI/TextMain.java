@@ -72,6 +72,38 @@ public class TextMain
                 System.out.println("0 - Back to Main Menu...");
             }
         }
+        
+        public void PrintGameStats()
+        {
+            System.out.println(game.getCrewMembersWithLocation());
+            System.out.println(game.stats());
+        }
+        
+        public void PrintActionMenu()
+        {
+            PrintGameStats();
+            
+            int i = 0;
+            System.out.println(i++ + " - Move (1AP)");
+            System.out.println(i++ + " - Attack (1AP)");
+            System.out.println(i++ + " - Set Trap (1AP)");
+            System.out.println(i++ + " - Seal Room (1AP)");
+            
+            if(game.hasSetParticleDispenser())
+                System.out.println(i++ + " - Detonate Particle Dispenser (1AP)");
+            
+            if(game.hasDoctor())
+                System.out.println(i++ + " - Heal 1 Health (1AP)");
+            
+            if(game.hasEngineer())
+                System.out.println(i++ + " - Fix 1 Hull (1AP)");
+            
+            
+            if(i + 1 == 9)
+                System.out.println("9 - Next Page...");
+            
+            System.out.println("0 - Quit Game");
+        }
     }
     
     public TextMain()
@@ -236,6 +268,11 @@ public class TextMain
         }
     }
     
+    private void ChooseAction()
+    {
+        pr.PrintActionMenu();
+    }
+    
     public void run()
     {
         while(!quitting)
@@ -246,6 +283,8 @@ public class TextMain
                 ChooseCrewMenu();
             else if(game.getState().equalsIgnoreCase("ChooseAdventure"))
                 ChooseAdventure();
+            else if(game.getState().equalsIgnoreCase("AwaitPlayerChoice"))
+                ChooseAction();
         }
     }
 }

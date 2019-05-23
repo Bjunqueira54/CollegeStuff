@@ -4,22 +4,33 @@ import java.util.ArrayList;
 import GameLogic.CrewMembers.*;
 import GameLogic.Exceptions.*;
 import GameLogic.Rooms.*;
+import GameLogic.Tokens.*;
 
 public class GameData
 {
-    private int HP;
-    private int Hull;
+    private int HP, MAX_HP;
+    private int Hull, MAX_Hull;
     private int round;
+    private int AP, MAX_AP;
+    private int IP, MAX_IP;
     private ArrayList<CrewMember> crew;
     private ArrayList<Room> ship;
     private ArrayList<Integer> rounds;
+    private ArrayList<Token> tokens;
+    private ArrayList<Alien> aliens;
     
     public GameData()
     {
         crew = new ArrayList<>();
         ship = new ArrayList<>();
         rounds = new ArrayList<>();
+        tokens = new ArrayList<>();
+        aliens = new ArrayList<>();
+        
         CreateShip();
+        
+        MAX_AP = 5;
+        MAX_HP = MAX_Hull = MAX_IP = 12;
     }
     
     //Not sure if here or in Game. Decide Later.
@@ -63,6 +74,50 @@ public class GameData
         round = 1;
         HP = 8;
         Hull = 8;
+        IP = 0;
+        
+        CheckCrewMembers();
+        
+        AP = MAX_AP;
+    }
+    
+    private void CheckCrewMembers()
+    {
+        for (CrewMember cm : crew)
+        {
+            if(cm instanceof Commander)
+                MAX_AP = 6;
+            else if(cm instanceof MoralOfficer)
+                IP = 5;
+            else if(cm instanceof ShuttlePilot)
+                HP += 4;
+        }
+    }
+    
+    public boolean hasEngineer() { return hasX("Engineer"); }
+    
+    public boolean hasDoctor() { return hasX("Doctor"); }
+    
+    private boolean hasX(String name)
+    {
+        for (CrewMember cm : crew)
+        {
+            if(cm.toString().equalsIgnoreCase(name))
+                return true;
+        }
+        
+        return false;
+    }
+    
+    public boolean hasSetParticleDispenser()
+    {
+        for (Token token : tokens)
+        {
+            if(token instanceof ParticleDispenser)
+                return token.isSet();
+        }
+        
+        return false;
     }
     
     public void setDefaultAdventure()
@@ -151,4 +206,41 @@ public class GameData
     
     public boolean isCrewComplete() { return (crew.size() == 2); }
     public boolean isAdventureComplete() { return (rounds.size() == 13); }
+    
+    public String getCrewMembersWithLocation()
+    {
+        String aux = "";
+        
+        if(crew.isEmpty())
+            return aux;
+        
+        for (CrewMember cm : crew)
+        {
+            aux += cm.toString() + " Location: " + cm.getRoom() + "\n";
+        }
+        
+        return aux;
+    }
+    
+    public final int getRound() { return round; }
+    
+    public String getStats()
+    {
+        String aux = "";
+        
+        aux += "HP: " + HP + "\tHull: " + Hull + "\tIP: " + IP + "\n";
+        aux += checkAlienLocation();
+        
+        return aux;
+    }
+    
+    public String checkAlienLocation()
+    {
+        String aux = "";
+        
+        if(aliens.isEmpty())
+            return aux;
+        
+        return aux;
+    }
 }

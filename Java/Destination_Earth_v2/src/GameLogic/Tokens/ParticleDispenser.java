@@ -1,6 +1,6 @@
 package GameLogic.Tokens;
 
-public class ParticleDispenser
+public class ParticleDispenser extends Token
 {
     
 }

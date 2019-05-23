@@ -2,14 +2,8 @@ package GameLogic.CrewMembers;
 
 public class Engineer extends CrewMember
 {
-    public Engineer()
-    {
-        
-    }
+    public Engineer() { super(); }
 
     @Override
-    public String toString()
-    {
-        return "Engineer";
-    }
+    public String toString() { return "Engineer"; }
 }
