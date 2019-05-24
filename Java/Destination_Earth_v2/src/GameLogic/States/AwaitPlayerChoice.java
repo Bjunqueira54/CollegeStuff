@@ -14,5 +14,28 @@ public class AwaitPlayerChoice extends gStateAdapter
     @Override
     public String toString() { return "AwaitPlayerChoice"; }
     
+    // move
+    public gState Move() 
+    {
+        
+        return this; //temporary
+    }
     
+    // attack
+    public gState Attack()
+    {
+        return this; //temporary
+    }
+    
+    // place traps
+    public gState PlaceTraps()
+    {
+        return this; //temporary
+    }
+    
+    // seal room
+    public gState SealRoom()
+    {
+        return this; //temporary
+    }
 }
