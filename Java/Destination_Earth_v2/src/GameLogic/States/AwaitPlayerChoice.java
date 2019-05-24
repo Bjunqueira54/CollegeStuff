@@ -1,5 +1,6 @@
 package GameLogic.States;
 
+import GameLogic.CrewMembers.*;
 import GameLogic.GameData;
 
 public class AwaitPlayerChoice extends gStateAdapter
@@ -15,26 +16,25 @@ public class AwaitPlayerChoice extends gStateAdapter
     public String toString() { return "AwaitPlayerChoice"; }
     
     // move
-    public gState Move() 
+    public gState Move(CrewMember cm) 
     {
-        
         return this; //temporary
     }
     
     // attack
-    public gState Attack()
+    public gState Attack(CrewMember cm)
     {
         return this; //temporary
     }
     
     // place traps
-    public gState PlaceTraps()
+    public gState PlaceTraps(int room)
     {
         return this; //temporary
     }
     
     // seal room
-    public gState SealRoom()
+    public gState SealRoom(int room)
     {
         return this; //temporary
     }
