@@ -118,6 +118,25 @@ public class GameData
         
     }
     
+    // =========== CREW MEMBER ATTACK ===========
+    
+    public void crewMemberAttack(CrewMember cm)
+    {
+        int roll;
+        
+        if(isSecurityOfficer(cm))
+        {
+            roll = DiceRoller(2);
+        }
+        else
+        {
+            roll = DiceRoller(1);
+        }
+    }
+    
+    private boolean isSecurityOfficer(CrewMember cm) 
+    { return (cm instanceof SecurityOfficer); }
+    
     // =========== CHECK CREW MEMBER ===========
     
     private void CheckCrewMembers()
@@ -174,9 +193,9 @@ public class GameData
     
     public boolean isCrewComplete() { return (crew.size() == 2); }
 
-    /* ============================= */
-    /* =========== ALIEN =========== */
-    /* ============================= */
+    /* ============================== */
+    /* =========== ALIENS =========== */
+    /* ============================== */
     
     // =========== CHECK ALIEN LOCATION =========== 
     

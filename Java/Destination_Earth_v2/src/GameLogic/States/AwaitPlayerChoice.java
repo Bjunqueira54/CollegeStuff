@@ -20,8 +20,9 @@ public class AwaitPlayerChoice extends gStateAdapter
     
     public gState Attack(CrewMember cm)
     {
+        data.crewMemberAttack(cm);
         
-        return this; //temporary
+        return CheckNextGameState();
     }
     
     // =========== MOVE ===========
@@ -34,7 +35,7 @@ public class AwaitPlayerChoice extends gStateAdapter
         else
             data.moveCrewMember(cm, room, false); // false -> cm != navigation officer
         
-        return this; //don't know what to return
+        return CheckNextGameState();
     }
     
     // =========== PLACE TRAPS ===========
