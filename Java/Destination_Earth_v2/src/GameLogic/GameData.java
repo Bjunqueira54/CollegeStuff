@@ -10,10 +10,11 @@ public class GameData
 {
     // GAME STATS
     private int HP, MAX_HP;
-    private int Hull, MAX_Hull;
+    private int Hull, MAX_HULL;
     private int round;
     private int AP, MAX_AP;
     private int IP, MAX_IP;
+    private int toHit = 5;
     
     // GAME ELEMENTS
     private ArrayList<CrewMember> crew;
@@ -33,7 +34,7 @@ public class GameData
         CreateShip();
         
         MAX_AP = 5;
-        MAX_HP = MAX_Hull = MAX_IP = 12;
+        MAX_HP = MAX_HULL = MAX_IP = 12;
     }
     
     //Not sure if here or in Game. Decide Later.
@@ -112,7 +113,8 @@ public class GameData
         }
         else 
         {
-            
+            if(isTransporterChief(cm))
+                cm.setRoom(room);
             AP--;
         }
         
@@ -120,22 +122,19 @@ public class GameData
     
     // =========== CREW MEMBER ATTACK ===========
     
-    public void crewMemberAttack(CrewMember cm)
+    public void crewMemberAttack(CrewMember cm, Alien a)
     {
-        int roll;
-        
         if(isSecurityOfficer(cm))
         {
-            roll = DiceRoller(2);
+            if(DiceRoller(2) >= toHit);
+                //alien dead
         }
         else
         {
-            roll = DiceRoller(1);
+            if(DiceRoller(1) >= toHit);
+                //alien dead
         }
     }
-    
-    private boolean isSecurityOfficer(CrewMember cm) 
-    { return (cm instanceof SecurityOfficer); }
     
     // =========== CHECK CREW MEMBER ===========
     
@@ -143,17 +142,14 @@ public class GameData
     {
         for (CrewMember cm : crew)
         {
-            if(cm instanceof Commander)
+            if(isCommander(cm))
                 MAX_AP = 6;
-            else if(cm instanceof MoralOfficer)
+            else if(isMoralOfficer(cm))
                 IP = 5;
-            else if(cm instanceof ShuttlePilot)
+            else if(isShuttlePilot(cm))
                 HP += 4;
         }
     }
-    
-    private boolean isTransporterChief(CrewMember cm)
-    { return (cm instanceof TransporterChief); }
     
     // =========== GET CREW MEMBERS ===========
     
@@ -190,6 +186,23 @@ public class GameData
         
         return aux;
     }
+    
+    // =========== IS CREW MEMBER? ===========
+
+    private boolean isCommander(CrewMember cm)
+    { return (cm instanceof Commander); }
+    
+    private boolean isMoralOfficer(CrewMember cm)
+    { return (cm instanceof MoralOfficer); }
+    
+    private boolean isShuttlePilot(CrewMember cm)
+    { return (cm instanceof ShuttlePilot); }
+    
+    private boolean isSecurityOfficer(CrewMember cm) 
+    { return (cm instanceof SecurityOfficer); }
+    
+    private boolean isTransporterChief(CrewMember cm)
+    { return (cm instanceof TransporterChief); }
     
     public boolean isCrewComplete() { return (crew.size() == 2); }
 
@@ -281,6 +294,35 @@ public class GameData
             throw new InvalidRoundException();
     }
     
+    // =========== ADD HEALTH ===========
+    
+    public void addHealth(int health) throws InvalidHealthException
+    {
+        if(health <= MAX_HP-1 && health >= 1)
+        {
+            if((HP + health) > MAX_HP)
+                HP = MAX_HP;
+            else 
+                HP += health;
+        }
+        else 
+            throw new InvalidHealthException();
+    }
+    
+    public void addHull(int hull) throws InvalidHullException
+    {
+        if(hull <= MAX_HULL-1 && hull >= 1)
+        {
+            if((Hull + hull) > MAX_HULL)
+                Hull = MAX_HULL;
+            else 
+                Hull += hull;
+        }
+        else 
+            throw new InvalidHullException();
+    }
+            
+    
     public boolean isAdventureComplete() { return (rounds.size() == 13); }
 
     // =========== VERIFY IF EXITS =========== 
@@ -310,7 +352,7 @@ public class GameData
         
         return false;
     }
-    
+        
     public boolean hasMoreAP() { return (getAP() > 0); }
     
     // =========== GAME VARIABLE GETTERS =========== 

@@ -6,9 +6,7 @@ import GameLogic.GameData;
 public class gStateAdapter implements gState
 {
     public gStateAdapter()
-    {
-        
-    }
+    {}
 
     @Override 
     public gState AwaitPlayerChoice(String name) { return this; }

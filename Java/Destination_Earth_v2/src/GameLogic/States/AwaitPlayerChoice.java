@@ -55,9 +55,7 @@ public class AwaitPlayerChoice extends gStateAdapter
     // =========== QUIT GAME ===========
     
     public gState quitGame()
-    {
-        return new MainMenu(data);
-    }
+    { return new MainMenu(data); }
     
     // =========== CHECK NEXT GAME STATE ===========
     
