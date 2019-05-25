@@ -11,7 +11,10 @@ public class gStateAdapter implements gState
     }
 
     @Override 
-    public gState AwaitsPlayerChoice(String name) { return this; }
+    public gState AwaitPlayerChoice(String name) { return this; }
+    
+    @Override
+    public gState AwaitRestingPlayerChoice(String name) { return this; }
     
     @Override
     public gState ChooseCrewMember(String name) throws InvalidCrewMemberException, CrewMemberAlreadySelectedException
