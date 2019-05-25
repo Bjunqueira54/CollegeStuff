@@ -8,11 +8,14 @@ import GameLogic.Tokens.*;
 
 public class GameData
 {
+    // GAME STATS
     private int HP, MAX_HP;
     private int Hull, MAX_Hull;
     private int round;
     private int AP, MAX_AP;
     private int IP, MAX_IP;
+    
+    // GAME ELEMENTS
     private ArrayList<CrewMember> crew;
     private ArrayList<Room> ship;
     private ArrayList<Integer> rounds;
@@ -39,6 +42,22 @@ public class GameData
     {
         return (int) ((Math.random() * (6 * n)) + 1);
     }
+    
+    // =========== START GAME ===========
+    //idk what to put in here
+    public void StartGame()
+    {
+        round = 1;
+        HP = 8;
+        Hull = 8;
+        IP = 0;
+        
+        CheckCrewMembers();
+        
+        AP = MAX_AP;
+    }
+    
+    // =========== CREATE SHIP ===========
     
     private void CreateShip()
     {
@@ -68,18 +87,38 @@ public class GameData
             return 'R';
     }
     
-    //idk what to put in here
-    public void StartGame()
+    /* ==================================== */
+    /* =========== CREW MEMBERS =========== */
+    /* ==================================== */
+    
+    // =========== ADD CREW MEMBER ===========
+    
+    public void addCrewMember(CrewMember cm)
     {
-        round = 1;
-        HP = 8;
-        Hull = 8;
-        IP = 0;
+        if(isCrewComplete())
+            return;
         
-        CheckCrewMembers();
-        
-        AP = MAX_AP;
+        crew.add(cm);
     }
+    
+    // =========== MOVE CREW MEMBER ===========
+    
+    public void moveCrewMember(CrewMember cm, Room room, boolean flag) //incomplete
+    {
+        if(flag)
+        {
+            
+            AP--;
+        }
+        else 
+        {
+            
+            AP--;
+        }
+        
+    }
+    
+    // =========== CHECK CREW MEMBER ===========
     
     private void CheckCrewMembers()
     {
@@ -93,6 +132,139 @@ public class GameData
                 HP += 4;
         }
     }
+    
+    private boolean isTransporterChief(CrewMember cm)
+    { return (cm instanceof TransporterChief); }
+    
+    // =========== GET CREW MEMBERS ===========
+    
+    public String getCrewMembers()
+    {
+        String aux = "";
+        
+        if(crew.isEmpty())
+            return aux;
+        
+        for (int i = 0; i < crew.size(); i++)
+        {
+            aux += crew.get(i).toString();
+            
+            if(!(i == (crew.size() - 1))) aux += ", ";
+        }
+        
+        return aux;
+    }
+    
+    // =========== GET CREW MEMBER WITH LOCATION ===========
+    
+    public String getCrewMembersWithLocation()
+    {
+        String aux = "";
+        
+        if(crew.isEmpty())
+            return aux;
+        
+        for (CrewMember cm : crew)
+        {
+            aux += cm.toString() + " Location: " + cm.getRoom() + "\n";
+        }
+        
+        return aux;
+    }
+    
+    public boolean isCrewComplete() { return (crew.size() == 2); }
+
+    /* ============================= */
+    /* =========== ALIEN =========== */
+    /* ============================= */
+    
+    // =========== CHECK ALIEN LOCATION =========== 
+    
+    public String checkAlienLocation()
+    {
+        String aux = "";
+        
+        if(aliens.isEmpty())
+            return aux;
+        
+        return aux;
+    }
+    
+    
+    /* ================================= */
+    /* =========== ADVENTURE =========== */
+    /* ================================= */
+    
+    //  SET DEFAULT ADVENTURE
+    
+    public void setDefaultAdventure()
+    {
+        rounds.clear();
+        rounds.add(2);
+        rounds.add(3);
+        rounds.add(4);
+        rounds.add(15);
+        rounds.add(0);
+        rounds.add(4);
+        rounds.add(5);
+        rounds.add(16);
+        rounds.add(0);
+        rounds.add(6);
+        rounds.add(17);
+        rounds.add(0);
+        rounds.add(8);
+    }
+        
+    // =========== GET ADVENTURE ===========
+    
+    public String getAdventure()
+    {
+        String aux = "";
+        
+        if(rounds.isEmpty())
+            return aux;
+        
+        for (int i = 0; i < rounds.size(); i++)
+        {
+            if(i+1 == round) aux += "(";
+            
+            if(rounds.get(i) == 0) aux += "R";
+            else if(rounds.get(i) >= 1 && rounds.get(i) <= 8)
+                aux += rounds.get(i) + "A";
+            else if(rounds.get(i) >= 11 && rounds.get(i) <= 18)
+                aux += (rounds.get(i) - 10) + "A*";
+            
+            if(i+1 == round) aux += ")";
+            
+            if(!(i == (rounds.size() - 1))) aux += ", ";
+        }
+        
+        return aux;
+    }
+    
+    // =========== CLEAR ADVENTURE ===========
+    
+    public void clearAdventure() { rounds.clear(); }
+    
+    // =========== ADD ROUND ===========
+    
+    //0 - Resting Round
+    //[1; 8] - Number of Aliens to Spawn
+    //[11; 18] - Number of Aliens to Spawn and Retreat
+    public void addRound(int round) throws InvalidRoundException
+    {
+        if(isAdventureComplete())
+            return;
+        
+        if(round == 0 || (round >= 1 && round <= 8) || (round >= 11 && round <= 18))
+            rounds.add(round);
+        else
+            throw new InvalidRoundException();
+    }
+    
+    public boolean isAdventureComplete() { return (rounds.size() == 13); }
+
+    // =========== VERIFY IF EXITS =========== 
     
     public boolean hasEngineer() { return hasX("Engineer"); }
     
@@ -120,107 +292,11 @@ public class GameData
         return false;
     }
     
-    public void setDefaultAdventure()
-    {
-        rounds.clear();
-        rounds.add(2);
-        rounds.add(3);
-        rounds.add(4);
-        rounds.add(15);
-        rounds.add(0);
-        rounds.add(4);
-        rounds.add(5);
-        rounds.add(16);
-        rounds.add(0);
-        rounds.add(6);
-        rounds.add(17);
-        rounds.add(0);
-        rounds.add(8);
-    }
+    public boolean hasMoreAP() { return (getAP() > 0); }
     
-    public void addCrewMember(CrewMember cm)
-    {
-        if(isCrewComplete())
-            return;
-        
-        crew.add(cm);
-    }
+    // =========== GAME VARIABLE GETTERS =========== 
     
-    public void clearAdventure() { rounds.clear(); }
-    
-    //0 - Resting Round
-    //[1; 8] - Number of Aliens to Spawn
-    //[11; 18] - Number of Aliens to Spawn and Retreat
-    public void addRound(int round) throws InvalidRoundException
-    {
-        if(isAdventureComplete())
-            return;
-        
-        if(round == 0 || (round >= 1 && round <= 8) || (round >= 11 && round <= 18))
-            rounds.add(round);
-        else
-            throw new InvalidRoundException();
-    }
-    
-    public String getAdventure()
-    {
-        String aux = "";
-        
-        if(rounds.isEmpty())
-            return aux;
-        
-        for (int i = 0; i < rounds.size(); i++)
-        {
-            if(i+1 == round) aux += "(";
-            
-            if(rounds.get(i) == 0) aux += "R";
-            else if(rounds.get(i) >= 1 && rounds.get(i) <= 8)
-                aux += rounds.get(i) + "A";
-            else if(rounds.get(i) >= 11 && rounds.get(i) <= 18)
-                aux += (rounds.get(i) - 10) + "A*";
-            
-            if(i+1 == round) aux += ")";
-            
-            if(!(i == (rounds.size() - 1))) aux += ", ";
-        }
-        
-        return aux;
-    }
-    
-    public String getCrewMembers()
-    {
-        String aux = "";
-        
-        if(crew.isEmpty())
-            return aux;
-        
-        for (int i = 0; i < crew.size(); i++)
-        {
-            aux += crew.get(i).toString();
-            
-            if(!(i == (crew.size() - 1))) aux += ", ";
-        }
-        
-        return aux;
-    }
-    
-    public boolean isCrewComplete() { return (crew.size() == 2); }
-    public boolean isAdventureComplete() { return (rounds.size() == 13); }
-    
-    public String getCrewMembersWithLocation()
-    {
-        String aux = "";
-        
-        if(crew.isEmpty())
-            return aux;
-        
-        for (CrewMember cm : crew)
-        {
-            aux += cm.toString() + " Location: " + cm.getRoom() + "\n";
-        }
-        
-        return aux;
-    }
+    public int getAP() {return AP;}
     
     public final int getRound() { return round; }
     
@@ -230,16 +306,6 @@ public class GameData
         
         aux += "HP: " + HP + "\tHull: " + Hull + "\tIP: " + IP + "\n";
         aux += checkAlienLocation();
-        
-        return aux;
-    }
-    
-    public String checkAlienLocation()
-    {
-        String aux = "";
-        
-        if(aliens.isEmpty())
-            return aux;
         
         return aux;
     }
