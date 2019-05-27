@@ -9,6 +9,9 @@ public class gStateAdapter implements gState
     {}
 
     @Override
+    public gState clearCrew() { return this; }
+    
+    @Override
     public gState StartGame() { return this; }
 
     @Override 

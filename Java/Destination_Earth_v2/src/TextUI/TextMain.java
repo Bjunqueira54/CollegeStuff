@@ -145,6 +145,9 @@ public class TextMain
     private void ChooseCrewMenu()
     {
         int page = 1;
+        
+        if(game.crewComplete())
+            game.ClearCrew();
 
         do
         {

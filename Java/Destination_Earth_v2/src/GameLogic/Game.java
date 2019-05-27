@@ -51,6 +51,8 @@ public class Game
     
     public void ClearAdventure() { state = state.clearAdventure(); }
     
+    public void ClearCrew() { state = state.clearCrew(); }
+    
     public boolean hasSetParticleDispenser() { return data.hasSetParticleDispenser(); }
     
     public boolean hasDoctor() { return data.hasDoctor(); }

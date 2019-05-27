@@ -285,6 +285,10 @@ public class GameData
     
     public void clearAdventure() { rounds.clear(); }
     
+    // =========== CLEAR CREW ===========
+    
+    public void clearCrew() { crew.clear(); }
+    
     // =========== ADD ROUND ===========
     
     //0 - Resting Round

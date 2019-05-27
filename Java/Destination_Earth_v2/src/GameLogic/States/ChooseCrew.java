@@ -71,4 +71,12 @@ public class ChooseCrew extends gStateAdapter
         else
             return this;
     }
+
+    @Override
+    public gState clearCrew()
+    {
+        data.clearCrew();
+        
+        return this;
+    }
 }
