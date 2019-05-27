@@ -2,8 +2,10 @@ package GameLogic.Tokens;
 
 public class Alien
 {
-    public Alien()
+    private int curRoom;
+    
+    public Alien(int room)
     {
-        
+        this.curRoom = room;
     }
 }

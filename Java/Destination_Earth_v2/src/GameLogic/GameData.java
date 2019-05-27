@@ -16,6 +16,10 @@ public class GameData
     private int IP, MAX_IP;
     private int toHit = 5;
     
+    // GAME FLAGS
+    
+    private boolean retreating;
+    
     // GAME ELEMENTS
     private ArrayList<CrewMember> crew;
     private ArrayList<Room> ship;
@@ -35,6 +39,8 @@ public class GameData
         
         MAX_AP = 5;
         MAX_HP = MAX_HULL = MAX_IP = 12;
+        
+        retreating = false;
     }
     
     //Not sure if here or in Game. Decide Later.
@@ -48,15 +54,52 @@ public class GameData
     //idk what to put in here
     public void StartGame()
     {
-        round = 1;
+        round = 0;
         HP = 8;
         Hull = 8;
         IP = 0;
         
         CheckCrewMembers();
         RollCrewMembers();
+        NextRound();
         
         AP = MAX_AP;
+    }
+    
+    //Code this urgently after rounds are done
+    public void AlienPhase()
+    {
+        
+    }
+    
+    private void NextRound()
+    {
+        retreating = false;
+        
+        int alienstospawn = rounds.get(round);
+        round++;
+        
+        if(alienstospawn > 10)
+        {
+            alienstospawn -= 10;
+            retreating = true;
+        }
+        
+        for (int i = 0; i < alienstospawn; i++)
+        {
+            int roomtospawn = DiceRoller(2);
+            
+            Room auxr = ship.get(roomtospawn - 1);
+            
+            if(auxr.isSealed())
+                continue;
+            
+            
+            Alien aux = new Alien(roomstospawn);
+            
+            auxr.addAlien(aux);
+            aliens.add(aux);
+        }
     }
     
     private void RollCrewMembers()
@@ -376,6 +419,7 @@ public class GameData
     {
         String aux = "";
         
+        aux += "Round: " + round + "\n";
         aux += "HP: " + HP + "\tHull: " + Hull + "\tIP: " + IP + "\n";
         aux += checkAlienLocation();
         
