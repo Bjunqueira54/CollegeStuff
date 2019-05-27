@@ -18,12 +18,12 @@ public class AwaitPlayerChoice extends gStateAdapter
     
     // =========== ATTACK ===========
     
-    public gState Attack(CrewMember cm)
+    /*public gState Attack(CrewMember cm)
     {
         data.crewMemberAttack(cm);
         
         return CheckNextGameState();
-    }
+    }*/
     
     // =========== MOVE ===========
     

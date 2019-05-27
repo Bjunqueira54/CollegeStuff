@@ -8,6 +8,9 @@ public class gStateAdapter implements gState
     public gStateAdapter()
     {}
 
+    @Override
+    public gState StartGame() { return this; }
+
     @Override 
     public gState AwaitPlayerChoice(String name) { return this; }
     

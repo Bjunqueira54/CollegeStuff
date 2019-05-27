@@ -54,8 +54,17 @@ public class GameData
         IP = 0;
         
         CheckCrewMembers();
+        RollCrewMembers();
         
         AP = MAX_AP;
+    }
+    
+    private void RollCrewMembers()
+    {
+        for (CrewMember cm : crew)
+        {
+            cm.setRoom(ship.get(DiceRoller(2) - 1));
+        }
     }
     
     // =========== CREATE SHIP ===========
@@ -108,7 +117,6 @@ public class GameData
     {
         if(flag)
         {
-            
             AP--;
         }
         else 
@@ -117,7 +125,6 @@ public class GameData
                 cm.setRoom(room);
             AP--;
         }
-        
     }
     
     // =========== CREW MEMBER ATTACK ===========

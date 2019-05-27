@@ -16,8 +16,7 @@ public class Game
     
     public void StartGame()
     {
-        data.StartGame();
-        state = new AwaitPlayerChoice(data);
+        state = state.StartGame();
     }
     
     public void QuitGame()

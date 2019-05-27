@@ -83,20 +83,20 @@ public class TextMain
         {
             PrintGameStats();
             
-            int i = 0;
+            int i = 1;
             System.out.println(i++ + " - Move (1AP)");
             System.out.println(i++ + " - Attack (1AP)");
             System.out.println(i++ + " - Set Trap (1AP)");
             System.out.println(i++ + " - Seal Room (1AP)");
-            
-            if(game.hasSetParticleDispenser())
-                System.out.println(i++ + " - Detonate Particle Dispenser (1AP)");
             
             if(game.hasDoctor())
                 System.out.println(i++ + " - Heal 1 Health (1AP)");
             
             if(game.hasEngineer())
                 System.out.println(i++ + " - Fix 1 Hull (1AP)");
+            
+            if(game.hasSetParticleDispenser())
+                System.out.println(i++ + " - Detonate Particle Dispenser (1AP)");
             
             
             if(i + 1 == 9)
@@ -271,6 +271,51 @@ public class TextMain
     private void ChooseAction()
     {
         pr.PrintActionMenu();
+        
+        opt = sc.nextInt();
+        
+        switch(opt)
+        {
+            case 1: //move
+                break;
+            case 2: //attack
+                break;
+            case 3: //set trap
+                break;
+            case 4: //seal room
+                break;
+            case 5:
+                if(game.hasDoctor())
+                    //insert heal here
+                    break;
+                else if(game.hasEngineer())
+                    //insert repair here
+                    break;
+                else if(game.hasSetParticleDispenser())
+                    //insert explode particle dispenser here
+                    break;
+                break;
+            case 6:
+                if(game.hasDoctor() && game.hasEngineer())
+                    //insert repair here
+                    break;
+                else if(game.hasDoctor() && !game.hasEngineer() && game.hasSetParticleDispenser())
+                    //insert explode particle dispenser here
+                    break;
+                else if(!game.hasDoctor() && game.hasEngineer() && game.hasSetParticleDispenser())
+                    //insert explode particle dispenser here
+                    break;
+            case 7:
+                if(game.hasDoctor() && game.hasEngineer() && game.hasSetParticleDispenser())
+                    //insert explode particle dispenser here
+                    break;
+                break;
+            case 0:
+                game.QuitGame();
+                break;
+            default:
+                break;
+        }
     }
     
     public void run()

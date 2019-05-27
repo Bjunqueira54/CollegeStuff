@@ -12,6 +12,18 @@ public class MainMenu extends gStateAdapter
     }
 
     @Override
+    public gState StartGame()
+    {
+        if(data.isAdventureComplete() && data.isCrewComplete())
+        {
+            data.StartGame();
+            return new AwaitPlayerChoice(data);
+        }
+        else
+            return this;
+    }
+
+    @Override
     public String toString()
     {
         return "MainMenu";
