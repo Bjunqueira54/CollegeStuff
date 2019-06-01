@@ -194,6 +194,21 @@ public class GameData
         return aux;
     }
     
+    public ArrayList<String> getCrewMembersAsList()
+    {
+        ArrayList<String> crewlist = new ArrayList<>();
+        
+        if(crew.isEmpty())
+            return null;
+        
+        for (CrewMember cm : crew)
+        {
+            crewlist.add(cm.toString());
+        }
+        
+        return crewlist;
+    }
+    
     // =========== IS CREW MEMBER? ===========
 
     private boolean isCommander(CrewMember cm)

@@ -1,3 +1,0 @@
-﻿  Functions.cpp
-c:\users\dread\desktop\collegestuff\so2\gothictestdll\functions.cpp(15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  GothicTestDll.vcxproj -> C:\Users\dread\Desktop\CollegeStuff\SO2\GothicTestDll\Debug\GothicTestDll.dll

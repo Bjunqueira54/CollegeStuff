@@ -3,6 +3,7 @@ package TextUI;
 import GameLogic.Exceptions.*;
 import java.util.Scanner;
 import GameLogic.Game;
+import java.util.ArrayList;
 
 public class TextMain
 {
@@ -45,6 +46,16 @@ public class TextMain
             System.out.println("0 - Quit Game");
         }
         
+        public void PrintCrewChoice(ArrayList<String> crew)
+        {
+            for(int i = 1; i <= crew.size(); i++)
+            {
+                System.out.println(i + " - " + crew.get(i - 1));
+            }
+            
+            System.out.println("0 - Quit Game");
+        }
+        
         public void PrintCrewMenu(int page)
         {
             PrintMenuInfo();
@@ -79,7 +90,7 @@ public class TextMain
             System.out.println(game.stats());
         }
         
-        public void PrintActionMenu()
+        public void PrintActionMenu(String cm)
         {
             PrintGameStats();
             
@@ -89,15 +100,17 @@ public class TextMain
             System.out.println(i++ + " - Set Trap (1AP)");
             System.out.println(i++ + " - Seal Room (1AP)");
             
-            if(game.hasDoctor())
-                System.out.println(i++ + " - Heal 1 Health (1AP)");
-            
-            if(game.hasEngineer())
-                System.out.println(i++ + " - Fix 1 Hull (1AP)");
-            
             if(game.hasSetParticleDispenser())
                 System.out.println(i++ + " - Detonate Particle Dispenser (1AP)");
             
+            if(cm.equalsIgnoreCase("Doctor"))
+                System.out.println(i++ + " - Heal 1 Health (1AP)");
+            
+            if(cm.equalsIgnoreCase("Engineer"))
+                System.out.println(i++ + " - Fix 1 Hull (1AP)");
+
+            if(cm.equalsIgnoreCase("Red Shirt"))
+                System.out.println(i++ + " - Sacrifice Red Shirt(1AP) (+5HP)");
             
             if(i + 1 == 9)
                 System.out.println("9 - Next Page...");
@@ -271,9 +284,9 @@ public class TextMain
         }
     }
     
-    private void ChooseAction()
+    private void ChooseAction(String cm)
     {
-        pr.PrintActionMenu();
+        pr.PrintActionMenu(cm);
         
         opt = sc.nextInt();
         
@@ -321,6 +334,23 @@ public class TextMain
         }
     }
     
+    private void ChooseCrewMember()
+    {
+        ArrayList<String> crew = game.getCrewMembersAsList();
+        
+        if(crew == null)
+            return;
+        
+        pr.PrintCrewChoice(crew);
+        
+        opt = sc.nextInt();
+        
+        if(opt > 0 && opt <= crew.size())
+            ChooseAction(crew.get(opt - 1));
+        else
+            System.out.println("Invalid Choice");
+    }
+    
     public void run()
     {
         while(!quitting)
@@ -332,7 +362,7 @@ public class TextMain
             else if(game.getState().equalsIgnoreCase("ChooseAdventure"))
                 ChooseAdventure();
             else if(game.getState().equalsIgnoreCase("AwaitPlayerChoice"))
-                ChooseAction();
+                ChooseCrewMember();
         }
     }
 }

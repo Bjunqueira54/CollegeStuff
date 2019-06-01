@@ -2,6 +2,7 @@ package GameLogic;
 
 import GameLogic.Exceptions.*;
 import GameLogic.States.*;
+import java.util.ArrayList;
 
 public class Game
 {
@@ -40,6 +41,11 @@ public class Game
     public String getState() { return state.toString(); }
     
     public String getCrewMembers() { return "[" + data.getCrewMembers() + "]"; }
+    
+    public ArrayList<String> getCrewMembersAsList()
+    {
+        return data.getCrewMembersAsList();
+    }
     
     public String getAdventure() { return "[" + data.getAdventure() + "]"; }
     
