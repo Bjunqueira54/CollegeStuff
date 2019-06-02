@@ -284,6 +284,16 @@ public class TextMain
         }
     }
     
+    private void FindOption(String cm)
+    {
+        if(cm.equalsIgnoreCase("Doctor"))
+            game.Heal();
+        else if(cm.equalsIgnoreCase("Engineer"))
+            game.Repair();
+        else if(cm.equalsIgnoreCase("Red Shirt"))
+            game.Sacrifice();
+    }
+    
     private void ChooseAction(String cm)
     {
         pr.PrintActionMenu(cm);
