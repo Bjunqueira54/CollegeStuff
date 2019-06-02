@@ -293,38 +293,28 @@ public class TextMain
         switch(opt)
         {
             case 1: //move
+                //game.Move(cm);
                 break;
             case 2: //attack
+                //game.Attack(cm);
                 break;
             case 3: //set trap
+                //game.SetTrap(cm);
                 break;
             case 4: //seal room
+                //game.SealRoom(cm);
                 break;
             case 5:
-                if(game.hasDoctor())
-                    //insert heal here
+                if(game.hasSetParticleDispenser())
+                    //game.BlowParticleDispenser(cm);
                     break;
-                else if(game.hasEngineer())
-                    //insert repair here
+                else
+                    //Usar uma função para descobrir que opção é que foi usada.
+                    //FindOption(cm);
                     break;
-                else if(game.hasSetParticleDispenser())
-                    //insert explode particle dispenser here
-                    break;
-                break;
             case 6:
-                if(game.hasDoctor() && game.hasEngineer())
-                    //insert repair here
-                    break;
-                else if(game.hasDoctor() && !game.hasEngineer() && game.hasSetParticleDispenser())
-                    //insert explode particle dispenser here
-                    break;
-                else if(!game.hasDoctor() && game.hasEngineer() && game.hasSetParticleDispenser())
-                    //insert explode particle dispenser here
-                    break;
-            case 7:
-                if(game.hasDoctor() && game.hasEngineer() && game.hasSetParticleDispenser())
-                    //insert explode particle dispenser here
-                    break;
+                //Usar uma função para descobrir que opção é que foi usada.
+                //FindOption(cm);
                 break;
             case 0:
                 game.QuitGame();
