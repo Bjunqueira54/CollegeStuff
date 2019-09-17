@@ -95,7 +95,7 @@ public class GameData
                 continue;
             
             
-            Alien aux = new Alien(roomstospawn);
+            Alien aux = new Alien(roomtospawn);
             
             auxr.addAlien(aux);
             aliens.add(aux);
@@ -104,7 +104,7 @@ public class GameData
     
     private void RollCrewMembers()
     {
-        for (CrewMember cm : crew)
+        for(CrewMember cm : crew)
         {
             cm.setRoom(ship.get(DiceRoller(2) - 1));
         }
