@@ -2,6 +2,7 @@ package GameLogic;
 
 import GameLogic.Exceptions.*;
 import GameLogic.States.*;
+import java.util.ArrayList;
 
 public class Game
 {
@@ -41,6 +42,11 @@ public class Game
     
     public String getCrewMembers() { return "[" + data.getCrewMembers() + "]"; }
     
+    public ArrayList<String> getCrewMembersAsList()
+    {
+        return data.getCrewMembersAsList();
+    }
+    
     public String getAdventure() { return "[" + data.getAdventure() + "]"; }
     
     public String getCrewMembersWithLocation() { return data.getCrewMembersWithLocation(); }
@@ -58,6 +64,22 @@ public class Game
     public boolean hasDoctor() { return data.hasDoctor(); }
     
     public boolean hasEngineer() { return data.hasEngineer(); }
+    
+    public void Move() { state = state.Move(); }
+    
+    public void Heal() { state = state.Heal(); }
+    
+    public void Repair() { state = state.Repair(); }
+    
+    public void Attack() { state = state.Attack(); }
+    
+    public void Sacrifice() { state = state.Sacrifice(); }
+    
+    public void PlaceTrap() { state = state.PlaceTrap(); }
+    
+    public void SealRoom() { state = state.SealRool(); }
+    
+    public void BlowParticleDispenser() {state = state.BlowParticleDispenser(); }
     
     public void addRound(String round) throws InvalidRoundException
     { state = state.ChooseRound(round); }

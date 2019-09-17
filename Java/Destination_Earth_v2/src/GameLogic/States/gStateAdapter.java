@@ -33,4 +33,28 @@ public class gStateAdapter implements gState
 
     @Override
     public gState clearAdventure() { return this; }
+
+    @Override
+    public gState Attack() { return this; }
+
+    @Override
+    public gState BlowParticleDispenser() { return this; }
+
+    @Override
+    public gState Heal() { return this; }
+
+    @Override
+    public gState Move() { return this; }
+
+    @Override
+    public gState PlaceTrap() { return this; }
+
+    @Override
+    public gState Repair() { return this; }
+
+    @Override
+    public gState Sacrifice() { return this; }
+
+    @Override
+    public gState SealRool() { return this; }
 }

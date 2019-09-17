@@ -1,5 +1,0 @@
-﻿  main.c
-c:\users\dread\desktop\collegestuff\so2\tp_so2\tp_so2_client\main.c(7): warning C4013: '_getch' undefined; assuming extern returning int
-c:\users\dread\desktop\collegestuff\so2\tp_so2\tp_so2_client\main.c(9): warning C4047: 'function': 'DWORD' differs in levels of indirection from 'void *'
-c:\users\dread\desktop\collegestuff\so2\tp_so2\tp_so2_client\main.c(9): warning C4024: 'LoadLibraryExA': different types for formal and actual parameter 3
-  TP_SO2_Client.vcxproj -> C:\Users\dread\Desktop\CollegeStuff\SO2\TP_SO2\Debug\TP_SO2_Client.exe

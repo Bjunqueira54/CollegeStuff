@@ -12,4 +12,13 @@ public interface gState
     public gState setDefaultAdventure();
     public gState clearAdventure();
     public gState clearCrew();
+    
+    public gState Move();
+    public gState Attack();
+    public gState Heal();
+    public gState Repair();
+    public gState SealRool();
+    public gState PlaceTrap();
+    public gState BlowParticleDispenser();
+    public gState Sacrifice();
 }
