@@ -1,5 +1,5 @@
-breed [Eaters Eater]
-breed [Cleaners Cleaner]
+breed [Men Man]
+breed [Women Woman]
 
 turtles-own [energy]
 
@@ -7,47 +7,98 @@ to Setup
   clear-all
   reset-ticks
   Setup-patches
-  ;Setup-agents
+  create-Men nMen
+  create-Women nWomen
+
+  ask Women
+  [
+    set size 1.5
+    set color red
+  ]
+
+  ask Men
+  [
+    set size 2
+    set color blue
+  ]
+
+  ask turtles
+  [
+    set energy random 101
+    setxy random-xcor random-ycor
+    set heading random 360
+    set shape "person"
+  ]
 End
 
 to Go
+  ask turtles
+  [
+    Comer
+
+    ifelse breed = women
+    [
+      set energy (energy - 2)
+    ]
+    [
+      set energy (energy - 1)
+    ]
+
+    if energy <= 0
+    [
+      ifelse breed = women
+      [
+        ask patch-here
+        [
+          set pcolor red
+        ]
+      ]
+      [
+        ask patch-here
+        [
+          set pcolor blue
+        ]
+      ]
+      die
+    ]
+    forward 1
+  ]
 
   tick
+
+  if(count turtles = 0)
+  [
+    stop
+  ]
 End
 
 to Setup-patches
-  ask patches with [pcolor = black]
+  ask patches
   [
-    if random 101 < nGarbage
-    [
-      set pcolor yellow
-    ]
-
-    if random 101 < nToxic
-    [
-      set pcolor red
-    ]
-
-    if random 101 < nFood
+    let x random 101
+    if x < 10
     [
       set pcolor green
     ]
   ]
+End
 
-  ask n-of nDeposits patches with [pcolor = black]
+to Comer
+  if pcolor = green
   [
-    set pcolor blue
+    set pcolor black
+    set energy (energy + 10)
   ]
 End
 @#$#@#$#@
 GRAPHICS-WINDOW
--1
+210
 10
-436
-448
+593
+394
 -1
 -1
-13.0
+15.0
 1
 10
 1
@@ -57,142 +108,22 @@ GRAPHICS-WINDOW
 1
 1
 1
--16
-16
--16
-16
+-12
+12
+-12
+12
 0
 0
 1
 ticks
 30.0
 
-SLIDER
-437
-10
-609
-43
-nGarbage
-nGarbage
-0
-15
-0.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-43
-609
-76
-nToxic
-nToxic
-0
-15
-0.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-114
-609
-147
-nFood
-nFood
-5
-20
-5.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-76
-609
-109
-nDeposits
-nDeposits
-0
-10
-10.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-224
-609
-257
-fEnergy
-fEnergy
-1
-50
-25.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-152
-609
-185
-nCleaners
-nCleaners
-1
-100
-50.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-185
-609
-218
-nEaters
-nEaters
-1
-100
-50.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-257
-609
-290
-sEnergy
-sEnergy
-1
-100
-50.0
-1
-1
-NIL
-HORIZONTAL
-
 BUTTON
-1
-450
-75
-483
-NIL
+106
+51
+180
+84
+Setup
 Setup
 NIL
 1
@@ -205,11 +136,11 @@ NIL
 1
 
 BUTTON
-77
-450
-140
-483
-NIL
+106
+85
+169
+118
+Go
 Go
 T
 1
@@ -220,6 +151,55 @@ NIL
 NIL
 NIL
 1
+
+PLOT
+756
+254
+956
+404
+Pessoas
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -14070903 true "" "plot count men"
+"pen-1" 1.0 0 -2674135 true "" "plot count women"
+
+SLIDER
+733
+30
+905
+63
+nMen
+nMen
+1
+50
+10.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+733
+65
+905
+98
+nWomen
+nWomen
+1
+50
+10.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?

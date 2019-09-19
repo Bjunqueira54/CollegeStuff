@@ -7,7 +7,7 @@ to Setup
   clear-all
   reset-ticks
   Setup-patches
-  ;Setup-agents
+
 End
 
 to Go
