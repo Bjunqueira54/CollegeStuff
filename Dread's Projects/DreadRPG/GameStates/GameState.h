@@ -13,6 +13,7 @@ public:
     
     //Menu Related Functions
     virtual void PrintMenu() = 0;
+    virtual void Tutorial() = 0;
     
     //World Related Functions
     virtual void Walk() = 0;

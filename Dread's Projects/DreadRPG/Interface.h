@@ -10,8 +10,14 @@ public:
     Interface();
     Interface(const Interface& orig);
     
+    static char getChar();
+    static string getPlayerName();
+    
+    static void Tutorial();
+    
     static void WelcomeScreen();
     static void MainMenu();
+    static void BattleMenu();
     static void VictoryScreen();
     static void DefeatScreen();
     

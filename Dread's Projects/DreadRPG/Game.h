@@ -7,8 +7,8 @@
 
 class Game
 {
-    const GameData * gData;
-    const GameState * gState;
+    GameData * gData;
+    GameState * gState;
     
 public:
     
@@ -18,6 +18,14 @@ public:
     void MainGameLoop();
     
     virtual ~Game();
+    
+private:
+    
+    template<typename Base, typename T>
+    inline bool instanceof(const T *ptr)
+    {
+        return dynamic_cast<const Base*>(ptr) != nullptr;
+    }
 };
 
 #endif

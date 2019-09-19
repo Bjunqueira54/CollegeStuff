@@ -12,6 +12,9 @@
       <itemPath>Game.h</itemPath>
       <itemPath>GameData.h</itemPath>
       <itemPath>Interface.h</itemPath>
+      <itemPath>GameStates/MainGameState.h</itemPath>
+      <itemPath>NPC.h</itemPath>
+      <itemPath>Player.h</itemPath>
       <itemPath>includes.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -28,6 +31,9 @@
       <itemPath>Game.cpp</itemPath>
       <itemPath>GameData.cpp</itemPath>
       <itemPath>Interface.cpp</itemPath>
+      <itemPath>GameStates/MainGameState.cpp</itemPath>
+      <itemPath>NPC.cpp</itemPath>
+      <itemPath>Player.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -67,6 +73,10 @@
       </item>
       <item path="GameStates/GameState.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="GameStates/MainGameState.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameStates/MainGameState.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="GameStates/MainMenuState.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GameStates/MainMenuState.h" ex="false" tool="3" flavor2="0">
@@ -76,6 +86,14 @@
       <item path="Interface.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Interface.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NPC.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NPC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Player.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -115,6 +133,10 @@
       </item>
       <item path="GameStates/GameState.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="GameStates/MainGameState.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameStates/MainGameState.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="GameStates/MainMenuState.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GameStates/MainMenuState.h" ex="false" tool="3" flavor2="0">
@@ -124,6 +146,14 @@
       <item path="Interface.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Interface.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="NPC.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="NPC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Player.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes.h" ex="false" tool="3" flavor2="0">
       </item>

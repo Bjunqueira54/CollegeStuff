@@ -12,7 +12,8 @@ public:
     MainMenuState(const MainMenuState& orig);
     
     virtual void PrintMenu() override { Interface::MainMenu(); }
-    
+    void Tutorial() override { Interface::Tutorial(); }
+
     void Attack() override {};
     void Block() override {};
     void Cast() override {};

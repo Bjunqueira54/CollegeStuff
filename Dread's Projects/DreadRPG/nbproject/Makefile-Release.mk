@@ -38,8 +38,11 @@ OBJECTFILES= \
 	${OBJECTDIR}/Game.o \
 	${OBJECTDIR}/GameData.o \
 	${OBJECTDIR}/GameStates/GameState.o \
+	${OBJECTDIR}/GameStates/MainGameState.o \
 	${OBJECTDIR}/GameStates/MainMenuState.o \
 	${OBJECTDIR}/Interface.o \
+	${OBJECTDIR}/NPC.o \
+	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/main.o
 
 
@@ -82,6 +85,11 @@ ${OBJECTDIR}/GameStates/GameState.o: GameStates/GameState.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/GameState.o GameStates/GameState.cpp
 
+${OBJECTDIR}/GameStates/MainGameState.o: GameStates/MainGameState.cpp
+	${MKDIR} -p ${OBJECTDIR}/GameStates
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/MainGameState.o GameStates/MainGameState.cpp
+
 ${OBJECTDIR}/GameStates/MainMenuState.o: GameStates/MainMenuState.cpp
 	${MKDIR} -p ${OBJECTDIR}/GameStates
 	${RM} "$@.d"
@@ -91,6 +99,16 @@ ${OBJECTDIR}/Interface.o: Interface.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Interface.o Interface.cpp
+
+${OBJECTDIR}/NPC.o: NPC.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/NPC.o NPC.cpp
+
+${OBJECTDIR}/Player.o: Player.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Player.o Player.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
