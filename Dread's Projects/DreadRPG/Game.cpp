@@ -10,7 +10,8 @@ void Game::Start()
 
 void Game::MainGameLoop()
 {
-    gState->getType();
+    if(instanceof<MainMenuState>(gState))
+        cout << "This Works" << endl;
 }
 
 Game::~Game() {}
