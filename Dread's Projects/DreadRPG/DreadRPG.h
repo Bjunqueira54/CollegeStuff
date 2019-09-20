@@ -4,14 +4,12 @@
 #include "includes.h"
 #include "Interface.h"
 #include "GameStates/States.h"
-
-//for now include this, remove later when States.h is
-//populated
-#include "GameStates/GameState.h"
+#include "GameData/GameData.h"
 
 class DreadRPG
 {
     GameState* gState;
+    GameData* gData;
     
     bool isExiting;
     
@@ -19,11 +17,22 @@ public:
     DreadRPG();
     DreadRPG(const DreadRPG& orig);
     
-    void Start();
+    void Init();
+    void StartGame();
+    void EndGame();
+    
+    void MainMenuLoop();
     
     virtual ~DreadRPG();
 
 private:
+    
+    char getOpt();
+    int CharToInt(char c);
+    
+    void MainMenuProc(char opt);
+    
+    void ToggleIsExiting() { isExiting = !isExiting; }
     
 template<typename Base, typename T>
     inline bool instanceof(const T *ptr)

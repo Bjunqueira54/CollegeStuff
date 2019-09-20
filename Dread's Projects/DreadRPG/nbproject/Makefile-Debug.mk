@@ -36,7 +36,9 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/DreadRPG.o \
+	${OBJECTDIR}/GameData/GameData.o \
 	${OBJECTDIR}/GameStates/GameState.o \
+	${OBJECTDIR}/GameStates/MainMenuState.o \
 	${OBJECTDIR}/Interface.o \
 	${OBJECTDIR}/main.o
 
@@ -70,10 +72,20 @@ ${OBJECTDIR}/DreadRPG.o: DreadRPG.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DreadRPG.o DreadRPG.cpp
 
+${OBJECTDIR}/GameData/GameData.o: GameData/GameData.cpp
+	${MKDIR} -p ${OBJECTDIR}/GameData
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameData/GameData.o GameData/GameData.cpp
+
 ${OBJECTDIR}/GameStates/GameState.o: GameStates/GameState.cpp
 	${MKDIR} -p ${OBJECTDIR}/GameStates
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/GameState.o GameStates/GameState.cpp
+
+${OBJECTDIR}/GameStates/MainMenuState.o: GameStates/MainMenuState.cpp
+	${MKDIR} -p ${OBJECTDIR}/GameStates
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/MainMenuState.o GameStates/MainMenuState.cpp
 
 ${OBJECTDIR}/Interface.o: Interface.cpp
 	${MKDIR} -p ${OBJECTDIR}

@@ -1,7 +1,8 @@
 #include "GameState.h"
 
-GameState::GameState() {}
-
-GameState::GameState(const GameState& orig) {}
+GameState::GameState(GameData* gData)
+{
+    this->gData = gData;
+}
 
 GameState::~GameState() {}

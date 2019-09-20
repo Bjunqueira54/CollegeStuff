@@ -4,7 +4,7 @@ int main(int argc, char** argv)
 {
     DreadRPG* game = new DreadRPG();
     
-    game->Start();
+    game->Init();
     
     return 0;
 }
