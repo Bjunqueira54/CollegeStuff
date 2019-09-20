@@ -19,6 +19,8 @@ public:
     static void PrintCredits();
     static void PrintHelpSection();
     
+    static void GetNameScreen();
+    
     virtual ~Interface();
     
 private:

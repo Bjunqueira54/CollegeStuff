@@ -22,15 +22,18 @@ public:
     void EndGame();
     
     void MainMenuLoop();
+    void MainBattleLoop();
     
     virtual ~DreadRPG();
 
 private:
     
     char getOpt();
+    string getString();
     int CharToInt(char c);
     
     void MainMenuProc(char opt);
+    void BattleMenuProc(char opt);
     
     void ToggleIsExiting() { isExiting = !isExiting; }
     

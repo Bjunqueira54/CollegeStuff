@@ -16,8 +16,11 @@
         <itemPath>GameStates/MainMenuState.h</itemPath>
         <itemPath>GameStates/States.h</itemPath>
       </logicalFolder>
+      <itemPath>GameStates/BattleState.h</itemPath>
       <itemPath>DreadRPG.h</itemPath>
       <itemPath>Interface.h</itemPath>
+      <itemPath>GameData/NPC.h</itemPath>
+      <itemPath>GameData/Player.h</itemPath>
       <itemPath>includes.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -38,8 +41,11 @@
         <itemPath>GameStates/GameState.cpp</itemPath>
         <itemPath>GameStates/MainMenuState.cpp</itemPath>
       </logicalFolder>
+      <itemPath>GameStates/BattleState.cpp</itemPath>
       <itemPath>DreadRPG.cpp</itemPath>
       <itemPath>Interface.cpp</itemPath>
+      <itemPath>GameData/NPC.cpp</itemPath>
+      <itemPath>GameData/Player.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -85,6 +91,18 @@
       <item path="GameData/GameData.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GameData/GameData.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GameData/NPC.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameData/NPC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GameData/Player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameData/Player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GameStates/BattleState.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameStates/BattleState.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="GameStates/GameState.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -133,6 +151,18 @@
       <item path="GameData/GameData.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GameData/GameData.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GameData/NPC.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameData/NPC.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GameData/Player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameData/Player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="GameStates/BattleState.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="GameStates/BattleState.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="GameStates/GameState.cpp" ex="false" tool="1" flavor2="0">
       </item>

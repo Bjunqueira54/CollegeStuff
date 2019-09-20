@@ -10,6 +10,8 @@ const char Interface::getChar()
 const string Interface::getString()
 {
     string s;
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     getline(std::cin, s);
     return s;
 }
@@ -45,6 +47,13 @@ void Interface::PrintHelpSection()
     ClearScreen();
     cout << "Nothing yet" << endl;
     std::getchar();
+}
+
+void Interface::GetNameScreen()
+{
+    ClearScreen();
+    cout << "What's your name?" << endl;
+    cout << "Name: ";
 }
 
 //leave like this for now
