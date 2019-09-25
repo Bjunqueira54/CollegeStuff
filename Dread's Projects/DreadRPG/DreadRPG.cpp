@@ -97,6 +97,7 @@ void DreadRPG::BattleMenuProc(char opt)
     switch(opt)
     {
         case '1':
+            gState->Attack();
             //Attack
             break;
         case '2':
@@ -109,6 +110,8 @@ void DreadRPG::BattleMenuProc(char opt)
             //Heal
             break;
         case '0':
+            gData = nullptr;
+            gState = new MainMenuState(gData);
             //Run
             break;
         default:

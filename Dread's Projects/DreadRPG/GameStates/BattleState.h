@@ -15,6 +15,8 @@ public:
     void ShowHelpSection() override {}
     void ShowMenu() override { Interface::PrintBattleMenu(); }
     
+    void Attack() override;
+    
     virtual ~BattleState();
 };
 

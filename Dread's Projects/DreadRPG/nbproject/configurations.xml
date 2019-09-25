@@ -10,17 +10,17 @@
         <logicalFolder name="f2" displayName="Spells" projectFiles="true">
         </logicalFolder>
         <itemPath>GameData/GameData.h</itemPath>
+        <itemPath>GameData/NPC.h</itemPath>
+        <itemPath>GameData/Player.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="GameStates" projectFiles="true">
+        <itemPath>GameStates/BattleState.h</itemPath>
         <itemPath>GameStates/GameState.h</itemPath>
         <itemPath>GameStates/MainMenuState.h</itemPath>
         <itemPath>GameStates/States.h</itemPath>
       </logicalFolder>
-      <itemPath>GameStates/BattleState.h</itemPath>
       <itemPath>DreadRPG.h</itemPath>
       <itemPath>Interface.h</itemPath>
-      <itemPath>GameData/NPC.h</itemPath>
-      <itemPath>GameData/Player.h</itemPath>
       <itemPath>includes.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -36,16 +36,16 @@
         <logicalFolder name="f2" displayName="Spells" projectFiles="true">
         </logicalFolder>
         <itemPath>GameData/GameData.cpp</itemPath>
+        <itemPath>GameData/NPC.cpp</itemPath>
+        <itemPath>GameData/Player.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="GameStates" projectFiles="true">
+        <itemPath>GameStates/BattleState.cpp</itemPath>
         <itemPath>GameStates/GameState.cpp</itemPath>
         <itemPath>GameStates/MainMenuState.cpp</itemPath>
       </logicalFolder>
-      <itemPath>GameStates/BattleState.cpp</itemPath>
       <itemPath>DreadRPG.cpp</itemPath>
       <itemPath>Interface.cpp</itemPath>
-      <itemPath>GameData/NPC.cpp</itemPath>
-      <itemPath>GameData/Player.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"

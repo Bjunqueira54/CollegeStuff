@@ -19,6 +19,9 @@ public:
     virtual void ShowHelpSection() = 0;
     virtual void ShowMenu() = 0;
     
+    //Battle Functions
+    virtual void Attack() = 0;
+    
     virtual ~GameState();
 };
 

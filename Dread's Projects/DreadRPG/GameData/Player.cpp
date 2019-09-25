@@ -9,4 +9,9 @@ Player::Player(string name): pName(name)
     isBlocking = isHealing = false;
 }
 
+int Player::getDamage()
+{
+    return (int) ((random() / RAND_MAX) * 10 + 25);
+}
+
 Player::~Player() {}

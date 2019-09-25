@@ -18,6 +18,11 @@ public:
     Player(const Player& orig) = delete;
     Player(string name);
     
+    const string getName() { return this->pName; }
+    int getDamage();
+    const int getHP() { return this->HP; }
+    void setHP(int value) {this->HP -= value; }
+    
     virtual ~Player();
 };
 

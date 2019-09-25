@@ -13,6 +13,8 @@ public:
     void ShowCredits() override;
     void ShowHelpSection() override;
     void ShowMenu() override;
+    void Attack() override {};
+
     virtual ~MainMenuState();
 
 private:
