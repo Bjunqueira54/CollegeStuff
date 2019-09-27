@@ -1,72 +1,63 @@
 #include "Interface.h"
 
-Interface::Interface() {}
-
-Interface::Interface(const Interface& orig) {}
-
-char Interface::getChar()
+const char Interface::getChar()
 {
-    return std::getchar();
+    char c;
+    c = std::getchar();
+    return c;
 }
 
-string Interface::getPlayerName()
+const string Interface::getString()
 {
-    string name;
-    ClearScreen();
-    cout << "What's your name?" << endl;
-    cout << "Name: ";
-    
-    getline(cin, name);
-    
-    return name;
+    string s;
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    getline(std::cin, s);
+    return s;
 }
 
-void Interface::Tutorial()
-{
-    ClearScreen();
-    cout << "To be added later" << endl;
-    getChar();
-    ClearScreen();
-}
-
-void Interface::WelcomeScreen()
-{
-    cout << "Welcome to DreadRPG" << endl;
-    getchar();
-}
-
-void Interface::VictoryScreen()
-{
-    Interface::ClearScreen();
-    cout << "You have won the battle" << endl;
-}
-
-void Interface::DefeatScreen()
-{
-    Interface::ClearScreen();
-    cout << "You have been defeated" << endl;
-}
-
-void Interface::MainMenu()
-{
-    Interface::ClearScreen();
-    cout << "1 - Start Game" << endl;
-    cout << "2 - Tutorial" << endl;
-    cout << "0 - Exit Game" << endl;
-}
-
-void Interface::BattleMenu()
+void Interface::PrintBattleMenu()
 {
     ClearScreen();
     cout << "1 - Attack" << endl;
-    cout << "2 - Block" << endl;
-    cout << "3 - Heal" << endl;
-    cout << "4 - Special" << endl;
+    cout << "2 - Special Attack" << endl;
+    cout << "3 - Defend" << endl;
+    cout << "4 - Heal" << endl;
     cout << "0 - Run" << endl;
 }
 
-//I know this is fucking disgusting
-//but it's 1:30AM and I got classes in the morning
+void Interface::PrintMainMenu()
+{
+    ClearScreen();
+    cout << "1 - Start Game" << endl;
+    cout << "2 - Help Section" << endl;
+    cout << "3 - Credits" << endl;
+    cout << "0 - Exit Game" << endl;
+}
+
+void Interface::PrintCredits()
+{
+    ClearScreen();
+    cout << "Creator: Bruno 'GothicDread' Junqueira" << endl;
+    std::getchar();
+}
+
+void Interface::PrintHelpSection()
+{
+    ClearScreen();
+    cout << "Nothing yet" << endl;
+    std::getchar();
+}
+
+void Interface::GetNameScreen()
+{
+    ClearScreen();
+    cout << "What's your name?" << endl;
+    cout << "Name: ";
+}
+
+//leave like this for now
+//change later
 void Interface::ClearScreen()
 {
     system("clear");
