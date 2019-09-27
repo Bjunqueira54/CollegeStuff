@@ -1,10 +1,10 @@
-#include "Game.h"
+#include "DreadRPG.h"
 
 int main(int argc, char** argv)
 {
-    Game* game = new Game();
+    DreadRPG* game = new DreadRPG();
     
-    game->Start();
+    game->Init();
     
     return 0;
 }

@@ -2,5 +2,6 @@
 #define STATES_H
 
 #include "MainMenuState.h"
+#include "BattleState.h"
 
 #endif

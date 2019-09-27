@@ -1,7 +1,20 @@
 #include "MainMenuState.h"
 
-MainMenuState::MainMenuState() {}
+MainMenuState::MainMenuState(GameData* gData): GameState(gData) {}
 
-MainMenuState::MainMenuState(const MainMenuState& orig) {}
+void MainMenuState::ShowCredits()
+{
+    Interface::PrintCredits();
+}
+
+void MainMenuState::ShowHelpSection()
+{
+    Interface::PrintHelpSection();
+}
+
+void MainMenuState::ShowMenu()
+{
+    Interface::PrintMainMenu();
+}
 
 MainMenuState::~MainMenuState() {}

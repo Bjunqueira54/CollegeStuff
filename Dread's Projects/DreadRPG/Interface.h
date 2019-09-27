@@ -5,25 +5,27 @@
 
 class Interface
 {
+    
 public:
-
-    Interface();
-    Interface(const Interface& orig);
+    Interface() = delete;
+    Interface(const Interface& orig) = delete;
     
-    static char getChar();
-    static string getPlayerName();
+    static const char getChar();
+    static const string getString();
     
-    static void Tutorial();
+    static void PrintMainMenu();
+    static void PrintBattleMenu();
     
-    static void WelcomeScreen();
-    static void MainMenu();
-    static void BattleMenu();
-    static void VictoryScreen();
-    static void DefeatScreen();
+    static void PrintCredits();
+    static void PrintHelpSection();
+    
+    static void GetNameScreen();
+    
+    virtual ~Interface();
+    
+private:
     
     static void ClearScreen();
-
-    virtual ~Interface();
 };
 
 #endif
