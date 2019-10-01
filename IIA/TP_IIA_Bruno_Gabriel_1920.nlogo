@@ -7,10 +7,28 @@ to Setup
   clear-all
   reset-ticks
   Setup-patches
-  ;Setup-agents
+  Setup-agents
 End
 
 to Go
+
+  eaters-proc
+  cleaners-proc
+
+  ask turtles
+  [
+    if energy <= 0
+    [
+      die
+    ]
+  ]
+
+  if count turtles = 0
+  [
+    stop
+  ]
+
+  replenish-patches
 
   tick
 End
@@ -38,6 +56,77 @@ to Setup-patches
   [
     set pcolor blue
   ]
+End
+
+to Setup-agents
+  create-eaters nEaters
+  [
+    set color pink
+    setxy random-xcor random-ycor
+    while [pcolor != black]
+    [
+      setxy random-xcor random-ycor
+    ]
+    set size 1.5
+  ]
+
+  create-cleaners nCleaners
+  [
+    set color orange
+    setxy random-xcor random-ycor
+    while [pcolor != black]
+    [
+      setxy random-xcor random-ycor
+    ]
+  ]
+
+  ask turtles
+  [
+    set energy sEnergy
+    set shape "person"
+  ]
+End
+
+to eaters-proc
+  ask eaters
+  [
+    ifelse pcolor = green
+    [
+      ask patch-here
+      [
+        set pcolor black
+      ]
+
+      set energy energy + fEnergy
+    ]
+    [
+      forward 1
+      set energy energy - 1
+    ]
+  ]
+End
+
+to cleaners-proc
+  ask cleaners
+  [
+    ifelse pcolor = green
+    [
+      ask patch-here
+      [
+        set pcolor black
+      ]
+
+      set energy energy + fEnergy
+    ]
+    [
+      forward 1
+      set energy energy - 1
+    ]
+  ]
+End
+
+to replenish-patches
+
 End
 @#$#@#$#@
 GRAPHICS-WINDOW
