@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=Cygwin-Windows
-CND_DLIB_EXT=dll
+CND_PLATFORM=GNU-Linux
+CND_DLIB_EXT=so
 CND_CONF=Debug
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -39,7 +39,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/GameData/GameData.o \
 	${OBJECTDIR}/GameData/NPC.o \
 	${OBJECTDIR}/GameData/Player.o \
+	${OBJECTDIR}/GameStates/BattleState.o \
 	${OBJECTDIR}/GameStates/GameState.o \
+	${OBJECTDIR}/GameStates/MainMenuState.o \
 	${OBJECTDIR}/Interface.o \
 	${OBJECTDIR}/main.o
 
@@ -62,9 +64,9 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dreadgame.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dreadgame
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dreadgame.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dreadgame: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dreadgame ${OBJECTFILES} ${LDLIBSOPTIONS}
 
@@ -88,10 +90,20 @@ ${OBJECTDIR}/GameData/Player.o: GameData/Player.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameData/Player.o GameData/Player.cpp
 
+${OBJECTDIR}/GameStates/BattleState.o: GameStates/BattleState.cpp
+	${MKDIR} -p ${OBJECTDIR}/GameStates
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/BattleState.o GameStates/BattleState.cpp
+
 ${OBJECTDIR}/GameStates/GameState.o: GameStates/GameState.cpp
 	${MKDIR} -p ${OBJECTDIR}/GameStates
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/GameState.o GameStates/GameState.cpp
+
+${OBJECTDIR}/GameStates/MainMenuState.o: GameStates/MainMenuState.cpp
+	${MKDIR} -p ${OBJECTDIR}/GameStates
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/MainMenuState.o GameStates/MainMenuState.cpp
 
 ${OBJECTDIR}/Interface.o: Interface.cpp
 	${MKDIR} -p ${OBJECTDIR}

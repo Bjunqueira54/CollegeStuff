@@ -1,5 +1,5 @@
 #include "GameState.h"
 
-GameState::GameState() {}
+GameState::GameState(GameData* data): gData(data) {}
 
 GameState::~GameState() {}

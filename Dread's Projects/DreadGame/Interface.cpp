@@ -33,9 +33,15 @@ void Interface::ShowCredits()
     getchar();
 }
 
+void Interface::StartGame()
+{
+    ClearScreen();
+    cout << "What's your name: ";
+}
+
 void Interface::Victory()
 {
-    ClearScreen()
+    ClearScreen();
     cout << "You've won! Congratulations" << endl;
     getchar();
 }

@@ -1,4 +1,5 @@
 #include "DreadGame.h"
+#include "GameStates/BattleState.h"
 
 DreadGame::DreadGame()
 {
@@ -11,7 +12,16 @@ DreadGame::DreadGame()
 void DreadGame::Init()
 {
     Interface::WelcomeScreen();
-    MainMenu();
+    gState = new MainMenuState();
+    MainGameLoop();
+}
+
+void DreadGame::MainGameLoop()
+{
+    if(instanceof<MainMenuState>(gState))
+        MainMenu();
+    /*else if(instanceof<BattleState>(gState))
+        BattleMenu();*/
 }
 
 void DreadGame::MainMenu()
@@ -44,56 +54,11 @@ void DreadGame::MainMenu()
 
 void DreadGame::StartGame()
 {
-    char opt;
     gData = new GameData();
+    Interface::StartGame();
     gData->CreatePlayer(Interface::getString());
-    
-    do
-    {
-        Interface::PrintBattleMenu(gData.getPlayerName(), gData->getPlayerHP(), gData->getMonsterHP());
-        opt = Interface::getChar();
-        
-        switch(opt)
-        {
-            case '1':
-                Attack();
-                break;
-            case '2':
-                SpecialAttack();
-                break;
-            case '3':
-                Heal();
-                break;
-            case '4':
-                Block();
-                break;
-            case '0':
-                RunAway();
-                break;
-            default:
-                break;
-        }
-    }
-    while(gData->getPlayerHP() > 0 && gData->getMonsterHP() > 0);
-    
-    if(gData->getPlayerHP() <= 0)
-        Interface::Defeat();
-    else if(gData->getMonsterHP() <= 0)
-        Interface::Victory();
+    gState = new BattleState(gData);
 }
-
-void DreadGame::Attack()
-{
-    int player_Damage, monster_Damage;
-    int player_HP, monster_HP;
-    
-    player_HP = gData->getPlayerHP();
-    monster_HP = gData->getMonsterHP();
-    
-    player_Damage = gData->getPlayerDamage();
-    monster_Damage = gData->getMonsterDamage();
-}
-
 
 DreadGame::~DreadGame()
 {

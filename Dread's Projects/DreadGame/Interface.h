@@ -15,6 +15,7 @@ public:
     static void PrintBattleMenu(string player_Name, int player_HP, int monster_HP);
     static void ShowCredits();
 
+    static void StartGame();
     static void Victory();
     static void Defeat();
     

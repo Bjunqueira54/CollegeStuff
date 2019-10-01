@@ -18,18 +18,16 @@ public:
     DreadGame();
     
     void Init();
-    void MainMenu();
-    void StartGame();
     
     virtual ~DreadGame();
     
 private:
     
-    void Attack();
-    void SpecialAttack();
-    void Heal();
-    void Block();
-    void RunAway();
+    void MainGameLoop();
+    
+    void MainMenu();
+    
+    void StartGame();
     
     template<typename Base, typename T>
     inline bool instanceof(const T *ptr)
