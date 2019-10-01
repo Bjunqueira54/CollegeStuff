@@ -1,53 +1,174 @@
-breed [Eaters Eater]
-breed [Cleaners Cleaner]
+breed[ants ant]
+breed[snails snail]
 
-turtles-own [energy]
+globals [blue-nest yellow-nest]
 
-to Setup
+to setup
   clear-all
+  setup-patches
+  setup-turtles
   reset-ticks
-  Setup-patches
-  ;Setup-agents
-End
+ end
 
-to Go
-
-  tick
-End
-
-to Setup-patches
+to setup-patches
+  set-patch-size 15
   ask patches with [pcolor = black]
   [
-    if random 101 < nGarbage
-    [
-      set pcolor yellow
-    ]
-
-    if random 101 < nToxic
+    ;TRAPS
+    if random 101 < 5
     [
       set pcolor red
     ]
-
-    if random 101 < nFood
-    [
-      set pcolor green
-    ]
   ]
-
-  ask n-of nDeposits patches with [pcolor = black]
+  ask one-of patches with [pcolor = black]
   [
     set pcolor blue
   ]
-End
+  ask one-of patches with [pcolor = black]
+  [
+    set pcolor yellow
+  ]
+  set blue-nest 0
+  set yellow-nest 0
+end
+
+to setup-turtles
+  create-ants nants
+  [
+    set shape "bug"
+    set color blue
+    setxy random-xcor random-ycor
+    while [pcolor = red]
+    [
+      setxy random-xcor random-ycor
+    ]
+  ]
+  create-snails nsnails
+  [
+    set shape "target"
+    set color yellow
+    setxy random-xcor random-ycor
+    while [pcolor = red]
+    [
+      setxy random-xcor random-ycor
+    ]
+  ]
+end
+
+to go
+  move-ants
+  move-snails
+  if count turtles = 0
+  [
+    stop
+  ]
+  tick
+end
+
+to move-ants
+  ask ants
+  [
+    ifelse [pcolor] of patch-ahead 1 = red    ; TRAP AHEAD
+    [
+      rt 90
+    ]
+    [
+      ifelse [pcolor] of patch-ahead 1 = blue     ; NEST AHEAD
+      [
+        fd 1
+        set blue-nest blue-nest + 1
+        die
+      ]
+      [
+        ifelse random 101 < 90
+        [
+          fd 1
+        ]
+        [
+          ifelse random 101 < 50
+          [
+            rt 90
+          ]
+          [
+            lt 90
+          ]
+        ]
+      ]
+    ]
+  ]
+end
+
+to move-snails
+  ask snails
+  [
+    ifelse [pcolor] of patch-ahead 1 = yellow ; NEST AHEAD
+    [
+      fd 1
+      set yellow-nest yellow-nest + 1
+      die
+    ]
+    [
+      ifelse [pcolor] of patch-left-and-ahead 90 1 = yellow ; NEST TO THE LEFT
+      [
+        lt 90
+        fd 1
+        set yellow-nest yellow-nest + 1
+        die
+      ]
+      [
+        ifelse [pcolor] of patch-right-and-ahead 90 1 = yellow ; NEST TO THE RIGHT
+        [
+          rt 90
+          fd 1
+          set yellow-nest yellow-nest + 1
+          die
+        ]
+        [
+          ifelse [pcolor] of patch-ahead 1 = red ; TRAP AHEAD
+          [
+            rt 90
+          ]
+          [
+            ifelse [pcolor] of patch-left-and-ahead 90 1 = red
+            [
+              fd 1
+            ]
+            [
+              ifelse [pcolor] of patch-right-and-ahead 90 1 = red
+              [
+                fd 1
+              ]
+              [
+                ifelse random 101 < 90
+                [
+                  forward 1
+                ]
+                [
+                  ifelse random 101 < 50
+                  [
+                    rt 90
+                  ]
+                  [
+                    lt 90
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]
+end
 @#$#@#$#@
 GRAPHICS-WINDOW
--1
+430
 10
-436
-448
+933
+514
 -1
 -1
-13.0
+15.0
 1
 10
 1
@@ -67,60 +188,49 @@ GRAPHICS-WINDOW
 ticks
 30.0
 
+BUTTON
+33
+14
+97
+47
+Setup
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+117
+13
+180
+46
+Go
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
 SLIDER
-437
-10
-609
-43
-nGarbage
-nGarbage
+26
+64
+182
+97
+nants
+nants
 0
-15
-15.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-43
-609
-76
-nToxic
-nToxic
-0
-15
-15.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-114
-609
-147
-nFood
-nFood
-5
-20
-20.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-76
-609
-109
-nDeposits
-nDeposits
-1
-10
+100
 10.0
 1
 1
@@ -128,135 +238,130 @@ NIL
 HORIZONTAL
 
 SLIDER
-437
-224
-609
-257
-fEnergy
-fEnergy
-1
-50
-25.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-437
-152
-609
-185
-nCleaners
-nCleaners
-1
+26
+101
+182
+134
+nsnails
+nsnails
+0
 100
-50.0
+10.0
 1
 1
 NIL
 HORIZONTAL
 
-SLIDER
-437
-185
-609
-218
-nEaters
-nEaters
+MONITOR
+26
+144
+83
+189
+ants
+count ants
+17
 1
-100
-50.0
-1
-1
-NIL
-HORIZONTAL
+11
 
-SLIDER
-437
-257
-609
-290
-sEnergy
-sEnergy
+MONITOR
+84
+144
+144
+189
+snails
+count snails
+17
 1
-100
-50.0
-1
-1
-NIL
-HORIZONTAL
+11
 
-BUTTON
-1
-450
-75
-483
-NIL
-Setup
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
+PLOT
+11
+293
+418
+535
+Agents
+time
+n. of agents
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"ants" 1.0 0 -13345367 true "" "plot count ants"
+"snails" 1.0 0 -1184463 true "" "plot count snails"
 
-BUTTON
-77
-450
-140
-483
-NIL
-Go
-T
+MONITOR
+83
+195
+145
+240
+traps
+count patches with [pcolor = red]
+17
 1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
+11
+
+MONITOR
+223
+14
+326
+59
+Blue Nest
+blue-nest
+17
 1
+11
+
+MONITOR
+223
+61
+326
+106
+Yellow Nest
+yellow-nest
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?
 
-(a general understanding of what the model is trying to show or explain)
+This section could give a general understanding of what the model is trying to show or explain.
 
 ## HOW IT WORKS
 
-(what rules the agents use to create the overall behavior of the model)
+This section could explain what rules the agents use to create the overall behavior of the model.
 
 ## HOW TO USE IT
 
-(how to use the model, including a description of each of the items in the Interface tab)
+This section could explain how to use the model, including a description of each of the items in the interface tab.
 
 ## THINGS TO NOTICE
 
-(suggested things for the user to notice while running the model)
+This section could give some ideas of things for the user to notice while running the model.
 
 ## THINGS TO TRY
 
-(suggested things for the user to try to do (move sliders, switches, etc.) with the model)
+This section could give some ideas of things for the user to try to do (move sliders, switches, etc.) with the model.
 
 ## EXTENDING THE MODEL
 
-(suggested things to add or change in the Code tab to make the model more complicated, detailed, accurate, etc.)
+This section could give some ideas of things to add or change in the procedures tab to make the model more complicated, detailed, accurate, etc.
 
 ## NETLOGO FEATURES
 
-(interesting or unusual features of NetLogo that the model uses, particularly in the Code tab; or where workarounds were needed for missing features)
+This section could point out any especially interesting or unusual features of NetLogo that the model makes use of, particularly in the Procedures tab.  It might also point out places where workarounds were needed because of missing features.
 
 ## RELATED MODELS
 
-(models in the NetLogo Models Library and elsewhere which are of related interest)
+This section could give the names of models in the NetLogo Models Library or elsewhere which are of related interest.
 
 ## CREDITS AND REFERENCES
 
-(a reference to the model's URL on the web if it has one, as well as any other necessary credits, citations, and links)
+This section could contain a reference to the model's URL on the web if it has one, as well as any other necessary credits or references.
 @#$#@#$#@
 default
 true
@@ -452,19 +557,12 @@ Polygon -7500403 true true 135 90 120 45 150 15 180 45 165 90
 
 sheep
 false
-15
-Circle -1 true true 203 65 88
-Circle -1 true true 70 65 162
-Circle -1 true true 150 105 120
-Polygon -7500403 true false 218 120 240 165 255 165 278 120
-Circle -7500403 true false 214 72 67
-Rectangle -1 true true 164 223 179 298
-Polygon -1 true true 45 285 30 285 30 240 15 195 45 210
-Circle -1 true true 3 83 150
-Rectangle -1 true true 65 221 80 296
-Polygon -1 true true 195 285 210 285 210 240 240 210 195 210
-Polygon -7500403 true false 276 85 285 105 302 99 294 83
-Polygon -7500403 true false 219 85 210 105 193 99 201 83
+0
+Rectangle -7500403 true true 151 225 180 285
+Rectangle -7500403 true true 47 225 75 285
+Rectangle -7500403 true true 15 75 210 225
+Circle -7500403 true true 135 75 150
+Circle -16777216 true false 165 76 116
 
 square
 false
@@ -549,13 +647,6 @@ Line -7500403 true 216 40 79 269
 Line -7500403 true 40 84 269 221
 Line -7500403 true 40 216 269 79
 Line -7500403 true 84 40 221 269
-
-wolf
-false
-0
-Polygon -16777216 true false 253 133 245 131 245 133
-Polygon -7500403 true true 2 194 13 197 30 191 38 193 38 205 20 226 20 257 27 265 38 266 40 260 31 253 31 230 60 206 68 198 75 209 66 228 65 243 82 261 84 268 100 267 103 261 77 239 79 231 100 207 98 196 119 201 143 202 160 195 166 210 172 213 173 238 167 251 160 248 154 265 169 264 178 247 186 240 198 260 200 271 217 271 219 262 207 258 195 230 192 198 210 184 227 164 242 144 259 145 284 151 277 141 293 140 299 134 297 127 273 119 270 105
-Polygon -7500403 true true -1 195 14 180 36 166 40 153 53 140 82 131 134 133 159 126 188 115 227 108 236 102 238 98 268 86 269 92 281 87 269 103 269 113
 
 x
 false
