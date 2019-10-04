@@ -26,6 +26,7 @@ private:
     void MainGameLoop();
     
     void MainMenu();
+    void BattleMenu();
     
     void StartGame();
     

@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='AMoveis_1920_Aula3'

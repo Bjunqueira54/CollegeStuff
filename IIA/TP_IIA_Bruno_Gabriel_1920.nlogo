@@ -8,27 +8,19 @@ to Setup
   reset-ticks
   Setup-patches
   Setup-agents
+  ask turtles
+  [ set energy sEnergy ]
 End
 
 to Go
-
   eaters-proc
-  cleaners-proc
+  ;cleaners-proc
+  kill ; verify energy
 
-  ask turtles
-  [
-    if energy <= 0
-    [
-      die
-    ]
-  ]
+  if count turtles = 0 ; terminate simulation
+  [ stop ]
 
-  if count turtles = 0
-  [
-    stop
-  ]
-
-  replenish-patches
+  ;replenish-patches
 
   tick
 End
@@ -68,6 +60,7 @@ to Setup-agents
       setxy random-xcor random-ycor
     ]
     set size 1.5
+    set heading 0
   ]
 
   create-cleaners nCleaners
@@ -78,6 +71,8 @@ to Setup-agents
     [
       setxy random-xcor random-ycor
     ]
+    set size 1.5
+    set heading 0
   ]
 
   ask turtles
@@ -100,13 +95,96 @@ to eaters-proc
       set energy energy + fEnergy
     ]
     [
-      forward 1
       set energy energy - 1
+    ]
+
+    eaters-look-for-food
+  ]
+End
+
+to eaters-look-for-food
+  let move_flag 0 ; flag to jump stuff
+
+  ask eaters
+  [
+    ask patch-ahead 1 ; look ahead
+    [
+      if pcolor = green
+      [
+        ask eaters
+        [
+          fd 1
+          set move_flag move_flag + 1
+        ]
+      ]
+    ]
+
+    if move_flag = 0
+    [
+      rt 90           ; look right
+
+      ask patch-ahead 1
+      [
+        ifelse pcolor = green
+        [
+          ask eaters
+          [
+            set move_flag move_flag + 1
+          ]
+        ]
+        [
+          ask eaters
+          [
+            rt -90 ; back to original position
+          ]
+        ]
+      ]
+    ]
+
+    if move_flag = 0
+    [
+      rt -90          ; look left
+
+      ask patch-ahead 1
+      [
+        ifelse pcolor = green
+        [
+          ask eaters
+          [
+            set move_flag move_flag + 1
+          ]
+        ]
+        [
+          ask eaters
+          [
+            rt 90 ; back to original position
+          ]
+        ]
+      ]
+    ]
+
+    if move_flag = 0
+    [
+      move-eaters-randomly
+    ]
+
+  ]
+End
+
+to move-eaters-randomly
+  ask eaters
+  [
+    ifelse random 101 < 34
+    [ fd 1 ]
+    [
+      ifelse random 101 < 50
+      [ rt 90 ]
+      [ rt -90 ]
     ]
   ]
 End
 
-to cleaners-proc
+to cleaners-proc ; cleaners don't eat
   ask cleaners
   [
     ifelse pcolor = green
@@ -119,9 +197,72 @@ to cleaners-proc
       set energy energy + fEnergy
     ]
     [
-      forward 1
       set energy energy - 1
     ]
+    look-for-trash
+  ]
+End
+
+to look-for-trash
+  let move_flag 0 ; flag to jump stuff
+
+  ask eaters
+  [
+    ask patch-ahead 1 ; look ahead
+    [
+      if (pcolor = yellow) or (pcolor = red)
+      [
+        ask eaters
+        [
+          set move_flag move_flag + 1
+          fd 1
+        ]
+      ]
+    ]
+
+    if move_flag = 0
+    [
+      rt 90           ; look right
+
+      ask patch-ahead 1
+      [
+        ifelse (pcolor = yellow) or (pcolor = red)
+        [
+          ask eaters
+          [
+            set move_flag move_flag + 1
+          ]
+        ]
+        [
+          ask eaters
+          [
+            rt -90 ; back to original position
+          ]
+        ]
+      ]
+    ]
+
+    if move_flag = 0
+    [
+      move-cleaners-randomly
+    ]
+  ]
+End
+
+to move-cleaners-randomly
+  ask cleaners
+  [
+    ifelse 101 < 50
+    [ fd 1 ]
+    [ rt 1 ]
+  ]
+End
+
+to kill
+  ask turtles
+  [
+    if energy <= 0
+    [ die ]
   ]
 End
 
@@ -165,7 +306,7 @@ nGarbage
 nGarbage
 0
 15
-15.0
+0.0
 1
 1
 NIL
@@ -180,7 +321,7 @@ nToxic
 nToxic
 0
 15
-15.0
+0.0
 1
 1
 NIL
@@ -195,7 +336,7 @@ nFood
 nFood
 5
 20
-20.0
+5.0
 1
 1
 NIL
@@ -309,6 +450,24 @@ NIL
 NIL
 NIL
 1
+
+PLOT
+447
+303
+647
+453
+temp test
+NIL
+NIL
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot count eaters"
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -652,7 +811,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.4
+NetLogo 6.1.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

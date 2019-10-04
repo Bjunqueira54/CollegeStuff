@@ -20,8 +20,8 @@ void DreadGame::MainGameLoop()
 {
     if(instanceof<MainMenuState>(gState))
         MainMenu();
-    /*else if(instanceof<BattleState>(gState))
-        BattleMenu();*/
+    else if(instanceof<BattleState>(gState))
+        BattleMenu();
 }
 
 void DreadGame::MainMenu()
@@ -50,6 +50,11 @@ void DreadGame::MainMenu()
         }
     }
     while(!isExiting);
+}
+
+void DreadGame::BattleMenu()
+{
+    
 }
 
 void DreadGame::StartGame()
