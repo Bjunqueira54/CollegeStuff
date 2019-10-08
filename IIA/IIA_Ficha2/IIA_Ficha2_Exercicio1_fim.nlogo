@@ -100,6 +100,26 @@ to Paint
           [ set pcolor 0]
         ]
     ]
+  if(Paint_Patches = "Directly_Left")
+  [
+    ask turtle 0
+    [
+      ask patch-left-and-ahead 45 1
+      [
+        set pcolor 0
+      ]
+    ]
+  ]
+  if(Paint_Patches = "Directly_Right")
+  [
+    ask turtle 0
+    [
+      ask patch-right-and-ahead 45 1
+      [
+        set pcolor 0
+      ]
+    ]
+  ]
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -166,12 +186,12 @@ NIL
 CHOOSER
 10
 160
-148
+156
 205
 Paint_Patches
 Paint_Patches
-"Actual" "Forward" "Neighbor_4" "Neighbor_8" "Forward_3"
-4
+"Actual" "Forward" "Neighbor_4" "Neighbor_8" "Forward_3" "Directly_Left" "Directly_Right"
+3
 
 BUTTON
 10

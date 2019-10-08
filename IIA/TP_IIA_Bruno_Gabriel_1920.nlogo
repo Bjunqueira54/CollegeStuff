@@ -8,8 +8,6 @@ to Setup
   reset-ticks
   Setup-patches
   Setup-agents
-  ask turtles
-  [ set energy sEnergy ]
 End
 
 to Go
@@ -78,11 +76,13 @@ to Setup-agents
   ask turtles
   [
     set energy sEnergy
-    set shape "person"
+    ;set shape "person"
   ]
 End
 
 to eaters-proc
+  let tempflag 0
+
   ask eaters
   [
     ifelse pcolor = green
@@ -91,95 +91,183 @@ to eaters-proc
       [
         set pcolor black
       ]
-
       set energy energy + fEnergy
     ]
     [
-      set energy energy - 1
-    ]
+      set tempflag eaters-look-for-food
 
-    eaters-look-for-food
-  ]
-End
-
-to eaters-look-for-food
-  let move_flag 0 ; flag to jump stuff
-
-  ask eaters
-  [
-    ask patch-ahead 1 ; look ahead
-    [
-      if pcolor = green
+      ifelse tempflag = 1
+      [set energy energy - 1]
       [
-        ask eaters
+        set tempflag gtfo
+
+        ifelse tempflag = 1
         [
-          fd 1
-          set move_flag move_flag + 1
+
+        ]
+        [
+          random-action
+          set energy energy - 1
         ]
       ]
-    ]
-
-    if move_flag = 0
-    [
-      rt 90           ; look right
-
-      ask patch-ahead 1
-      [
-        ifelse pcolor = green
-        [
-          ask eaters
-          [
-            set move_flag move_flag + 1
-          ]
-        ]
-        [
-          ask eaters
-          [
-            rt -90 ; back to original position
-          ]
-        ]
-      ]
-    ]
-
-    if move_flag = 0
-    [
-      rt -90          ; look left
-
-      ask patch-ahead 1
-      [
-        ifelse pcolor = green
-        [
-          ask eaters
-          [
-            set move_flag move_flag + 1
-          ]
-        ]
-        [
-          ask eaters
-          [
-            rt 90 ; back to original position
-          ]
-        ]
-      ]
-    ]
-
-    if move_flag = 0
-    [
-      move-eaters-randomly
     ]
 
   ]
 End
 
-to move-eaters-randomly
-  ask eaters
+to-report eaters-look-for-food
+  if [pcolor] of patch-ahead 1 = green
   [
-    ifelse random 101 < 34
-    [ fd 1 ]
+    fd 1
+    report 1
+  ]
+
+  if [pcolor] of patch-left-and-ahead 90 1 = green
+  [
+    rt -90
+    report 1
+  ]
+
+  if [pcolor] of patch-right-and-ahead 90 1 = green
+  [
+    rt 90
+    report 1
+  ]
+
+  report 0
+End
+
+to-report gtfo
+  let per 0
+
+  if ([pcolor] of patch-ahead 1 = red) or ([pcolor] of patch-ahead 1 = yellow)
+  [
+    set per energy / 100
+
+    ifelse determine-bad 0 = 1
+    [ set per per * 5 ]
+    [ set per per * 10 ]
+
+    set energy energy - per
+
+    ifelse determine-bad 1 = 0
+    [ rt -90 ]
     [
-      ifelse random 101 < 50
+    ifelse determine-bad 2 = 0
       [ rt 90 ]
-      [ rt -90 ]
+      [
+        ifelse random 101 < 50
+        [ rt 90 ]
+        [ rt -90 ]
+      ]
+    ]
+
+    set energy energy - 1
+
+    report 1
+  ]
+
+  if ([pcolor] of patch-left-and-ahead 90 1 = red) or ([pcolor] of patch-left-and-ahead 90 1 = yellow)
+  [
+    set per energy / 100
+
+    ifelse determine-bad 1 = 1 ; frente é yellow
+    [ set per per * 5 ]
+    [ set per per * 10 ]
+
+    set energy energy - per
+
+    fd 1
+    set energy energy - 1
+
+    report 1
+  ]
+
+  if ([pcolor] of patch-right-and-ahead 90 1 = red) or ([pcolor] of patch-right-and-ahead 90 1 = yellow)
+  [
+    set per energy / 100
+
+    ifelse determine-bad 2 = 1
+    [ set per per * 5 ]
+    [ set per per * 10 ]
+
+    set energy energy - per
+
+    fd 1
+    set energy energy - 1
+
+    report 1
+  ]
+
+  ;criar um proc para descobrir se é
+  ;amarelo ou vermelho
+  ;EXEMPLO: to-report find-bad [typeflag]
+
+  ;onde devolve 1 ou 2 se for amarelo ou vermelho respectivamente
+  ;recebe typeflag como argumento para saber se verifica a frente,
+  ;a esquerda ou a direita. EXEMPLO: find-bad 0 (vai verificar a patch-ahead)
+  ;find-bad 1 (vai verificar a patch da esquerda)
+
+  ;usar o valor reportado nesta funçao "gtfo" para saber o que fazer
+
+  report 0; para na função que chamou isto saber que afinal não existe lixo\toxico a volta do agente
+End
+
+to-report determine-bad [typeflag] ;Argumentos: 0 = frente, 1 = esquerda, 2 = direita /// Returns: 0 = nothing/green, 1 = yellow, 2 = red
+  if typeflag = 0
+  [
+    if [pcolor] of patch-ahead 1 = yellow
+    [
+      report 1
+    ]
+
+    if [pcolor] of patch-ahead 1 = red
+    [
+      report 2
+    ]
+  ]
+
+  if typeflag = 1
+  [
+    if [pcolor] of patch-left-and-ahead 90 1 = yellow
+    [
+      report 1
+    ]
+
+    if [pcolor] of patch-left-and-ahead 90 1 = red
+    [
+      report 2
+    ]
+  ]
+
+  if typeflag = 2
+  [
+    if [pcolor] of patch-right-and-ahead 90 1 = yellow
+    [
+      report 1
+    ]
+
+    if [pcolor] of patch-right-and-ahead 90 1 = red
+    [
+      report 2
+    ]
+  ]
+
+  report 0
+End
+
+to random-action
+  ifelse random 101 < 55
+  [
+    fd 1
+  ]
+  [
+    ifelse random 101 < 50
+    [
+      rt 90
+    ]
+    [
+      rt -90
     ]
   ]
 End
@@ -306,7 +394,7 @@ nGarbage
 nGarbage
 0
 15
-0.0
+15.0
 1
 1
 NIL
@@ -321,7 +409,7 @@ nToxic
 nToxic
 0
 15
-0.0
+15.0
 1
 1
 NIL
@@ -379,9 +467,9 @@ SLIDER
 185
 nCleaners
 nCleaners
-1
+0
 100
-50.0
+0.0
 1
 1
 NIL
@@ -396,7 +484,7 @@ nEaters
 nEaters
 1
 100
-50.0
+1.0
 1
 1
 NIL
@@ -441,7 +529,7 @@ BUTTON
 483
 NIL
 Go
-T
+NIL
 1
 T
 OBSERVER
@@ -452,10 +540,10 @@ NIL
 1
 
 PLOT
-447
-303
-647
-453
+437
+294
+637
+444
 temp test
 NIL
 NIL
@@ -811,7 +899,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.0
+NetLogo 6.0.4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

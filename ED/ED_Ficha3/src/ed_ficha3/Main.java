@@ -20,8 +20,6 @@ public class Main
         {
             return "(" + this.x + ", " + this.y + ")\n";
         }
-        
-        
     }
     
     public static void main(String[] args)
