@@ -2,27 +2,38 @@ package javatcpserver;
 
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 class Main
 {
-    public static void main(String argv[]) throws Exception
+    public static void main(String argv[]) throws IOException
     {
-        String clientSentence;
-        String capitalizedSentence;
+        String message;
+        Scanner sc = new Scanner(System.in);
         
         ServerSocket welcomeSocket = new ServerSocket(1337);
+        
+        BufferedReader inFromClient;
+        DataOutputStream outToClient;
 
         while (true)
         {
-            Socket connectionSocket = welcomeSocket.accept();
-            //BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
-            DataInputStream inFromClient = new DataInputStream(connectionSocket.getInputStream());
-            DataOutputStream outToClient = new DataOutputStream(connectionSocket.getOutputStream());
+            Socket clientSocket = welcomeSocket.accept();
+            System.out.println("All gud");
             
-            clientSentence = inFromClient.readUTF();
-            System.out.println("Received: " + clientSentence);
-            capitalizedSentence = clientSentence.toUpperCase() + 'n';
-            outToClient.writeBytes(capitalizedSentence);
+            inFromClient = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            outToClient = new DataOutputStream(clientSocket.getOutputStream());
+            
+            System.out.println("Reading Message\n");
+            message = inFromClient.readLine();
+            System.out.println("Message from Client: " + message);
+            
+            System.out.println("Send a message back to the client: ");
+            message = sc.next();
+            
+            outToClient.writeBytes(message + '\n');
+            
+            clientSocket.close();
         }
     }
 }
