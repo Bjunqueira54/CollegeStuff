@@ -3,7 +3,7 @@ breed [Cleaners Cleaner]
 breed [Sick Biohazard]
 
 turtles-own [energy]
-cleaners-own [cargo toxicity]
+cleaners-own [cargo toxicity destx desty]
 eaters-own [toxicity]
 
 to Setup
@@ -26,8 +26,10 @@ to Go
   if count turtles = 0 ; terminate simulation
   [ stop ]
 
-  if replenishPatches?
-  [ replenish-patches ]
+  if ticks = 5000
+  [ stop ]
+
+  replenish-patches
 
   tick
 End
@@ -88,12 +90,16 @@ to Setup-agents
     [set heading -90]
 
     set cargo 0
+    set desty 1337
+    set destx 1337
   ]
 
   ask turtles
   [
     set energy sEnergy
     set toxicity 0
+    set xcor (precision xcor 0)
+    set ycor (precision ycor 0)
     ;set shape "person"
   ]
 End
@@ -156,7 +162,7 @@ to-report eaters-look-for-food
     report 1
   ]
 
-  if eatersExtraPerception?
+  if turtlesExtraPerception?
   [
     if [pcolor] of patch-left-and-ahead 45 1 = green
     [
@@ -319,7 +325,7 @@ to-report gtfo
     report 1
   ]
 
-  if eatersExtraPerception? ; switch extra perceptions
+  if turtlesExtraPerception? ; switch extra perceptions
   [
     if ([pcolor] of patch-left-and-ahead 45 1 = red) or ([pcolor] of patch-left-and-ahead 45 1 = yellow) or ([pcolor] of patch-left-and-ahead 45 1 = violet)
     [
@@ -655,6 +661,8 @@ to cleaners-proc
         [
           set cargo 0
           set energy (energy + (cargo * 10))
+          set destx 1337
+          set desty 1337
         ]
         [
           fd 1
@@ -664,11 +672,12 @@ to cleaners-proc
 
       if pcolor = yellow or pcolor = red or pcolor = violet
       [
-        if cargo <= limitCapacity
+        ifelse cargo < limitCapacity
         [
+          set aux determine-cargo-type
+
           ask patch-here [set pcolor black]
 
-          set aux determine-cargo-type
           set cargo cargo + aux
 
           if not cleanersImmune?
@@ -679,10 +688,13 @@ to cleaners-proc
 
           set energy energy - 1
         ]
+        [
+          random-action-cleaners
+        ]
       ]
     ]
     [
-      ifelse cargo <= limitCapacity
+      ifelse cargo < limitCapacity
       [
         ifelse priorityCleaners = "I_Want_Food"
         [
@@ -701,7 +713,12 @@ to cleaners-proc
         ]
       ]
       [
-        ;look-for-deposits (?)
+        if (destx = 1337) and (desty = 1337)
+        [
+          look-for-deposits;
+        ]
+
+        cleaner-move-to-deposit
       ]
     ]
   ]
@@ -722,7 +739,7 @@ to-report cleaners-look-for-food
     report 1
   ]
 
-  if cleanersExtraPerception?
+  if turtlesExtraPerception?
   [
     if [pcolor] of patch-right-and-ahead 45 1 = green
     [
@@ -757,7 +774,7 @@ to-report look-for-trash
     report 1
   ]
 
-  if cleanersExtraPerception?
+  if turtlesExtraPerception?
   [
     if ([pcolor] of patch-right-and-ahead 45 1 = red) or ([pcolor] of patch-right-and-ahead 45 1 = yellow)
     [
@@ -800,7 +817,68 @@ to look-for-deposits
   ; search for blue cell
   ; when found:
   ; set cargo 0
+  let px 0
+  let py 0
 
+  ask min-one-of (patches with [pcolor = blue]) [distance myself]
+  [
+    set px pxcor
+    set py pycor
+  ]
+
+  set destx px
+  set desty py
+End
+
+to cleaner-move-to-deposit
+  ifelse (xcor > destx)
+  [
+    ifelse(heading = 270)
+    [ fd 1 ]
+    [
+      ifelse (heading = 0)
+      [ lt 90 ]
+      [ rt 90 ]
+    ]
+  ]
+  [
+    ifelse(xcor < destx)
+    [
+      ifelse(heading = 90)
+      [ fd 1 ]
+      [
+        ifelse(heading = 0)
+        [rt 90]
+        [lt 90]
+      ]
+    ]
+    [
+      ifelse(ycor > desty)
+      [
+        ifelse(heading = 180)
+        [ fd 1 ]
+        [
+          ifelse (heading = 90)
+          [rt 90]
+          [lt 90]
+        ]
+      ]
+      [
+        if (ycor < desty)
+        [
+          ifelse(heading = 0)
+          [ fd 1 ]
+          [
+            ifelse (heading = 90)
+            [lt 90]
+            [rt 90]
+          ]
+        ]
+      ]
+    ]
+  ]
+
+  set energy energy - 1
 End
 
 to random-action-cleaners
@@ -914,7 +992,7 @@ to-report sick-look-for-food
     report 1
   ]
 
-  if eatersExtraPerception?
+  if turtlesExtraPerception?
   [
     if [pcolor] of patch-ahead 2 = green
     [
@@ -972,7 +1050,7 @@ to-report sick-look-for-trash
     report 1
   ]
 
-  if sickExtraPerception?
+  if turtlesExtraPerception?
   [
     if ([pcolor] of patch-left-and-ahead 45 1 = red) or ([pcolor] of patch-left-and-ahead 45 1 = yellow)
     [
@@ -1022,9 +1100,9 @@ to replenish-patches
   let CurrentPatches 0
   let selPatches 0
 
-  if(foodReplenishTick != 0)
+  if(patchReplenishTick != 0)
   [
-    if (ticks mod foodReplenishTick) = 0
+    if (ticks mod patchReplenishTick) = 0
     [
       set CurrentPatches (((count patches with [pcolor = green]) / (count patches)) * 100)
 
@@ -1032,17 +1110,20 @@ to replenish-patches
       [
         ;Algorith: (TotalPatches*(nFood/100)-(TotalPatches*(CurrentPercentage/100))
         set selPatches (((count patches) * (nFood / 100)) - ((count patches) * (currentPatches / 100)))
-
-        ask n-of selPatches patches with [pcolor = black]
+        if(count patches with [pcolor = black]) > selPatches
         [
-          set pcolor green
+          ask n-of selPatches patches with [pcolor = black]
+          [
+            set pcolor green
+          ]
         ]
       ]
     ]
   ]
-  if(garbageReplenishTick != 0)
+
+  if(patchReplenishTick != 0)
   [
-    if (ticks mod garbageReplenishTick) = 0
+    if (ticks mod patchReplenishTick) = 0
     [
       set CurrentPatches (((count patches with [pcolor = yellow]) / (count patches)) * 100)
 
@@ -1050,17 +1131,20 @@ to replenish-patches
       [
         set selPatches (((count patches) * (nGarbage / 100)) - ((count patches) * (currentPatches / 100)))
 
-        ask n-of selPatches patches with [pcolor = black]
+        if(count patches with [pcolor = black]) > selPatches
         [
-          set pcolor yellow
+          ask n-of selPatches patches with [pcolor = black]
+          [
+            set pcolor yellow
+          ]
         ]
       ]
     ]
   ]
 
-  if(toxicReplenishTick != 0)
+  if(patchReplenishTick != 0)
   [
-    if (ticks mod toxicReplenishTick) = 0
+    if (ticks mod patchReplenishTick) = 0
     [
       set CurrentPatches (((count patches with [pcolor = red]) / (count patches)) * 100)
 
@@ -1068,9 +1152,12 @@ to replenish-patches
       [
         set selPatches (((count patches) * (nToxic / 100)) - ((count patches) * (currentPatches / 100)))
 
-        ask n-of selPatches patches with [pcolor = black]
+        if(count patches with [pcolor = black]) > selPatches
         [
-          set pcolor red
+          ask n-of selPatches patches with [pcolor = black]
+          [
+            set pcolor red
+          ]
         ]
       ]
     ]
@@ -1078,32 +1165,11 @@ to replenish-patches
 End
 
 to Paint-TPNK
-  Paint-T
-  Paint-R
   Paint-U
+  Paint-R
   Paint-M
+  Paint-T
   Paint-P
-End
-
-to Paint-T
-  ask patch -15 2
-  [set pcolor yellow]
-  ask patch -14 2
-  [set pcolor yellow]
-  ask patch -13 2
-  [set pcolor yellow]
-  ask patch -12 2
-  [set pcolor yellow]
-  ask patch -11 2
-  [set pcolor yellow]
-  ask patch -13 1
-  [set pcolor yellow]
-  ask patch -13 0
-  [set pcolor yellow]
-  ask patch -13 -1
-  [set pcolor yellow]
-  ask patch -13 -2
-  [set pcolor yellow]
 End
 
 to Paint-R
@@ -1130,31 +1196,6 @@ to Paint-R
   ask patch -5 1
   [set pcolor yellow]
   ask patch -5 -2
-  [set pcolor yellow]
-End
-
-to Paint-U
-  ask patch -2 2
-  [set pcolor yellow]
-  ask patch 2 2
-  [set pcolor yellow]
-  ask patch 2 -1
-  [set pcolor yellow]
-  ask patch -2 -1
-  [set pcolor yellow]
-  ask patch 2 0
-  [set pcolor yellow]
-  ask patch -2 0
-  [set pcolor yellow]
-  ask patch 2 1
-  [set pcolor yellow]
-  ask patch -2 1
-  [set pcolor yellow]
-  ask patch -1 -2
-  [set pcolor yellow]
-  ask patch 1 -2
-  [set pcolor yellow]
-  ask patch 0 -2
   [set pcolor yellow]
 End
 
@@ -1209,6 +1250,52 @@ to Paint-P
   ask patch 15 1
   [set pcolor yellow]
 End
+
+to Paint-U
+  ask patch -2 2
+  [set pcolor yellow]
+  ask patch 2 2
+  [set pcolor yellow]
+  ask patch 2 -1
+  [set pcolor yellow]
+  ask patch -2 -1
+  [set pcolor yellow]
+  ask patch 2 0
+  [set pcolor yellow]
+  ask patch -2 0
+  [set pcolor yellow]
+  ask patch 2 1
+  [set pcolor yellow]
+  ask patch -2 1
+  [set pcolor yellow]
+  ask patch -1 -2
+  [set pcolor yellow]
+  ask patch 1 -2
+  [set pcolor yellow]
+  ask patch 0 -2
+  [set pcolor yellow]
+End
+
+to Paint-T
+  ask patch -15 2
+  [set pcolor yellow]
+  ask patch -14 2
+  [set pcolor yellow]
+  ask patch -13 2
+  [set pcolor yellow]
+  ask patch -12 2
+  [set pcolor yellow]
+  ask patch -11 2
+  [set pcolor yellow]
+  ask patch -13 1
+  [set pcolor yellow]
+  ask patch -13 0
+  [set pcolor yellow]
+  ask patch -13 -1
+  [set pcolor yellow]
+  ask patch -13 -2
+  [set pcolor yellow]
+End
 @#$#@#$#@
 GRAPHICS-WINDOW
 355
@@ -1246,7 +1333,7 @@ nGarbage
 nGarbage
 0
 15
-8.0
+5.0
 1
 1
 NIL
@@ -1261,7 +1348,7 @@ nToxic
 nToxic
 0
 15
-8.0
+15.0
 1
 1
 NIL
@@ -1276,7 +1363,7 @@ nFood
 nFood
 5
 20
-10.0
+20.0
 1
 1
 NIL
@@ -1291,7 +1378,7 @@ nDeposits
 nDeposits
 1
 10
-1.0
+10.0
 1
 1
 NIL
@@ -1306,7 +1393,7 @@ fEnergy
 fEnergy
 1
 50
-50.0
+5.0
 1
 1
 NIL
@@ -1321,7 +1408,7 @@ nCleaners
 nCleaners
 0
 100
-20.0
+50.0
 1
 1
 NIL
@@ -1334,9 +1421,9 @@ SLIDER
 179
 nEaters
 nEaters
-1
+0
 100
-20.0
+100.0
 1
 1
 NIL
@@ -1351,7 +1438,7 @@ sEnergy
 sEnergy
 20
 100
-100.0
+50.0
 5
 1
 NIL
@@ -1421,17 +1508,6 @@ priorityEaters
 "I_Want_Food" "Better_Be_Safe"
 0
 
-SWITCH
-797
-302
-969
-335
-eatersExtraPerception?
-eatersExtraPerception?
-1
-1
--1000
-
 MONITOR
 3
 160
@@ -1478,7 +1554,7 @@ limitCapacity
 limitCapacity
 25
 100
-100.0
+50.0
 5
 1
 NIL
@@ -1493,17 +1569,6 @@ priorityCleaners
 priorityCleaners
 "I_Want_Food" "Dumpster_Diving"
 0
-
-SWITCH
-797
-335
-969
-368
-cleanersExtraPerception?
-cleanersExtraPerception?
-1
-1
--1000
 
 PLOT
 3
@@ -1527,51 +1592,6 @@ PENS
 "radioactive-trash" 1.0 0 -8630108 true "" "plot count patches with [pcolor = violet]"
 
 SLIDER
-3
-228
-175
-261
-foodReplenishTick
-foodReplenishTick
-0
-10
-5.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-3
-261
-175
-294
-garbageReplenishTick
-garbageReplenishTick
-0
-10
-2.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-3
-294
-175
-327
-toxicReplenishTick
-toxicReplenishTick
-0
-10
-10.0
-1
-1
-NIL
-HORIZONTAL
-
-SLIDER
 797
 212
 969
@@ -1580,7 +1600,7 @@ maxToxicity
 maxToxicity
 50
 150
-50.0
+100.0
 50
 1
 NIL
@@ -1602,9 +1622,9 @@ NIL
 HORIZONTAL
 
 SWITCH
-973
+984
 302
-1145
+1156
 335
 SickAgents?
 SickAgents?
@@ -1707,41 +1727,45 @@ CHOOSER
 248
 prioritySick
 prioritySick
-"Eat_To_Survive" "Spread_The_Sickeness"
+"Eat_To_Survive" "Spread_The_Sickness"
 0
 
 SWITCH
 797
-368
-969
-401
-sickExtraPerception?
-sickExtraPerception?
-1
-1
--1000
-
-SWITCH
-973
 335
-1145
+969
 368
-replenishPatches?
-replenishPatches?
+cleanersImmune?
+cleanersImmune?
 0
 1
 -1000
 
 SWITCH
-973
-368
-1145
-401
-cleanersImmune?
-cleanersImmune?
-1
+797
+302
+983
+335
+turtlesExtraPerception?
+turtlesExtraPerception?
+0
 1
 -1000
+
+SLIDER
+0
+228
+172
+261
+patchReplenishTick
+patchReplenishTick
+0
+10
+5.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -2085,10 +2109,89 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.0
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
+<experiments>
+  <experiment name="TP_IIA" repetitions="10" runMetricsEveryStep="true">
+    <setup>setup</setup>
+    <go>go</go>
+    <metric>count sick</metric>
+    <metric>count cleaners</metric>
+    <metric>count eaters</metric>
+    <enumeratedValueSet variable="turtlesExtraPerception?">
+      <value value="true"/>
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="SickAgents?">
+      <value value="true"/>
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cleanersImmune?">
+      <value value="true"/>
+      <value value="false"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="limitCapacity">
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="nCleaners">
+      <value value="50"/>
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="fEnergy">
+      <value value="5"/>
+      <value value="50"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="prioritySick">
+      <value value="&quot;Eat_To_Survive&quot;"/>
+      <value value="&quot;Spread_The_Sickness&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="nDeposits">
+      <value value="10"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="nToxic">
+      <value value="5"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="nFood">
+      <value value="5"/>
+      <value value="20"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="patchReplenishTick">
+      <value value="0"/>
+      <value value="5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="radioactivePatchLevel">
+      <value value="25"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="maxToxicity">
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="nEaters">
+      <value value="50"/>
+      <value value="100"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="moveForwardProbability">
+      <value value="75"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="priorityCleaners">
+      <value value="&quot;Dumpster_Diving&quot;"/>
+      <value value="&quot;I_Want_Food&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="priorityEaters">
+      <value value="&quot;I_Want_Food&quot;"/>
+      <value value="&quot;Better_Be_Safe&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="nGarbage">
+      <value value="5"/>
+      <value value="15"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="sEnergy">
+      <value value="50"/>
+    </enumeratedValueSet>
+  </experiment>
+</experiments>
 @#$#@#$#@
 @#$#@#$#@
 default
