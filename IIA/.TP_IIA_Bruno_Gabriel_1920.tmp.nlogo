@@ -1727,8 +1727,8 @@ CHOOSER
 248
 prioritySick
 prioritySick
-"Eat_To_Survive" "Spread_The_Sickness"
-0
+"Eat_To_Survive" "Spread_The_Sickeness"
+1
 
 SWITCH
 797
@@ -2109,12 +2109,12 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.4
+NetLogo 6.1.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="TP_IIA" repetitions="3" runMetricsEveryStep="true">
+  <experiment name="TP_IIA" repetitions="10" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <metric>count sick</metric>
