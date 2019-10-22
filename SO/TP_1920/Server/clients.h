@@ -4,13 +4,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
 #include "serverHeader.h"
-    
+
     typedef struct clients
     {
         char username[8];
-        
+
         //array\listaLigada (?) de subscriçoes
     } Client, *pClient;
 

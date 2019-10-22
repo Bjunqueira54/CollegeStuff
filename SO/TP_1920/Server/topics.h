@@ -4,14 +4,15 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
 #include "serverHeader.h"
 
     typedef struct topic
     {
         char title[15];
 
-        pText start;
+        pText next;
+	pText prev;
     } Topic, *pTopic;
 
 #ifdef __cplusplus

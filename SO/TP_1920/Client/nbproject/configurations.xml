@@ -39,6 +39,9 @@
         <cTool>
           <standard>3</standard>
         </cTool>
+        <linkerTool>
+          <commandLine>-lncurses</commandLine>
+        </linkerTool>
       </compileType>
       <item path="clientHeader.h" ex="false" tool="3" flavor2="0">
       </item>
