@@ -1385,10 +1385,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-3
-349
-175
-382
+2
+281
+174
+314
 fEnergy
 fEnergy
 1
@@ -1408,7 +1408,7 @@ nCleaners
 nCleaners
 0
 100
-50.0
+100.0
 1
 1
 NIL
@@ -1430,10 +1430,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-3
-382
-175
-415
+2
+315
+174
+348
 sEnergy
 sEnergy
 20
@@ -1622,10 +1622,10 @@ NIL
 HORIZONTAL
 
 SWITCH
-984
-302
-1156
-335
+798
+370
+970
+403
 SickAgents?
 SickAgents?
 0
@@ -1650,9 +1650,9 @@ NIL
 1
 
 TEXTBOX
-55
+51
 211
-139
+135
 229
 Patch Replenish
 11
@@ -1660,9 +1660,9 @@ Patch Replenish
 1
 
 TEXTBOX
-951
+862
 285
-1003
+914
 303
 Switches\n
 11
@@ -1711,10 +1711,10 @@ Priorities
 1
 
 TEXTBOX
-71
-332
-110
-350
+70
+265
+109
+283
 Energy
 11
 0.0
@@ -1727,8 +1727,8 @@ CHOOSER
 248
 prioritySick
 prioritySick
-"Eat_To_Survive" "Spread_The_Sickeness"
-1
+"Eat_To_Survive" "Spread_The_Sickness"
+0
 
 SWITCH
 797
@@ -1737,15 +1737,15 @@ SWITCH
 368
 cleanersImmune?
 cleanersImmune?
-0
+1
 1
 -1000
 
 SWITCH
 797
 302
-983
-335
+970
+336
 turtlesExtraPerception?
 turtlesExtraPerception?
 0
@@ -1753,10 +1753,10 @@ turtlesExtraPerception?
 -1000
 
 SLIDER
-0
-228
-172
-261
+2
+229
+174
+262
 patchReplenishTick
 patchReplenishTick
 0
@@ -2109,7 +2109,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.1
+NetLogo 6.1.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
