@@ -7,16 +7,19 @@ extern "C" {
 
 #include "serverHeader.h"
 
-    typedef struct text
+    struct text
     {
         char title[15];
-
+        char topicTitle[15];
         char article[1000];
 
         int duration;
 
         pText prev, next;
-    } Text, *pText;
+        pTopic topic;
+        
+        void getDuration() { printf("%d\n", duration);
+    };
 
 #ifdef __cplusplus
 }

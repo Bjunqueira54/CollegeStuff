@@ -7,14 +7,14 @@ extern "C" {
 
 #include "serverHeader.h"
 
-    typedef struct clients
+    struct client
     {
         char username[8];
         
         pid_t c_PID;
 
         //array\listaLigada (?) de subscriçoes
-    } Client, *pClient;
+    };
 
 #ifdef __cplusplus
 }

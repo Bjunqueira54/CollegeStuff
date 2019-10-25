@@ -11,6 +11,7 @@ extern "C" {
 #include <getopt.h>
 #include <ncurses.h>
 #include <sys/types.h>
+#include <string.h>
 #include <signal.h>
 
 #ifdef __cplusplus

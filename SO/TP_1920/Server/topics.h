@@ -7,13 +7,13 @@ extern "C" {
 
 #include "serverHeader.h"
 
-    typedef struct topic
+    struct topic
     {
         char title[15];
 
         pText next;
 	pText prev;
-    } Topic, *pTopic;
+    };
 
 #ifdef __cplusplus
 }
