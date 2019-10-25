@@ -10,6 +10,8 @@ extern "C" {
     typedef struct clients
     {
         char username[8];
+        
+        pid_t c_PID;
 
         //array\listaLigada (?) de subscriçoes
     } Client, *pClient;
