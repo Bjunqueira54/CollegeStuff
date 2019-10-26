@@ -65,6 +65,29 @@ pClient findClientByPID(pClient listStart, pid_t PID)
     return NULL;
 }
 
+bool serverMainLoop(char *cmd, pClient aux)
+{
+    if (strcmp(cmd, "shutdown") == 0)
+    {
+        union sigval value;
+        value.sival_int = 1;
+        
+        while(aux->next == NULL)
+        {
+            sigqueue(aux->c_PID, SIGINT, value);
+            aux = aux->next;
+        }
+        
+        return true;
+    }
+    else 
+    {
+        
+    }
+}
+
+
+
 void serverBroadcastExit(int sigNum, siginfo_t *info)
 {
     
