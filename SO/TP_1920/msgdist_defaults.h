@@ -1,0 +1,16 @@
+#ifndef MSGDIST_DEFAULTS_H
+#define MSGDIST_DEFAULTS_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
+    //Add defaults values here for both Client and Server
+#define MAXUSERLEN 25
+#define NAMEDPIPE "/tmp/msgdist/msgdist_mainpipe"
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

@@ -10,15 +10,17 @@ int main(int argc, char** argv)
         exit (EXIT_FAILURE);
     }
     
+    char username[25];
+    
     char c = getopt(argc, argv, "u:");
     
     switch(c)
     {
         case 'u':
-            fprintf(stdout,"O teu username e: %s\n", optarg);
+            fprintf(stdout,"Your username is: %s\n", optarg);
             break;
         default:
-            fprintf(stderr, "Olha o engracadinho. Como e que entras-te aqui palhaco?\n");
+            fprintf(stderr, "I don't recognize that launch argument\n");
             exit (EXIT_FAILURE);
             break;
     }
@@ -32,6 +34,11 @@ int main(int argc, char** argv)
     keypad(stdscr, true);
     
     getch();
+    
+    while(!Exit)
+    {
+        
+    }
     
     endwin();
     

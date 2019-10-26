@@ -13,6 +13,9 @@ extern "C" {
 #include <sys/types.h>
 #include <string.h>
 #include <signal.h>
+#include <stdbool.h>
+    
+    extern bool Exit;
 
 #ifdef __cplusplus
 }
