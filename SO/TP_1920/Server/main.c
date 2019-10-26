@@ -37,7 +37,7 @@ int main(int argc, char** argv)
         fprintf(stdout, "Comando: ");
         fscanf(stdin, "%s", cmd);
         
-        if (cmd == "shutdown")
+        if (strcmp(cmd, "shutdown") == 0)
         {
             Exit = true;
         }

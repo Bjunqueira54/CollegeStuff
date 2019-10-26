@@ -16,13 +16,16 @@ void addNewClient(pClient listStart, pClient newClient)
 
 void removeClient(pClient listStart, pClient cli)
 {
-    pClient auxNext = cli->next;
-    pClient auxPrev = cli->prev;
-    
-    auxPrev->next = auxNext;
-    auxNext->prev = auxPrev;
-    
-    free(cli);
+    if(listStart->next != NULL)
+    {    
+        pClient auxNext = cli->next;
+        pClient auxPrev = cli->prev;
+
+        auxPrev->next = auxNext;
+        auxNext->prev = auxPrev;
+
+        free(cli);
+    }
 }
 
 pClient findClientByUsername(pClient listStart, char* username)
