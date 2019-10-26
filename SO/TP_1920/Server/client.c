@@ -82,11 +82,21 @@ bool serverMainLoop(char *cmd, pClient aux)
     }
     else 
     {
-        
+        if (strcmp(cmd, "msg") == 0)
+        {
+            
+        }
+        else if (strcmp(cmd, "users") == 0)
+        {
+           
+        }
+        else if (strcmp(cmd, "topics") == 0)
+        {
+            
+        }
+        //else if (strcmp(cmd, "filter")) //fazer diferente
     }
 }
-
-
 
 void serverBroadcastExit(int sigNum, siginfo_t *info)
 {
