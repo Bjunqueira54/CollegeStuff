@@ -15,13 +15,13 @@ int main(int argc, char** argv)
     //Signal
     struct sigaction cDisconnect, cSignal;
 
-    cDisconnect.sa_flags = SA_SIGINFO;
-    cDisconnect.sa_sigaction = &serverBroadcastExit;
+    /*cDisconnect.sa_flags = SA_SIGINFO;
+    cDisconnect.sa_sigaction = &serverBroadcastExit;*/
     
     cSignal.sa_flags = SA_SIGINFO;
     cSignal.sa_sigaction = &clientSignals;
     
-    sigaction(SIGINT, &cDisconnect, NULL);
+    //sigaction(SIGINT, &cDisconnect, NULL);
     sigaction(SIGUSR1, &cSignal, NULL);
     
     //EnvVars
