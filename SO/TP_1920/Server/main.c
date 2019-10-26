@@ -13,6 +13,7 @@ int main(int argc, char** argv)
     int maxMessage;
     int maxNot;
     char* wordNot;
+    char *cmd;
 
     //EnvVars
     if(getenv("MAXMSG") != NULL)
@@ -25,6 +26,10 @@ int main(int argc, char** argv)
     //Server Main Loop
     while(!Exit)
     {
+        if (cmd == "shutdown")
+        {
+            Exit = true;
+        }
         //Add server code in here
     }
 
