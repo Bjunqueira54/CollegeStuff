@@ -2,16 +2,23 @@
 
 void addNewClient(pClient listStart, pClient newClient)
 {
-    pClient aux = listStart;
-    
-    while(aux->next != NULL)
+    if(listStart->next == NULL) 
     {
-        aux = aux->next;
+        listStart->next = newClient; 
     }
-    
-    aux->next = newClient;
-    newClient->prev = aux;
-    newClient->next = NULL;
+    else 
+    {
+        pClient aux = listStart;
+        
+        while(aux->next != NULL)
+        {
+            aux = aux->next;
+        } 
+        
+        aux->next = newClient;
+        newClient->prev = aux;
+        newClient->next = NULL;
+    }  
 }
 
 void removeClient(pClient listStart, pClient cli)
