@@ -99,6 +99,8 @@ bool serverMainLoop(char *cmd, pClient aux, char *extra)
             
         }
     }
+    
+    return false;
 }
 
 void serverBroadcastExit(int sigNum, siginfo_t *info)
