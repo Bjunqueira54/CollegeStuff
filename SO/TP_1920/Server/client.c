@@ -33,6 +33,10 @@ void removeClient(pClient listStart, pClient cli)
 
         free(cli);
     }
+    else
+    {
+        fprintf(stderr, "Nao ha clientes para remover\n");
+    }
 }
 
 pClient findClientByUsername(pClient listStart, char* username)
