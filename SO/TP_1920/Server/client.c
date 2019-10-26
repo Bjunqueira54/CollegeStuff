@@ -50,3 +50,11 @@ pClient findClientByPID(pClient listStart, pid_t PID)
     
     return NULL;
 }
+
+void serverBroadcastExit() {
+    
+}
+
+void clientSignals() {
+    
+}

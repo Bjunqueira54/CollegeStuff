@@ -8,6 +8,8 @@
 #include <sys/types.h>
 #include <stdbool.h>
 #include <string.h>
+#include <signal.h>
+#include "../msgdist_defaults.h"
 
 #include "typedefines.h" //MUST BE INCLUDED FIRST
 

@@ -13,8 +13,19 @@ int main(int argc, char** argv)
     int maxMessage;
     int maxNot;
     char* wordNot;
-    char *cmd;
+    char cmd[20];
+    
+    struct sigaction cDisconnect, cSignal;
 
+    cDisconnect.sa_flags = SA_INFO;
+    cDisconnect.sa_sigaction = &serverBroadcastExit();
+    
+    cSignal.sa_flags = SA_INFO;
+    cSignal.sa_sigaction = &clientSignals();
+    
+    sigaction(SIGUSR1, cDisconnect, NULL);
+    sigaction(SIGUSR2, cSignals, NULL);
+    
     //EnvVars
     if(getenv("MAXMSG") != NULL)
         sscanf(getenv("MAXMSG"), "%d", &maxMessage);
@@ -26,6 +37,9 @@ int main(int argc, char** argv)
     //Server Main Loop
     while(!Exit)
     {
+        fprintf(stdout, "Comando: ");
+        fscanf(stdin, "%s", cmd);
+        
         if (cmd == "shutdown")
         {
             Exit = true;
