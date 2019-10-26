@@ -16,7 +16,6 @@ int main(int argc, char** argv)
     
     testeMsg->duration = 15;
     
-    testeMsg->getDuration();
     getchar();
 
     return (EXIT_SUCCESS);

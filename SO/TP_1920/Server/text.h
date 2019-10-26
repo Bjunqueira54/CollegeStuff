@@ -17,8 +17,6 @@ extern "C" {
 
         pText prev, next;
         pTopic topic;
-        
-        void getDuration() { printf("%d\n", duration);
     };
 
 #ifdef __cplusplus

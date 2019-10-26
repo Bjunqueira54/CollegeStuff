@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 #include "serverHeader.h"
-
+    
     struct topic
     {
         char title[15];
