@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>client.h</itemPath>
+      <itemPath>../msgdist_defaults.h</itemPath>
       <itemPath>serverHeader.h</itemPath>
       <itemPath>text.h</itemPath>
       <itemPath>topic.h</itemPath>
@@ -47,6 +48,8 @@
           <standard>3</standard>
         </cTool>
       </compileType>
+      <item path="../msgdist_defaults.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="client.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="client.h" ex="false" tool="3" flavor2="0">
@@ -87,6 +90,8 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="../msgdist_defaults.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="client.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="client.h" ex="false" tool="3" flavor2="0">

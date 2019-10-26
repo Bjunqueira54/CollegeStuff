@@ -1,6 +1,3 @@
-#include <limits.h>
-#include <ncurses.h>
-
 #include "serverHeader.h"
 
 //Server
@@ -17,14 +14,14 @@ int main(int argc, char** argv)
     
     struct sigaction cDisconnect, cSignal;
 
-    cDisconnect.sa_flags = SA_INFO;
-    cDisconnect.sa_sigaction = &serverBroadcastExit();
+    cDisconnect.sa_flags = SA_SIGINFO;
+    cDisconnect.sa_sigaction = &serverBroadcastExit;
     
-    cSignal.sa_flags = SA_INFO;
-    cSignal.sa_sigaction = &clientSignals();
+    cSignal.sa_flags = SA_SIGINFO;
+    cSignal.sa_sigaction = &clientSignals;
     
-    sigaction(SIGUSR1, cDisconnect, NULL);
-    sigaction(SIGUSR2, cSignals, NULL);
+    sigaction(SIGUSR1, &cDisconnect, NULL);
+    sigaction(SIGUSR2, &cSignal, NULL);
     
     //EnvVars
     if(getenv("MAXMSG") != NULL)

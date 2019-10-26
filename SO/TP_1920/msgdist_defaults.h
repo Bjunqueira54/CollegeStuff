@@ -5,6 +5,10 @@
 extern "C" {
 #endif
     
+#ifndef _POSIX_C_SOURCE
+#define _POSIX_C_SOURCE
+#endif
+    
     //Add defaults values here for both Client and Server
 #define MAXUSERLEN 25
 #define NAMEDPIPE "/tmp/msgdist/msgdist_mainpipe"

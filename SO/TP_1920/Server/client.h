@@ -21,6 +21,8 @@ extern "C" {
     void removeClient(pClient listStart, pClient cli);
     pClient findClientByUsername(pClient listStart, char* username);
     pClient findClientByPID(pClient listStart, pid_t PID);
+    void serverBroadcastExit();
+    void clientSignals();
     
 #ifdef __cplusplus
 }
