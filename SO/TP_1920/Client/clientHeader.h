@@ -15,6 +15,8 @@ extern "C" {
 #include <signal.h>
 #include <stdbool.h>
     
+#include "../msgdist_defaults.h"
+    
     extern bool Exit;
 
 #ifdef __cplusplus
