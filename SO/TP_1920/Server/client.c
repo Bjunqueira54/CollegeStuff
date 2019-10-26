@@ -65,12 +65,12 @@ pClient findClientByPID(pClient listStart, pid_t PID)
     return NULL;
 }
 
-void serverBroadcastExit()
+void serverBroadcastExit(int sigNum, siginfo_t *info)
 {
     
 }
 
-void clientSignals()
+void clientSignals(int sigNum, siginfo_t *info)
 {
     
 }

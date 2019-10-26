@@ -39,9 +39,9 @@ int main(int argc, char** argv)
         
         if (strcmp(cmd, "shutdown") == 0)
         {
+            kill();
             Exit = true;
         }
-        //Add server code in here
     }
 
     return (EXIT_SUCCESS);
