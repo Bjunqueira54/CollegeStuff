@@ -20,7 +20,8 @@ extern "C" {
     void addNewClient(pClient listStart, pClient newClient);
     void removeClient(pClient listStart, pClient cli);
     pClient findClientByUsername(pClient listStart, char* username);
-
+    pClient findClientByPID(pClient listStart, pid_t PID);
+    
 #ifdef __cplusplus
 }
 #endif

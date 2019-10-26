@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "typedefines.h" //MUST BE INCLUDED FIRST
 

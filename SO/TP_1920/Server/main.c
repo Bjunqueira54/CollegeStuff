@@ -6,17 +6,27 @@
 //Server
 int main(int argc, char** argv)
 {
-    //char maxMsg[5] = getenv("MAXMSG");
+    pClient ClientList = NULL;
+    bool Exit = false;
+    
+    //Vars for EnvVars
     int maxMessage;
+    int maxNot;
+    char* wordNot;
 
-    //sscanf(maxMsg, &maxMessage);
+    //EnvVars
+    if(getenv("MAXMSG") != NULL)
+        sscanf(getenv("MAXMSG"), "%d", &maxMessage);
+    if(getenv("MAXNOT") != NULL)
+        sscanf(getenv("MAXNOT"), "%d", &maxNot);
+    if(getenv("WORDNOT") != NULL)
+        wordNot = getenv("WORDNOT");
     
-    pText testeMsg;
-    testeMsg = malloc(sizeof(Text));
-    
-    testeMsg->duration = 15;
-    
-    getchar();
+    //Server Main Loop
+    while(!Exit)
+    {
+        //Add server code in here
+    }
 
     return (EXIT_SUCCESS);
 }

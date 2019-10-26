@@ -37,3 +37,16 @@ pClient findClientByUsername(pClient listStart, char* username)
     
     return NULL;
 }
+
+pClient findClientByPID(pClient listStart, pid_t PID)
+{
+    pClient aux = listStart;
+    
+    while(aux->next != NULL)
+    {
+        if(aux->c_PID == PID)
+            return aux;
+    }
+    
+    return NULL;
+}
