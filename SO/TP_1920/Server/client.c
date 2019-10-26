@@ -70,7 +70,7 @@ bool serverMainLoop(char *cmd, pClient aux)
     if (strcmp(cmd, "shutdown") == 0)
     {
         union sigval value;
-        value.sival_int = 1;
+        value.sival_int = 0;
         
         while(aux->next == NULL)
         {
