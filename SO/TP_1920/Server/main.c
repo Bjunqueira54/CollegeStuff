@@ -40,6 +40,9 @@ int main(int argc, char** argv)
         
         Exit = serverMainLoop(cmd, clientList);
     }
+    
+    fprintf(stdout, "Server Shutting Down\n");
+    //getchar();
 
     return (EXIT_SUCCESS);
 }
