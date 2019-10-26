@@ -1,30 +1,36 @@
 #include "client.h"
 
+//Should be working 100%
 void addNewClient(pClient listStart, pClient newClient)
 {
-    if(listStart->next == NULL) 
+    if(listStart == NULL)
     {
-        listStart->next = newClient; 
+        newClient->next = newClient->prev = NULL;
+        listStart = newClient;
+        return;
     }
-    else 
+    
+    pClient aux = listStart;
+    
+    if(aux->next == NULL)
     {
-        pClient aux = listStart;
-        
+        aux->next = newClient;
+    }
+    else
+    {
         while(aux->next != NULL)
-        {
             aux = aux->next;
-        } 
         
         aux->next = newClient;
-        newClient->prev = aux;
-        newClient->next = NULL;
-    }  
+    }
 }
 
 void removeClient(pClient listStart, pClient cli)
 {
-    if(listStart->next != NULL)
-    {    
+    if(listStart == NULL)
+        return;
+    else
+    {
         pClient auxNext = cli->next;
         pClient auxPrev = cli->prev;
 
@@ -33,14 +39,13 @@ void removeClient(pClient listStart, pClient cli)
 
         free(cli);
     }
-    else
-    {
-        fprintf(stderr, "Nao ha clientes para remover\n");
-    }
 }
 
 pClient findClientByUsername(pClient listStart, char* username)
 {
+    if(listStart == NULL)
+        return NULL;
+    
     pClient aux = listStart;
     
     while(aux->next != NULL)
@@ -54,6 +59,9 @@ pClient findClientByUsername(pClient listStart, char* username)
 
 pClient findClientByPID(pClient listStart, pid_t PID)
 {
+    if(listStart == NULL)
+        return NULL;
+    
     pClient aux = listStart;
     
     while(aux->next != NULL)
@@ -103,9 +111,17 @@ bool serverMainLoop(char *cmd, pClient aux, char *extra)
     return false;
 }
 
-void serverBroadcastExit(int sigNum, siginfo_t *info)
+void serverBroadcastExit(pClient listStart)
 {
+    if(listStart == NULL)
+        return;
     
+    pClient aux = listStart;
+    
+    while(aux != NULL)
+    {
+        kill(aux->c_PID, SIGINT);
+    }
 }
 
 void clientSignals(int sigNum, siginfo_t *info)
