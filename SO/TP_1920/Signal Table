@@ -1,0 +1,12 @@
+SIGINT - matar processos
+
+SIGALRM - enviar sinal ao cliente a notificação de novos textos
+    int id = id do texto novo do tópico
+
+SIGUSR1 - 
+
+SIGUSR2 -
+
+SIGPIPE - 
+
+

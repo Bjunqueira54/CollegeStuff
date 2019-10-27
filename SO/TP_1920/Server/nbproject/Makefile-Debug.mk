@@ -38,8 +38,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/client.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/serverFunctions.o \
-	${OBJECTDIR}/text.o \
-	${OBJECTDIR}/topic.o
+	${OBJECTDIR}/serverInterface.o
 
 
 # C Compiler Flags
@@ -81,15 +80,10 @@ ${OBJECTDIR}/serverFunctions.o: serverFunctions.c
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/serverFunctions.o serverFunctions.c
 
-${OBJECTDIR}/text.o: text.c
+${OBJECTDIR}/serverInterface.o: serverInterface.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/text.o text.c
-
-${OBJECTDIR}/topic.o: topic.c
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/topic.o topic.c
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/serverInterface.o serverInterface.c
 
 # Subprojects
 .build-subprojects:

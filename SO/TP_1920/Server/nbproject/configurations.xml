@@ -7,6 +7,7 @@
       <itemPath>client.h</itemPath>
       <itemPath>../msgdist_defaults.h</itemPath>
       <itemPath>serverHeader.h</itemPath>
+      <itemPath>serverInterface.h</itemPath>
       <itemPath>text.h</itemPath>
       <itemPath>topic.h</itemPath>
       <itemPath>typedefines.h</itemPath>
@@ -21,8 +22,7 @@
       <itemPath>client.c</itemPath>
       <itemPath>main.c</itemPath>
       <itemPath>serverFunctions.c</itemPath>
-      <itemPath>text.c</itemPath>
-      <itemPath>topic.c</itemPath>
+      <itemPath>serverInterface.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -61,11 +61,11 @@
       </item>
       <item path="serverHeader.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="text.c" ex="false" tool="0" flavor2="0">
+      <item path="serverInterface.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="serverInterface.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="text.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="topic.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="topic.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -105,11 +105,11 @@
       </item>
       <item path="serverHeader.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="text.c" ex="false" tool="0" flavor2="0">
+      <item path="serverInterface.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="serverInterface.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="text.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="topic.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="topic.h" ex="false" tool="3" flavor2="0">
       </item>
