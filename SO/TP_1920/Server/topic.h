@@ -10,9 +10,13 @@ extern "C" {
     struct topic
     {
         char title[15];
+        
+        int id;
 
-        pText next;
-	pText prev;
+        pTopic next;
+	pTopic prev;
+        
+        pText start;
     };
 
 #ifdef __cplusplus

@@ -51,6 +51,6 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
         }
     }
     
-    printf("Command not recognized\n"); //PLACEHOLDER
+    serverMainOutput(-1, "\0");
     return false;
 }
