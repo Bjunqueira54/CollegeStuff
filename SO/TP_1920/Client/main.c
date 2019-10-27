@@ -10,7 +10,7 @@ int main(int argc, char** argv)
         exit (EXIT_FAILURE);
     }
     
-    char username[25];
+    char username[MAXUSERLEN];
     
     char c = getopt(argc, argv, "u:");
     
@@ -25,6 +25,8 @@ int main(int argc, char** argv)
             break;
     }
     
+    bool Exit = false;
+    
     getchar();
     
     //Iniciar o ncurses
@@ -37,7 +39,10 @@ int main(int argc, char** argv)
     
     while(!Exit)
     {
-        
+        TestPopUpNotification();
+        getch();
+        ClearTestPopUp();
+        getch();
     }
     
     endwin();

@@ -16,6 +16,7 @@ extern "C" {
 #include <stdbool.h>
     
 #include "../msgdist_defaults.h"
+#include "Functions.h"
     
     extern bool Exit;
 
