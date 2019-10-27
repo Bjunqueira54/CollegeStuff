@@ -37,6 +37,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/client.o \
 	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/serverFunctions.o \
 	${OBJECTDIR}/text.o \
 	${OBJECTDIR}/topic.o
 
@@ -74,6 +75,11 @@ ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.c
+
+${OBJECTDIR}/serverFunctions.o: serverFunctions.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/serverFunctions.o serverFunctions.c
 
 ${OBJECTDIR}/text.o: text.c
 	${MKDIR} -p ${OBJECTDIR}

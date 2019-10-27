@@ -18,10 +18,10 @@ extern "C" {
     };
     
     void addNewClient(pClient listStart, pClient newClient);
-    void removeClient(pClient listStart, pClient cli);
+    void removeClient(pClient client);
     pClient findClientByUsername(pClient listStart, char* username);
     pClient findClientByPID(pClient listStart, pid_t PID);
-    void serverBroadcastExit();
+    void serverBroadcastExit(pClient listStart);
     void clientSignals();
     
 #ifdef __cplusplus

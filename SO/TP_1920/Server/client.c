@@ -25,19 +25,33 @@ void addNewClient(pClient listStart, pClient newClient)
     }
 }
 
-void removeClient(pClient listStart, pClient cli)
+//Should be working 100%
+void removeClient(pClient client)
 {
-    if(listStart == NULL)
+    if(client == NULL || (client->next == NULL && client->prev == NULL))
         return;
     else
     {
-        pClient auxNext = cli->next;
-        pClient auxPrev = cli->prev;
-
-        auxPrev->next = auxNext;
-        auxNext->prev = auxPrev;
-
-        free(cli);
+        pClient Next;
+        pClient Prev;
+        
+        if(client->next == NULL)
+            Next = NULL;
+        else
+            Next == client->next;
+        
+        if(client->prev == NULL)
+            Prev = NULL;
+        else
+            Prev = client->prev;
+        
+        if(Next == NULL && Prev == NULL) //Something's wrong!
+            return;
+        
+        Prev->next = Next;
+        Next->prev = Prev;
+        
+        free(client);
     }
 }
 
@@ -48,11 +62,12 @@ pClient findClientByUsername(pClient listStart, char* username)
     
     pClient aux = listStart;
     
-    while(aux->next != NULL)
+    do
     {
         if(strcmp(aux->username, username) == 0)
             return aux;
     }
+    while(aux->next != NULL);
     
     return NULL;
 }
@@ -64,51 +79,14 @@ pClient findClientByPID(pClient listStart, pid_t PID)
     
     pClient aux = listStart;
     
-    while(aux->next != NULL)
+    do
     {
         if(aux->c_PID == PID)
             return aux;
     }
+    while(aux->next != NULL);
     
     return NULL;
-}
-
-bool serverMainLoop(char *cmd, pClient aux, char *extra)
-{
-    if (strcmp(cmd, "shutdown") == 0)
-    {
-        union sigval value;
-        value.sival_int = 0;
-        
-        while(aux != NULL)
-        {
-            sigqueue(aux->c_PID, SIGINT, value);
-            aux = aux->next;
-        }
-        
-        return true;
-    }
-    else 
-    {
-        if (strcmp(cmd, "msg") == 0)
-        {
-            printf("Msg\n");
-        }
-        else if (strcmp(cmd, "users") == 0)
-        {
-            printf("Users\n");
-        }
-        else if (strcmp(cmd, "topics") == 0)
-        {
-            printf("Topics\n");
-        }
-        else if (strcmp(cmd, "filter") == 0) //incompleto
-        {
-            
-        }
-    }
-    
-    return false;
 }
 
 void serverBroadcastExit(pClient listStart)
@@ -118,10 +96,11 @@ void serverBroadcastExit(pClient listStart)
     
     pClient aux = listStart;
     
-    while(aux != NULL)
+    do
     {
         kill(aux->c_PID, SIGINT);
     }
+    while(aux->next != NULL);
 }
 
 void clientSignals(int sigNum, siginfo_t *info)

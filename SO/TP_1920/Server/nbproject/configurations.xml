@@ -20,6 +20,7 @@
                    projectFiles="true">
       <itemPath>client.c</itemPath>
       <itemPath>main.c</itemPath>
+      <itemPath>serverFunctions.c</itemPath>
       <itemPath>text.c</itemPath>
       <itemPath>topic.c</itemPath>
     </logicalFolder>
@@ -55,6 +56,8 @@
       <item path="client.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="serverFunctions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="serverHeader.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -97,6 +100,8 @@
       <item path="client.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="serverFunctions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="serverHeader.h" ex="false" tool="3" flavor2="0">
       </item>
