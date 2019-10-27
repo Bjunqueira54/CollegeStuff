@@ -1,12 +1,15 @@
 #include "serverHeader.h"
 
-bool Exit = false;
-bool Filter = true;
+bool Exit;
+bool Filter;
 
 //Server
 int main(int argc, char** argv)
 {
     pClient clientList = NULL;
+    
+    Exit = false;
+    Filter = true;
     
     //Vars for EnvVars
     int maxMessage;
