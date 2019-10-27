@@ -12,7 +12,7 @@ extern "C" {
         char username[8];
         
         pid_t c_PID;
-
+        
         pClient next;
         pClient prev;
     };
