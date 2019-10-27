@@ -15,8 +15,8 @@ int main(int argc, char** argv)
     int maxMessage;
     int maxNot;
     char* wordNot;
-    char cmd[CMD_SIZE];
-    
+    char cmd[CMD_SIZE], opt[4];
+
     //Signal
     struct sigaction cDisconnect, cSignal;
     
@@ -34,25 +34,21 @@ int main(int argc, char** argv)
     if(getenv("WORDNOT") != NULL)
         wordNot = getenv("WORDNOT");
     
-    char opt[4];
     
     //Server Main Loop
     while(!Exit)
-    {
-        fprintf(stdout, "Comando: ");
-        fscanf(stdin, "%s", cmd);
+    {  
+        serverMainOutput(1, cmd);
         
-        if (strcmp(cmd, "filter") == 0)
-        {
-            fprintf(stdout, "Option: ");
-            fscanf(stdin, "%s", opt);
-        }
+        printf("%s\n", cmd);
+        
+        if (!strcmp(cmd, "filter"))
+            serverMainOutput(2, opt);
         
         Exit = serverMainLoop(cmd, opt, clientList);
     }
     
-    fprintf(stdout, "Server Shutting Down\n");
-    //getchar();
-
+    serverMainOutput(0, "\0");
+    
     return (EXIT_SUCCESS);
 }

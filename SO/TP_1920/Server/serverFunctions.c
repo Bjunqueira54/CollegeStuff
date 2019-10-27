@@ -17,19 +17,19 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
     }
     else 
     {
-        if (strcmp(cmd, "msg") == 0)
+        if (!strcmp(cmd, "msg"))
         {
-            printf("Msg\n"); //PLACEHOLDER
+            return false;
         }
-        else if (strcmp(cmd, "users") == 0)
+        else if (!strcmp(cmd, "users"))
         {
-            printf("Users\n"); //PLACEHOLDER
+            return false;
         }
-        else if (strcmp(cmd, "topics") == 0)
+        else if (!strcmp(cmd, "topics"))
         {
-            printf("Topics\n"); //PLACEHOLDER
+            return false;
         }
-        else if ((strcmp(cmd, "filter") == 0) && (strcmp(opt, "on") == 0))
+        else if (!strcmp(cmd, "filter") && !strcmp(opt, "on"))
         {
             if (Filter == false)
             {
@@ -39,7 +39,7 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
             
             return false;
         }
-        else if ((strcmp(cmd, "filter") == 0) && (strcmp(opt, "off") == 0))
+        else if (!strcmp(cmd, "filter") && !strcmp(opt, "off"))
         {
             if (Filter == true)
             {

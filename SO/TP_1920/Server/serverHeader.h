@@ -29,6 +29,7 @@
 #include "client.h"
 #include "topic.h"
 #include "text.h"
+#include "serverInterface.h"
 
 extern int maxMessages;
 extern bool Exit;
