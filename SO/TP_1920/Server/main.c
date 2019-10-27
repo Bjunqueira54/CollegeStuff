@@ -40,8 +40,6 @@ int main(int argc, char** argv)
     {  
         serverMainOutput(1, cmd);
         
-        printf("%s\n", cmd);
-        
         if (!strcmp(cmd, "filter"))
             serverMainOutput(2, opt);
         
