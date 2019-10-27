@@ -30,11 +30,11 @@ int main(int argc, char** argv)
     if(getenv("WORDNOT") != NULL)
         wordNot = getenv("WORDNOT");
     
+    char opt[4];
+    
     //Server Main Loop
     while(!Exit)
     {
-        char opt[4];
-        
         fprintf(stdout, "Comando: ");
         fscanf(stdin, "%s", cmd);
         

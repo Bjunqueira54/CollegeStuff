@@ -1,7 +1,5 @@
 #include "serverHeader.h"
 
-
-
 bool serverMainLoop(char *cmd, char *opt, pClient aux)
 {
     if (strcmp(cmd, "shutdown") == 0)
@@ -48,9 +46,4 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
     }
     
     return false;
-}
-
-int parseCmd(char *cmd)
-{
-    
 }
