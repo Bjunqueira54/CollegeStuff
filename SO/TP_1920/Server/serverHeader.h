@@ -23,12 +23,13 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include "typedefines.h" //MUST BE INCLUDED FIRST
+#include "../typedefines.h" //MUST BE INCLUDED FIRST
+typedef struct client Client, *pClient;
 
 #include "../msgdist_defaults.h"
+#include "../topic.h"
+#include "../text.h"
 #include "client.h"
-#include "topic.h"
-#include "text.h"
 #include "serverInterface.h"
 
 extern int maxMessages;

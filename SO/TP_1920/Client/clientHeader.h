@@ -14,8 +14,13 @@ extern "C" {
 #include <string.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <fcntl.h>
+    
+#include "../typedefines.h"
     
 #include "../msgdist_defaults.h"
+#include "../topic.h"
+#include "../text.h"
 #include "Functions.h"
     
     extern bool Exit;

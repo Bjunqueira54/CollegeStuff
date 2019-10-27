@@ -4,8 +4,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "serverHeader.h"
     
     struct topic
     {

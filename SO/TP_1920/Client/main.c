@@ -1,5 +1,3 @@
-#include <fcntl.h>
-
 #include "clientHeader.h"
 
 bool Exit;

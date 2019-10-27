@@ -5,8 +5,6 @@
 extern "C" {
 #endif
 
-#include "serverHeader.h"
-
     struct text
     {
         char title[15];

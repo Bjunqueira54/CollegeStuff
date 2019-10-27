@@ -7,7 +7,6 @@ extern "C" {
 
 typedef struct text Text, *pText;
 typedef struct topic Topic, *pTopic;
-typedef struct client Client, *pClient;
 
 #ifdef __cplusplus
 }

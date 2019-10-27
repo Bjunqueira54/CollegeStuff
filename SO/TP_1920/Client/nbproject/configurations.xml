@@ -7,6 +7,9 @@
       <itemPath>Functions.h</itemPath>
       <itemPath>clientHeader.h</itemPath>
       <itemPath>../msgdist_defaults.h</itemPath>
+      <itemPath>../text.h</itemPath>
+      <itemPath>../topic.h</itemPath>
+      <itemPath>../typedefines.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -48,6 +51,12 @@
       </compileType>
       <item path="../msgdist_defaults.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="../text.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../topic.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../typedefines.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Functions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="Functions.h" ex="false" tool="3" flavor2="0">
@@ -79,6 +88,12 @@
         </asmTool>
       </compileType>
       <item path="../msgdist_defaults.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../text.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../topic.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="../typedefines.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Functions.c" ex="false" tool="0" flavor2="0">
       </item>
