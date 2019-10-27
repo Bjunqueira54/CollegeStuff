@@ -33,17 +33,26 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
         }
         else if ((strcmp(cmd, "filter") == 0) && (strcmp(opt, "on") == 0))
         {
-            printf("filter on\n"); //PLACEHOLDER
+            if (Filter == false)
+            {
+                Filter = true;
+                return false;
+            }
+            
+            return false;
         }
         else if ((strcmp(cmd, "filter") == 0) && (strcmp(opt, "off") == 0))
         {
-            printf("filter off\n"); //PLACEHOLDER
-        }
-        else 
-        {
-            printf("Command not recognized\n"); //PLACEHOLDER
+            if (Filter == true)
+            {
+                Filter = false;
+                return false;
+            }
+            
+            return false;
         }
     }
     
+    printf("Command not recognized\n"); //PLACEHOLDER
     return false;
 }
