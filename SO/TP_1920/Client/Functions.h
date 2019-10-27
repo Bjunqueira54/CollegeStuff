@@ -6,10 +6,8 @@ extern "C" {
 #endif
     
 #include "clientHeader.h"
-    
-    WINDOW* notification;
-    
-    void TestPopUpNotification();
+
+    void newNotification(const char* notice_str);
     void ClearTestPopUp();
     
 #ifdef __cplusplus

@@ -1,8 +1,22 @@
+#include <fcntl.h>
+
 #include "clientHeader.h"
+
+bool Exit;
 
 //Client
 int main(int argc, char** argv)
 {
+    int server_pipe;
+    
+    /*server_pipe = open(NAMEDPIPE, O_WRONLY);
+    
+    if(server_pipe == -1)
+    {
+        fprintf(stderr, "Server is not running!\nEXITING\n");
+        exit (EXIT_FAILURE);
+    }*/
+    
     if(argc != 3)
     {
         fprintf(stderr, "You need to indicate your username\n");
@@ -17,7 +31,8 @@ int main(int argc, char** argv)
     switch(c)
     {
         case 'u':
-            fprintf(stdout,"Your username is: %s\n", optarg);
+            memcpy(username, optarg, strlen(optarg));
+            fprintf(stdout,"Your username is: %s\n", username);
             break;
         default:
             fprintf(stderr, "I don't recognize that launch argument\n");
@@ -25,8 +40,14 @@ int main(int argc, char** argv)
             break;
     }
     
-    bool Exit = false;
+    pid_t selfPID = getpid();
     
+    char pipestr[32];
+    
+    snprintf(pipestr, sizeof(char)*32, "%d\n%s", selfPID, username);
+
+    Exit = false;
+
     getchar();
     
     //Iniciar o ncurses
@@ -39,7 +60,7 @@ int main(int argc, char** argv)
     
     while(!Exit)
     {
-        TestPopUpNotification();
+        newNotification("Gaming");
         getch();
         ClearTestPopUp();
         getch();
