@@ -5,12 +5,13 @@ int main(int argc, char** argv)
 {
     pClient clientList = NULL;
     bool Exit = false;
+    bool Filter = true;
     
     //Vars for EnvVars
     int maxMessage;
     int maxNot;
     char* wordNot;
-    char cmd[20];
+    char cmd[CMD_SIZE];
     
     //Signal
     struct sigaction cDisconnect, cSignal;
@@ -32,10 +33,18 @@ int main(int argc, char** argv)
     //Server Main Loop
     while(!Exit)
     {
+        char opt[4];
+        
         fprintf(stdout, "Comando: ");
         fscanf(stdin, "%s", cmd);
         
-        Exit = serverMainLoop(cmd, clientList);
+        if (strcmp(cmd, "filter") == 0)
+        {
+            fprintf(stdout, "Option: ");
+            fscanf(stdin, "%s", opt);
+        }
+        
+        Exit = serverMainLoop(cmd, opt, clientList);
     }
     
     fprintf(stdout, "Server Shutting Down\n");

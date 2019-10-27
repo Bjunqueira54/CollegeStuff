@@ -32,7 +32,8 @@
 
 extern int maxMessages;
 extern bool Exit;
+extern bool Filter;
 
-bool serverMainLoop(char *cmd, pClient aux);
+bool serverMainLoop(char *cmd, char *opt, pClient aux);
 
 #endif
