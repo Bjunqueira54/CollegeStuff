@@ -1,11 +1,12 @@
 #include "serverHeader.h"
 
+bool Exit = false;
+bool Filter = true;
+
 //Server
 int main(int argc, char** argv)
 {
     pClient clientList = NULL;
-    bool Exit = false;
-    bool Filter = true;
     
     //Vars for EnvVars
     int maxMessage;
@@ -44,7 +45,7 @@ int main(int argc, char** argv)
             fscanf(stdin, "%s", opt);
         }
         
-        Exit = serverMainLoop(cmd, opt, clientList, &Filter);
+        Exit = serverMainLoop(cmd, opt, clientList);
     }
     
     fprintf(stdout, "Server Shutting Down\n");
