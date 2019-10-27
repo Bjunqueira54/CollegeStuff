@@ -44,7 +44,7 @@ int main(int argc, char** argv)
             fscanf(stdin, "%s", opt);
         }
         
-        Exit = serverMainLoop(cmd, opt, clientList);
+        Exit = serverMainLoop(cmd, opt, clientList, &Filter);
     }
     
     fprintf(stdout, "Server Shutting Down\n");

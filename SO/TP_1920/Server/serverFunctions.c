@@ -1,6 +1,6 @@
 #include "serverHeader.h"
 
-bool serverMainLoop(char *cmd, char *opt, pClient aux)
+bool serverMainLoop(char *cmd, char *opt, pClient aux, bool *f)
 {
     if (strcmp(cmd, "shutdown") == 0)
     {
@@ -17,8 +17,6 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
     }
     else 
     {
-        //int flag = parseCmd(cmd);
-        
         if (strcmp(cmd, "msg") == 0)
         {
             printf("Msg\n"); //PLACEHOLDER
@@ -33,9 +31,9 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
         }
         else if ((strcmp(cmd, "filter") == 0) && (strcmp(opt, "on") == 0))
         {
-            if (Filter == false)
+            if ((*f) == false)
             {
-                Filter = true;
+                (*f) = true;
                 return false;
             }
             
@@ -43,9 +41,9 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
         }
         else if ((strcmp(cmd, "filter") == 0) && (strcmp(opt, "off") == 0))
         {
-            if (Filter == true)
+            if ((*f) == true)
             {
-                Filter = false;
+                (*f) = false;
                 return false;
             }
             
