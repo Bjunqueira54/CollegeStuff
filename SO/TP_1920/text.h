@@ -13,7 +13,9 @@ extern "C" {
 
         int duration;
 
-        pText prev, next;
+        pText prev;
+        pText next;
+        
         pTopic topic;
     };
 

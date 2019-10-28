@@ -38,4 +38,6 @@ extern bool Filter;
 
 bool serverMainLoop(char *cmd, char *opt, pClient aux);
 
+int createServerFiles();
+
 #endif

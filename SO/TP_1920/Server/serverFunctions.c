@@ -58,3 +58,27 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
     serverMainOutput(-1, "\0");
     return false;
 }
+
+int createServerFiles()
+{
+    struct stat tmpstat = {0};
+    
+    if(stat(MSGDIST_DIR, &tmpstat) == -1)
+    {
+        if(mkdir(MSGDIST_DIR, 0744) == -1)
+        {
+            printf("Directory Creation: %d\n", errno);
+            return -1;
+        }
+    }
+        
+    int server_file = open(SERVER_PID, O_RDWR | O_CREAT, 0644);
+    
+    if(server_file == -1)
+    {
+        printf("File Creation: %d\n", errno);
+        return -1;
+    }
+    
+    return 0;
+}

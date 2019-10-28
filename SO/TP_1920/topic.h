@@ -14,7 +14,7 @@ extern "C" {
         pTopic next;
 	pTopic prev;
         
-        pText start;
+        pText TextStart;
     };
 
 #ifdef __cplusplus

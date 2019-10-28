@@ -11,7 +11,8 @@ extern "C" {
     
     //Add defaults values here for both Client and Server
 #define MAXUSERLEN 25
-#define NAMEDPIPE "/tmp/msgdist/msgdist_mainpipe"
+#define SERVER_PID "/tmp/msgdist/msgdist_serverpid"
+#define MSGDIST_DIR "/tmp/msgdist"
 #define CMD_SIZE 10
 
 #ifdef __cplusplus

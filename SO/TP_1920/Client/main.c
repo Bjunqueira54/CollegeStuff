@@ -49,6 +49,8 @@ int main(int argc, char** argv)
     //write(server_pipe, pipestr, strlen(pipestr));
 
     Exit = false;
+    
+    pTopic TopicList = NULL;
 
     getchar();
     

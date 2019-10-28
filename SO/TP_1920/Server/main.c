@@ -8,6 +8,11 @@ int main(int argc, char** argv)
 {
     pClient clientList = NULL;
     
+    if(createServerFiles() == -1)
+        exit (EXIT_FAILURE);
+    
+    getchar();
+    
     Exit = false;
     Filter = true;
     
