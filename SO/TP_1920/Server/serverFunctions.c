@@ -75,7 +75,7 @@ bool parseOptionCommands(char cmd[])
     if(stringCompare(options[0],"del") || stringCompare(options[0],"topic") || stringCompare(options[0],"kick")) 
         switch(getopt(i, options, "m:t:u:")) {
             case 'm':
-                opt = optarg;
+                opt = optarg; //nome
                 return true;
             case 't':
                 opt = optarg;
