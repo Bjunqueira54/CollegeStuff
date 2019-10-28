@@ -66,8 +66,7 @@ bool parseOptionCommands(char cmd[])
     char *options[2];
     char *opt = strtok(cmd, " ");
     
-    while(opt != NULL)
-    {
+    while(opt != NULL) {
         options[i++] = opt;
         opt = strtok(NULL, " ");
     }
