@@ -104,7 +104,7 @@ bool stringCompare(char *str1, char *str2) //TEM UM BUG
         if (str1[i] == str2[i])
             n++;
     
-    if (n == strlen(str2))
+    if ((n == strlen(str2)) && (strlen(str1) == strlen(str2)))
         return true;
     
     return false;
