@@ -17,7 +17,11 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
     }
     else 
     {
-        if (!strcmp(cmd, "msg"))
+        if (!strcmp(cmd, "help"))
+        {
+            printf("Even I don't know\n");
+        }
+        else if (!strcmp(cmd, "msg"))
         {
             return false;
         }
