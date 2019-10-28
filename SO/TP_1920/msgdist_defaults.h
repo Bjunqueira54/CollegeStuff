@@ -13,7 +13,7 @@ extern "C" {
 #define MAXUSERLEN 25
 #define SERVER_PID "/tmp/msgdist/msgdist_serverpid"
 #define MSGDIST_DIR "/tmp/msgdist"
-#define CMD_SIZE 10
+#define CMD_SIZE 30
 
 #ifdef __cplusplus
 }
