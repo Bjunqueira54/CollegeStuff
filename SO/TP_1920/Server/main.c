@@ -36,9 +36,9 @@ int main(int argc, char** argv)
         sscanf(getenv("MAXNOT"), "%d", &maxNot);
     if(getenv("WORDNOT") != NULL)
         wordNot = getenv("WORDNOT");
-    
+  
     fprintf(stdout, "'help' para ajuda\n");
-    
+
     //Server Main Loop
     while(!Exit)
     {  
