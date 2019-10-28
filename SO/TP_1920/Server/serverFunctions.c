@@ -1,8 +1,8 @@
 #include "serverHeader.h"
 
-bool serverMainLoop(char *cmd, char *opt, pClient aux)
+void serverMainLoop(char *cmd, pClient aux)
 {
-    if (strcmp(cmd, "shutdown") == 0)
+    if (stringCompare(cmd, "shutdown"))
     {
         union sigval value;
         value.sival_int = 0;
@@ -13,51 +13,59 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
             aux = aux->next;
         }
         
-        return true;
+        Exit = true;
+        return;
     }
     else 
     {
-        if (!strcmp(cmd, "help"))
+        if (stringCompare(cmd, "help"))
         {
-            printf("Even I don't know\n");
+            serverMainOutput(3);
+            return;
         }
-        else if (!strcmp(cmd, "msg"))
+        else if (stringCompare(cmd, "msg"))
         {
-            return false;
+            return;
         }
-        else if (!strcmp(cmd, "users"))
+        else if (stringCompare(cmd, "users"))
         {
-            return false;
+            return;
         }
-        else if (!strcmp(cmd, "topics"))
+        else if (stringCompare(cmd, "topics"))
         {
-            return false;
+            return;
         }
-        else if (!strcmp(cmd, "filter") && !strcmp(opt, "on"))
+        else if (stringCompare(cmd, "filter on"))
         {
             if (Filter == false)
-            {
                 Filter = true;
-                return false;
-            }
-            
-            return false;
+            return;
         }
-        else if (!strcmp(cmd, "filter") && !strcmp(opt, "off"))
+        else if (stringCompare(cmd, "filter off"))
         {
             if (Filter == true)
-            {
                 Filter = false;
-                return false;
-            }
-            
-            return false;
-        }
+            return;
+        }        
     }
     
-    serverMainOutput(-1, "\0");
+    serverMainOutput(2);
+}
+
+bool stringCompare(char *str1, char *str2) 
+{
+    int n = 0;
+    
+    for (int i = 0; i < strlen(str2); i++)
+        if (str1[i] == str2[i])
+            n++;
+    
+    if (n == strlen(str2))
+        return true;
+    
     return false;
 }
+
 
 int createServerFiles()
 {
