@@ -63,41 +63,48 @@ bool parseCommands(char cmd[])
 bool parseOptionCommands(char cmd[])
 {
     int i = 0;
-    char *options[2];
-    char *opt = strtok(cmd, " ");
+    char *options[2], *opt = strtok(cmd, " ");
     
     while(opt != NULL) {
         options[i++] = opt;
         opt = strtok(NULL, " ");
     }
     
-    if(stringCompare(options[0],"del") || stringCompare(options[0],"topic") || stringCompare(options[0],"kick")) 
-        switch(getopt(i, options, "m:t:u:")) {
-            case 'm':
+    switch(getopt(i, options, "m:t:u:")) {
+        case 'm':
+            if(stringCompare(options[0],"del")) {
                 opt = optarg; //nome
                 return true;
-            case 't':
-                opt = optarg;
+            }
+            return false;
+        case 't':
+            if(stringCompare(options[0],"topic")) {
+                opt = optarg; //nome
                 return true;
-            case 'u':
-                opt = optarg;
+            }
+            return false;
+        case 'u':
+            if(stringCompare(options[0],"kick")) {
+                opt = optarg; //nome
                 return true;
-            default:
-                return false;
-        }
-        
-        return false;
+            }
+            return false;
+        default:
+            return false;
+    }
+
+    return false;
 }
 
 bool stringCompare(char *str1, char *str2) 
 {
     int n = 0;
     
-    for (int i = 0; i < strlen(str2); i++)
+    for (int i = 0; /*i < strlen(str2)*/ str1[i] != '\0'; i++)
         if (str1[i] == str2[i])
             n++;
     
-    if (n == strlen(str2))
+    if (n == strlen(str1))
         return true;
     
     return false;
