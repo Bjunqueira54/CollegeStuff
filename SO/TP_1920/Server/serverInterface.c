@@ -11,7 +11,7 @@ void serverMainOutput(int flag)
             fprintf(stdout, "Gestor vai desligar\n");
             return;
         case 2: // Invalid Command
-            fprintf(stdout, "Comando invalido\n");
+            fprintf(stdout, "Comando invalido\n\n");
             return;
         case 3: // Help
             fprintf(stdout, "        shutdown - Desliga o gestor\n");

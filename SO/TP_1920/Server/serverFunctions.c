@@ -96,7 +96,7 @@ bool parseOptionCommands(char cmd[])
     return false;
 }
 
-bool stringCompare(char *str1, char *str2) 
+bool stringCompare(char *str1, char *str2) //TEM UM BUG
 {
     int n = 0;
     
@@ -104,7 +104,7 @@ bool stringCompare(char *str1, char *str2)
         if (str1[i] == str2[i])
             n++;
     
-    if (n == strlen(str1))
+    if (n == strlen(str2))
         return true;
     
     return false;
