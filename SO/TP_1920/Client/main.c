@@ -5,17 +5,6 @@ bool Exit;
 //Client
 int main(int argc, char** argv)
 {
-    int server_pipe;
-    
-    //Wait until pipes are working
-    /*server_pipe = open(NAMEDPIPE, O_WRONLY);
-    
-    if(server_pipe == -1)
-    {
-        fprintf(stderr, "Server is not running!\nEXITING\n");
-        exit (EXIT_FAILURE);
-    }*/
-    
     if(argc != 3)
     {
         fprintf(stderr, "You need to indicate your username\n");
@@ -24,6 +13,7 @@ int main(int argc, char** argv)
     }
     
     char username[MAXUSERLEN];
+    *username = 0;
     
     char c = getopt(argc, argv, "u:");
     
@@ -39,26 +29,30 @@ int main(int argc, char** argv)
             break;
     }
     
-    pid_t selfPID = getpid();
-    
-    char pipestr[32];
-    
-    snprintf(pipestr, sizeof(char)*32, "%d\n%s", selfPID, username);
-    
-    //Wait until pipes are working
-    //write(server_pipe, pipestr, strlen(pipestr));
-
-    Exit = false;
-    
-    pTopic TopicList = NULL;
+    if(*username == 0)
+    {
+        fprintf(stderr, "You didn't specify a username!\nEXITING!\n");
+        exit (EXIT_FAILURE);
+    }
 
     getchar();
+    ////////////////////////////////
+    ///Iniciar todas as variaveis///
+    ////////////////////////////////
     
-    //Iniciar o ncurses
+    int server_pid;
+    pthread_t notification_thread;
+    Exit = false;
+    pTopic TopicList = NULL;
     
-    initscr();
-    noecho();
-    keypad(stdscr, true);
+    ///////////////////////
+    ///Iniciar o ncurses///
+    ///////////////////////
+    
+    initscr();              //Inicia a janela principal 'stdscr' do ncurses
+    noecho();               //Desliga o echo'ing de characteres
+    curs_set(0);            //Desliga o piscar do cursor no terminal
+    keypad(stdscr, true);   //Liga o keypad
     
     getch();
     

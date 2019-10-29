@@ -15,6 +15,7 @@ extern "C" {
 #include <signal.h>
 #include <stdbool.h>
 #include <fcntl.h>
+#include <pthread.h>
     
 #include "../typedefines.h"
     
