@@ -7,7 +7,7 @@ extern "C" {
     
     #include "serverHeader.h"
 
-    void serverMainOutput(int flag, char *aux);
+    void serverMainOutput(int flag);
 
 #ifdef __cplusplus
 }

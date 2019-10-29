@@ -1,8 +1,10 @@
 #include "serverHeader.h"
 
-bool serverMainLoop(char *cmd, char *opt, pClient aux)
+void serverMainLoop(char cmd[], pClient aux)
 {
-    if (strcmp(cmd, "shutdown") == 0)
+
+    
+    if (stringCompare(cmd, "shutdown"))
     {
         union sigval value;
         value.sival_int = 0;
@@ -13,50 +15,114 @@ bool serverMainLoop(char *cmd, char *opt, pClient aux)
             aux = aux->next;
         }
         
-        return true;
+        Exit = true;
+        return;
     }
     else 
-    {
-        if (!strcmp(cmd, "help"))
-        {
-            printf("Even I don't know\n");
+        if (parseCommands(cmd))
+            return;
+    
+    serverMainOutput(2);
+}
+
+bool parseCommands(char cmd[]) 
+{
+    if (stringCompare(cmd, "help")) {
+            serverMainOutput(3);
+            return true;
         }
-        else if (!strcmp(cmd, "msg"))
-        {
-            return false;
+        else if (stringCompare(cmd, "msg")) {
+            listAllMesages();
+            return true;
         }
-        else if (!strcmp(cmd, "users"))
-        {
-            return false;
+        else if (stringCompare(cmd, "users")) {
+            listAllUsers();
+            return true;
         }
-        else if (!strcmp(cmd, "topics"))
-        {
-            return false;
+        else if (stringCompare(cmd, "topics")) {
+            listAllTopics();
+            return true;
         }
-        else if (!strcmp(cmd, "filter") && !strcmp(opt, "on"))
-        {
+        else if (stringCompare(cmd, "filter on")) {
             if (Filter == false)
-            {
                 Filter = true;
-                return false;
-            }
-            
-            return false;
+            return true;
         }
-        else if (!strcmp(cmd, "filter") && !strcmp(opt, "off"))
-        {
+        else if (stringCompare(cmd, "filter off")) {
             if (Filter == true)
-            {
                 Filter = false;
-                return false;
-            }
-            
-            return false;
+            return true;
         }
+        else
+            if(parseOptionCommands(cmd))
+                return true;
+        
+        return false;                
+}
+
+bool parseOptionCommands(char cmd[])
+{
+    int i = 0;
+    char *options[2], *opt = strtok(cmd, " ");
+    
+    while(opt != NULL) {
+        options[i++] = opt;
+        opt = strtok(NULL, " ");
     }
     
-    serverMainOutput(-1, "\0");
+    switch(getopt(i, options, "m:t:u:")) {
+        case 'm':
+            if(stringCompare(options[0],"del")) {
+                opt = optarg; //nome
+                return true;
+            }
+            return false;
+        case 't':
+            if(stringCompare(options[0],"topic")) {
+                opt = optarg; //nome
+                return true;
+            }
+            return false;
+        case 'u':
+            if(stringCompare(options[0],"kick")) {
+                opt = optarg; //nome
+                return true;
+            }
+            return false;
+        default:
+            return false;
+    }
+
     return false;
+}
+
+bool stringCompare(char *str1, char *str2) //TEM UM BUG
+{
+    int n = 0;
+    
+    for (int i = 0; /*i < strlen(str2)*/ str1[i] != '\0'; i++)
+        if (str1[i] == str2[i])
+            n++;
+    
+    if ((n == strlen(str2)) && (strlen(str1) == strlen(str2)))
+        return true;
+    
+    return false;
+}
+
+void listAllUsers() 
+{
+
+}
+
+void listAllMesages()
+{
+    
+}
+
+void listAllTopics()
+{
+    
 }
 
 int createServerFiles()

@@ -11,8 +11,6 @@ int main(int argc, char** argv)
     if(createServerFiles() == -1)
         exit (EXIT_FAILURE);
     
-    getchar();
-    
     Exit = false;
     Filter = true;
     
@@ -20,7 +18,7 @@ int main(int argc, char** argv)
     int maxMessage;
     int maxNot;
     char* wordNot;
-    char cmd[CMD_SIZE], opt[4];
+    char cmd[CMD_SIZE];
 
     //Signal
     struct sigaction cDisconnect, cSignal;
@@ -38,20 +36,19 @@ int main(int argc, char** argv)
         sscanf(getenv("MAXNOT"), "%d", &maxNot);
     if(getenv("WORDNOT") != NULL)
         wordNot = getenv("WORDNOT");
-    
-    
+  
+    fprintf(stdout, "'help' para ajuda\n");
+
     //Server Main Loop
     while(!Exit)
     {  
-        serverMainOutput(1, cmd);
+        serverMainOutput(0);
+        fgets(cmd, CMD_SIZE, stdin);
         
-        if (!strcmp(cmd, "filter"))
-            serverMainOutput(2, opt);
-        
-        Exit = serverMainLoop(cmd, opt, clientList);
+        serverMainLoop(cmd, clientList);
     }
     
-    serverMainOutput(0, "\0");
+    serverMainOutput(1);
     
     return (EXIT_SUCCESS);
 }

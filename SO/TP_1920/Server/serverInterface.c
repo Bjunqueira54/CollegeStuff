@@ -1,24 +1,30 @@
 #include "serverInterface.h"
 
-void serverMainOutput(int flag, char *aux)
+void serverMainOutput(int flag)
 {
     switch(flag)
     {
-        case -1:
-            fprintf(stdout, "Comando invalido\n");
-            break;
-        case 0:
-            fprintf(stdout, "Gestor vai desligar\n");
-            break;
-        case 1:
+        case 0: // Command
             fprintf(stdout, "Comando: ");
-            fscanf(stdin, "%s", aux);
-            break;
-        case 2:
-            fprintf(stdout, "Option: ");
-            fscanf(stdin, "%s", aux);
+            return;
+        case 1: // Server Shutdown
+            fprintf(stdout, "Gestor vai desligar\n");
+            return;
+        case 2: // Invalid Command
+            fprintf(stdout, "Comando invalido\n\n");
+            return;
+        case 3: // Help
+            fprintf(stdout, "        shutdown - Desliga o gestor\n");
+            fprintf(stdout, "           users - Listar utilizadores\n");
+            fprintf(stdout, "  kick -u <user> - Excluir utilizador\n");
+            fprintf(stdout, "             msg - Listar mensagens\n");
+            fprintf(stdout, "    del -m <msg> - Listar mensagens\n");
+            fprintf(stdout, "          topics - Listar topicos\n");
+            fprintf(stdout, "topic -t <topic> - Listar mensagens do topico\n");
+            fprintf(stdout, "           prune - Eliminar topicos vazios\n\n");
+            return;
         default:
             fprintf(stderr, "Erro\n");
-            break;
+            return;
     }
 }
