@@ -45,6 +45,7 @@ bool parseOptionCommands(char cmd[]);
 void listAllTopics();
 void listAllUsers();
 void listAllMesages();
+void deleteEmptyTopics();
 
 int createServerFiles();
 
