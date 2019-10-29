@@ -43,6 +43,10 @@ bool parseCommands(char cmd[])
             listAllTopics();
             return true;
         }
+        else if (stringCompare(cmd, "prune")) {
+            deleteEmptyTopics();
+            return true;
+        }
         else if (stringCompare(cmd, "filter on")) {
             if (Filter == false)
                 Filter = true;
@@ -121,6 +125,11 @@ void listAllMesages()
 }
 
 void listAllTopics()
+{
+    
+}
+
+void deleteEmptyTopics() 
 {
     
 }
