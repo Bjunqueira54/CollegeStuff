@@ -53,6 +53,7 @@ int main(int argc, char** argv)
     noecho();               //Desliga o echo'ing de characteres
     curs_set(0);            //Desliga o piscar do cursor no terminal
     keypad(stdscr, true);   //Liga o keypad
+    start_color();          //Liga as cores
     
     getch();
     

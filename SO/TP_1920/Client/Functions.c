@@ -32,13 +32,28 @@ void ClearTestPopUp()
     wrefresh(stdscr);
 }
 
+void setWindowColour1();
+void setWindowColour2();
+
 void newNotification(const char* notice_str)
 {
     createNotificationWin();
     
+    /*int rep = 0;
+    
+    while(rep < 4)
+    {
+        
+        mvwaddstr(notification, 1, 1, "New Message!");
+        mvwaddstr(notification, 2, 1, "Topic:");
+        mvwaddstr(notification, 3, 1, notice_str);
+        wrefresh(notification);
+        usleep(250*1000);
+        rep++;
+    }*/
+    
     mvwaddstr(notification, 1, 1, "New Message!");
     mvwaddstr(notification, 2, 1, "Topic:");
     mvwaddstr(notification, 3, 1, notice_str);
-    
     wrefresh(notification);
 }
