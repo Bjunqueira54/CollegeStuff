@@ -1,8 +1,8 @@
 #include "serverHeader.h"
 
-void serverMainLoop(char cmd[], pClient aux)
+void serverMainLoop(char *cmd, pClient aux)
 {
-    if (stringCompare(cmd, "shutdown"))
+    if(stringCompare(cmd, "shutdown"))
     {
         union sigval value;
         value.sival_int = 0;
@@ -23,9 +23,9 @@ void serverMainLoop(char cmd[], pClient aux)
     serverMainOutput(2);
 }
 
-bool parseCommands(char cmd[])
+bool parseCommands(char *cmd)
 {
-    if (stringCompare(cmd, "help"))
+    if(stringCompare(cmd, "help\0"))
     {
         serverMainOutput(3);
         return true;
@@ -101,16 +101,10 @@ bool parseOptionCommands(char cmd[])
 
 bool stringCompare(char *str1, char *str2) //TEM UM BUG
 {
-    int n = 0;
-    
-    for (int i = 0; /*i < strlen(str2)*/ str1[i] != '\0'; i++)
-        if (str1[i] == str2[i])
-            n++;
-    
-    if ((n == strlen(str2)) && (strlen(str1) == strlen(str2)))
-        return true;
-    
-    return false;
+    for (int i = 0; i < strlen(str1) - 1; i++)
+        if(str1[i] != str2[i])
+            return false;
+    return true;
 }
 
 void listAllUsers() 
