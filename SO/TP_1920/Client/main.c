@@ -35,7 +35,6 @@ int main(int argc, char** argv)
         exit (EXIT_FAILURE);
     }
 
-    getchar();
     ////////////////////////////////
     ///Iniciar todas as variaveis///
     ////////////////////////////////
@@ -50,20 +49,34 @@ int main(int argc, char** argv)
     ///////////////////////
     
     initscr();              //Inicia a janela principal 'stdscr' do ncurses
+    start_color();          //Liga as cores
     noecho();               //Desliga o echo'ing de characteres
     curs_set(0);            //Desliga o piscar do cursor no terminal
     keypad(stdscr, true);   //Liga o keypad
-    start_color();          //Liga as cores
     
-    getch();
+    ////////////////////////////////////
+    ///Iniciar o tratamento do sinais///
+    ////////////////////////////////////
+    
+    signal(SIGINT, sigintHandler);
+    
+    ////////////////////////
+    ///Iniciar as Threads///
+    ////////////////////////
+    
+    pthread_create(&notification_thread, NULL, NotificationThreadHandle, NULL);
+    
+    init_pair(10, COLOR_GREEN, COLOR_RED);
+    wattron(stdscr, COLOR_PAIR(10));
+    mvwaddstr(stdscr, 1, 1, "Test from main()");
+    wrefresh(stdscr);
     
     while(!Exit)
     {
-        newNotification("Gaming");
-        getch();
-        ClearTestPopUp();
-        getch();
+        
     }
+    
+    pthread_join(notification_thread, NULL);
     
     endwin();
     

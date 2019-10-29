@@ -2,5 +2,5 @@
 
 void sigintHandler(int arg)
 {
-    
+    Exit = true;
 }

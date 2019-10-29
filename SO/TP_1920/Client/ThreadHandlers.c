@@ -1,15 +1,18 @@
 #include "ThreadHandlers.h"
 
-void NotificationThreadHandle(void*)
+void *NotificationThreadHandle(void* arg)
 {
+    int max = 5;
+    int min = 1;
+    
     while(!Exit)
     {
-        int time = (rand() % (20 - 5 + 1)) + 5;
+        int time = (int) (rand() % (max - min + 1)) + min;
         
         newNotification("Gaming!");
         
         sleep(time);
     }
     
-    pthread_exit(0);
+    return NULL;
 }

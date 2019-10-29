@@ -2,8 +2,6 @@
 
 void serverMainLoop(char cmd[], pClient aux)
 {
-
-    
     if (stringCompare(cmd, "shutdown"))
     {
         union sigval value;
@@ -25,43 +23,44 @@ void serverMainLoop(char cmd[], pClient aux)
     serverMainOutput(2);
 }
 
-bool parseCommands(char cmd[]) 
+bool parseCommands(char cmd[])
 {
-    if (stringCompare(cmd, "help")) {
-            serverMainOutput(3);
+    if (stringCompare(cmd, "help"))
+    {
+        serverMainOutput(3);
+        return true;
+    }
+    else if (stringCompare(cmd, "msg")) {
+        listAllMesages();
+        return true;
+    }
+    else if (stringCompare(cmd, "users")) {
+        listAllUsers();
+        return true;
+    }
+    else if (stringCompare(cmd, "topics")) {
+        listAllTopics();
+        return true;
+    }
+    else if (stringCompare(cmd, "prune")) {
+        deleteEmptyTopics();
+        return true;
+    }
+    else if (stringCompare(cmd, "filter on")) {
+        if (Filter == false)
+            Filter = true;
+        return true;
+    }
+    else if (stringCompare(cmd, "filter off")) {
+        if (Filter == true)
+            Filter = false;
+        return true;
+    }
+    else
+        if(parseOptionCommands(cmd))
             return true;
-        }
-        else if (stringCompare(cmd, "msg")) {
-            listAllMesages();
-            return true;
-        }
-        else if (stringCompare(cmd, "users")) {
-            listAllUsers();
-            return true;
-        }
-        else if (stringCompare(cmd, "topics")) {
-            listAllTopics();
-            return true;
-        }
-        else if (stringCompare(cmd, "prune")) {
-            deleteEmptyTopics();
-            return true;
-        }
-        else if (stringCompare(cmd, "filter on")) {
-            if (Filter == false)
-                Filter = true;
-            return true;
-        }
-        else if (stringCompare(cmd, "filter off")) {
-            if (Filter == true)
-                Filter = false;
-            return true;
-        }
-        else
-            if(parseOptionCommands(cmd))
-                return true;
-        
-        return false;                
+
+    return false;                
 }
 
 bool parseOptionCommands(char cmd[])
