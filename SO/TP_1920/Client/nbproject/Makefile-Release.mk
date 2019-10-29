@@ -36,6 +36,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Functions.o \
+	${OBJECTDIR}/SigHandlers.o \
+	${OBJECTDIR}/ThreadHandlers.o \
 	${OBJECTDIR}/main.o
 
 
@@ -67,6 +69,16 @@ ${OBJECTDIR}/Functions.o: Functions.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Functions.o Functions.c
+
+${OBJECTDIR}/SigHandlers.o: SigHandlers.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SigHandlers.o SigHandlers.c
+
+${OBJECTDIR}/ThreadHandlers.o: ThreadHandlers.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -O2 -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ThreadHandlers.o ThreadHandlers.c
 
 ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}

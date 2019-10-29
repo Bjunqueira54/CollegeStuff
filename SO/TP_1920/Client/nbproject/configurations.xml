@@ -5,6 +5,8 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Functions.h</itemPath>
+      <itemPath>SigHandlers.h</itemPath>
+      <itemPath>ThreadHandlers.h</itemPath>
       <itemPath>clientHeader.h</itemPath>
       <itemPath>../msgdist_defaults.h</itemPath>
       <itemPath>../text.h</itemPath>
@@ -19,6 +21,8 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Functions.c</itemPath>
+      <itemPath>SigHandlers.c</itemPath>
+      <itemPath>ThreadHandlers.c</itemPath>
       <itemPath>main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -46,7 +50,7 @@
           <standard>3</standard>
         </cTool>
         <linkerTool>
-          <commandLine>-lncurses</commandLine>
+          <commandLine>-lncurses -pthread</commandLine>
         </linkerTool>
       </compileType>
       <item path="../msgdist_defaults.h" ex="false" tool="3" flavor2="0">
@@ -60,6 +64,14 @@
       <item path="Functions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="Functions.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SigHandlers.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="SigHandlers.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ThreadHandlers.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="ThreadHandlers.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="clientHeader.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -98,6 +110,14 @@
       <item path="Functions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="Functions.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="SigHandlers.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="SigHandlers.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="ThreadHandlers.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="ThreadHandlers.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="clientHeader.h" ex="false" tool="3" flavor2="0">
       </item>

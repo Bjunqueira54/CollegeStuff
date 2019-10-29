@@ -36,6 +36,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Functions.o \
+	${OBJECTDIR}/SigHandlers.o \
+	${OBJECTDIR}/ThreadHandlers.o \
 	${OBJECTDIR}/main.o
 
 
@@ -61,12 +63,22 @@ LDLIBSOPTIONS=
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/client: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/client ${OBJECTFILES} ${LDLIBSOPTIONS} -lncurses
+	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/client ${OBJECTFILES} ${LDLIBSOPTIONS} -lncurses -pthread
 
 ${OBJECTDIR}/Functions.o: Functions.c
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Functions.o Functions.c
+
+${OBJECTDIR}/SigHandlers.o: SigHandlers.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SigHandlers.o SigHandlers.c
+
+${OBJECTDIR}/ThreadHandlers.o: ThreadHandlers.c
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.c) -g -std=c99 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/ThreadHandlers.o ThreadHandlers.c
 
 ${OBJECTDIR}/main.o: main.c
 	${MKDIR} -p ${OBJECTDIR}

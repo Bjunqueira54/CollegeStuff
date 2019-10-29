@@ -22,7 +22,10 @@ extern "C" {
 #include "../msgdist_defaults.h"
 #include "../topic.h"
 #include "../text.h"
+    
 #include "Functions.h"
+#include "SigHandlers.h"
+#include "ThreadHandlers.h"
     
     extern bool Exit;
 
