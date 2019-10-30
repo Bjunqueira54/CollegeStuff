@@ -5,7 +5,7 @@ void serverMainOutput(int flag)
     switch(flag)
     {
         case 0: // Command
-            fprintf(stdout, "Comando: ");
+            fprintf(stdout, "\nComando: ");
             return;
         case 1: // Server Shutdown
             fprintf(stdout, "Gestor vai desligar\n");
@@ -21,7 +21,7 @@ void serverMainOutput(int flag)
             fprintf(stdout, "    del -m <msg> - Listar mensagens\n");
             fprintf(stdout, "          topics - Listar topicos\n");
             fprintf(stdout, "topic -t <topic> - Listar mensagens do topico\n");
-            fprintf(stdout, "           prune - Eliminar topicos vazios\n\n");
+            fprintf(stdout, "           prune - Eliminar topicos vazios\n");
             return;
         default:
             fprintf(stderr, "Erro\n");
