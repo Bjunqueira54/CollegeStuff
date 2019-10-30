@@ -25,42 +25,29 @@ void serverMainLoop(char *cmd, pClient aux)
 
 bool parseCommands(char *cmd)
 {
-    if(stringCompare(cmd, "help\0"))
-    {
+    if(stringCompare(cmd, "help"))
         serverMainOutput(3);
-        return true;
-    }
-    else if (stringCompare(cmd, "msg")) {
+    else if (stringCompare(cmd, "msg"))
         listAllMesages();
-        return true;
-    }
-    else if (stringCompare(cmd, "users")) {
+    else if (stringCompare(cmd, "users"))
         listAllUsers();
-        return true;
-    }
-    else if (stringCompare(cmd, "topics")) {
+    else if (stringCompare(cmd, "topics"))
         listAllTopics();
-        return true;
-    }
-    else if (stringCompare(cmd, "prune")) {
+    else if (stringCompare(cmd, "prune"))
         deleteEmptyTopics();
-        return true;
-    }
-    else if (stringCompare(cmd, "filter on")) {
+    else if (stringCompare(cmd, "filter on"))
         if (Filter == false)
             Filter = true;
-        return true;
-    }
-    else if (stringCompare(cmd, "filter off")) {
+    else if (stringCompare(cmd, "filter off"))
         if (Filter == true)
             Filter = false;
-        return true;
-    }
     else
         if(parseOptionCommands(cmd))
             return true;
-
-    return false;                
+        else
+            return false;
+    
+    return true;
 }
 
 bool parseOptionCommands(char cmd[])
