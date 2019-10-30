@@ -22,9 +22,11 @@ void exitNow(int s) {
 /* return number of word read */
 int readWordFile(FILE * f, char wdef[][MAXWL], int maxw) {
     int numw = 0;
+    
     while (!feof(f) && numw < maxw)
         if (fscanf(f,"%s", wdef[numw])>0)
             numw++;
+    
     return numw;
 }
 
@@ -33,9 +35,11 @@ int readWordFile(FILE * f, char wdef[][MAXWL], int maxw) {
 /* returns 0 or 1*/
 int checkWord(char * word, char wdef[][MAXWL], int maxw) {
     int i;
+    
     for (i=0; i<maxw;i++)
         if (!strcmp(word,wdef[i]))
             return 1;
+    
     return 0;
 }
 
@@ -46,26 +50,35 @@ int main(int argc, char** argv) {
     int numw;  /* number of words */
     int numhits;  /* hits in this message */
     int justprinted;
+    
     FILE * wordsf;
+    
     if (argc<2) {
         printf("ERROR-1\n");
         return 1;
     }
+    
     wordsf = fopen(argv[1], "r");
+    
     if (wordsf == NULL) {
         printf("ERROR-2\n");
         return 2;
     }
+    
     numw = readWordFile(wordsf, forbwords, MAXNW);
     fclose(wordsf);
+    
     if (numw < 1) {
         printf("ERROR-3\n");
         return 3;
     }
+    
     signal(SIGUSR2, exitNow);
     /* preps done. start text processing */
+    
     numhits = 0;
     justprinted = 0;
+    
     while (!feof(stdin)) {
         if (scanf("%s", word)<0)
             continue;
@@ -80,6 +93,7 @@ int main(int argc, char** argv) {
             justprinted = 0;
         }
     }
+    
     if (!justprinted)
         printf("%d\n",numhits);
     return 0;
