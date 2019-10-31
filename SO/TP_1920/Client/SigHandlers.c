@@ -1,6 +1,6 @@
 #include "SigHandlers.h"
 
-void sigintHandler(int arg)
+void SIGINT_Handler(int arg)
 {
     Exit = true;
 }

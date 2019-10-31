@@ -7,7 +7,8 @@ extern "C" {
     
 #include "clientHeader.h"
     
-    void sigintHandler(int);
+    void SIGINT_Handler(int);
+    void SIGALRM_Handler(int);
     
 #ifdef __cplusplus
 }

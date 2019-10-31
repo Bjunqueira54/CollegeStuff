@@ -7,8 +7,6 @@ extern "C" {
     
 #include "clientHeader.h"
     
-    void *NotificationThreadHandle(void*);
-    
 #ifdef __cplusplus
 }
 #endif
