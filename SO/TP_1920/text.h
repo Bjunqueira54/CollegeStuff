@@ -8,7 +8,6 @@ extern "C" {
     struct text
     {
         char title[15];
-        char topicTitle[15];
         char article[1000];
 
         int duration;
