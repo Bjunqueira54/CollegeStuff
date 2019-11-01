@@ -8,9 +8,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/gothicdread/Desktop/CollegeStuff/SO/TP_1920/Client/SigHandlers.c</file>
+            <file>file:/home/gothicdread/Desktop/CollegeStuff/SO/TP_1920/Client/clientHeader.h</file>
             <file>file:/home/gothicdread/Desktop/CollegeStuff/SO/TP_1920/Client/Functions.c</file>
-            <file>file:/home/gothicdread/Desktop/CollegeStuff/SO/TP_1920/Client/ThreadHandlers.c</file>
+            <file>file:/home/gothicdread/Desktop/CollegeStuff/SO/TP_1920/Client/Functions.h</file>
             <file>file:/home/gothicdread/Desktop/CollegeStuff/SO/TP_1920/Client/main.c</file>
+            <file>file:/home/gothicdread/Desktop/CollegeStuff/SO/TP_1920/Client/SigHandlers.h</file>
         </group>
     </open-files>
 </project-private>

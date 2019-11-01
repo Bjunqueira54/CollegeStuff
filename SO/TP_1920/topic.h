@@ -1,13 +1,15 @@
 #ifndef TOPICS_H
 #define TOPICS_H
 
+#include "msgdist_defaults.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
     
     struct topic
     {
-        char title[15];
+        char title[MAXTITLELEN];
         
         int id;
 

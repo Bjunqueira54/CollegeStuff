@@ -1,14 +1,17 @@
 #ifndef TEXT_H
 #define TEXT_H
 
+#include "msgdist_defaults.h"
+
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
     struct text
     {
-        char title[15];
-        char article[1000];
+        char title[MAXTITLELEN];
+        char article[MAXTEXTLEN];
 
         int duration;
 

@@ -1,25 +1,26 @@
 #ifndef CLIENTHEADER_H
 #define CLIENTHEADER_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-    
 #ifndef _DEFAULT_SOURCE
 #define _DEFAULT_SOURCE
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <getopt.h>
-#include <ncurses.h>
+#include <ctype.h>
 #include <sys/types.h>
-#include <string.h>
 #include <signal.h>
+#include <getopt.h>
+#include <string.h>
 #include <stdbool.h>
 #include <fcntl.h>
 #include <pthread.h>
+#include <ncurses.h>
     
 #include "../typedefines.h"
     

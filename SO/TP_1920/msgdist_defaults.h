@@ -5,14 +5,15 @@
 extern "C" {
 #endif
     
-#ifndef _POSIX_C_SOURCE
-#define _POSIX_C_SOURCE
-#endif
-    
-    //Add defaults values here for both Client and Server
-#define MAXUSERLEN 25
-#define SERVER_PID "/tmp/msgdist/msgdist_serverpid"
+//Add defaults values here for both Client and Server
+
 #define MSGDIST_DIR "/tmp/msgdist"
+#define SERVER_PID "/tmp/msgdist/msgdist_serverpid"
+
+#define MAXUSERLEN 25
+#define MAXTITLELEN 15
+#define MAXTEXTLEN 1000
+    
 #define CMD_SIZE 40
 
 #ifdef __cplusplus
