@@ -80,9 +80,8 @@ int main(int argc, char** argv)
     ///Iniciar as Threads///
     ////////////////////////
     
-    //init_pair(10, COLOR_GREEN, COLOR_RED);
-    //wattron(stdscr, COLOR_PAIR(10));
-    mvwaddstr(stdscr, 1, 1, "Test from main()");
+    drawBox(stdscr);
+    mvwaddstr(stdscr, 1, 1, "Welcome to MSGDIST!");
     wrefresh(stdscr);
     
     while(!Exit)
@@ -139,12 +138,15 @@ int main(int argc, char** argv)
                 mvwaddstr(stdscr, 5, 5, "I pressed enter");
                 refresh();
                 break;
+            case 27:
+                Exit = true;
+                break;
             default:
                 break;
         }
     }
     
-    pthread_join(notification_thread, NULL);
+    //pthread_join(notification_thread, NULL);
     
     endwin();
     

@@ -31,6 +31,7 @@ extern "C" {
 #include "Functions.h"
 #include "SigHandlers.h"
 #include "ThreadHandlers.h"
+#include "PipeFunctions.h"
     
     extern bool Exit;
 

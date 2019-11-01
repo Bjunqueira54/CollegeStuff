@@ -4,14 +4,17 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="non-Client Files" projectFiles="true">
+        <itemPath>../msgdist_defaults.h</itemPath>
+        <itemPath>../text.h</itemPath>
+        <itemPath>../topic.h</itemPath>
+        <itemPath>../typedefines.h</itemPath>
+      </logicalFolder>
       <itemPath>Functions.h</itemPath>
+      <itemPath>PipeFunctions.h</itemPath>
       <itemPath>SigHandlers.h</itemPath>
       <itemPath>ThreadHandlers.h</itemPath>
       <itemPath>clientHeader.h</itemPath>
-      <itemPath>../msgdist_defaults.h</itemPath>
-      <itemPath>../text.h</itemPath>
-      <itemPath>../topic.h</itemPath>
-      <itemPath>../typedefines.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -21,6 +24,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Functions.c</itemPath>
+      <itemPath>PipeFunctions.c</itemPath>
       <itemPath>SigHandlers.c</itemPath>
       <itemPath>ThreadHandlers.c</itemPath>
       <itemPath>main.c</itemPath>
@@ -64,6 +68,10 @@
       <item path="Functions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="Functions.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="PipeFunctions.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="PipeFunctions.h" ex="false" tool="0" flavor2="0">
       </item>
       <item path="SigHandlers.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -110,6 +118,10 @@
       <item path="Functions.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="Functions.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="PipeFunctions.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="PipeFunctions.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="SigHandlers.c" ex="false" tool="0" flavor2="0">
       </item>

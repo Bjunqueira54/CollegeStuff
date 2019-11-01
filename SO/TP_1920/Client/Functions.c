@@ -34,6 +34,9 @@ void DestroyWindow(WINDOW* win)
 
 void drawBox(WINDOW* win)
 {
+    if(win == NULL)
+        return;
+    
     int y, x;
     
     getmaxyx(win, y, x);
@@ -256,10 +259,20 @@ void BackEndMessageCreation(WINDOW* win, char* TopicTitle)
     
     wclear(win);
     drawBox(win);
-    mvwaddstr(win, 2, 2, "Write your message (Max 1000 characters)(ESCAPE to finish)");
+    mvwaddstr(win, 1, 2, "Write your message (Max 1000 characters)(ESCAPE to finish)");
     wrefresh(win);
     
     ArticleCreation(win, newText->article, 4, 2);
+    
+    wclear(win);
+    drawBox(win);
+    mvwaddstr(win, 2, 2, "Thank you for submitting a new message");
+    mvwaddstr(win, 3, 2, "The server will recieve it in a few moments.");
+    mvwaddstr(win, 5, 2, "(press any key to Continue...)");
+    
+    getch();
+    
+    SendTextToServer(TopicTitle, newText);
 }
 
 //No point passing an 'n' value like in getwinstr()
@@ -293,11 +306,13 @@ int ArticleCreation(WINDOW* win, char* buf, int y, int x)
     
     int c_read = 0;
     int c;
+    char c_left[5] = "";
     
     //Keeping these for now
     //Maybe usefull?
     int begy = y, begx = x;
     
+    mvwaddstr(win, 2, 2, "Characters left: 1000");
     mvwaddch(win, y, x, '_');
     wrefresh(win);
     
@@ -334,7 +349,8 @@ int ArticleCreation(WINDOW* win, char* buf, int y, int x)
             buf[c_read] = c;
             c_read++;
         }
-        else if(c == 10) //Enter
+        //DO NOT ENABLE THE ENTER KEY YET!
+        /*else if(c == 10) //Enter
         {
             buf[c_read] = '\n';
             c_read++;
@@ -343,10 +359,16 @@ int ArticleCreation(WINDOW* win, char* buf, int y, int x)
             y++;
             x = 1;
             mvwaddch(win, y, x, '_');
-        }
+        }*/
         else
             continue;
         
+        memset(c_left, 0, 4);
+        snprintf(c_left, 5, "%4.0d", 1000 - c_read);
+        wmove(win, 2, 19);
+        wclrtoeol(win);
+        mvwaddch(win, 2, getmaxx(win) - 1, '*');
+        mvwaddstr(win, 2, 19, c_left);
         wrefresh(win);
     }
     

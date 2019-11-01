@@ -12,6 +12,8 @@ extern "C" {
         char username[8];
         
         pid_t c_PID;
+        pthread_t c_thread;
+        char* c_pipe;
         
         pClient next;
         pClient prev;
