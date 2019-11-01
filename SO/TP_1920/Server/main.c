@@ -6,21 +6,15 @@ bool Filter;
 //Server
 int main(int argc, char** argv)
 {
-    pClient clientList = NULL;
-    
     if(createServerFiles() == -1)
         exit (EXIT_FAILURE);
     
+    pClient clientList = NULL;
     Exit = false;
     Filter = true;
-    
-    //Vars for EnvVars
-    int maxMessage;
-    int maxNot;
+    int maxMessage, maxNot, p[2];
     char* wordNot;
     char cmd[CMD_SIZE];
-
-    //Signal
     struct sigaction cDisconnect, cSignal;
     
     cSignal.sa_flags = SA_SIGINFO;
@@ -37,11 +31,25 @@ int main(int argc, char** argv)
     if(getenv("WORDNOT") != NULL)
         wordNot = getenv("WORDNOT");
   
+    
+    pipe(p);
+    
+    if(fork() == 0) {
+        close(0);
+        dup2(p[0]);
+        close(p[1]);
+        
+        execl(verificador, verificador, "badwords.txt", NULL);
+    }
+    
+    close(1);
+    dup2(p[1]);
+    close(p[0]);
+    
     fprintf(stdout, "'help' para ajuda\n");
-
+    
     //Server Main Loop
-    while(!Exit)
-    {  
+    while(!Exit) {
         serverMainOutput(0);
         fgets(cmd, CMD_SIZE, stdin);
         
