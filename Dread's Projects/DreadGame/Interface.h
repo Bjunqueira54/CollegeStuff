@@ -2,33 +2,28 @@
 #define INTERFACE_H
 
 #include "includes.h"
-#include <iostream>
+#include "Game.h"
 
-class Interface {
+class Interface
+{
+    bool Exit;
+    Game* game;
+    
 public:
-
-    Interface() = delete;
+    Interface();
     Interface(const Interface& orig) = delete;
-
-    static void WelcomeScreen();
-    static void PrintMainMenu();
-    static void PrintBattleMenu(string player_Name, int player_HP, int monster_HP);
-    static void ShowCredits();
-
-    static void StartGame();
-    static void Victory();
-    static void Defeat();
     
-    static void ShowStats(string player_Name, int player_HP, int monster_HP);
-    
-    static char getChar() { return getchar(); }
-    static string getString();
+    void Init();
+    void StartGame();
+    void MainMenu();
+    void Tutorial();
+    void Credits();
     
     virtual ~Interface();
     
 private:
     
-    static void ClearScreen();
+    void ClearScreen();
 };
 
 #endif

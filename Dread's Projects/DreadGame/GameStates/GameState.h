@@ -1,20 +1,21 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include "../includes.h"
+#include "../GameData.h"
+
 class GameState
 {
-    GameData *gData;
-    
-public:
+    const GameData* gData;
 
+public:
+    
     GameState() = delete;
     GameState(const GameState& orig) = delete;
-    GameState(GameData *gData);
+    GameState(GameData*);
     
-    virtual GameData* getGameData() { return gData; }
+    const GameData* getGameData() { return gData; }
     
-    virtual void ShowMenu() = 0;
-
     virtual ~GameState();
 };
 

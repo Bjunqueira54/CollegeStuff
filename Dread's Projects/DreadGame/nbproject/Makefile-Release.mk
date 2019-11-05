@@ -21,8 +21,8 @@ FC=gfortran
 AS=as
 
 # Macros
-CND_PLATFORM=Cygwin-Windows
-CND_DLIB_EXT=dll
+CND_PLATFORM=GNU-Linux
+CND_DLIB_EXT=so
 CND_CONF=Release
 CND_DISTDIR=dist
 CND_BUILDDIR=build
@@ -35,14 +35,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/DreadGame.o \
-	${OBJECTDIR}/GameData/GameData.o \
-	${OBJECTDIR}/GameData/NPC.o \
-	${OBJECTDIR}/GameData/Player.o \
-	${OBJECTDIR}/GameStates/BattleState.o \
+	${OBJECTDIR}/Game.o \
+	${OBJECTDIR}/GameData.o \
 	${OBJECTDIR}/GameStates/GameState.o \
-	${OBJECTDIR}/GameStates/MainMenuState.o \
 	${OBJECTDIR}/Interface.o \
+	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/main.o
 
 
@@ -64,51 +61,36 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dreadgame.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dreadgame
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dreadgame.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dreadgame: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/dreadgame ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/DreadGame.o: DreadGame.cpp
+${OBJECTDIR}/Game.o: Game.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/DreadGame.o DreadGame.cpp
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Game.o Game.cpp
 
-${OBJECTDIR}/GameData/GameData.o: GameData/GameData.cpp
-	${MKDIR} -p ${OBJECTDIR}/GameData
+${OBJECTDIR}/GameData.o: GameData.cpp
+	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameData/GameData.o GameData/GameData.cpp
-
-${OBJECTDIR}/GameData/NPC.o: GameData/NPC.cpp
-	${MKDIR} -p ${OBJECTDIR}/GameData
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameData/NPC.o GameData/NPC.cpp
-
-${OBJECTDIR}/GameData/Player.o: GameData/Player.cpp
-	${MKDIR} -p ${OBJECTDIR}/GameData
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameData/Player.o GameData/Player.cpp
-
-${OBJECTDIR}/GameStates/BattleState.o: GameStates/BattleState.cpp
-	${MKDIR} -p ${OBJECTDIR}/GameStates
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/BattleState.o GameStates/BattleState.cpp
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameData.o GameData.cpp
 
 ${OBJECTDIR}/GameStates/GameState.o: GameStates/GameState.cpp
 	${MKDIR} -p ${OBJECTDIR}/GameStates
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/GameState.o GameStates/GameState.cpp
 
-${OBJECTDIR}/GameStates/MainMenuState.o: GameStates/MainMenuState.cpp
-	${MKDIR} -p ${OBJECTDIR}/GameStates
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/MainMenuState.o GameStates/MainMenuState.cpp
-
 ${OBJECTDIR}/Interface.o: Interface.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Interface.o Interface.cpp
+
+${OBJECTDIR}/Player.o: Player.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Player.o Player.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}

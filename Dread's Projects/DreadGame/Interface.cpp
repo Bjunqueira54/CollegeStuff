@@ -1,74 +1,95 @@
 #include "Interface.h"
 
-void Interface::WelcomeScreen()
+Interface::Interface()
 {
-    ClearScreen();
-    cout << "Welcome to DreadGame (aka. MonsterSlayer)" << endl;
+    Exit = false;
+}
+
+void Interface::Init()
+{
+    cout << "Welcome to Dread's Console Game"<< endl;
+    
     getchar();
+    
+    MainMenu();
 }
 
-void Interface::PrintMainMenu()
+void Interface::MainMenu()
 {
-    ClearScreen();
-    cout << "1 - Start Game" << endl;
-    cout << "2 - Show Credits" << endl;
-    cout << "0 - Exit Game" << endl;
-}
+    char choice;
+    
+    while(!Exit)
+    {
+        ClearScreen();
+        cout << "1 - Start Game" << endl;
+        cout << "2 - Tutorial" << endl;
+        cout << "3 - Credits" << endl;
+        cout << "0 - Exit Game" << endl;
 
-void Interface::PrintBattleMenu(string player_Name, int player_HP, int monster_HP)
-{
-    ClearScreen();
-    cout << "1 - Attack" << endl;
-    cout << "2 - Special Attack" << endl;
-    cout << "3 - Heal" << endl;
-    cout << "4 - Block" << endl;
-    cout << "0 - Run Away" << endl;
-}
+        char choice;
 
-void Interface::ShowCredits()
-{
-    ClearScreen();
-    cout << "Head Developer: Bruno 'GothicDread' Junqueira" << endl;
-    cout << "That's all folks!" << endl;
-    getchar();
+        do
+        {
+            choice = getchar();
+        }
+        while(!(choice >= '1' && choice <= '3') && (choice != '0'));
+        
+        switch(choice)
+        {
+            case '1':
+                StartGame();
+                break;
+            case '2':
+                Tutorial();
+                break;
+            case '3':
+                Credits();
+                break;
+            case '0':
+                Exit = true;
+                break;
+            default:
+                cout << "How did you get in here?" << endl;
+                break;
+        }
+    }
 }
 
 void Interface::StartGame()
 {
     ClearScreen();
-    cout << "What's your name: ";
-}
-
-void Interface::Victory()
-{
+    
+    cout << "What's your name?" << endl;
+    cout << "Name: ";
+    string name;
+    cin >> name;
+    
     ClearScreen();
-    cout << "You've won! Congratulations" << endl;
+    
+    cout << "Good Luck " << name << endl;
+    
     getchar();
+    
+    game = new Game(name);
 }
 
-void Interface::Defeat()
+void Interface::Tutorial()
 {
-    ClearScreen();
-    cout << "You Died!" << endl;
-    cout << "Git Gud" << endl;
-    getchar();
+    
 }
 
-void Interface::ShowStats(string player_Name, int player_HP, int monster_HP)
+void Interface::Credits()
 {
-    cout << player_Name << " has " << player_HP << " and the monster has " << monster_HP << endl;
+    
 }
 
-string Interface::getString()
-{
-    string os;
-    getline(cin, os);
-    return os;
-}
 
 void Interface::ClearScreen()
 {
     system("clear");
 }
 
-Interface::~Interface() {}
+Interface::~Interface()
+{
+    delete game;
+}

@@ -2,11 +2,13 @@
 #define INCLUDES_H
 
 #include <cstdlib>
+#include <iostream>
 #include <string>
 #include <vector>
-#include <sstream>
-#include <random>
 #include <cmath>
+#include <ctime>
+#include <sstream>
+//#include <ncurses.h>
 
 using namespace std;
 

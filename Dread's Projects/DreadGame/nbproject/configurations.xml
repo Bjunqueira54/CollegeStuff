@@ -4,18 +4,13 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <logicalFolder name="f2" displayName="GameData" projectFiles="true">
-        <itemPath>GameData/GameData.h</itemPath>
-        <itemPath>GameData/NPC.h</itemPath>
-        <itemPath>GameData/Player.h</itemPath>
-      </logicalFolder>
       <logicalFolder name="f1" displayName="GameStates" projectFiles="true">
-        <itemPath>GameStates/BattleState.h</itemPath>
         <itemPath>GameStates/GameState.h</itemPath>
-        <itemPath>GameStates/MainMenuState.h</itemPath>
       </logicalFolder>
-      <itemPath>DreadGame.h</itemPath>
+      <itemPath>Game.h</itemPath>
+      <itemPath>GameData.h</itemPath>
       <itemPath>Interface.h</itemPath>
+      <itemPath>Player.h</itemPath>
       <itemPath>includes.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -25,18 +20,13 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <logicalFolder name="f2" displayName="GameData" projectFiles="true">
-        <itemPath>GameData/GameData.cpp</itemPath>
-        <itemPath>GameData/NPC.cpp</itemPath>
-        <itemPath>GameData/Player.cpp</itemPath>
-      </logicalFolder>
       <logicalFolder name="f1" displayName="GameStates" projectFiles="true">
-        <itemPath>GameStates/BattleState.cpp</itemPath>
         <itemPath>GameStates/GameState.cpp</itemPath>
-        <itemPath>GameStates/MainMenuState.cpp</itemPath>
       </logicalFolder>
-      <itemPath>DreadGame.cpp</itemPath>
+      <itemPath>Game.cpp</itemPath>
+      <itemPath>GameData.cpp</itemPath>
       <itemPath>Interface.cpp</itemPath>
+      <itemPath>Player.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -64,37 +54,25 @@
           <standard>8</standard>
         </ccTool>
       </compileType>
-      <item path="DreadGame.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="DreadGame.h" ex="false" tool="3" flavor2="0">
+      <item path="Game.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="GameData/GameData.cpp" ex="false" tool="1" flavor2="0">
+      <item path="GameData.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="GameData/GameData.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="GameData/NPC.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="GameData/NPC.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="GameData/Player.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="GameData/Player.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="GameStates/BattleState.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="GameStates/BattleState.h" ex="false" tool="3" flavor2="0">
+      <item path="GameData.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="GameStates/GameState.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GameStates/GameState.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="GameStates/MainMenuState.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="GameStates/MainMenuState.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Interface.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Interface.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Player.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -122,37 +100,25 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="DreadGame.cpp" ex="false" tool="1" flavor2="0">
+      <item path="Game.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="DreadGame.h" ex="false" tool="3" flavor2="0">
+      <item path="Game.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="GameData/GameData.cpp" ex="false" tool="1" flavor2="0">
+      <item path="GameData.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="GameData/GameData.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="GameData/NPC.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="GameData/NPC.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="GameData/Player.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="GameData/Player.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="GameStates/BattleState.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="GameStates/BattleState.h" ex="false" tool="3" flavor2="0">
+      <item path="GameData.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="GameStates/GameState.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="GameStates/GameState.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="GameStates/MainMenuState.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="GameStates/MainMenuState.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="Interface.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Interface.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Player.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Player.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="includes.h" ex="false" tool="3" flavor2="0">
       </item>

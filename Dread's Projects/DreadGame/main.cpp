@@ -1,9 +1,8 @@
-#include "includes.h"
-#include "DreadGame.h"
+#include "Interface.h"
 
 int main(int argc, char** argv)
 {
-    DreadGame *game = new DreadGame();
+    Interface* game = new Interface();
     
     game->Init();
     
