@@ -6,24 +6,24 @@
 
 class Interface
 {
-    bool Exit;
     Game* game;
+    bool Exit;
     
 public:
     Interface();
     Interface(const Interface& orig) = delete;
     
     void Init();
-    void StartGame();
-    void MainMenu();
-    void Tutorial();
-    void Credits();
     
     virtual ~Interface();
     
 private:
     
     void ClearScreen();
+    void OnUserCreate();
+    void OnUserUpdate();
+    
+    void drawUserInterface();
 };
 
 #endif

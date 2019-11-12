@@ -36,10 +36,12 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/Game.o \
-	${OBJECTDIR}/GameData.o \
+	${OBJECTDIR}/GameData/GameData.o \
+	${OBJECTDIR}/GameData/Player.o \
+	${OBJECTDIR}/GameStates/BattleState.o \
 	${OBJECTDIR}/GameStates/GameState.o \
+	${OBJECTDIR}/GameStates/MainMenuState.o \
 	${OBJECTDIR}/Interface.o \
-	${OBJECTDIR}/Player.o \
 	${OBJECTDIR}/main.o
 
 
@@ -72,25 +74,35 @@ ${OBJECTDIR}/Game.o: Game.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Game.o Game.cpp
 
-${OBJECTDIR}/GameData.o: GameData.cpp
-	${MKDIR} -p ${OBJECTDIR}
+${OBJECTDIR}/GameData/GameData.o: GameData/GameData.cpp
+	${MKDIR} -p ${OBJECTDIR}/GameData
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameData.o GameData.cpp
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameData/GameData.o GameData/GameData.cpp
+
+${OBJECTDIR}/GameData/Player.o: GameData/Player.cpp
+	${MKDIR} -p ${OBJECTDIR}/GameData
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameData/Player.o GameData/Player.cpp
+
+${OBJECTDIR}/GameStates/BattleState.o: GameStates/BattleState.cpp
+	${MKDIR} -p ${OBJECTDIR}/GameStates
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/BattleState.o GameStates/BattleState.cpp
 
 ${OBJECTDIR}/GameStates/GameState.o: GameStates/GameState.cpp
 	${MKDIR} -p ${OBJECTDIR}/GameStates
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/GameState.o GameStates/GameState.cpp
 
+${OBJECTDIR}/GameStates/MainMenuState.o: GameStates/MainMenuState.cpp
+	${MKDIR} -p ${OBJECTDIR}/GameStates
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/GameStates/MainMenuState.o GameStates/MainMenuState.cpp
+
 ${OBJECTDIR}/Interface.o: Interface.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Interface.o Interface.cpp
-
-${OBJECTDIR}/Player.o: Player.cpp
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Player.o Player.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}

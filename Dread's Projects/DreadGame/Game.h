@@ -2,8 +2,8 @@
 #define GAME_H
 
 #include "includes.h"
-#include "GameStates/GameState.h"
-#include "GameData.h"
+#include "GameStates/stateinclude.h"
+#include "GameData/GameData.h"
 
 class Game
 {
@@ -15,6 +15,14 @@ public:
     Game() = delete;
     Game(const Game& orig) = delete;
     Game(string name);
+    
+    /////////////
+    ///Getters///
+    /////////////
+    
+    string getGameState() { return gState->getStateName(); }
+    
+    void UserInput(char);
     
     virtual ~Game();
     

@@ -2,7 +2,7 @@
 #define GAMESTATE_H
 
 #include "../includes.h"
-#include "../GameData.h"
+#include "../GameData/GameData.h"
 
 class GameState
 {
@@ -14,9 +14,13 @@ public:
     GameState(const GameState& orig) = delete;
     GameState(GameData*);
     
-    const GameData* getGameData() { return gData; }
+    const virtual string getStateName();
     
     virtual ~GameState();
+    
+protected:
+    
+    const GameData* getGameData() { return gData; }
 };
 
 #endif

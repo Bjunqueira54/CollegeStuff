@@ -7,86 +7,56 @@ Interface::Interface()
 
 void Interface::Init()
 {
-    cout << "Welcome to Dread's Console Game"<< endl;
+    OnUserCreate();
     
-    getchar();
-    
-    MainMenu();
-}
-
-void Interface::MainMenu()
-{
-    char choice;
-    
-    while(!Exit)
+    do
     {
-        ClearScreen();
-        cout << "1 - Start Game" << endl;
-        cout << "2 - Tutorial" << endl;
-        cout << "3 - Credits" << endl;
-        cout << "0 - Exit Game" << endl;
-
-        char choice;
-
-        do
-        {
-            choice = getchar();
-        }
-        while(!(choice >= '1' && choice <= '3') && (choice != '0'));
-        
-        switch(choice)
-        {
-            case '1':
-                StartGame();
-                break;
-            case '2':
-                Tutorial();
-                break;
-            case '3':
-                Credits();
-                break;
-            case '0':
-                Exit = true;
-                break;
-            default:
-                cout << "How did you get in here?" << endl;
-                break;
-        }
+        OnUserUpdate();
     }
+    while(!Exit);
 }
-
-void Interface::StartGame()
-{
-    ClearScreen();
-    
-    cout << "What's your name?" << endl;
-    cout << "Name: ";
-    string name;
-    cin >> name;
-    
-    ClearScreen();
-    
-    cout << "Good Luck " << name << endl;
-    
-    getchar();
-    
-    game = new Game(name);
-}
-
-void Interface::Tutorial()
-{
-    
-}
-
-void Interface::Credits()
-{
-    
-}
-
 
 void Interface::ClearScreen()
 {
     system("clear");
+}
+
+void Interface::OnUserCreate()
+{
+    cout << "Welcome to Dread Game\n" << endl;
+    cout << "What's your name?" << endl;
+    cout << "Name: ";
+    
+    string name;
+    
+    cin >> name;
+    
+    cout << "Welcome " << name << endl;
+    cout << "Good Luck and Have Fun!" << endl;
+    
+    game = new Game(name);
+}
+
+void Interface::OnUserUpdate()
+{
+    drawUserInterface();
+    
+    char input;
+    
+    cin.get(input);
+    
+    game->UserInput(input);
+}
+
+void Interface::drawUserInterface()
+{
+    if(game->getGameState().compare("MainMenuState"))
+    {
+        cout << "1 - Start Game" << endl;
+        cout << "2 - Tutorial" << endl;
+        cout << "3 - Credits" << endl;
+        cout << "0 - Exit Game" << endl;
+    }
 }
 
 Interface::~Interface()
