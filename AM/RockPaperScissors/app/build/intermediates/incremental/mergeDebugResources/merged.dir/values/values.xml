@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Title">Rock-Paper-Scissors</string>
+    <string name="app_name">Rock-Paper-Scissors</string>
+    <string name="btnClient">Join game (Client)</string>
+    <string name="btnServer">Create game (Server)</string>
+    <string name="error_netconn">No network connection</string>
+    <string name="game_finished">The game was finished</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="me">Me</string>
+    <string name="other">Other player</string>
+    <string name="serverdlg_msg">Waiting for a client...</string>
+    <string name="serverdlg_title">RPS Server</string>
+    <string name="title_game_activity">RPS Game</string>
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+</resources>

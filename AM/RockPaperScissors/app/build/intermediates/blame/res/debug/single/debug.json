@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\drawable_paper.jpg.flat",
+        "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\drawable\\paper.jpg"
+    },
+    {
+        "merged": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_game.xml.flat",
+        "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\layout\\activity_game.xml"
+    },
+    {
+        "merged": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\drawable_rock.jpg.flat",
+        "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\drawable\\rock.jpg"
+    },
+    {
+        "merged": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\drawable_scissors.jpg.flat",
+        "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\drawable\\scissors.jpg"
+    },
+    {
+        "merged": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\drawable-mdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\drawable-xhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ppt.jpg.flat",
+        "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\drawable\\ppt.jpg"
+    },
+    {
+        "merged": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\drawable-xxhdpi\\ic_launcher.png"
+    }
+]

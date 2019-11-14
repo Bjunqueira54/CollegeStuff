@@ -1,0 +1,57 @@
+﻿@model IEnumerable<F3Ex4.Models.UnidadeCurricular>
+
+@{
+    ViewBag.Title = "Lista";
+}
+
+<h2>Unidades Curriculares</h2>
+
+<p>
+    @Html.ActionLink("Nova Unidade Curricular", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ECTS)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Licenciatura)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ramo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Semestre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ECTS)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Licenciatura)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ramo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Semestre)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Detalhes", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Remover", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

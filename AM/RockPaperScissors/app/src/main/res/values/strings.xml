@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Rock-Paper-Scissors</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="Title">Rock-Paper-Scissors</string>
+    <string name="btnServer">Create game (Server)</string>
+    <string name="btnClient">Join game (Client)</string>
+    <string name="title_game_activity">RPS Game</string>
+    <string name="serverdlg_title">RPS Server</string>
+    <string name="serverdlg_msg">Waiting for a client...</string>
+    <string name="error_netconn">No network connection</string>
+    <string name="me">Me</string>
+    <string name="other">Other player</string>
+    <string name="game_finished">The game was finished</string>
+
+
+</resources>

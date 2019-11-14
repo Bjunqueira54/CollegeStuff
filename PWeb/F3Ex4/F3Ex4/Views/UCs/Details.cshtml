@@ -1,0 +1,58 @@
+﻿@model F3Ex4.Models.UnidadeCurricular
+
+@{
+    ViewBag.Title = "Detalhes";
+}
+
+<h2>Detalhes</h2>
+
+<div>
+    <h4>Unidade Curricular</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ECTS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ECTS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Licenciatura)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Licenciatura)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ramo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ramo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Semestre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Semestre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Unidades Curriculares", "Index")
+</p>
