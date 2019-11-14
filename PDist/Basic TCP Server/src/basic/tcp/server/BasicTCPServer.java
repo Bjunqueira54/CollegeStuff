@@ -1,15 +1,15 @@
-package javatcpserver;
+package basic.tcp.server;
 
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
 
-class Main
+//Use this with BasicTCPClient
+
+public class BasicTCPServer
 {
     public static void main(String argv[]) throws IOException
     {
         String message;
-        Scanner sc = new Scanner(System.in);
         
         ServerSocket welcomeSocket = new ServerSocket(1337);
         
@@ -28,10 +28,7 @@ class Main
             message = inFromClient.readLine();
             System.out.println("Message from Client: " + message);
             
-            System.out.println("Send a message back to the client: ");
-            message = sc.next();
-            
-            outToClient.writeBytes(message + '\n');
+            outToClient.writeBytes("OK!" + '\n');
             
             clientSocket.close();
         }

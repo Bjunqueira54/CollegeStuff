@@ -1,26 +1,18 @@
-package javatcpclient;
+package basic.tcp.client;
 
 import java.io.*;
 import java.net.*;
-import java.util.Scanner;
 
-class Main
+//Use this with BasicTCPServer
+
+public class BasicTCPClient
 {
     public static void main(String argv[]) throws IOException
     {
-        Scanner sc = new Scanner(System.in);
+        BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
         String message;
         
-        String server_ip;
-        int server_port;
-        
-        System.out.println("What's the server IP?");
-        server_ip = sc.next();
-        
-        System.out.println("And the port?");
-        server_port = sc.nextInt();
-        
-        Socket socket = new Socket(server_ip, server_port);
+        Socket socket = new Socket("localhost", 1337);
         
         if(socket.isConnected())
             System.out.println("all gud!");
@@ -29,11 +21,11 @@ class Main
         DataOutputStream outToServer = new DataOutputStream(socket.getOutputStream());
         
         System.out.println("What's your message?");
-        message = sc.next();
+        message = inFromUser.readLine();
         
         System.out.println("Sending message!\n");
         
-        outToServer.writeBytes(message + '\n');
+        outToServer.writeBytes(message + '\n'); //Always send the '\n' or else server won't read it.
         outToServer.flush();
         
         message = inFromServer.readLine();

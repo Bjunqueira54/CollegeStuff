@@ -268,3 +268,7 @@ C++/Test_Game/.vs
 /PDist/Basic UDP Server/nbproject/private/
 /PDist/Basic UDP Server/build/
 /PDist/Basic UDP Client/build/
+/PDist/Basic TCP Client/nbproject/private/
+/PDist/Basic TCP Server/nbproject/private/
+/PDist/Basic TCP Server/build/
+/PDist/Basic TCP Client/build/
