@@ -57,6 +57,14 @@ void Interface::drawUserInterface()
         cout << "3 - Credits" << endl;
         cout << "0 - Exit Game" << endl;
     }
+    else if (game->getGameState().compare("BattleState"))
+    {
+        cout << "1 - Attack" << endl;
+        cout << "2 - Defend" << endl;
+        cout << "3 - Heal" << endl;
+        cout << "4 - Special" << endl;
+        cout << "0 - Give Up" << endl;
+    }
 }
 
 Interface::~Interface()
