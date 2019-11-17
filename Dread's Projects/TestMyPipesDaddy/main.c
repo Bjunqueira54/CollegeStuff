@@ -57,33 +57,11 @@ int main(int argc, char** argv)
     }
     else    //child
     {
-        //num = read(fd_in[1],resposta,49);
-        //printf("FILHO: %s\n", resposta);
-        
-        //printf("Resposta para o pai: ");
-        //fgets(resposta, 50, stdin);
-        
-        //resposta[strlen(resposta) - 1] = '\0';
-        
-        //write(fd_out[1], resposta, strlen(resposta));
-        
-        num = read(STDIN_FILENO, resposta, 49);
-        
-        //char father_message[15] = "Hello Dad!\0";
-        
-        /*num = strlen(resposta);
-        
-        resposta[num] = ' ';
-        resposta[num + 1] = '1';
-        resposta[num + 2] = '2';
-        resposta[num + 3] = '3';
-        resposta[num + 4] = '4';
-        resposta[num + 5] = '\0';*/
+        fgets(resposta, 49, stdin);
         
         char son_resposta[50] = "I have recieved your message father!\0";
         
-        
-        write(STDOUT_FILENO, son_resposta, strlen(son_resposta));
+        printf("%s\n", son_resposta);
     }
     
     exit(0);
