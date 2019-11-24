@@ -1,0 +1,31 @@
+﻿@model F6Ex2.DAL.Categorias
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Remover</h2>
+
+<div>
+    <h4>Categoria</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+    <div class="form-actions no-color">
+        <input type="submit" value="Remover" class="btn btn-danger" /> |
+        @Html.ActionLink("Lista das Categorias", "Index")
+    </div>
+    }
+</div>
