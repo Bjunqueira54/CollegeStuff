@@ -29,7 +29,7 @@ void Interface::OnUserCreate()
     
     string name;
     
-    cin >> name;
+    getline(cin, name);
     
     cout << "Welcome " << name << endl;
     cout << "Good Luck and Have Fun!" << endl;
@@ -39,6 +39,8 @@ void Interface::OnUserCreate()
 
 void Interface::OnUserUpdate()
 {
+    ClearScreen();
+    
     drawUserInterface();
     
     char input;
@@ -50,14 +52,14 @@ void Interface::OnUserUpdate()
 
 void Interface::drawUserInterface()
 {
-    if(game->getGameState().compare("MainMenuState"))
+    if(game->getGameState() == "MainMenuState")
     {
         cout << "1 - Start Game" << endl;
         cout << "2 - Tutorial" << endl;
         cout << "3 - Credits" << endl;
         cout << "0 - Exit Game" << endl;
     }
-    else if (game->getGameState().compare("BattleState"))
+    else if (game->getGameState() == "BattleState")
     {
         cout << "1 - Attack" << endl;
         cout << "2 - Defend" << endl;

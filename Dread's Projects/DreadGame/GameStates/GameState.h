@@ -14,7 +14,7 @@ public:
     GameState(const GameState& orig) = delete;
     GameState(GameData*);
     
-    const virtual string getStateName();
+    const virtual string getStateName() = 0;
     
     virtual ~GameState();
     

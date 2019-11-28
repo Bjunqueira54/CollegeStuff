@@ -1,0 +1,5 @@
+cc -I . -g -ggdb   -c -o main.o main.c
+cc -I . -g -ggdb   -c -o funcao.o funcao.c
+cc -I . -g -ggdb   -c -o utils.o utils.c
+cc -I . -g -ggdb   -c -o algoritmo.o algoritmo.c
+gcc -o agent main.o funcao.o utils.o algoritmo.o -I . -g -ggdb -lm
