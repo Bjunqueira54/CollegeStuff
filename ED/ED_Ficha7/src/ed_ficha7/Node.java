@@ -17,8 +17,9 @@ class Node <T>
         this.left = this.right = this;
     }
 
-    public Node getLeft() { return left; }
-    public Node getRight() { return right; }
+    public Node getLeft() { return this.left; }
+    
+    public Node getRight() { return this.right; }
 
     public T get() { return data; }
 

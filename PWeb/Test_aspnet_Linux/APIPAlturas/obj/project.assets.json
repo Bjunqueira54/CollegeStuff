@@ -1,0 +1,95 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.0": {
+      "Alturas/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Alturas.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Alturas.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Alturas/1.0.0": {
+      "type": "project",
+      "path": "../Alturas/Alturas.csproj",
+      "msbuildProject": "../Alturas/Alturas.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.0": [
+      "Alturas >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "/home/gothicdread/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/APIPAlturas/APIPAlturas.csproj",
+      "projectName": "APIPAlturas",
+      "projectPath": "/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/APIPAlturas/APIPAlturas.csproj",
+      "packagesPath": "/home/gothicdread/.nuget/packages/",
+      "outputPath": "/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/APIPAlturas/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/home/gothicdread/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "projectReferences": {
+            "/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/Alturas/Alturas.csproj": {
+              "projectPath": "/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/Alturas/Alturas.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.0": {
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[3.0.0, 3.0.0]"
+          }
+        ],
+        "frameworkReferences": {
+          "Microsoft.AspNetCore.App": {
+            "privateAssets": "none"
+          },
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.0.101/RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

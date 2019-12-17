@@ -27,7 +27,7 @@ public class Main
         len = 1000000;
         
         for(i = 0; i < len; i++)
-            array.add(new Integer(randInt(1, 1000000)));
+            array.add(randInt(1, 1000000));
 
         hl = len / 2;
         
@@ -42,8 +42,15 @@ public class Main
         
         Iterator it = array.iterator();
         
-        while(it.hasNext())
-            bt.insere((Integer) it.next());
+        try
+        {
+            while(it.hasNext())
+                bt.insere((Integer) it.next());
+        }
+        catch(RuntimeException ex)
+        {
+            System.out.println("We found a duplicate value!\n");
+        }
         
         System.out.println("A Arvore tem " + bt.Tamanho() + " elementos");
         System.out.println("A Arvore tem " + bt.Profundidade() + " niveis");
