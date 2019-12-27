@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <time.h>
 #include <GL/glut.h>
 
 int xx = 0, yy = 0;
@@ -29,21 +31,14 @@ void display(void)
         isClear = 1;
     }
     
-    for(yy = 0; yy <= maxy; yy++)
+    for(int x = xx, y = yy; x >= 0 && y <= maxy; x--, y++)
     {
-        for(xx = 0; xx <= maxx; xx++)
-        {
-            r = (float) rand() / (float)RAND_MAX;
-            g = (float) rand() / (float)RAND_MAX;
-            b = (float) rand() / (float)RAND_MAX;
-            
-            glBegin(GL_POINTS);
-    
-            glColor3f(r, g, b);
-            glVertex2i(xx, yy);
+        glBegin(GL_POINTS);
 
-            glEnd();
-        }
+        glColor3f(r, g, b);
+        glVertex2i(x, y);
+
+        glEnd();
     }
     
     glFlush();
@@ -51,6 +46,23 @@ void display(void)
 
 void change(void)
 {
+    xx++;
+    
+    if(xx >= maxx)
+    {
+        xx = maxx;
+        yy++;
+        
+        if(yy >= maxy)
+        {
+            xx = yy = 0;
+        }
+    }
+    
+    r = (float) rand() / RAND_MAX;
+    g = (float) rand() / RAND_MAX;
+    b = (float) rand() / RAND_MAX;
+    
     glutPostRedisplay();
 }
 
@@ -60,18 +72,19 @@ int main(int argc, char **argv)
     glutCreateWindow("Static");
     glutReshapeWindow(1280, 720);
     glutFullScreen();
-
+    
     maxx = glutGet(GLUT_SCREEN_WIDTH);
     maxy = glutGet(GLUT_SCREEN_HEIGHT);
-    
+
     glutDisplayFunc(display);
     
     glutReshapeFunc(reshape);
     
     glutIdleFunc(change);
 
-    xx = 0;
-    yy = 0;
+    xx = yy = r = g = b = 0;
+    
+    srand(time(NULL));
     
     glutMainLoop();
     return 0;             /* ANSI C requires main to return int. */
