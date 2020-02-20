@@ -33,8 +33,8 @@ private:
         return dynamic_cast<const Base*>(ptr) != nullptr;
     }
     
-    MainMenuInput(char);
-    BattleStateInput(char);
+    void MainMenuInput(char);
+    void BattleStateInput(char);
 };
 
 #endif

@@ -14,7 +14,7 @@ void Game::UserInput(char option)
         BattleStateInput(option);
 }
 
-int Game::MainMenuInput(char option)
+void Game::MainMenuInput(char option)
 {
     switch(option)
     {
@@ -32,7 +32,7 @@ int Game::MainMenuInput(char option)
     }
 }
 
-int Game::BattleStateInput(char option)
+void Game::BattleStateInput(char option)
 {
     switch(option)
     {
