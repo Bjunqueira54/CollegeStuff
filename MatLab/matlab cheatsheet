@@ -32,3 +32,11 @@ Removing from Matrix:
 	E(l, c) = [] (removes a number from a matrix)
 	E(:, 2) = [] (removes column 2 from a matrix)
 	E(1, :) = [] (removes line 1 from a matrix)
+
+Dimensions:
+
+	length(matrix)
+	numel(matrix)
+
+	length(A(:, 1)) (number of lines)
+	numel(A(1, :))	(number of columns)
