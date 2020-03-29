@@ -15,9 +15,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b1f1e576-2f32-438c-81b8-40df80261901" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/../HttpAccess/app/src/main/java/gothicdread/httpaccess/DownloadTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../SO/TP_1920/Client/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../SO/TP_1920/Client/nbproject/private/private.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../SO/TP_1920/Server/nbproject/private/private.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../SO/TP_1920/Server/nbproject/private/private.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.4.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/gradle_models.ser" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/bundle_manifest/debug/processDebugManifest/bundle-manifest/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/bundle_manifest/debug/processDebugManifest/bundle-manifest/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/instant_app_manifest/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/instant_app_manifest/debug/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/intermediates/merged_manifests/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/intermediates/merged_manifests/debug/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha6/F6Ex2/App_Data/TTDatabaseDF.mdf" beforeDir="false" afterPath="$PROJECT_DIR$/../../PWeb/Ficha6/F6Ex2/App_Data/TTDatabaseDF.mdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha6/F6Ex2/App_Data/TTDatabaseDF_log.ldf" beforeDir="false" afterPath="$PROJECT_DIR$/../../PWeb/Ficha6/F6Ex2/App_Data/TTDatabaseDF_log.ldf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/App_Data/aspnet-Ficha7-20191122110447.mdf" beforeDir="false" afterPath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/App_Data/aspnet-Ficha7-20191122110447.mdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/App_Data/aspnet-Ficha7-20191122110447_log.ldf" beforeDir="false" afterPath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/App_Data/aspnet-Ficha7-20191122110447_log.ldf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/bin/Ficha7.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/bin/Ficha7.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/bin/Ficha7.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/bin/Ficha7.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/obj/Debug/Ficha7.csproj.CoreCompileInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/obj/Debug/Ficha7.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/obj/Debug/Ficha7.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/obj/Debug/Ficha7.csprojAssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/obj/Debug/Ficha7.csprojAssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/obj/Debug/Ficha7.dll" beforeDir="false" afterPath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/obj/Debug/Ficha7.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/obj/Debug/Ficha7.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/../../PWeb/Ficha7/Ficha7/obj/Debug/Ficha7.pdb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +48,7 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Pixel_2_API_24" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="Nexus_5X_API_29" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -104,7 +124,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/pt/isec/ans/rockpaperscissors/GameActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="459">
-              <caret line="57" column="33" lean-forward="true" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
+              <caret line="57" column="33" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -113,7 +133,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/pt/isec/ans/rockpaperscissors/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="340">
-              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+              <caret line="23" selection-start-line="23" selection-end-line="23" />
             </state>
           </provider>
         </entry>
@@ -179,37 +199,17 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView">
-        <subPane>
-          <expand>
-            <path>
-              <item name="RockPaperScissors" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="RockPaperScissors" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="RockPaperScissors" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="rockpaperscissors" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="Pixel_2_API_24" />
     <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2019-11-07T12:51:16.976Z" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="android.project.structure.last.selected" value="Project" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="device.picker.selection" value="W3D7N17704010214" />
@@ -467,9 +467,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12899786" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12846482" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Build Variants" order="3" side_tool="true" />
@@ -489,12 +488,12 @@
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5016155" side_tool="true" weight="0.32779455" />
       <window_info anchor="bottom" id="Version Control" order="10" />
-      <window_info active="true" anchor="bottom" id="Build" order="11" sideWeight="0.49919224" visible="true" weight="0.21776815" />
-      <window_info anchor="bottom" id="Android Profiler" order="12" />
+      <window_info anchor="bottom" id="Build" order="11" sideWeight="0.49919224" visible="true" weight="0.21776815" />
+      <window_info anchor="bottom" id="Android Profiler" order="12" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
+      <window_info active="true" anchor="right" id="Device File Explorer" order="3" side_tool="true" visible="true" weight="0.32995737" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="right" id="Gradle" order="5" />
       <window_info anchor="right" id="Theme Preview" order="6" />
@@ -524,12 +523,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="9" selection-start-line="6" selection-end-line="9" />
         </state>
       </provider>
+      <provider editor-type-id="android-manifest" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor" />
@@ -547,14 +546,14 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/pt/isec/ans/rockpaperscissors/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+          <caret line="23" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/pt/isec/ans/rockpaperscissors/GameActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
-          <caret line="57" column="33" lean-forward="true" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
+          <caret line="57" column="33" selection-start-line="57" selection-start-column="33" selection-end-line="57" selection-end-column="33" />
         </state>
       </provider>
     </entry>
