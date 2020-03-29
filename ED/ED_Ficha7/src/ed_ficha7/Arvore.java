@@ -7,27 +7,6 @@ import java.util.List;
 
 public class Arvore<T extends Comparable<? super T>>
 {
-    private class Node <T>
-    {
-        private T data;
-        private Node left, right;
-        
-        public Node(T data)
-        {
-            this.data = data;
-            left = null;
-            right = null;
-        }
-        
-        public Node getLeft() { return left; }
-        public Node getRight() { return right; }
-        
-        public T get() { return data; }
-        
-        public void setLeft(Node l) { this.left = l; }
-        public void setRight(Node r) { this.right = r; }
-    }
-    
     private Node root;
     private int size;
     private Comparator<T> comp;
@@ -69,7 +48,8 @@ public class Arvore<T extends Comparable<? super T>>
         int cmp =  comp.compare(root.get(), n.get());
         
         if(cmp == 0)
-            throw new RuntimeException();
+            //throw new RuntimeException();
+            return root;
         
         if(cmp < 0)
             root.setLeft(insere(root.getLeft(), n));
@@ -132,8 +112,6 @@ public class Arvore<T extends Comparable<? super T>>
     
     private void ordem(Node<T> root, List<T> list)
     {
-        int j;
-        
         if(root == null)
             return;
         
@@ -150,7 +128,23 @@ public class Arvore<T extends Comparable<? super T>>
         }
     }
     
-    public int Profundidade() { return 0; }
+    public int Profundidade() { return profundidade(root); }
+    
+    private int profundidade(Node n)
+    {
+        if(n == null)
+            return 0;
+        
+        int left = 0, right = 0;
+        
+        left = profundidade(n.getLeft());
+        right = profundidade(n.getRight());
+        
+        if(left > right)
+            return (1 + left);
+        else
+            return (1 + right);
+    }
     
     public int Tamanho() { return size; }
     

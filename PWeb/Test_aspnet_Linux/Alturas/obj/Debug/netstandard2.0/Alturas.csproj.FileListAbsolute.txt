@@ -1,0 +1,8 @@
+/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/Alturas/bin/Debug/netstandard2.0/Alturas.deps.json
+/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/Alturas/bin/Debug/netstandard2.0/Alturas.dll
+/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/Alturas/bin/Debug/netstandard2.0/Alturas.pdb
+/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/Alturas/obj/Debug/netstandard2.0/Alturas.csprojAssemblyReference.cache
+/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/Alturas/obj/Debug/netstandard2.0/Alturas.AssemblyInfoInputs.cache
+/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/Alturas/obj/Debug/netstandard2.0/Alturas.AssemblyInfo.cs
+/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/Alturas/obj/Debug/netstandard2.0/Alturas.dll
+/home/gothicdread/Desktop/CollegeStuff/PWeb/Test_aspnet_Linux/Alturas/obj/Debug/netstandard2.0/Alturas.pdb
