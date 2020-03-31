@@ -1,0 +1,19 @@
+default terminal size:
+
+Lines (y): 24
+Columns (x): 80
+
+size after box drawing:
+
+x: 78 ([1-78])(x=0 && x=79 are the '*' of the box)
+y: 22 ([1-22])(y=0 && y=23 are the '*' of the box)
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+If columns = 78, then for an article of max 1000 words and with "KEY_ENTER" disable,
+the article will take up about 13 lines. Since lines = 22, this is acceptable.
+
+Problem:    How to handle paragraphs?
+            Should we enable "KEY_ENTER" and deal with it?
+            How would we deal with an article that would exceed the 22 lines in a standard sized terminal?
+

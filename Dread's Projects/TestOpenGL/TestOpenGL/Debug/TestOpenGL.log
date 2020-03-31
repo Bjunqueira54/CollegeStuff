@@ -1,0 +1,5 @@
+﻿  main.cpp
+c:\users\dread\desktop\collegestuff\dread's projects\testopengl\testopengl\main.cpp(32): error C2440: '=': cannot convert from 'const wchar_t [13]' to 'LPCSTR'
+  c:\users\dread\desktop\collegestuff\dread's projects\testopengl\testopengl\main.cpp(32): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+c:\users\dread\desktop\collegestuff\dread's projects\testopengl\testopengl\main.cpp(36): error C2664: 'HWND CreateWindowExA(DWORD,LPCSTR,LPCSTR,DWORD,int,int,int,int,HWND,HMENU,HINSTANCE,LPVOID)': cannot convert argument 2 from 'const wchar_t [13]' to 'LPCSTR'
+  c:\users\dread\desktop\collegestuff\dread's projects\testopengl\testopengl\main.cpp(36): note: Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast

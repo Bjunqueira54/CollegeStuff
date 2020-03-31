@@ -1,0 +1,89 @@
+﻿@model F6Ex2.ViewModels.ProdutosIndexViewModel
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Produtos";
+}
+
+<h2>Lista de Produtos</h2>
+
+<p>
+    @Html.ActionLink("Novo Produto", "Create")
+
+    <div>
+        <label> Produtos encontrados:  </label> @Model.Produtos.TotalItemCount
+    </div>
+
+    <hr />
+
+    @using (Html.BeginForm("Index", "Produtos", FormMethod.Post))
+    {
+        <div class="form-inline">
+            <label>Filtrar por categoria</label> &nbsp
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.Categoria, Model.CategoriasSelectListItems, "Todas", new { @class = "form-control" })
+            </div>
+
+            &nbsp <label>Ordenar por </label> &nbsp
+            <div class="form-group">
+                @Html.DropDownListFor(m => m.Ordem, new SelectList(Model.TiposDeOrdenacao, "Value", "Key"), "Nome", new { @class = "form-control" })
+            </div>
+
+            <div class="form-group">
+                &nbsp <button type="submit" class="btn btn-info"> Filtrar </button>
+            </div>
+        </div>
+        <input type="hidden" name="procura" id="procura" value="@Model.Procura" />
+
+    }
+</p>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Produtos.First().Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Produtos.First().Descricao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Produtos.First().Preco)
+        </th>
+        <th>
+            @Html.Label("Categoria")
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Produtos)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Preco)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria.Nome)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Detalhes", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Remover", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@*NOVO 2g:*@
+
+<div>
+    Página @(Model.Produtos.PageCount < Model.Produtos.PageNumber ? 0 : Model.Produtos.PageNumber) de @Model.Produtos.PageCount
+    @Html.PagedListPager(Model.Produtos, pagina => Url.Action("Index", new { categoria = @Model.Categoria, procura = @Model.Procura, ordem = @Model.Ordem, pagina }))
+</div>

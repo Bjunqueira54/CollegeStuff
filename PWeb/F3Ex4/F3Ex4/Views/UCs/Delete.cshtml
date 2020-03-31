@@ -1,0 +1,63 @@
+﻿@model F3Ex4.Models.UnidadeCurricular
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Remover</h2>
+
+<h3>Unidade Curricular</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ECTS)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ECTS)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Licenciatura)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Licenciatura)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ramo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ramo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Semestre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Semestre)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Remover" class="btn btn-danger" /> |
+            @Html.ActionLink("Unidades Curriculares", "Index")
+        </div>
+    }
+</div>

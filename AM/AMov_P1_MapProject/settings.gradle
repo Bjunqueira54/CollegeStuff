@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name='AMov_P1_MapProject'

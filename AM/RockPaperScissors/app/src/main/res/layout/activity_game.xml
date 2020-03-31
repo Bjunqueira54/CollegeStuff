@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1" android:background="#ffffff"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your move:"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <ImageView
+            android:id="@+id/imgrock"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_gravity="center" android:layout_margin="10dp"
+            android:layout_weight="1" android:onClick="onRock"
+            android:src="@drawable/rock" />
+        <ImageView
+            android:id="@+id/imgpaper"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_gravity="center" android:layout_margin="10dp"
+            android:layout_weight="1" android:onClick="onPaper"
+            android:src="@drawable/paper" />
+        <ImageView
+            android:id="@+id/imgscissors"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_gravity="center" android:layout_margin="10dp"
+            android:layout_weight="1" android:onClick="onScissors"
+            android:src="@drawable/scissors" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/textView1" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Results:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <TextView
+        android:id="@+id/tvme" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp" android:text="Me:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <TextView
+        android:id="@+id/tvother" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp" android:text="Other player:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+</LinearLayout>

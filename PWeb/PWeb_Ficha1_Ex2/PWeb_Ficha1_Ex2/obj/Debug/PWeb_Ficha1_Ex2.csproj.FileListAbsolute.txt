@@ -1,0 +1,7 @@
+C:\Users\dread\Desktop\CollegeStuff\PWeb\PWeb_Ficha1_Ex2\PWeb_Ficha1_Ex2\bin\Debug\PWeb_Ficha1_Ex2.exe.config
+C:\Users\dread\Desktop\CollegeStuff\PWeb\PWeb_Ficha1_Ex2\PWeb_Ficha1_Ex2\bin\Debug\PWeb_Ficha1_Ex2.exe
+C:\Users\dread\Desktop\CollegeStuff\PWeb\PWeb_Ficha1_Ex2\PWeb_Ficha1_Ex2\bin\Debug\PWeb_Ficha1_Ex2.pdb
+C:\Users\dread\Desktop\CollegeStuff\PWeb\PWeb_Ficha1_Ex2\PWeb_Ficha1_Ex2\obj\Debug\PWeb_Ficha1_Ex2.csprojAssemblyReference.cache
+C:\Users\dread\Desktop\CollegeStuff\PWeb\PWeb_Ficha1_Ex2\PWeb_Ficha1_Ex2\obj\Debug\PWeb_Ficha1_Ex2.csproj.CoreCompileInputs.cache
+C:\Users\dread\Desktop\CollegeStuff\PWeb\PWeb_Ficha1_Ex2\PWeb_Ficha1_Ex2\obj\Debug\PWeb_Ficha1_Ex2.exe
+C:\Users\dread\Desktop\CollegeStuff\PWeb\PWeb_Ficha1_Ex2\PWeb_Ficha1_Ex2\obj\Debug\PWeb_Ficha1_Ex2.pdb

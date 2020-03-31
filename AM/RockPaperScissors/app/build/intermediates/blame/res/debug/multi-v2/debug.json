@@ -1,0 +1,93 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "5,3,7,6,11,14,4,12,13,10,9,8",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "171,59,286,226,525,673,117,590,625,458,402,344",
+                        "endColumns": "53,56,56,58,63,63,52,33,46,65,54,56",
+                        "endOffsets": "220,111,338,280,584,732,165,619,667,519,452,396"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11,12,13",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,109,166,223,282,346,410,463,497,544,610,665",
+                        "endColumns": "53,56,56,58,63,63,52,33,46,65,54,56",
+                        "endOffsets": "104,161,218,277,341,405,458,492,539,605,660,717"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\values\\styles.xml",
+                    "from": {
+                        "startLines": "6,15",
+                        "startColumns": "4,4",
+                        "startOffsets": "191,522",
+                        "endLines": "12,17",
+                        "endColumns": "12,12",
+                        "endOffsets": "481,679"
+                    },
+                    "to": {
+                        "startLines": "14,21",
+                        "startColumns": "4,4",
+                        "startOffsets": "722,1013",
+                        "endLines": "20,23",
+                        "endColumns": "12,12",
+                        "endOffsets": "1008,1168"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\values-v11_values-v11.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\values-v11\\styles.xml",
+                    "from": {
+                        "startLines": "6",
+                        "startColumns": "4",
+                        "startOffsets": "182",
+                        "endLines": "8",
+                        "endColumns": "12",
+                        "endOffsets": "316"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "187"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\build\\intermediates\\res\\merged\\debug\\values-v14_values-v14.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\Users\\dread\\Desktop\\CollegeStuff\\AM\\RockPaperScissors\\app\\src\\main\\res\\values-v14\\styles.xml",
+                    "from": {
+                        "startLines": "7",
+                        "startColumns": "4",
+                        "startOffsets": "225",
+                        "endLines": "9",
+                        "endColumns": "12",
+                        "endOffsets": "373"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "4",
+                        "endColumns": "12",
+                        "endOffsets": "201"
+                    }
+                }
+            ]
+        }
+    ]
+}

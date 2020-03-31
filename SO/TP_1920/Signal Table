@@ -1,0 +1,18 @@
+(CLIENT) SIGINT - matar processos, ao receber este sinal, enviar a todas as threads um sigint.
+(SERVER) SIGINT - enviar a todos os clientes um SIGINT.
+
+(CLIENT) SIGALRM - Quando recebe este sinal, chamar a funcao newNotification()
+    int id = id do topico com a mensagem nova. Usar isto para descobrir o topic para enviar o titulo para a funcao
+(SERVER) SIGALRM - enviar sinal ao cliente a notificação de novos textos
+    int id = id do texto novo do tópico
+
+(CLIENT) SIGUSR1 - Ao receber este sinal, significa que o servidor está a enviar uma mensagem nova para adicionar a lista.
+    int id = id do topico do texto a ser recebido (opcionalmente ignorar esta parte e passar os campos todos no pipe)
+(SERVER) SIGUSR1 - Ao receber este sinal, adicionar as informacoes lidas do pipe a um topico (novo ou existente)
+                    Quando acabar de preencher a nova mensagem, enviar este sinal a todos os outros clientes.
+
+SIGUSR2 - TO BE DETERMINED
+
+SIGPIPE - Em principio serverá só para sinalizar quando um pipe fechou.
+
+

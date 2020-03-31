@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TTDatabaseDFModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Categorias">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Nome" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Produtos" Relationship="TTDatabaseDFModel.CategoriasProdutos" FromRole="Categorias" ToRole="Produtos" />
+  </EntityType>
+  <EntityContainer Name="TTDatabaseDF" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categorias" EntityType="Self.Categorias" />
+    <EntitySet Name="Produtos" EntityType="TTDatabaseDFModel.Produtos" />
+    <AssociationSet Name="CategoriasProdutos" Association="TTDatabaseDFModel.CategoriasProdutos">
+      <End Role="Categorias" EntitySet="Categorias" />
+      <End Role="Produtos" EntitySet="Produtos" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Produtos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Nome" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Preco" Type="Double" Nullable="false" />
+    <NavigationProperty Name="Categoria" Relationship="TTDatabaseDFModel.CategoriasProdutos" FromRole="Produtos" ToRole="Categorias" />
+    <Property Name="CategoriasId" Type="Int32" Nullable="true" />
+  </EntityType>
+  <Association Name="CategoriasProdutos">
+    <End Type="TTDatabaseDFModel.Categorias" Role="Categorias" Multiplicity="0..1" />
+    <End Type="TTDatabaseDFModel.Produtos" Role="Produtos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categorias">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Produtos">
+        <PropertyRef Name="CategoriasId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

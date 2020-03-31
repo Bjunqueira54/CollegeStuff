@@ -10,8 +10,8 @@ class Game
 {
     int rounds;
     Interface* interface;
-    Player player;
-    NPC monster;
+    Player *player;
+    NPC *monster;
     
 public:
     
@@ -24,6 +24,7 @@ public:
     
 private:
     
+    void DrawMainMenu() { interface->DrawMainMenu(); }
     void victory();
     void defeat();
 };

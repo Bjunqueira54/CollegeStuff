@@ -1,0 +1,3 @@
+﻿  main.c
+C:\Users\dread\Desktop\CollegeStuff\SO2\1920\Ficha1Ex5\main.c(70,28): warning C4133: 'function': incompatible types - from 'wchar_t [256]' to 'LPCSTR'
+  Ficha1Ex5.vcxproj -> C:\Users\dread\Desktop\CollegeStuff\SO2\1920\Ficha1Ex5\Debug\Ficha1Ex5.exe

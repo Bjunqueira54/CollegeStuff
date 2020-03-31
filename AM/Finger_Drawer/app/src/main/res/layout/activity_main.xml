@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#FFFFC0"
+    android:padding="16dp">
+
+    <TextView
+        android:padding="5dp"
+        android:background="#AAAAAA"
+        android:textColor="#FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:textSize="32sp"
+        android:typeface="sans"
+        android:text="@string/app_name"
+        android:textStyle="bold|italic"
+    />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
+
+        <Button
+            style="@style/exper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/fundo_solido"
+            android:textSize="24sp"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="onFundoSolido"
+        />
+
+        <Button
+            style="@style/exper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Imagem da Galeria"
+            android:textSize="24sp"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+            android:onClick="onFundoImagem"
+        />
+
+        <Button
+            style="@style/exper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Imagem Capturada"
+            android:textSize="24sp"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+        />
+
+        <Button
+            style="@style/exper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Histórico"
+            android:textSize="24sp"
+            android:padding="16dp"
+            android:layout_marginBottom="8dp"
+        />
+
+    </LinearLayout>
+
+</FrameLayout>

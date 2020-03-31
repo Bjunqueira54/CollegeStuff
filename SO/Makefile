@@ -11,3 +11,6 @@ myset.o:myset.c
 	cc -c myset.c
 clean:
 	rm myset.o myset
+
+clean:
+	rm *.o
