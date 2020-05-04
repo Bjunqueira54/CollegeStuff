@@ -9,7 +9,7 @@ public class RandomIntArray
     public RandomIntArray()
     {
         mat = new int[20];
-        duped_mat = new int[1];
+        duped_mat = new int[0];
         duped = 0;
         
         initDupedMat();
@@ -53,8 +53,7 @@ public class RandomIntArray
     {
         int[] newmat = new int[duped_mat.length + 1];
         
-        for(int i = 0; i < duped_mat.length; i++)
-            newmat[i] = duped_mat[i];
+        System.arraycopy(duped_mat, 0, newmat, 0, duped_mat.length);
         
         newmat[newmat.length - 1] = -1;
         

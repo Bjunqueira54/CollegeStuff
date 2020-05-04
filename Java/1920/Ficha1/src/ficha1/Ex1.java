@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class Ex1
 {
-    final int MIN = 0;
-    final int MAX = 100;
+    private final int MIN = 0;
+    private final int MAX = 100;
     
     public Ex1() {}
     
