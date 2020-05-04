@@ -29,37 +29,36 @@
 18-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:13:9-45
 19        android:label="@string/app_name"
 19-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:14:9-41
-20        android:testOnly="true"
-21        android:theme="@style/AppTheme" >
-21-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:15:9-40
-22        <activity
-22-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:16:9-25:20
-23            android:name="pt.isec.ans.rockpaperscissors.MainActivity"
-23-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:17:13-70
-24            android:label="@string/app_name"
-24-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:18:13-45
-25            android:screenOrientation="portrait" >
-25-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:19:13-49
-26            <intent-filter>
-26-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:20:13-24:29
-27                <action android:name="android.intent.action.MAIN" />
-27-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:21:17-69
-27-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:21:25-66
-28
-29                <category android:name="android.intent.category.LAUNCHER" />
-29-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:23:17-77
-29-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:23:27-74
-30            </intent-filter>
-31        </activity>
-32        <activity
-32-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:26:9-30:20
-33            android:name="pt.isec.ans.rockpaperscissors.GameActivity"
-33-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:27:13-41
-34            android:label="@string/title_game_activity"
-34-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:28:13-56
-35            android:screenOrientation="portrait" >
-35-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:29:13-49
-36        </activity>
-37    </application>
-38
-39</manifest>
+20        android:theme="@style/AppTheme" >
+20-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:15:9-40
+21        <activity
+21-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:16:9-25:20
+22            android:name="pt.isec.ans.rockpaperscissors.MainActivity"
+22-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:17:13-70
+23            android:label="@string/app_name"
+23-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:18:13-45
+24            android:screenOrientation="portrait" >
+24-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:19:13-49
+25            <intent-filter>
+25-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:20:13-24:29
+26                <action android:name="android.intent.action.MAIN" />
+26-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:21:17-69
+26-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:21:25-66
+27
+28                <category android:name="android.intent.category.LAUNCHER" />
+28-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:23:17-77
+28-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:23:27-74
+29            </intent-filter>
+30        </activity>
+31        <activity
+31-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:26:9-30:20
+32            android:name="pt.isec.ans.rockpaperscissors.GameActivity"
+32-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:27:13-41
+33            android:label="@string/title_game_activity"
+33-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:28:13-56
+34            android:screenOrientation="portrait" >
+34-->C:\Users\dread\Desktop\CollegeStuff\AM\RockPaperScissors\app\src\main\AndroidManifest.xml:29:13-49
+35        </activity>
+36    </application>
+37
+38</manifest>
