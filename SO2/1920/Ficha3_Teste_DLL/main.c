@@ -5,7 +5,6 @@
 
 #define TAM 256
 
-
 double getUserInput()
 {
 	double valor = 0;
