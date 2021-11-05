@@ -1,0 +1,6 @@
+﻿  Source.cpp
+C:\Users\dread\Desktop\CollegeStuff\Dread's Projects\D2 Density Changer\D2 Density Changer\Source.cpp(35,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dread\Desktop\CollegeStuff\Dread's Projects\D2 Density Changer\D2 Density Changer\Source.cpp(44,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dread\Desktop\CollegeStuff\Dread's Projects\D2 Density Changer\D2 Density Changer\Source.cpp(75,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dread\Desktop\CollegeStuff\Dread's Projects\D2 Density Changer\D2 Density Changer\Source.cpp(79,21): warning C4018: '<': signed/unsigned mismatch
+  D2 Density Changer.vcxproj -> C:\Users\dread\Desktop\CollegeStuff\Dread's Projects\D2 Density Changer\Debug\D2 Density Changer.exe

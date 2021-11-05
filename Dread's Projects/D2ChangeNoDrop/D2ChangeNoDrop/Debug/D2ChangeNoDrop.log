@@ -1,0 +1,6 @@
+﻿  Source.cpp
+C:\Users\dread\Desktop\CollegeStuff\Dread's Projects\D2ChangeNoDrop\D2ChangeNoDrop\Source.cpp(32,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dread\Desktop\CollegeStuff\Dread's Projects\D2ChangeNoDrop\D2ChangeNoDrop\Source.cpp(41,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dread\Desktop\CollegeStuff\Dread's Projects\D2ChangeNoDrop\D2ChangeNoDrop\Source.cpp(61,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\dread\Desktop\CollegeStuff\Dread's Projects\D2ChangeNoDrop\D2ChangeNoDrop\Source.cpp(65,21): warning C4018: '<': signed/unsigned mismatch
+  D2ChangeNoDrop.vcxproj -> C:\Users\dread\Desktop\CollegeStuff\Dread's Projects\D2ChangeNoDrop\Debug\D2ChangeNoDrop.exe
