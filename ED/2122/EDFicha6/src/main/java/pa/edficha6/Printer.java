@@ -18,9 +18,12 @@ public class Printer
     private final Integer driver;
     private final Double version;
     
-    private final Queue<PrintTask> queue = new PriorityQueue<>(
-            (PrintTask a, PrintTask b) ->
-                    a.getNumberPages() - b.getNumberPages());;
+    private final Queue<PrintTask> queue = new PriorityQueue<>(new Comparator<PrintTask>() {
+        @Override
+        public int compare(PrintTask a, PrintTask b) {
+            return a.compareTo(b);
+        }
+    });
     
     //////////////////
     ///Constructors///
@@ -36,6 +39,7 @@ public class Printer
         driver = 1;
         version = 1.0;
     }
+    
     public Printer(String name, Integer port, String brand, String model, Integer driver, Double version) {
         this.name = name;
         this.port = port;
@@ -76,6 +80,7 @@ public class Printer
     
     public void addTask(PrintTask t) { queue.add(t); }
     public boolean hasNextTask() { return (queue.peek() != null); }
-    public PrintTask nextTask() { return queue.peek(); }
+    public PrintTask peekNextTask() { return queue.peek(); }
+    public PrintTask nextTask() { return queue.poll(); }
     public int getNumberTasks() { return queue.size(); }
 }

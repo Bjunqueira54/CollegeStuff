@@ -1,16 +1,31 @@
 package pa.edficha6;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.Random;
 import java.util.Set;
 
 public class PrinterManager
 {
     private Map<String, Printer> map;
-    private Queue<Printer> printers = new PriorityQueue<>((Printer o1, Printer o2) -> o1.getNumberTasks() - o2.getNumberTasks());
+    private Queue<Printer> printers = new PriorityQueue<>(new Comparator<Printer>() {
+        @Override
+        public int compare(Printer o1, Printer o2) {
+            int taskCount = o1.getNumberTasks() - o2.getNumberTasks();
+            if(taskCount != 0)
+                return taskCount;
+            
+            int taskPages = o1.peekNextTask().getNumberPages() - o2.peekNextTask().getNumberPages();
+            if(taskPages != 0)
+                return taskPages;
+            
+            return ((new Random()).nextInt((1 - (-1)) + 1) + (-1));
+        }
+    });
     
     public PrinterManager() {
         map = new HashMap<>();
